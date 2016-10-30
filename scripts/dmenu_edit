@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e -o pipefail -o nounset
+
+LOCAL="${LOCAL:-${XDG_LOCAL_HOME:-$HOME/.config}/dmenu/edit-list}"
+[ -f "$LOCAL" ] || exit 1
+
+count=$(cat $LOCAL | wc -l)
+
+file="$(dmenu -i -fn "Terminus-10" -l $count" $@" < "$LOCAL")"
+echo $file
+[ "$file" ] && "$TERMINAL" -x "bash" -c "vim $file"

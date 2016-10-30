@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -eu
+
+changetheme() {
+    if [ -e ~/.config/themelight ]; then
+        ln -sf ~/.config/termite/config.dark ~/.config/termite/config
+        sed -i -e 's/background=light/background=dark/g' ~/.vimrc
+        sed -i -e 's/Boxy Solarized Light.tmTheme/Boxy Ocean.tmTheme/g' ~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
+        sed -i -e 's/Boxy Solarized Light.sublime-theme/Boxy Ocean.sublime-theme/g' ~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
+        sed -i -e 's/ThemeName=Arc/ThemeName=Arc-Dark/g' ~/.config/lxsession/LXDE/desktop.conf
+        sed -i -e 's/#fff/#2d2d2d/' ~/.dmenurc
+
+        rm -f ~/.config/themelight
+    else
+        ln -sf ~/.config/termite/config.light ~/.config/termite/config
+        sed -i -e 's/background=dark/background=light/g' ~/.vimrc
+        sed -i -e 's/Boxy Ocean.tmTheme/Boxy Solarized Light.tmTheme/g' ~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
+        sed -i -e 's/Boxy Ocean.sublime-theme/Boxy Solarized Light.sublime-theme/g' ~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
+        sed -i -e 's/ThemeName=Arc-Dark/ThemeName=Arc/g' ~/.config/lxsession/LXDE/desktop.conf
+        sed -i -e 's/#2d2d2d/#fff/' ~/.dmenurc
+
+        touch ~/.config/themelight
+    fi
+}
+
+changetheme
