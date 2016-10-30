@@ -43,7 +43,7 @@ export SCM_CHECK=true
 # Load Bash It
 source $BASH_IT/bash_it.sh
 # Load z
-source ~/.rupaz
+source "$HOME/.rupaz"
 
 export PATH=~/.bin:$PATH:/usr/sbin:/sbin
 
