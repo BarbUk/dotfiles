@@ -40,7 +40,7 @@ CONFIG=${HOME}/.snippy.conf
 APPS="xdotool xsel dmenu zenity"
 DIR=${HOME}/.snippy
 MENU_ENGINE="dmenu"
-. ~/.dmenurc
+. "$HOME/.dmenurc"
 DMENU_ARGS="$DMENU_CONF -l 10 -p Snippets:"
 ZENITY_ARGS='--list --hide-header --column=Snippet --text=snippy'
 # if nothing happens, try "xdotool click 2", "xdotool key ctrl+v" or "xdotool key ctrl+shift+v"
@@ -124,8 +124,8 @@ run(){
 }
 
 is_window(){
-    name="$(xdotool getwindowname "$(xdotool getwindowfocus)" | tr '[:upper:]' '[:lower:]')"
-    [[ "$name" =~ term|tilda|@${HOSTNAME} ]] && return 1
+    name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
+    [[ "$name" =~ term|tilda ]] && return 1
     return 0
 }
 
