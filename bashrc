@@ -7,6 +7,7 @@ stty stop undef
 shopt -s checkwinsize
 
 dotdir="$HOME/.dotfiles"
+export PATH="$PATH:$dotdir/bin"
 
 . ~/.rupaz
 . "$dotdir/export"
