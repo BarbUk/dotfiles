@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 export LC_ALL=en_US.UTF-8
 
 unset MAILCHECK
@@ -37,6 +39,12 @@ source /etc/bash_completion
 export BASH_IT="$HOME/.bash_it"
 export BASH_IT_THEME='powerline'
 export SCM_CHECK=true
+
+# Load Bash It
+source $BASH_IT/bash_it.sh
+# Load z
+source ~/.rupaz
+
 export PATH=~/.bin:$PATH:/usr/sbin:/sbin
 
 alias tail='timeout 3600 tail'
@@ -63,11 +71,6 @@ alias _="sudo -s"
 alias c='clear'
 
 alias meteo='curl -4 http://wttr.in'
-
-# Load Bash It
-source $BASH_IT/bash_it.sh
-# Load z
-source ~/.rupaz
 
 alias grep='grep --color=auto'
 
