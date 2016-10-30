@@ -35,35 +35,17 @@
 #    GUIPASTE="xdotool key ctrl+v"
 #    CLIPASTE="xdotool key ctrl+shift+v"
 
-
-CONFIG=${HOME}/.snippy.conf
-APPS="xdotool xsel dmenu zenity"
 DIR=${HOME}/.snippy
 MENU_ENGINE="dmenu"
 . "$HOME/.dmenurc"
 DMENU_ARGS="$DMENU_CONF -l 10 -p Snippets:"
-ZENITY_ARGS='--list --hide-header --column=Snippet --text=snippy'
 # if nothing happens, try "xdotool click 2", "xdotool key ctrl+v" or "xdotool key ctrl+shift+v"
 GUIPASTE="xdotool key ctrl+v"
 CLIPASTE="xdotool key ctrl+shift+v"
 
 TMPFILE="/tmp/.snippy.tmp"; :>$TMPFILE
 
-# source the config file if it exists
-[[ -f ${CONFIG} ]] && source ${CONFIG}
-
-# set the menu options depending on the engine
-case ${MENU_ENGINE} in
-  'dmenu')
-    MENU_ARGS=${DMENU_ARGS}
-    ;;
-  'zenity')
-    MENU_ARGS=${ZENITY_ARGS}
-    ;;
-  *)
-    echo "incorrecty MENU_ENGINE: ${MENU_ENGINE} for snippy"
-  exit 1
-esac
+MENU_ARGS=${DMENU_ARGS}
 
 # smarty like template engine which executes inline bash in (bashdown) strings (replaces variables with values e.g.)
 # @link http://github.com/coderofsalvation/bashdown
@@ -72,29 +54,14 @@ esac
 # fetches a document and interprets bashsyntax in string (bashdown) templates
 # @param string - string with bash(down) syntax (usually surrounded by ' quotes instead of ")
 bashdown(){
-    while read line; do
+    while read -r line; do
         line="$(eval "printf -- \"$( printf "%s" "$line" | sed 's/"/\\"/g')\"")";
         echo -e "$line"
     done < <(cat "${DIR}/${FILE}")
 }
 
-init(){
-    for APP in $APPS; do
-        command -v "$APP" &>/dev/null || {
-            read -p "install the following required utils? : $APPS (y/n)" reply
-            [[ "$reply" == "y" ]] && sudo apt-get install "${APPS}";
-        }
-    done
-    [[ ! -d "$DIR" ]] && {
-        echo -e "created $DIR\n";
-        mkdir "$DIR";
-        printf "hi it is \$(date)" > "$DIR/test";
-    }
-    return 0
-}
-
 run(){
-    cd "${DIR}"
+    cd "${DIR}" || exit
     # Use the filenames in the snippy directory as menu entries.
     # Get the menu selection from the user.
     FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | ${MENU_ENGINE} ${MENU_ARGS})
@@ -112,7 +79,8 @@ run(){
     else
         ${FILE} &> $TMPFILE # execute as bashcommand
     fi
-    local old=$(xsel -b)
+    local old
+    old=$(xsel -b)
     xsel -b --input < $TMPFILE
     # Paste into the current application.
     if is_window; then

@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-
-fan() {
-  sensors
-  echo level "$@" | sudo tee /proc/acpi/ibm/fan
-}
-
 xkcdrandom() { wget -qO- http://dynamic.xkcd.com/comic/random | sed -n 's#^<img src="\(http://imgs.[^"]\+\)"\s\+title="\(.\+\?\)"\salt.\+$#display "\1"\necho '"'\2'#p" | bash; }
-translate(){ wget -qO- "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=$1&langpair=$2|${3:-en}" | sed 's/.*"translatedText":"\([^"]*\)".*}/\1\n/'; }
-cyanide(){ display "$(wget -q http://explosm.net/comics/random/ -O - | grep -Po 'http://www.explosm.net/db/files/Comics/*/[^"]+(png|jpg|jpeg)')"; }
+translate() { wget -qO- "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=$1&langpair=$2|${3:-en}" | sed 's/.*"translatedText":"\([^"]*\)".*}/\1\n/'; }
+cyanide() { display "$(wget -q http://explosm.net/comics/random/ -O - | grep -Po 'http://www.explosm.net/db/files/Comics/*/[^"]+(png|jpg|jpeg)')"; }

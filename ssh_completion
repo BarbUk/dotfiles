@@ -13,7 +13,8 @@ _sshcomplete() {
 
     # parse all hosts found in .dsh/group/all
     if [ -r "$HOME/.dsh/group/all" ]; then
-        local ssh_hosts=$(grep -vE '^#' "$HOME/.dsh/group/all")
+        local ssh_hosts
+        ssh_hosts=$(grep -vE '^#' "$HOME/.dsh/group/all")
         COMPREPLY=( $(compgen -W "$ssh_hosts"  ${OPTIONS}) )
     fi
 

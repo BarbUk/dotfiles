@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-eval $(keychain --eval --agents ssh --quiet id_rsa id_ecdsa apocope/id_rsa isvtec/id_rsa)
+eval "$(keychain --eval --agents ssh --quiet id_rsa id_ecdsa apocope/id_rsa isvtec/id_rsa)"
