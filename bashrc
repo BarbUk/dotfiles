@@ -9,7 +9,9 @@ shopt -s checkwinsize
 dotdir="$HOME/.dotfiles"
 export PATH="$PATH:$dotdir/bin"
 
-. ~/.rupaz
+. "$HOME/.rupaz"
+. "$HOME/.tokens"
+
 . "$dotdir/export"
 
 . "$BASH_IT/bash_it.sh"
