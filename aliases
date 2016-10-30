@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+alias up='yaourt -Syu --aur --noconfirm'
+alias miso='sudo mount -o loop -t iso9660'
+alias x_full="xrandr --output LVDS --mode 1280x800 --pos 0x424 --output VGA-0 --mode 1280x1024 --pos 1280x0"
+alias x_copy="xrandr --output LVDS --mode 1280x800 --output VGA-0 --mode 1280x1024"
+alias rbarbuk='rdesktop -g 1024x768 -P -z -x m -r sound:off -u "barbuk" 172.16.0.1:3389 -k fr'
+alias bmux='tmux -2 attach-session -t barbuk'
+alias sup='rbenv local 1.9.3-p327 && sup'
+alias xev="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'"
+
+# enable color support of ls and also add handy aliases
+alias ls='ls --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias bzgrep='bzgrep --color=auto'
+alias zgrep='zgrep --color=auto'
+
+# some more ls aliases
+alias ll='ls -lha'
+alias l='ls -lh'
+
+alias q='exit'
+alias ss='netstat -tanpu'
+alias _="sudo -s"
+alias c='clear'
+
+alias meteo='curl -4 http://wttr.in'

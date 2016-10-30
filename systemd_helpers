@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+start() {
+    systemctl start "$@"
+    systemctl status "$@"
+}
+
+restart() {
+    systemctl restart "$@"
+    systemctl status "$@"
+}
+
+stop() {
+    systemctl stop "$@"
+    systemctl status "$@"
+}
+
+enable() {
+    systemctl enable "$@"
+    systemctl status "$@"
+}
+
+status() {
+    systemctl status "$@"
+}
+
+disable() {
+    systemctl disable "$@"
+    systemctl status "$@"
+}
