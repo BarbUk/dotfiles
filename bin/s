@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+host="$1"
+port="$2"
+
+if [ -z "$host" ]; then
+    dsh=$(grep -vE '^#' "$HOME/.dsh/group/all")
+    hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
+
+    host="$(echo "$dsh" "$hosts" | sort -u | fzf)"
+fi
+
+if [ -z "$port" ]; then
+    port='22'
+fi
+
+set -e -o pipefail -o nounset
+
+if [ "$(uname)" = "Darwin" ]; then
+    resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
+else
+    resolve="$(getent hosts "$host" | wc -l)"
+fi
+
+if [ "$resolve" = 0 ]; then
+    echo "$0: unable to resolve hostname $host" >&2
+    exit 1
+fi
+
+rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \
+    --exclude='.git/' --exclude='.vim/backup/*' \
+    --exclude='doc/' --exclude='test/' \
+    --exclude='.vim/swp/*' \
+    ~/.dotfiles/server/ \
+    "$host":
+
+echo -ne "\033]0;$host\007"
+
+ssh -p "$port" -t "$host" \
+"
+if test \$SSH_AUTH_SOCK ; then
+    ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+fi
+export h=$host
+tmux attach -t buk || tmux new -s buk
+"
