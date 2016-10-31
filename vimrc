@@ -88,9 +88,10 @@ if v:version < 800
 else
     set background=dark
     set termguicolors
+
+    colorscheme gruvbox
     let g:gruvbox_italic=1
     let g:gruvbox_contrast_dark='soft'
-    colorscheme gruvbox
 endif
 
 " trailing white space

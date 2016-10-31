@@ -9,7 +9,6 @@ alias bmux='tmux -2 attach-session -t buk'
 alias xev="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'"
 
 # enable color support of ls and also add handy aliases
-alias ls='ls --color=auto'
 alias dir='dir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
