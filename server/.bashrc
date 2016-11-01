@@ -37,7 +37,7 @@ export EDITOR=vim
 source /etc/bash_completion
 
 export BASH_IT="$HOME/.bash_it"
-export BASH_IT_THEME='powerline'
+export BASH_IT_THEME='brainy'
 export SCM_CHECK=true
 
 # Load Bash It
