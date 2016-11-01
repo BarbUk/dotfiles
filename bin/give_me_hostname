@@ -30,3 +30,5 @@ case "$mode" in
         ) | sort -u
         ;;
 esac
+
+exit 0

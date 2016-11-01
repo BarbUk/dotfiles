@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-host="$@"
+host="$*"
 
-set -e -o pipefail -o nounset
+set -e -o nounset
 
 if [ -z "$host" ]; then
-    host="$(give_me_hostname | fzf)"
+    host="$(give_me_hostname | fzf --select-1)"
 fi
 
 port='22'
@@ -17,7 +17,7 @@ else
 fi
 
 if [ $resolve = 0 ]; then
-    host="$(give_me_hostname | fzf --query="$host")"
+    host="$(give_me_hostname | fzf --select-1 --query="$host")"
 fi
 
 rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \
