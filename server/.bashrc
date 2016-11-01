@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+[[ $- != *i* ]] && return
 
 export LC_ALL=en_US.UTF-8
 
