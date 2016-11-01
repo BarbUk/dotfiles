@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+readonly mode="$1"
+
+set -e -o pipefail -o nounset
+
+dsh_hosts() {
+    local hosts
+    hosts=$(grep -vE '^#' "$HOME/.dsh/group/all")
+    echo "$hosts"
+}
+
+known_hosts() {
+    local hosts
+    hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
+    echo "$hosts"
+}
+
+case "$mode" in
+    "dsh")
+        dsh_hosts | sort -u
+        ;;
+    "hosts")
+        known_hosts | sort -u
+        ;;
+    *)
+        (
+            dsh_hosts
+            known_hosts
+        ) | sort -u
+        ;;
+esac

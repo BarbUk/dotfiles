@@ -1,20 +1,14 @@
 #!/usr/bin/env bash
 
-host="$1"
-port="$2"
-
-if [ -z "$host" ]; then
-    dsh=$(grep -vE '^#' "$HOME/.dsh/group/all")
-    hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
-
-    host="$(echo "$dsh" "$hosts" | sort -u | fzf)"
-fi
-
-if [ -z "$port" ]; then
-    port='22'
-fi
+host="$@"
 
 set -e -o pipefail -o nounset
+
+if [ -z "$host" ]; then
+    host="$(give_me_hostname | fzf)"
+fi
+
+port='22'
 
 if [ "$(uname)" = "Darwin" ]; then
     resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
@@ -23,9 +17,7 @@ else
 fi
 
 if [ $resolve = 0 ]; then
-    dsh=$(grep -vE '^#' "$HOME/.dsh/group/all")
-    hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
-    host="$(echo "$dsh" "$hosts" | sort -u | fzf --query="$host")"
+    host="$(give_me_hostname | fzf --query="$host")"
 fi
 
 rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \

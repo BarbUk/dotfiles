@@ -5,9 +5,6 @@ set -e -o pipefail -o nounset
 . "$HOME/.dmenurc"
 DMENU_ARGS="-i $DMENU_CONF -l 15"
 
-dsh=$(grep -vE '^#' "$HOME/.dsh/group/all")
-hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
-
-ssh="$(echo "$dsh" "$hosts" | sort -u | dmenu ${DMENU_ARGS} -p 'ssh to :' "$@")"
+ssh="$(give_me_hostname | dmenu ${DMENU_ARGS} -p 'ssh to :' "$@")"
 
 [ "$ssh" ] && . "$HOME/.dotfiles/keychain" && termite --exec "$HOME/.dotfiles/bin/s $ssh" &

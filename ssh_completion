@@ -47,7 +47,7 @@ _fzf_complete() {
     cur=${cur:0:${#cur}-${#trigger}}
 
     tput sc
-    selected=$(cat | $fzf $FZF_COMPLETION_OPTS $1 -q "$cur" | $post | tr '\n' ' ')
+    selected=$(cat | $fzf --select-1 $FZF_COMPLETION_OPTS $1 -q "$cur" | $post | tr '\n' ' ')
     selected=${selected% } # Strip trailing space not to repeat "-o nospace"
     tput rc
 
