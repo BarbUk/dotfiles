@@ -22,9 +22,10 @@ else
     resolve="$(getent hosts "$host" | wc -l)"
 fi
 
-if [ "$resolve" = 0 ]; then
-    echo "$0: unable to resolve hostname $host" >&2
-    exit 1
+if [ $resolve = 0 ]; then
+    dsh=$(grep -vE '^#' "$HOME/.dsh/group/all")
+    hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
+    host="$(echo "$dsh" "$hosts" | sort -u | fzf --query="$host")"
 fi
 
 rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \

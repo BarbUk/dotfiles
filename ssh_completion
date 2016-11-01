@@ -28,4 +28,38 @@ _sshcomplete() {
     return 0
 }
 
-complete -o default -o nospace -F _sshcomplete scp sftp ssh autossh s ping rsync host mtr mosh telnet
+_fzf_complete_ssh() {
+  _fzf_complete '+m' "$@" < <(
+    cat <(command grep -vE '^#' "$HOME/.dsh/group/all") \
+        <(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
+  )
+}
+
+_fzf_complete() {
+  local cur selected trigger fzf post
+  post="$(caller 0 | awk '{print $2}')_post"
+  type -t "$post" > /dev/null 2>&1 || post=cat
+  fzf="fzf"
+
+  trigger=''
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  if [[ "$cur" == *"$trigger" ]]; then
+    cur=${cur:0:${#cur}-${#trigger}}
+
+    tput sc
+    selected=$(cat | $fzf $FZF_COMPLETION_OPTS $1 -q "$cur" | $post | tr '\n' ' ')
+    selected=${selected% } # Strip trailing space not to repeat "-o nospace"
+    tput rc
+
+    if [ -n "$selected" ]; then
+      COMPREPLY=("$selected")
+      return 0
+    fi
+  fi
+}
+
+if hash fzf 2>/dev/null; then
+    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh scp sftp ssh autossh s ping rsync host mtr mosh telnet
+else
+    complete -o default -o bashdefault -o nospace -F _sshcomplete scp sftp ssh autossh s ping rsync host mtr mosh telnet
+fi
