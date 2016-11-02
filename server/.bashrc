@@ -14,7 +14,6 @@ HISTSIZE=500000
 HISTFILESIZE=100000
 HISTCONTROL="erasedups:ignoreboth"
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-HISTTIMEFORMAT='%F %T '
 shopt -s autocd
 shopt -s dirspell
 shopt -s cdspell
