@@ -40,6 +40,7 @@ export BASH_IT="$HOME/.bash_it"
 export BASH_IT_THEME='brainy'
 export SCM_CHECK=true
 export THEME_SHOW_SUDO=false
+export THEME_SHOW_CLOCK=false
 
 # Load Bash It
 source $BASH_IT/bash_it.sh
