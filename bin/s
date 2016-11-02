@@ -29,9 +29,8 @@ rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \
 
 echo -ne "\033]0;$host\007"
 
-ssh -p "$port" -t "$host" \
-"
-if test \$SSH_AUTH_SOCK ; then
+ssh -p "$port" -t "$host" "
+if test \$SSH_AUTH_SOCK; then
     ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
 fi
 export h=$host
