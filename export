@@ -22,9 +22,7 @@ HISTFILESIZE=100000
 # Avoid duplicate entries
 HISTCONTROL="erasedups:ignoreboth"
 # Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-# Useful timestamp format
-HISTTIMEFORMAT='%F %T '
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg"
 # Prepend cd to directory names automatically
 shopt -s autocd
 # Correct spelling errors during tab-completion
