@@ -79,16 +79,21 @@ run(){
     else
         ${FILE} &> $TMPFILE # execute as bashcommand
     fi
-    local old
-    old=$(xsel -b)
-    xsel -b --input < $TMPFILE
+
+    local current_clip
+    current_clip=$(xsel -b)
+
+    # replace {clipboard} by the cliboard comtent
+    sed -i -e "s/{clipboard}/$current_clip/g" "$TMPFILE"
+
+    xsel -b --input < "$TMPFILE"
     # Paste into the current application.
     if is_window; then
         ${GUIPASTE}
     else
         ${CLIPASTE}
     fi
-    echo -ne "$old" | xsel -b --input
+    echo -ne "$current_clip" | xsel -b --input
 }
 
 is_window(){
