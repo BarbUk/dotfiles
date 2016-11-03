@@ -10,6 +10,12 @@ dsh_hosts() {
     echo "$hosts"
 }
 
+my_hosts() {
+    local hosts
+    hosts=$(grep -vE '^#' "$HOME/.ssh/hosts")
+    echo "$hosts"
+}
+
 known_hosts() {
     local hosts
     hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
@@ -26,7 +32,7 @@ case "$mode" in
     *)
         (
             dsh_hosts
-            known_hosts
+            my_hosts
         ) | sort -u
         ;;
 esac

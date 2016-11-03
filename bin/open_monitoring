@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+host="$*"
+
+set -e -o nounset
+
+if [ -z "$host" ]; then
+    host="$(give_me_hostname | fzf --select-1)"
+fi
+
+if [ "$(uname)" = "Darwin" ]; then
+    resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
+else
+    resolve="$(getent hosts "$host" | wc -l)"
+fi
+
+if [ $resolve = 0 ]; then
+    host="$(give_me_hostname | fzf --select-1 --query="$host")"
+fi
+
+google-chrome-beta "https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1&host=*$host*&limit=0"
