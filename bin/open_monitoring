@@ -18,4 +18,10 @@ if [ $resolve = 0 ]; then
     host="$(give_me_hostname | fzf --select-1 --query="$host")"
 fi
 
-google-chrome-beta "https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1&host=*$host*&limit=0"
+url="https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1&host=*$host*&limit=0"
+
+if [ $(uname) = "Darwin" ]; then
+    open -a /Applications/Google\ Chrome.app http://google.com "$url"
+else
+    google-chrome-beta "$url"
+fi
