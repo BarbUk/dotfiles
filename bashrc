@@ -16,7 +16,7 @@ export PATH="$PATH:$dotdir/bin"
 
 . "$BASH_IT/bash_it.sh"
 
-if [ $(uname) = "Darwin" ]; then
+if [ "$(uname)" = "Darwin" ]; then
     . "$dotdir/darwin"
 else
     eval "$(dircolors -b)"
