@@ -10,8 +10,10 @@ fi
 
 if [ "$(uname)" = "Darwin" ]; then
     resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
+    browser="open -a /Applications/Google\ Chrome.app"
 else
     resolve="$(getent hosts "$host" | wc -l)"
+    browser=google-chrome-beta
 fi
 
 if [ $resolve = 0 ]; then
@@ -20,8 +22,4 @@ fi
 
 url="https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1&host=*$host*&limit=0"
 
-if [ $(uname) = "Darwin" ]; then
-    open -a /Applications/Google\ Chrome.app http://google.com "$url"
-else
-    google-chrome-beta "$url"
-fi
+$browser "$url"
