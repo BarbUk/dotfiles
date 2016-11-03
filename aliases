@@ -26,3 +26,5 @@ alias _="sudo -s"
 alias c='clear'
 
 alias meteo='curl -4 http://wttr.in'
+alias s='ssh_connect'
+alias n='open_monitoring'
