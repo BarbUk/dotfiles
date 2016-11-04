@@ -80,19 +80,32 @@ run(){
         ${FILE} &> $TMPFILE # execute as bashcommand
     fi
 
-    local current_clip
+    local current_clip cursor
     current_clip=$(xsel -b)
-
+    cursor=0
     # replace {clipboard} by the cliboard comtent
     sed -i -e "s/{clipboard}/$current_clip/g" "$TMPFILE"
+
+    if grep -qF '{cursor}' "$TMPFILE";then
+        local file_lines
+        cursor=$(grep -n '{cursor}' "$TMPFILE" | cut -d: -f1)
+        file_lines=$(wc -l < "$TMPFILE")
+        cursor=$((file_lines - cursor))
+        sed -i -e "s/{cursor}//g" "$TMPFILE"
+    fi
 
     xsel -b --input < "$TMPFILE"
     # Paste into the current application.
     if is_window; then
         ${GUIPASTE}
+        until [  $cursor -lt 0 ]; do
+            xdotool key Up
+            let cursor-=1
+        done
     else
         ${CLIPASTE}
     fi
+
     echo -ne "$current_clip" | xsel -b --input
 }
 
