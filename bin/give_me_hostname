@@ -5,21 +5,30 @@ readonly mode="$1"
 set -e -o pipefail -o nounset
 
 dsh_hosts() {
-    local hosts
-    hosts=$(grep -vE '^#' "$HOME/.dsh/group/all")
-    echo "$hosts"
+    local hosts file
+    file="$HOME/.dsh/group/all"
+    if [ -f "$file" ]; then
+        hosts=$(grep -vE '^#' "$file")
+        echo "$hosts"
+    fi
 }
 
 my_hosts() {
-    local hosts
-    hosts=$(grep -vE '^#' "$HOME/.ssh/hosts")
-    echo "$hosts"
+    local hosts file
+    file="$HOME/.ssh/hosts"
+    if [ -f "$file" ]; then
+        hosts=$(grep -vE '^#' "$file")
+        echo "$hosts"
+    fi
 }
 
 known_hosts() {
-    local hosts
-    hosts=$(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
-    echo "$hosts"
+    local hosts file
+    file="$HOME/.ssh/known_hosts"
+    if [ -f "$file" ]; then
+        hosts=$(awk '{print $1}' "$file" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
+        echo "$hosts"
+    fi
 }
 
 case "$mode" in

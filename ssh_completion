@@ -59,7 +59,7 @@ _fzf_complete() {
 }
 
 if hash fzf 2>/dev/null; then
-    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh scp sftp ssh autossh s ping rsync host mtr mosh telnet
+    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh scp sftp ssh autossh s n ping rsync host mtr mosh telnet
 else
-    complete -o default -o bashdefault -o nospace -F _sshcomplete scp sftp ssh autossh s ping rsync host mtr mosh telnet
+    complete -o default -o bashdefault -o nospace -F _sshcomplete scp sftp ssh autossh s n ping rsync host mtr mosh telnet
 fi

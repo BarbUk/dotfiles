@@ -10,7 +10,7 @@ fi
 
 if [ "$(uname)" = "Darwin" ]; then
     resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
-    browser="open -a /Applications/Google\ Chrome.app"
+    browser='/usr/bin/open -a "/Applications/Google Chrome.app"'
 else
     resolve="$(getent hosts "$host" | wc -l)"
     browser=google-chrome-beta
@@ -20,6 +20,6 @@ if [ $resolve = 0 ]; then
     host="$(give_me_hostname | fzf --select-1 --query="$host")"
 fi
 
-url="https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1&host=*$host*&limit=0"
+url='https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1\&host=*$host*\&limit=0'
 
-$browser "$url"
+eval "$browser" "$url"
