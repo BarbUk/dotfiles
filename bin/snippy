@@ -82,15 +82,22 @@ run(){
 
     local current_clip cursor
     current_clip=$(xsel -b)
+    # define cursor at -1, we don't need to go up if there is no {cursor}
     cursor=0
+
     # replace {clipboard} by the cliboard comtent
     sed -i -e "s/{clipboard}/$current_clip/g" "$TMPFILE"
 
+    # Check if there is a {cursor} placeholder
     if grep -qF '{cursor}' "$TMPFILE";then
         local file_lines
+        # retrieve the line
         cursor=$(grep -n '{cursor}' "$TMPFILE" | cut -d: -f1)
+        # calculate snippet total lines
         file_lines=$(wc -l < "$TMPFILE")
+        # determine the number of line to go
         cursor=$((file_lines - cursor))
+        # remove the placeholder
         sed -i -e "s/{cursor}//g" "$TMPFILE"
     fi
 
@@ -98,10 +105,15 @@ run(){
     # Paste into the current application.
     if is_window; then
         ${GUIPASTE}
-        until [  $cursor -lt 0 ]; do
-            xdotool key Up
+
+        if [[ $cursor -gt 0 ]]; then
+            local keyup
+            until [  $cursor -eq 0 ]; do
+                keyup+="Up "
             let cursor-=1
+            xdotool key --delay 1 $keyup
         done
+        fi
     else
         ${CLIPASTE}
     fi
