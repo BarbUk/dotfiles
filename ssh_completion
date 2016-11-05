@@ -11,28 +11,15 @@ _sshcomplete() {
         local OPTIONS=" -- ${CURRENT_PROMPT}"
     fi
 
-    # parse all hosts found in .dsh/group/all
-    if [ -r "$HOME/.dsh/group/all" ]; then
-        local ssh_hosts
-        ssh_hosts=$(grep -vE '^#' "$HOME/.dsh/group/all")
-        COMPREPLY=( $(compgen -W "$ssh_hosts"  ${OPTIONS}) )
-    fi
-
-    # parse all hosts found in .ssh/known_hosts
-    if [ -r "$HOME/.ssh/known_hosts" ]; then
-        if grep -v -q -e '^ ssh-rsa' "$HOME/.ssh/known_hosts" ; then
-            COMPREPLY=( ${COMPREPLY[@]} $(compgen -W "$( awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)" ${OPTIONS}) )
-        fi
-    fi
+    local ssh_hosts
+    ssh_hosts=$("$HOME/.dotfiles/bin/give_me_hostname")
+    COMPREPLY=( $(compgen -W "$ssh_hosts"  ${OPTIONS}) )
 
     return 0
 }
 
 _fzf_complete_ssh() {
-  _fzf_complete '+m' "$@" < <(
-    cat <(command grep -vE '^#' "$HOME/.dsh/group/all") \
-        <(awk '{print $1}' "$HOME/.ssh/known_hosts" | grep -v ^\| | cut -d, -f 1 | sed -e 's/\[//g' | sed -e 's/\]//g' | cut -d: -f1 | grep -v ssh-rsa)
-  )
+  _fzf_complete '+m' "$@" < <("$HOME/.dotfiles/bin/give_me_hostname")
 }
 
 _fzf_complete() {
@@ -58,8 +45,9 @@ _fzf_complete() {
   fi
 }
 
+net_tools="scp sftp ssh autossh s n ping rsync host mtr mosh telnet"
 if hash fzf 2>/dev/null; then
-    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh scp sftp ssh autossh s n ping rsync host mtr mosh telnet
+    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $net_tools
 else
-    complete -o default -o bashdefault -o nospace -F _sshcomplete scp sftp ssh autossh s n ping rsync host mtr mosh telnet
+    complete -o default -o bashdefault -o nospace -F _sshcomplete $net_tools
 fi
