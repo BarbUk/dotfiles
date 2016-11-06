@@ -7,6 +7,7 @@ alias x_copy="xrandr --output LVDS --mode 1280x800 --output VGA-0 --mode 1280x10
 alias rbarbuk='rdesktop -g 1024x768 -P -z -x m -r sound:off -u "barbuk" 172.16.0.1:3389 -k fr'
 alias bmux='tmux -2 attach-session -t buk'
 alias xev="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'"
+alias pip-update="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo -H pip install -U"
 
 # enable color support of ls and also add handy aliases
 alias dir='dir --color=auto'
