@@ -31,6 +31,35 @@ known_hosts() {
     fi
 }
 
+alfred() {
+# {"items": [
+#     {
+#         "uid": "desktop",
+#         "type": "file",
+#         "title": "Desktop",
+#         "subtitle": "~/Desktop",
+#         "arg": "~/Desktop",
+#         "autocomplete": "Desktop",
+#         "icon": {
+#             "type": "fileicon",
+#             "path": "~/Desktop"
+#         }
+#     }
+# ]}
+    echo '{"items": ['
+    for line in $(dsh_hosts); do
+        echo '{'
+        echo '"uid": "'"$line"'",'
+        echo '"type": "default",'
+        echo '"title": "'"$line"'",'
+        echo '"subtitle": "~/Desktop",'
+        echo '"arg": "'"$line"'",'
+        echo '"autocomplete": "'"$line"'",'
+        echo '}'
+    done
+    echo ']}'
+}
+
 case "$mode" in
     "dsh")
         dsh_hosts | sort -u
@@ -38,6 +67,9 @@ case "$mode" in
     "hosts")
         known_hosts | sort -u
         ;;
+    "alfred")
+        alfred
+    ;;
     *)
         (
             dsh_hosts
