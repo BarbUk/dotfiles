@@ -21,6 +21,7 @@ if [ "$(uname)" = "Darwin" ]; then
 else
     eval "$(dircolors -b)"
     eval "$(rbenv init -)"
+    alias ls='ls --color=auto'
     . "$dotdir/keychain"
 fi
 
