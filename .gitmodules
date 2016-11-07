@@ -1,0 +1,6 @@
+[submodule "bash-it"]
+	path = bash-it
+	url = git@github.com:barbuk/bash-it
+[submodule "z"]
+	path = z
+	url = git@github.com:rupa/z
