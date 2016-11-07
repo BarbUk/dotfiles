@@ -1,0 +1,9 @@
+[user]
+        name = Julien Virey
+        email = julien.virey@isvtec.com
+[push]
+        default = current
+[alias]
+        lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+[core]
+        pager = less -FRSX
