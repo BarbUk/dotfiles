@@ -38,7 +38,7 @@ set ruler               " Position du fichier tjs affichée
 set showmode            " Montre le mode actuel
 set number 		" Afficher les numéros de ligne
 syntax on		" Coloration syntaxique
-set nowrap		" Pas de wordwrap
+set wrap		" Pas de wordwrap
 set showmatch		" Donne parenthèse correspondante
 set showcmd             " Donne commande incomplète
 set autoindent		" Indentation auto
@@ -134,3 +134,6 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " soa serial
 :nnoremap <F8> /\<\d\{10}\><CR>ce<C-r>=strftime("%Y%m%d00")<CR><Esc>:echo @"<CR>
 
+nnoremap rm :call delete(expand('%')) \| bdelete! <CR>
+nnoremap <leader>wd :write\|bdelete <CR>
+nnoremap <leader>x :bdelete<cr>
