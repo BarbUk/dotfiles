@@ -8,7 +8,7 @@ flushdns() {
 
 bupc() {
     brew update
-    brew upgrade --all
+    brew upgrade
     brew cleanup
     softwareupdate -l
     pip freeze --local \
