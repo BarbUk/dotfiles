@@ -1,9 +1,9 @@
 [submodule "bash-it"]
-	path = bash-it
+	path = modules/bash-it
 	url = git@github.com:barbuk/bash-it
 [submodule "z"]
-	path = z
+	path = modules/z
 	url = git@github.com:rupa/z
 [submodule "tpm"]
-	path = tpm
+	path = modules/tpm
 	url = https://github.com/tmux-plugins/tpm
