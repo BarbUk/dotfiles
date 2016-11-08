@@ -7,3 +7,6 @@
 [submodule "tpm"]
 	path = modules/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "modules/v"]
+	path = modules/v
+	url = git@github.com:rupa/v.git
