@@ -10,3 +10,6 @@ ln -sf "$dotfiles_dir/inputrc" "$HOME/.inputrc"
 
 ln -sf "$dotfiles_dir/bash-it" "$HOME/.bash_it"
 ln -sf "$dotfiles_dir/z/z.sh" "$HOME/.rupaz"
+
+mkdir -p "$HOME/.tmux/plugins"
+ln -sf "$dotfiles_dir/tpm" "$HOME/.tmux/plugins/"
