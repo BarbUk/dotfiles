@@ -84,6 +84,7 @@ set mouse=a             " Utiliser la souris partout
 " Colorscheme !
 if v:version < 800
     set t_Co=256           " Terminaux à 256 couleurs
+    colorscheme obsidian2
 else
     set background=dark
     set termguicolors
