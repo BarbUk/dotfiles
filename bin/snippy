@@ -72,6 +72,11 @@ run(){
     # just return if nothing was selected
     [[ -z "${FILE}" ]] && return 1
 
+    if [[ ${FILE} == 'clip' ]]; then
+        $(clipmenu ${MENU_ARGS})
+        exit 0
+    fi
+
     if [ -f "${DIR}/${FILE}" ]; then
         # Put the contents of the selected file into the paste buffer.
         content="$(bashdown < "${DIR}/${FILE}")"
