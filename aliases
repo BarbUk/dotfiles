@@ -25,6 +25,7 @@ alias q='exit'
 alias ss='netstat -tanpu'
 alias _="sudo -s"
 alias c='clear'
+alias o='xdg-open'
 
 alias meteo='curl -4 http://wttr.in'
 alias s='ssh_connect'
