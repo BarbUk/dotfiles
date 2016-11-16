@@ -90,7 +90,7 @@ set background=dark
 
 if v:version < 800
     set t_Co=256           " Terminaux à 256 couleurs
-    let g:airline_theme='solarized'
+    let g:airline_theme='base16_tomorrow'
 else
     set termguicolors
 
