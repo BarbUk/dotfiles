@@ -9,6 +9,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'morhetz/gruvbox'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -16,12 +17,14 @@ filetype plugin indent on    " required
 
 set laststatus=2
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
 " Options diverses
 set backup            " Backups activés
 set swapfile
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swp//
-"set hidden               " hides buffer
+set hidden               " hides buffer
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
 set wildignore=*.swp,*.bak,*.pyc,*.class
@@ -82,16 +85,18 @@ set ul=100              " Niveaux d'annulation
 set mouse=a             " Utiliser la souris partout
 
 " Colorscheme !
+set background=dark
+
 if v:version < 800
     set t_Co=256           " Terminaux à 256 couleurs
-    colorscheme obsidian2
+    let g:airline_theme='solarized'
 else
-    set background=dark
     set termguicolors
 
     colorscheme gruvbox
     let g:gruvbox_italic=1
     let g:gruvbox_contrast_dark='medium'
+    let g:airline_theme='gruvbox'
 endif
 
 " trailing white space
