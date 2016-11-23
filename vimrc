@@ -138,6 +138,9 @@ set wildmode=longest:full
 " reprendre à la dernière ligne
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" detect nagios config
+autocmd BufNewFile,BufRead */nagios*/*.{cache,cfg,jinja2} setlocal filetype=nagios
+
 " soa serial
 :nnoremap <F8> /\<\d\{10}\><CR>ce<C-r>=strftime("%Y%m%d00")<CR><Esc>:echo @"<CR>
 
