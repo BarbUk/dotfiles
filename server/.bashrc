@@ -77,5 +77,3 @@ alias meteo='curl -4 http://wttr.in'
 alias grep='grep --color=auto'
 
 alias tmux='tmux -2'
-
-export TERM=xterm-256color
