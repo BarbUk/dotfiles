@@ -45,7 +45,7 @@ _fzf_complete() {
   fi
 }
 
-net_tools="scp sftp ssh autossh s n ping rsync host mtr mosh telnet"
+net_tools="scp sftp ssh autossh s n ping rsync host mtr mosh telnet ftp dig drill nslookup"
 if hash fzf 2>/dev/null; then
     complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $net_tools
 else
