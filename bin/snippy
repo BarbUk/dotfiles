@@ -80,7 +80,7 @@ run(){
         else
             content="$(bashdown < "${DIR}/${FILE}")"
         fi
-        # clip launch copyq
+        # clip launch copyq, don't pass the filename in buffer
         if [[ ! ${FILE} == "clip" ]] && [[ "${#content}" == 0 ]]; then
             printf "%s" "${FILE}" > $TMPFILE
         else
