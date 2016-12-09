@@ -74,8 +74,14 @@ run(){
 
     if [ -f "${DIR}/${FILE}" ]; then
         # Put the contents of the selected file into the paste buffer.
-        content="$(bashdown < "${DIR}/${FILE}")"
-        if [[ "${#content}" == 0 ]]; then
+        # bang is a bash template, don't pass it to bashdown
+        if [[ ${FILE} == "bang" ]]; then
+            content="$(cat "${DIR}/${FILE}")"
+        else
+            content="$(bashdown < "${DIR}/${FILE}")"
+        fi
+        # clip launch copyq
+        if [[ ! ${FILE} == "clip" ]] && [[ "${#content}" == 0 ]]; then
             printf "%s" "${FILE}" > $TMPFILE
         else
             printf "%s" "$content" > $TMPFILE
