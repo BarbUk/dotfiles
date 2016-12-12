@@ -121,7 +121,7 @@ run(){
             until [  $cursor -eq 0 ]; do
                 keyup+="Up "
             let cursor-=1
-            xdotool key --delay 1 $keyup
+            xdotool key --delay -0.1 $keyup
         done
         fi
     else

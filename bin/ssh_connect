@@ -2,7 +2,7 @@
 
 host="$*"
 
-set -e -o nounset
+set -e -o pipefail -o nounset
 
 if [ -z "$host" ]; then
     host="$(give_me_hostname | fzf --select-1)"
