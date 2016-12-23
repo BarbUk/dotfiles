@@ -11,5 +11,7 @@ ln -sf "$dotfiles_dir/inputrc" "$HOME/.inputrc"
 ln -sf "$dotfiles_dir/modules/bash-it" "$HOME/.bash_it"
 ln -sf "$dotfiles_dir/modules/z/z.sh" "$HOME/.rupaz"
 
+ln -sf "$dotfiles_dir/vimrc" "$HOME/.vimrc"
+
 mkdir -p "$HOME/.tmux/plugins"
 ln -sf "$dotfiles_dir/modules/tpm" "$HOME/.tmux/plugins/"
