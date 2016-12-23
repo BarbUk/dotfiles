@@ -7,11 +7,11 @@ changetheme() {
     local sublime_conf="$HOME/.config/sublime-text-3/Packages/User/Preferences.sublime-settings"
     local gtk_conf="$HOME/.config/lxsession/LXDE/desktop.conf"
     local dmenu_conf="$HOME/.dmenurc"
-    local vim_conf="$HOME/.dotfiles/vimrc"
+    local vim_conf="$HOME/.vim/vimrc.background"
 
     if [ -e "$theme_file" ]; then
         ln -sf "$HOME/.dotfiles/termite.dark" "$termite_conf"
-        sed -i -e 's/background=light/background=dark/g' "$vim_conf"
+        ln -sf "$HOME/.dotfiles/vimrc.dark" "$vim_conf"
         sed -i -e 's/Boxy Solarized Light.tmTheme/Boxy Ocean.tmTheme/g' "$sublime_conf"
         sed -i -e 's/Boxy Solarized Light.sublime-theme/Boxy Ocean.sublime-theme/g' "$sublime_conf"
         sed -i -e 's/ThemeName=Arc/ThemeName=Arc-Dark/g' "$gtk_conf"
@@ -20,7 +20,7 @@ changetheme() {
         rm -f "$theme_file"
     else
         ln -sf "$HOME/.dotfiles/termite.light" "$termite_conf"
-        sed -i -e 's/background=dark/background=light/g' "$vim_conf"
+        ln -sf "$HOME/.dotfiles/vimrc.light" "$vim_conf"
         sed -i -e 's/Boxy Ocean.tmTheme/Boxy Solarized Light.tmTheme/g' "$sublime_conf"
         sed -i -e 's/Boxy Ocean.sublime-theme/Boxy Solarized Light.sublime-theme/g' "$sublime_conf"
         sed -i -e 's/ThemeName=Arc-Dark/ThemeName=Arc/g' "$gtk_conf"
