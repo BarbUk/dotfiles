@@ -85,9 +85,7 @@ let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
 set ul=100              " Niveaux d'annulation
 set mouse=a             " Utiliser la souris partout
 
-" Colorscheme !
-set background=dark
-
+source ~/.vim/vimrc.background
 if v:version < 800
     set t_Co=256           " Terminaux à 256 couleurs
     colorscheme desert
