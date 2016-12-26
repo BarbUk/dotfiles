@@ -12,21 +12,18 @@ export PATH="$PATH:$dotdir/bin"
 . "$HOME/.tokens"
 . "$dotdir/export"
 . "$BASH_IT/bash_it.sh"
-
-if [ "$(uname)" = "Darwin" ]; then
-    . "$dotdir/darwin"
-else
-    eval "$(dircolors -b)"
-    eval "$(rbenv init -)"
-    alias ls='ls --color=auto'
-    . "$dotdir/keychain"
-fi
-
 . "$dotdir/aliases"
 . "$dotdir/functions"
 . "$dotdir/systemd_helpers"
 . "$dotdir/hostname_completion"
 . "$HOME/.rupaz"
+
+if [ "$(uname)" = "Darwin" ]; then
+    . "$dotdir/darwin"
+else
+    . "$dotdir/linux"
+    . "$dotdir/keychain"
+fi
 
 PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
 export TERM=xterm-256color

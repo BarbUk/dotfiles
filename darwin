@@ -19,7 +19,7 @@ bupc() {
 
 up() {
     z tool
-    ./cybsecurity-full-process
+    ./cybsecurity
     say -v thomas updated
 }
 
