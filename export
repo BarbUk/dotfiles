@@ -8,8 +8,6 @@ export GIT_HOSTING='git@github.com'
 set -o noclobber
 # Update window size after every command
 shopt -s checkwinsize
-# Automatically trim long paths in the prompt (requires Bash 4.x)
-PROMPT_DIRTRIM=2
 # Append to the history file, don't overwrite it
 shopt -s histappend
 # Save multi-line commands as one command

@@ -6,7 +6,6 @@ export LC_ALL=en_US.UTF-8
 unset MAILCHECK
 set -o noclobber
 shopt -s checkwinsize
-PROMPT_DIRTRIM=2
 shopt -s histappend
 shopt -s cmdhist
 PROMPT_COMMAND='history -a'
