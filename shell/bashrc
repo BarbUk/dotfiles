@@ -9,9 +9,7 @@ shopt -s checkwinsize
 dotdir="$HOME/.dotfiles"
 export PATH="$PATH:$dotdir/bin"
 
-# shellcheck source=.tokens
 . "$HOME/.tokens"
-# shellcheck source=.tokens
 . "$dotdir/shell/export"
 . "$BASH_IT/bash_it.sh"
 . "$dotdir/shell/aliases"

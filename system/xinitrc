@@ -13,7 +13,6 @@ export QT_QPA_PLATFORMTHEME='gtk2'
 export GOPATH="/home/barbuk/.go"
 export PATH=$GOPATH/bin:/usr/share/perl5/vendor_perl/auto/share/dist/Cope:/usr/lib/ccache/bin/:$PATH:/usr/local/bin
 compton --config ~/.compton.conf -b
-#bash .screenlayout/detect-screen
 wmname LG3D
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
 copyq &
