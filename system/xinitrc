@@ -1,0 +1,21 @@
+xset -b
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+    for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+        [ -x "$f" ] && . "$f"
+    done
+    unset f
+fi
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+xmodmap -e 'keycode 135 = Menu'
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+export QT_STYLE_OVERRIDE='gtk2'
+export QT_QPA_PLATFORMTHEME='gtk2'
+export GOPATH="/home/barbuk/.go"
+export PATH=$GOPATH/bin:/usr/share/perl5/vendor_perl/auto/share/dist/Cope:/usr/lib/ccache/bin/:$PATH:/usr/local/bin
+compton --config ~/.compton.conf -b
+#bash .screenlayout/detect-screen
+wmname LG3D
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
+copyq &
+xss-lock -- slock &
+exec startlxde

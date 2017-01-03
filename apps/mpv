@@ -1,0 +1,26 @@
+# default configuration that applies to every file
+[default]
+
+# try to use high quality opengl output, with standard opengl, classic xv, and wayland as fallbacks
+# note: opengl has numerous quality/performance trade-off options.
+# as per the mpv(1), "opengl-hq" is just an alias for "opengl:lscale=lanczos2:dither-depth=auto:fbo-format=rgb16"
+hwdec=vaapi
+vo=opengl,xv,wayland
+profile=opengl-hq
+deband=no
+save-position-on-quit
+x11-bypass-compositor=no
+
+# use alsa for audio output, choose pulse, or oss4 as fallback
+ao=pulse,alsa
+
+# prefer using 5.1 channels audio (defaults to 2 - see mpv --channels=help)
+# mixing is handled by libavcodec unless using "--af-add=pan" (see below)
+audio-channels=2
+
+# scale the subtitles to the 3% of the screen size
+sub-scale=3
+sub-font-size=22
+
+# set the window title using the media filename (see Property Expansion section of mpv(1))
+title="${filename}"

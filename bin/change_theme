@@ -10,8 +10,8 @@ changetheme() {
     local vim_conf="$HOME/.vim/vimrc.background"
 
     if [ -e "$theme_file" ]; then
-        ln -sf "$HOME/.dotfiles/termite.dark" "$termite_conf"
-        ln -sf "$HOME/.dotfiles/vimrc.dark" "$vim_conf"
+        ln -sf "$HOME/.dotfiles/apps/termite.dark" "$termite_conf"
+        ln -sf "$HOME/.dotfiles/apps/vimrc.dark" "$vim_conf"
         sed -i -e 's/Boxy Solarized Light.tmTheme/Boxy Ocean.tmTheme/g' "$sublime_conf"
         sed -i -e 's/Boxy Solarized Light.sublime-theme/Boxy Ocean.sublime-theme/g' "$sublime_conf"
         sed -i -e 's/ThemeName=Arc/ThemeName=Arc-Dark/g' "$gtk_conf"
@@ -19,8 +19,8 @@ changetheme() {
 
         rm -f "$theme_file"
     else
-        ln -sf "$HOME/.dotfiles/termite.light" "$termite_conf"
-        ln -sf "$HOME/.dotfiles/vimrc.light" "$vim_conf"
+        ln -sf "$HOME/.dotfiles/apps/termite.light" "$termite_conf"
+        ln -sf "$HOME/.dotfiles/apps/vimrc.light" "$vim_conf"
         sed -i -e 's/Boxy Ocean.tmTheme/Boxy Solarized Light.tmTheme/g' "$sublime_conf"
         sed -i -e 's/Boxy Ocean.sublime-theme/Boxy Solarized Light.sublime-theme/g' "$sublime_conf"
         sed -i -e 's/ThemeName=Arc-Dark/ThemeName=Arc/g' "$gtk_conf"

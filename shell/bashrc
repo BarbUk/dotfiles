@@ -9,20 +9,22 @@ shopt -s checkwinsize
 dotdir="$HOME/.dotfiles"
 export PATH="$PATH:$dotdir/bin"
 
+# shellcheck source=.tokens
 . "$HOME/.tokens"
-. "$dotdir/export"
+# shellcheck source=.tokens
+. "$dotdir/shell/export"
 . "$BASH_IT/bash_it.sh"
-. "$dotdir/aliases"
-. "$dotdir/functions"
-. "$dotdir/systemd_helpers"
-. "$dotdir/hostname_completion"
+. "$dotdir/shell/aliases"
+. "$dotdir/shell/functions"
+. "$dotdir/shell/systemd_helpers"
+. "$dotdir/shell/hostname_completion"
 . "$HOME/.rupaz"
 
 if [ "$(uname)" = "Darwin" ]; then
-    . "$dotdir/darwin"
+    . "$dotdir/shell/darwin"
 else
-    . "$dotdir/linux"
-    . "$dotdir/keychain"
+    . "$dotdir/shell/linux"
+    . "$dotdir/shell/keychain"
 fi
 
 PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
