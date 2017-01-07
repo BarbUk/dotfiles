@@ -10,10 +10,16 @@ fi
 
 port='22'
 
-if [ "$(uname)" = "Darwin" ]; then
-    resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
+if [[ ${host} == *@*  ]] ; then
+    resolvable_host="${host/*@/}"
 else
-    resolve="$(getent hosts "$host" | wc -l)"
+    resolvable_host=${host}
+fi
+
+if [ "$(uname)" = "Darwin" ]; then
+    resolve="$(dscacheutil -q host -a name "$resolvable_host" | wc -l)"
+else
+    resolve="$(getent hosts "$resolvable_host" | wc -l)"
 fi
 
 if [ $resolve = 0 ]; then
