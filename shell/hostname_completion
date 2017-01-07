@@ -3,9 +3,9 @@
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
 _sshcomplete() {
-    local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
+    local CURRENT_PROMPTRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
 
-    if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
+    if [[ ${CURRENT_PROMPTRENT_PROMPT} == *@*  ]] ; then
         local OPTIONS="-P ${CURRENT_PROMPT/@*/}@ -- ${CURRENT_PROMPT/*@/}"
     else
         local OPTIONS=" -- ${CURRENT_PROMPT}"
@@ -23,26 +23,28 @@ _fzf_complete_ssh() {
 }
 
 _fzf_complete() {
-  local cur selected trigger fzf post
+  local selected fzf post
+  local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
+  local OPTIONS=''
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
   fzf="fzf"
 
-  trigger=''
-  cur="${COMP_WORDS[COMP_CWORD]}"
-  if [[ "$cur" == *"$trigger" ]]; then
-    cur=${cur:0:${#cur}-${#trigger}}
-
-    tput sc
-    selected=$(cat | $fzf --select-1 $FZF_COMPLETION_OPTS $1 -q "$cur" | $post | tr '\n' ' ')
-    selected=${selected% } # Strip trailing space not to repeat "-o nospace"
-    tput rc
-
-    if [ -n "$selected" ]; then
-      COMPREPLY=("$selected")
-      return 0
-    fi
+  if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
+      OPTIONS="${CURRENT_PROMPT/@*/}@"
+      CURRENT_PROMPT="${CURRENT_PROMPT/*@/}"
   fi
+
+  tput sc
+  selected=$(cat | $fzf --select-1 $FZF_COMPLETION_OPTS $1 -q "$CURRENT_PROMPT" | $post | tr '\n' ' ')
+  selected=${selected% } # Strip trailing space not to repeat "-o nospace"
+  tput rc
+
+  if [ -n "$selected" ]; then
+    COMPREPLY=(${OPTIONS}"$selected")
+    return 0
+  fi
+
 }
 
 net_tools="scp sftp ssh autossh s n ping rsync host mtr mosh telnet ftp dig drill nslookup"

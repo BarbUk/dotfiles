@@ -4,4 +4,4 @@ set -e -o pipefail -o nounset
 readonly dotbin="$HOME/.dotfiles/bin"
 readonly dest=${1#ssh://}
 
-. "$HOME/.dotfiles/keychain" && termite --exec "$dotbin/ssh_connect $dest" &
+. "$HOME/.dotfiles/shell/keychain" && termite --exec "$dotbin/ssh_connect $dest" &
