@@ -3,9 +3,9 @@
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
 _sshcomplete() {
-    local CURRENT_PROMPTRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
+    local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
 
-    if [[ ${CURRENT_PROMPTRENT_PROMPT} == *@*  ]] ; then
+    if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
         local OPTIONS="-P ${CURRENT_PROMPT/@*/}@ -- ${CURRENT_PROMPT/*@/}"
     else
         local OPTIONS=" -- ${CURRENT_PROMPT}"
