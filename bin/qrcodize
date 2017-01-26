@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e -o pipefail -o nounset
+
+qrencode -l H -d 75 -s 10 -o - "$(xsel)" | feh -B black -
