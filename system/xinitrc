@@ -15,7 +15,8 @@ export PATH=$GOPATH/bin:/usr/share/perl5/vendor_perl/auto/share/dist/Cope:/usr/l
 xset s 120 120
 compton --config ~/.compton.conf -b
 wmname LG3D
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+eval $(ssh-agent)
+#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 copyq &
 xss-lock -- slock &
 exec startlxde
