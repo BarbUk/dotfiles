@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e -o pipefail -o nounset
+
+for dir in $(ls); do
+    echo "Updating $dir"
+    (cd "$dir" && git pull)
+    echo -e "\n"
+done
