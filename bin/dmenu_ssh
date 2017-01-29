@@ -8,4 +8,4 @@ DMENU_ARGS="-i $DMENU_CONF -l 15"
 
 ssh="$("$dotbin/give_me_hostname" | dmenu ${DMENU_ARGS} -p 'ssh to :' "$@")"
 
-[ "$ssh" ] && . "$HOME/.dotfiles/shell/keychain" && termite --exec "$dotbin/ssh_connect $ssh" &
+[ "$ssh" ] && termite --exec "$dotbin/ssh_connect $ssh" &
