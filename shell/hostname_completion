@@ -28,7 +28,7 @@ _fzf_complete() {
   local OPTIONS=''
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
-  fzf="fzf"
+  fzf="fzf --height 40%"
 
   if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
       OPTIONS="${CURRENT_PROMPT/@*/}@"
@@ -53,3 +53,23 @@ if hash fzf 2>/dev/null; then
 else
     complete -o default -o bashdefault -o nospace -F _sshcomplete $net_tools
 fi
+
+__fzf_history__() (
+  local line
+  shopt -u nocaseglob nocasematch
+  line=$(
+    HISTTIMEFORMAT= history |
+    FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS +s --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
+    command grep '^ *[0-9]') &&
+    if [[ $- =~ H ]]; then
+      sed 's/^ *\([0-9]*\)\** .*/!\1/' <<< "$line"
+    else
+      sed 's/^ *\([0-9]*\)\** *//' <<< "$line"
+    fi
+)
+
+# Required to refresh the prompt after fzf
+bind '"\er": redraw-current-line'
+bind '"\e^": history-expand-line'
+# CTRL-R - Paste the selected command from history into the command line
+bind '"\C-r": " \C-e\C-u`__fzf_history__`\e\C-e\e^\er"'

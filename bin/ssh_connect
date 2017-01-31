@@ -4,8 +4,10 @@ host="$*"
 
 set -e -o nounset
 
+fzf="fzf  --select-1 --height 40%"
+
 if [ -z "$host" ]; then
-    host="$(give_me_hostname | fzf --select-1)"
+    host="$(give_me_hostname | $fzf)"
 fi
 
 port='22'
@@ -23,7 +25,7 @@ else
 fi
 
 if [ $resolve = 0 ]; then
-    host="$(give_me_hostname | fzf --select-1 --query="$host")"
+    host="$(give_me_hostname | $fzf --query="$host")"
 fi
 
 rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \
