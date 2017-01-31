@@ -15,7 +15,7 @@ export PATH="$PATH:$dotdir/bin"
 . "$dotdir/shell/aliases"
 . "$dotdir/shell/functions"
 . "$dotdir/shell/systemd_helpers"
-. "$dotdir/shell/hostname_completion"
+. "$dotdir/shell/completion"
 . "$HOME/.rupaz"
 
 if [ "$(uname)" = "Darwin" ]; then

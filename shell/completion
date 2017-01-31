@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# To redraw line after fzf closes (printf '\e[5n')
+bind '"\e[0n": redraw-current-line'
+
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
 _sshcomplete() {
@@ -35,10 +38,9 @@ _fzf_complete() {
       CURRENT_PROMPT="${CURRENT_PROMPT/*@/}"
   fi
 
-  tput sc
   selected=$(cat | $fzf --select-1 $FZF_COMPLETION_OPTS $1 -q "$CURRENT_PROMPT" | $post | tr '\n' ' ')
   selected=${selected% } # Strip trailing space not to repeat "-o nospace"
-  tput rc
+  printf '\e[5n'
 
   if [ -n "$selected" ]; then
     COMPREPLY=(${OPTIONS}"$selected")
@@ -47,19 +49,13 @@ _fzf_complete() {
 
 }
 
-net_tools="scp sftp ssh autossh s n ping rsync host mtr mosh telnet ftp dig drill nslookup"
-if hash fzf 2>/dev/null; then
-    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $net_tools
-else
-    complete -o default -o bashdefault -o nospace -F _sshcomplete $net_tools
-fi
-
 __fzf_history__() (
   local line
   shopt -u nocaseglob nocasematch
   line=$(
     HISTTIMEFORMAT= history |
-    FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS +s --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
+    FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS +s --tac -n2..,.. --tiebreak=index
+    --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
     command grep '^ *[0-9]') &&
     if [[ $- =~ H ]]; then
       sed 's/^ *\([0-9]*\)\** .*/!\1/' <<< "$line"
@@ -67,6 +63,33 @@ __fzf_history__() (
       sed 's/^ *\([0-9]*\)\** *//' <<< "$line"
     fi
 )
+
+_fzf_complete_kill() {
+  [ -n "${COMP_WORDS[COMP_CWORD]}" ] && return 1
+
+  local selected fzf
+  fzf="fzf"
+  selected=$(ps -ef | sed 1d | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-50%} \
+      --min-height 15 --reverse $FZF_DEFAULT_OPTS --preview 'echo {}' --preview-window down:3:wrap \
+      $FZF_COMPLETION_OPTS" $fzf -m | awk '{print $2}' | tr '\n' ' ')
+  printf '\e[5n'
+
+  if [ -n "$selected" ]; then
+    COMPREPLY=( "$selected" )
+    return 0
+  fi
+}
+
+# Net tools completions
+net_tools="scp sftp ssh autossh s n ping rsync host mtr mosh telnet ftp dig drill nslookup"
+if hash fzf 2>/dev/null; then
+    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $net_tools
+else
+    complete -o default -o bashdefault -o nospace -F _sshcomplete $net_tools
+fi
+
+# Kill completion
+complete -F _fzf_complete_kill -o nospace -o default -o bashdefault kill
 
 # Required to refresh the prompt after fzf
 bind '"\er": redraw-current-line'

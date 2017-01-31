@@ -27,15 +27,25 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Huge history. Doesn't appear to slow things down, so why not?
-export HISTSIZE=50000
-export HISTFILESIZE=10000
-# Avoid duplicate entries
-export HISTCONTROL="erasedups:ignoreboth"
-# Record each line as it gets issued
-export PROMPT_COMMAND="history -n; history -w; history -c; history -r;"
+HISTSIZE=10000
+HISTFILESIZE=$HISTSIZE
 # Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s"
-export HISTTIMEFORMAT="%b %d %R:%S %Y: "
+HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s:gs:ll:l:env:?:??"
+HISTTIMEFORMAT="%b %d %R:%S %Y: "
+# Avoid duplicate entries
+HISTCONTROL="erasedups:ignoreboth"
+# Record each line as it gets issued
+_bash_history_sync() {
+  builtin history -a
+  HISTFILESIZE=$HISTSIZE
+  builtin history -c
+  builtin history -r
+}
+history() {
+  _bash_history_sync
+  builtin history "$@"
+}
+PROMPT_COMMAND=_bash_history_sync
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLOR="1;33"
