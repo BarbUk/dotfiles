@@ -29,7 +29,7 @@ if [ $resolve = 0 ]; then
 fi
 
 rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \
-    --exclude='.git*' --exclude='.vim/backup/*' \
+    --exclude='.git/' --exclude='.vim/backup/*' \
     --exclude='doc/' --exclude='test/' \
     --exclude='docs/' --exclude='tests/' \
     --exclude='.vim/swp/*' --exclude='video' \
