@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-
 export LC_ALL=en_US.UTF-8
-
 export GIT_HOSTING='git@github.com'
-
 # Prevent file overwrite on stdout redirection
 set -o noclobber
 # Update window size after every command
@@ -12,15 +9,6 @@ shopt -s checkwinsize
 shopt -s histappend
 # Save multi-line commands as one command
 shopt -s cmdhist
-# Record each line as it gets issued
-PROMPT_COMMAND='history -a'
-# Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=50000
-HISTFILESIZE=10000
-# Avoid duplicate entries
-HISTCONTROL="erasedups:ignoreboth"
-# Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg"
 # Prepend cd to directory names automatically
 shopt -s autocd
 # Correct spelling errors during tab-completion
@@ -29,13 +17,7 @@ shopt -s dirspell
 shopt -s cdspell
 CDPATH="."
 
-export HISTTIMEFORMAT="%b %d %R:%S %Y: "
-
-export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
-
-export GREP_COLOR="1;33"
-
+export LESS='-S'
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -44,12 +26,19 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
+# Huge history. Doesn't appear to slow things down, so why not?
+export HISTSIZE=50000
+export HISTFILESIZE=10000
+# Avoid duplicate entries
+export HISTCONTROL="erasedups:ignoreboth"
+# Record each line as it gets issued
+export PROMPT_COMMAND="history -n; history -w; history -c; history -r;"
 # Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s"
 export HISTTIMEFORMAT="%b %d %R:%S %Y: "
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export LESS='-S'
+export GREP_COLOR="1;33"
 
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
@@ -65,6 +54,3 @@ export GIT_EDITOR='vim'
 # Don't check mail when opening terminal.
 unset MAILCHECK
 export IRC_CLIENT='irssi'
-
-export SCM_CHECK=true
-export SCM_GIT_SHOW_DETAILS=true
