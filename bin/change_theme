@@ -9,7 +9,6 @@ changetheme() {
     local dmenu_conf="$HOME/.dmenurc"
     local vim_conf="$HOME/.vim/vimrc.background"
     local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
-    local awesome_conf="$HOME/.config/awesome/themes/barbuk/theme.lua"
 
     if [ -e "$theme_file" ]; then
         ln -sf "$HOME/.dotfiles/apps/termite.dark" "$termite_conf"
@@ -19,7 +18,6 @@ changetheme() {
         sed -i -e 's/Boxy Solarized Light.sublime-theme/Boxy Ocean.sublime-theme/g' "$sublime_conf"
         sed -i -e 's/ThemeName=Arc/ThemeName=Arc-Dark/g' "$gtk_conf"
         sed -i -e 's/#fff/#2d2d2d/' "$dmenu_conf"
-        (sed -i -e 's/#7F37A2/#002B36/' "$awesome_conf"  && echo 'awesome.restart()' | awesome-client &)
 
         rm -f "$theme_file"
     else
@@ -30,7 +28,6 @@ changetheme() {
         sed -i -e 's/Boxy Ocean.sublime-theme/Boxy Solarized Light.sublime-theme/g' "$sublime_conf"
         sed -i -e 's/ThemeName=Arc-Dark/ThemeName=Arc/g' "$gtk_conf"
         sed -i -e 's/#2d2d2d/#fff/' "$dmenu_conf"
-        (sed -i -e 's/#002B36/#7F37A2/' "$awesome_conf"  && echo 'awesome.restart()' | awesome-client &)
 
         touch "$theme_file"
     fi
