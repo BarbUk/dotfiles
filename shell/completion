@@ -31,7 +31,7 @@ _fzf_complete() {
   local OPTIONS=''
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
-  fzf="fzf --height 40%"
+  fzf="fzf --height 25%"
 
   if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
       OPTIONS="${CURRENT_PROMPT/@*/}@"
@@ -49,27 +49,26 @@ _fzf_complete() {
 
 }
 
-__fzf_history__() (
+__fzf_history__() {
   local line
   shopt -u nocaseglob nocasematch
   line=$(
     HISTTIMEFORMAT= history |
-    FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS +s --tac -n2..,.. --tiebreak=index
-    --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
+    FZF_DEFAULT_OPTS="--height 25% $FZF_DEFAULT_OPTS +s --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
     command grep '^ *[0-9]') &&
     if [[ $- =~ H ]]; then
       sed 's/^ *\([0-9]*\)\** .*/!\1/' <<< "$line"
     else
       sed 's/^ *\([0-9]*\)\** *//' <<< "$line"
     fi
-)
+}
 
 _fzf_complete_kill() {
   [ -n "${COMP_WORDS[COMP_CWORD]}" ] && return 1
 
   local selected fzf
   fzf="fzf"
-  selected=$(ps -ef | sed 1d | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-50%} \
+  selected=$(ps -ef | sed 1d | FZF_DEFAULT_OPTS="--height 25% \
       --min-height 15 --reverse $FZF_DEFAULT_OPTS --preview 'echo {}' --preview-window down:3:wrap \
       $FZF_COMPLETION_OPTS" $fzf -m | awk '{print $2}' | tr '\n' ' ')
   printf '\e[5n'
@@ -78,6 +77,30 @@ _fzf_complete_kill() {
     COMPREPLY=( "$selected" )
     return 0
   fi
+}
+
+__fzf_select__() {
+  local cmd="${FZF_CTRL_T_COMMAND:-"command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
+    -o -type f -print \
+    -o -type d -print \
+    -o -type l -print 2> /dev/null | cut -b3-"}"
+  eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" fzf -m "$@" | while read -r item; do
+    printf '%q ' "$item"
+  done
+  echo
+}
+
+fzf-file-widget() {
+  local selected="$(__fzf_select__)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+}
+
+__fzf_cd__() {
+  local cmd dir
+  cmd="${FZF_ALT_C_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
+    -o -type d -print 2> /dev/null | sed 1d | cut -b3-"}"
+  dir=$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_ALT_C_OPTS" fzf +m) && printf 'cd %q' "$dir"
 }
 
 # Net tools completions
@@ -96,3 +119,7 @@ bind '"\er": redraw-current-line'
 bind '"\e^": history-expand-line'
 # CTRL-R - Paste the selected command from history into the command line
 bind '"\C-r": " \C-e\C-u`__fzf_history__`\e\C-e\e^\er"'
+# CTRL-T - Paste the selected file path into the command line
+bind -x '"\C-f": "fzf-file-widget"'
+# ALT-C - cd into the selected directory
+bind '"\ed": " \C-e\C-u`__fzf_cd__`\e\C-e\er\C-m"'
