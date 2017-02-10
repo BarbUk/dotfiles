@@ -10,12 +10,35 @@ shopt -s histappend
 # Save multi-line commands as one command
 shopt -s cmdhist
 # Prepend cd to directory names automatically
-shopt -s autocd
+shopt -s autocd 2> /dev/null
 # Correct spelling errors during tab-completion
-shopt -s dirspell
+shopt -s dirspell 2> /dev/null
 # Correct spelling errors in arguments supplied to cd
-shopt -s cdspell
+shopt -s cdspell 2> /dev/null
 CDPATH="."
+# Automatically trim long paths in the prompt (requires Bash 4.x)
+PROMPT_DIRTRIM=3
+# Enable history expansion with space
+# E.g. typing !!<space> will replace the !! with your last command
+bind Space:magic-space
+# Turn on recursive globbing (enables ** to recurse all directories)
+shopt -s globstar 2> /dev/null
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob;
+# Perform file completion in a case insensitive fashion
+bind "set completion-ignore-case on"
+# Treat hyphens and underscores as equivalent
+bind "set completion-map-case on"
+# Display matches for ambiguous patterns at first tab press
+bind "set show-all-if-ambiguous on"
+# Immediately add a trailing slash when autocompleting symlinks to directories
+bind "set mark-symlinked-directories on"
+# Enable incremental history search with up/down arrows (also Readline goodness)
+# Learn more about this here: http://codeinthehole.com/writing/the-most-important-command-line-tip-incremental-history-searching-with-inputrc/
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\e[C": forward-char'
+bind '"\e[D": backward-char'
 
 export LESS='-S'
 export LESS_TERMCAP_mb=$'\E[01;31m'
@@ -27,25 +50,17 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=10000
-HISTFILESIZE=$HISTSIZE
+HISTSIZE=50000
+HISTFILESIZE=100000
 # Don't record some commands
 HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s:gs:ll:l:env:?:??"
-HISTTIMEFORMAT="%b %d %R:%S %Y: "
+HISTTIMEFORMAT='%F %T '
 # Avoid duplicate entries
 HISTCONTROL="erasedups:ignoreboth"
 # Record each line as it gets issued
-_bash_history_sync() {
-  builtin history -a
-  HISTFILESIZE=$HISTSIZE
-  builtin history -c
-  builtin history -r
-}
-history() {
-  _bash_history_sync
-  builtin history "$@"
-}
-PROMPT_COMMAND=_bash_history_sync
+
+PROMPT_COMMAND='history -a'
+
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLOR="1;33"
