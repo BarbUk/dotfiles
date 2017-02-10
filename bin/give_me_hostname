@@ -73,7 +73,7 @@ case "$mode" in
     *)
         (
             dsh_hosts
-            my_hosts
+            known_hosts
         ) | sort -u
         ;;
 esac
