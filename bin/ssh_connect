@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-host="$*"
+host="$1"
+port="$2"
 
 set -e -o nounset
 
@@ -12,7 +13,9 @@ if [ -z "$host" ]; then
     host="$( $hostname_list | $fzf )"
 fi
 
-port='22'
+if [ -z "$port" ]; then
+    port='22'
+fi
 
 if [[ ${host} == *@*  ]] ; then
     resolvable_host="${host/*@/}"
