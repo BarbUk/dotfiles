@@ -12,9 +12,12 @@ bupc() {
     | xargs -n1 pip install -U
 }
 
-XCLIP=$(command -v xclip)
-if [[ $XCLIP ]]; then
-    alias pbcopy="$XCLIP -selection clipboard"
-    alias pbpaste="$XCLIP -selection clipboard -o"
-fi
+xclip=$(command -v xclip)
+
+pbcopy() {
+    $xclip -selection clipboard
+}
+pbpaste() {
+    $xclip -selection clipboard -o
+}
 
