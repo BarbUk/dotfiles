@@ -23,7 +23,7 @@ export HISTTIMEFORMAT="%b %d %R:%S %Y: "
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
-export LESS='-S'
+export LESS='-WiSFRX'
 export LESS_TERMCAP_mb=$'\E[1;31m'
 export LESS_TERMCAP_md=$'\E[1;36m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -49,6 +49,8 @@ source "$HOME/.rupaz"
 export PATH=~/.bin:$PATH:/usr/sbin:/sbin
 
 alias tail='timeout 3600 tail'
+alias bzless='timeout 3600 bzless'
+alias zless='timeout 3600 zless'
 alias top='timeout 3600 top'
 alias htop='TERM=screen timeout 3600 htop'
 
@@ -67,12 +69,10 @@ alias ll='ls -lha'
 alias l='ls -lh'
 
 alias q='exit'
-alias ss='netstat -tanpu'
+alias s='netstat -tanpu'
 alias _="sudo -s"
 alias c='clear'
 
 alias meteo='curl -4 http://wttr.in'
-
-alias grep='grep --color=auto'
 
 alias tmux='tmux -2'
