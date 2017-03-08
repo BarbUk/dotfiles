@@ -13,7 +13,7 @@ if [ "$(uname)" = "Darwin" ]; then
     browser='/usr/bin/open -a "/Applications/Google Chrome.app"'
 else
     resolve="$(getent hosts "$host" | wc -l)"
-    browser=google-chrome-beta
+    browser=google-chrome-stable
 fi
 
 if [ $resolve = 0 ]; then

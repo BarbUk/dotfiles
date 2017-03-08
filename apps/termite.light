@@ -8,7 +8,7 @@ search_wrap = true
 cursor_blink = on
 cursor_shape = block
 
-browser = google-chrome-beta
+browser = google-chrome-stable
 clickable_url = true
 
 [colors]
