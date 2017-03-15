@@ -10,7 +10,7 @@ bupc() {
     brew update
     brew upgrade
     brew cleanup
-    softwareupdate -l
+    softwareupdate -i -a
     pip freeze --local \
     | grep -v '^\-e' \
     | cut -d = -f 1  \
