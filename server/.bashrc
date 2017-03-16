@@ -8,20 +8,33 @@ set -o noclobber
 shopt -s checkwinsize
 shopt -s histappend
 shopt -s cmdhist
-PROMPT_COMMAND='history -a'
-HISTSIZE=500000
-HISTFILESIZE=100000
-HISTCONTROL="erasedups:ignoreboth"
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-shopt -s autocd
-shopt -s dirspell
-shopt -s cdspell
+shopt -s autocd 2> /dev/null
+shopt -s dirspell 2> /dev/null
+shopt -s cdspell 2> /dev/null
 CDPATH="."
-
-export HISTTIMEFORMAT="%b %d %R:%S %Y: "
+PROMPT_DIRTRIM=3
+bind Space:magic-space
+shopt -s globstar 2> /dev/null
+shopt -s nocaseglob;
+bind "set completion-ignore-case on"
+bind "set completion-map-case on"
+bind "set show-all-if-ambiguous on"
+bind "set mark-symlinked-directories on"
+HISTSIZE=50000
+HISTFILESIZE=100000
+# Don't record some commands
+HISTIGNORE="&:[ ]*:exit:history:clear:env:?:??"
+HISTTIMEFORMAT='%F %T '
+# Avoid duplicate entries
+HISTCONTROL="erasedups:ignoreboth"
+# Record each line as it gets issued
+PROMPT_COMMAND='history -a'
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
+export GREP_COLOR="1;33"
+
+export GIT_HOSTING='git@github.com'
 
 export LESS='-WiSFRX'
 export LESS_TERMCAP_mb=$'\E[1;31m'
