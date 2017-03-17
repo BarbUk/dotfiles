@@ -18,6 +18,8 @@ else
     ${LN} "$dotfiles_dir/apps/termite.dark" "$HOME/.config/termite/config"
 fi
 
+mkdir -p "$HOME"/.config/htop
+
 ${LN} "$dotfiles_dir/shell/bashrc" "$HOME/.bashrc"
 ${LN} "$dotfiles_dir/shell/inputrc" "$HOME/.inputrc"
 
@@ -28,5 +30,6 @@ ${LN} "$dotfiles_dir/apps/tmux.conf" "$HOME/.tmux.conf"
 ${LN} "$dotfiles_dir/apps/vimrc" "$HOME/.vimrc"
 ${LN} "$dotfiles_dir/apps/vimrc.dark" "$HOME/.vim/vimrc.background"
 ${LN} "$dotfiles_dir/apps/gitconfig" "$HOME/.gitconfig"
+${LN} "$dotfiles_dir/apps/htoprc" "$HOME/.config/htop/htoprc"
 
 ${LN} "$dotfiles_dir/modules/tpm" "$HOME/.tmux/plugins/"
