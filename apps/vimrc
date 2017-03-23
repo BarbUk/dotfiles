@@ -12,6 +12,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'morhetz/gruvbox'
 Plugin 'AndrewRadev/switch.vim'
+Plugin 'jiangmiao/auto-pairs'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -148,5 +149,8 @@ nnoremap rm :call delete(expand('%')) \| bdelete! <CR>
 nnoremap <leader>wd :write\|bdelete <CR>
 nnoremap <leader>x :bdelete<cr>
 
+" use - as a switch key
 let g:switch_mapping = "-"
 
+inoremap ;; <END>;
+inoremap ,, <END>,
