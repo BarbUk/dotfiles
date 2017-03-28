@@ -35,7 +35,7 @@ bash_history() {
     local hosts file
     file="$HOME/.bash_history"
     if [ -f "$file" ]; then
-        hosts=$(grep -E "^host|^dig|^drill|^ping" .bash_history | awk '{print $NF}')
+        hosts=$(grep -E "^host|^dig|^drill|^ping" "$file" | awk '{print $NF}')
         echo "$hosts"
     fi
 }
