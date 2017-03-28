@@ -31,51 +31,38 @@ known_hosts() {
     fi
 }
 
-alfred() {
-# {"items": [
-#     {
-#         "uid": "desktop",
-#         "type": "file",
-#         "title": "Desktop",
-#         "subtitle": "~/Desktop",
-#         "arg": "~/Desktop",
-#         "autocomplete": "Desktop",
-#         "icon": {
-#             "type": "fileicon",
-#             "path": "~/Desktop"
-#         }
-#     }
-# ]}
-    echo '{"items": ['
-    for line in $(dsh_hosts); do
-        echo '{'
-        echo '"uid": "'"$line"'",'
-        echo '"type": "default",'
-        echo '"title": "'"$line"'",'
-        echo '"subtitle": "~/Desktop",'
-        echo '"arg": "'"$line"'",'
-        echo '"autocomplete": "'"$line"'",'
-        echo '}'
-    done
-    echo ']}'
+bash_history() {
+    local hosts file
+    file="$HOME/.bash_history"
+    if [ -f "$file" ]; then
+        hosts=$(grep -E "^host|^dig|^drill|^ping" .bash_history | awk '{print $NF}')
+        echo "$hosts"
+    fi
 }
 
-case "$mode" in
-    "dsh")
-        dsh_hosts | sort -u
+main() {
+    case "$mode" in
+        "dsh")
+            dsh_hosts | sort -u
         ;;
-    "hosts")
-        known_hosts | sort -u
-        ;;
-    "alfred")
-        alfred
-    ;;
-    *)
-        (
-            dsh_hosts
-            known_hosts
-        ) | sort -u
-        ;;
-esac
 
-exit 0
+        "hosts")
+            known_hosts | sort -u
+        ;;
+
+        "alfred")
+            alfred
+        ;;
+
+        *)
+            (
+                dsh_hosts
+                known_hosts
+                bash_history
+            ) | sort -u
+        ;;
+    esac
+
+    return 0
+}
+main
