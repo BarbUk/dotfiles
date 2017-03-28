@@ -28,3 +28,11 @@ disable() {
     systemctl disable "$@"
     systemctl status "$@"
 }
+
+error_log() {
+    journalctl -p 3 -xb
+}
+
+service_failed() {
+    systemctl --failed
+}
