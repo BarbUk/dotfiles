@@ -16,7 +16,7 @@ bupc() {
     | cut -d = -f 1  \
     | xargs -n1 pip install -U
     gem update --system
-    gem udpate
+    gem update
 }
 
 up() {
