@@ -6,7 +6,7 @@ readonly dotbin="$HOME/.dotfiles/bin"
 . "$HOME/.dmenurc"
 DMENU_ARGS="-i $DMENU_CONF -l 15"
 
-host="$("$dotbin/give_me_hostname" | dmenu ${DMENU_ARGS} -p 'open :' "$@")"
+host="$("$dotbin/give_me_hostname" ssh | dmenu ${DMENU_ARGS} -p 'open :' "$@")"
 
 [ "$host" ] && google-chrome-stable "https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1&host=*$host*&limit=0"
 

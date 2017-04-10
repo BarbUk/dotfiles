@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
+readonly give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
 # To redraw line after fzf closes (printf '\e[5n')
 bind '"\e[0n": redraw-current-line'
 
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
-_sshcomplete() {
+_complete() {
     local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
 
     if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
@@ -15,14 +16,26 @@ _sshcomplete() {
     fi
 
     local ssh_hosts
-    ssh_hosts=$("$HOME/.dotfiles/bin/give_me_hostname")
+    ssh_hosts=$1
     COMPREPLY=( $(compgen -W "$ssh_hosts"  ${OPTIONS}) )
 
     return 0
 }
 
+_complete_ssh() {
+  _complete < <(give_me_hostname ssh)
+}
+
+_complete_net() {
+  _complete < <(give_me_hostname)
+}
+
 _fzf_complete_ssh() {
-  _fzf_complete '+m' "$@" < <("$HOME/.dotfiles/bin/give_me_hostname")
+  _fzf_complete '+m' "$@" < <(give_me_hostname ssh)
+}
+
+_fzf_complete_net() {
+  _fzf_complete '+m' "$@" < <(give_me_hostname)
 }
 
 _fzf_complete() {
@@ -104,11 +117,14 @@ __fzf_cd__() {
 }
 
 # Net tools completions
-net_tools="scp sftp ssh autossh s n ping rsync host mtr mosh telnet ftp dig drill nslookup"
+net_tools="ping host mtr mosh telnet ftp dig drill nslookup"
+ssh_tools="ssh s n rsync scp sftp"
 if hash fzf 2>/dev/null; then
-    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $net_tools
+    complete -o default -o bashdefault -o nospace -F _fzf_complete_net $net_tools
+    complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
 else
-    complete -o default -o bashdefault -o nospace -F _sshcomplete $net_tools
+    complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
+    complete -o default -o bashdefault -o nospace -F _complete_ssh $ssh_tools
 fi
 
 # Kill completion

@@ -54,6 +54,13 @@ main() {
             alfred
         ;;
 
+        "ssh")
+            (
+                dsh_hosts
+                known_hosts
+            ) | sort -u
+        ;;
+
         *)
             (
                 dsh_hosts

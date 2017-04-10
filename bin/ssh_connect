@@ -7,7 +7,7 @@ set -e -o nounset
 
 fzf="fzf  --select-1 --height 40%"
 
-hostname_list="$HOME/.dotfiles/bin/give_me_hostname"
+hostname_list="$HOME/.dotfiles/bin/give_me_hostname ssh"
 
 if [ -z "$host" ]; then
     host="$( $hostname_list | $fzf )"

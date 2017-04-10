@@ -6,6 +6,6 @@ readonly dotbin="$HOME/.dotfiles/bin"
 . "$HOME/.dmenurc"
 DMENU_ARGS="-i $DMENU_CONF -l 15"
 
-ssh="$("$dotbin/give_me_hostname" | dmenu ${DMENU_ARGS} -p 'ssh to :' "$@")"
+ssh="$("$dotbin/give_me_hostname" ssh | dmenu ${DMENU_ARGS} -p 'ssh to :' "$@")"
 
 [ "$ssh" ] && termite --exec "$dotbin/ssh_connect $ssh" &
