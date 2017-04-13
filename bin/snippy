@@ -69,7 +69,7 @@ run(){
     cd "${DIR}" || exit
     # Use the filenames in the snippy directory as menu entries.
     # Get the menu selection from the user.
-    FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | ${MENU_ENGINE} ${MENU_ARGS})
+    FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | grep -v .git/ | ${MENU_ENGINE} ${MENU_ARGS})
     # just return if nothing was selected
     [[ -z "${FILE}" ]] && return 1
 
