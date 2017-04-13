@@ -4,6 +4,8 @@ eval "$(rbenv init -)"
 alias ls='ls --color=auto'
 alias up='yaourt -Syu --aur --noconfirm'
 alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
+alias ping='ping -O'
+
 bupc() {
     up
     pip freeze --local \
