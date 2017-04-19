@@ -33,7 +33,7 @@ if [ $resolve = 0 ]; then
     host="$( $hostname_list | $fzf --query="$host" )"
 fi
 
-rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \
+rsync -avz --copy-links --no-o --no-g  -e "ssh -4 -o PreferredAuthentications=publickey -p $port" \
     --exclude='.git/' --exclude='.vim/backup/*' \
     --exclude='doc/' --exclude='test/' \
     --exclude='docs/' --exclude='tests/' \
@@ -43,11 +43,11 @@ rsync -avz --copy-links --no-o --no-g  -e "ssh -p $port" \
     --exclude='Gemfile' --exclude='Rakefile' \
     --exclude='LICENSE' --exclude='Rakefile' \
     ~/.dotfiles/server/ \
-    "$host":
+    "$host": || true
 
 echo -ne "\033]0;$host\007"
 
-ssh -p "$port" -t "$host" "
+ssh -4 -o PreferredAuthentications=publickey -p "$port" -t "$host" "
 if test \$SSH_AUTH_SOCK; then
     ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
 fi
