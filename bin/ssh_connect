@@ -24,7 +24,7 @@ else
     resolve="$(getent hosts "$resolvable_host" | wc -l)"
 fi
 
-if [ "$resolve" = 0 ]; then
+if [ $resolve == 0 ]; then
     host="$( $hostname_list | $fzf --query="$host" )"
 fi
 
