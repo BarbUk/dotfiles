@@ -1,21 +1,16 @@
 #!/usr/bin/env bash
-
-host="$1"
-port="$2"
-
 set -e -o nounset
 
-fzf="fzf  --select-1 --height 40%"
+readonly port="${2:-22}"
 
-hostname_list="$HOME/.dotfiles/bin/give_me_hostname ssh"
+readonly rsync_options="--archive --compress --copy-links --no-owner --no-group --sparse --partial --ipv4 --verbose"
+readonly ssh_options="-4 -o PreferredAuthentications=publickey -p $port"
 
-if [ -z "$host" ]; then
-    host="$( $hostname_list | $fzf )"
-fi
+readonly fzf="fzf  --select-1 --height 30%"
+readonly dotdir="$HOME/.dotfiles"
+readonly hostname_list="$dotdir/bin/give_me_hostname ssh"
 
-if [ -z "$port" ]; then
-    port='22'
-fi
+host="${1:-$( $hostname_list | $fzf )}"
 
 if [[ ${host} == *@*  ]] ; then
     resolvable_host="${host/*@/}"
@@ -29,34 +24,26 @@ else
     resolve="$(getent hosts "$resolvable_host" | wc -l)"
 fi
 
-if [ $resolve = 0 ]; then
+if [ "$resolve" = 0 ]; then
     host="$( $hostname_list | $fzf --query="$host" )"
 fi
 
-rsync -avz --copy-links --no-o --no-g  -e "ssh -4 -o PreferredAuthentications=publickey -p $port" \
-    --exclude='.git/' --exclude='.vim/backup/*' \
-    --exclude='doc/' --exclude='test/' \
-    --exclude='docs/' --exclude='tests/' \
-    --exclude='.vim/swp/*' --exclude='video' \
-    --exclude='*.md' --exclude='.travis.yml' \
-    --exclude='vagrant*' --exclude='Vagrantfile' \
-    --exclude='Gemfile' --exclude='Rakefile' \
-    --exclude='LICENSE' --exclude='Rakefile' \
-    ~/.dotfiles/server/ \
+rsync $rsync_options --rsh "ssh $ssh_options" \
+    --exclude-from "$dotdir/apps/rsync_exclude.list" \
+    "$dotdir/server/" \
     "$host": || true
 
 echo -ne "\033]0;$host\007"
 
-ssh -4 -o PreferredAuthentications=publickey -p "$port" -t "$host" "
+ssh $ssh_options -t "$host" "
 if test \$SSH_AUTH_SOCK; then
     ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
 fi
 export h=$host
 export TERM=xterm-256color
 
-if ! tmux list-session | grep -qF buk
-then
+if ! tmux list-session 2> /dev/null | grep -qF buk; then
    tmux new-session -d -s buk
 fi
 
-tmux attach -t buk"
+tmux at -t buk"
