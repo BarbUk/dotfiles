@@ -4,8 +4,6 @@ audible_bell = false
 clickable_url = true
 dynamic_title = true
 font = Pragmata Pro 9
-#fullscreen = true
-#geometry = 640x480
 icon_name = terminal
 mouse_autohide = false
 scroll_on_output = false
@@ -33,57 +31,40 @@ modify_other_keys = false
 #size_hints = false
 
 [colors]
+# hard contrast: background = #f9f5d7
+background = #fbf1c7
+# soft contrast: background = #f2e5bc
+foreground = #3c3836
+foreground_bold = #3c3836
 
-# If both of these are unset, cursor falls back to the foreground color,
-# and cursor_foreground falls back to the background color.
-#cursor = #dcdccc
-#cursor_foreground = #dcdccc
+# light0 + gray
+color0 = #fbf1c7
+color8 = #928374
 
-#foreground = #dcdccc
-#foreground_bold = #ffffff
-#background = #3f3f3f
+# neutral_red + faded_red
+color1 = #cc241d
+color9 = #9d0006
 
-# 20% background transparency (requires a compositor)
-#background = rgba(63, 63, 63, 0.8)
+# neutral_green + faded_green
+color2 = #98971a
+color10 = #79740e
 
-# If unset, will reverse foreground and background
-#highlight = #B1B5FF
+# neutral_yellow + faded_yellow
+color3 = #d79921
+color11 = #b57614
 
-# special
-foreground      = #373b41
-foreground_bold = #373b41
-cursor          = #373b41
-background      = #ffffff
+# neutral_blue + faded_blue
+color4 = #458588
+color12 = #076678
 
-# black
-color0  = #1d1f21
-color8  = #969896
+# neutral_purple + faded_purple
+color5 = #b16286
+color13 = #8f3f71
 
-# red
-color1  = #cc6666
-color9  = #cc6666
+# neutral_aqua + faded_aqua
+color6 = #689d6a
+color14 = #427b58
 
-# green
-color2  = #b5bd68
-color10 = #b5bd68
-
-# yellow
-color3  = #f0c674
-color11 = #f0c674
-
-# blue
-color4  = #81a2be
-color12 = #81a2be
-
-# magenta
-color5  = #b294bb
-color13 = #b294bb
-
-# cyan
-color6  = #8abeb7
-color14 = #8abeb7
-
-# white
-color7  = #c5c8c6
-color15 = #ffffff
-
+# dark4 + dark1
+color7 = #7c6f64
+color15 = #3c3836
