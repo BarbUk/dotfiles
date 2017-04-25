@@ -32,5 +32,6 @@ ${LN} "$dotfiles_dir/apps/vimrc.dark" "$HOME/.vim/vimrc.background"
 ${LN} "$dotfiles_dir/apps/gitconfig" "$HOME/.gitconfig"
 ${LN} "$dotfiles_dir/apps/htoprc" "$HOME/.config/htop/htoprc"
 ${LN} "$dotfiles_dir/apps/toprc" "$HOME/.toprc"
+${LN} "$dotfiles_dir/apps/dir_colors" "$HOME/.dir_colors"
 
 ${LN} "$dotfiles_dir/modules/tpm" "$HOME/.tmux/plugins/"
