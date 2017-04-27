@@ -58,7 +58,8 @@ export THEME_SHOW_CLOCK=false
 source $BASH_IT/bash_it.sh
 # Load z
 source "$HOME/.rupaz"
-
+# systend helpers
+source "$HOME/.systemd_helpers"
 export PATH=~/.bin:$PATH:/usr/sbin:/sbin
 
 alias tail='timeout 3600 tail'

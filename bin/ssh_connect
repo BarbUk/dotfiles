@@ -28,6 +28,7 @@ if [ $resolve == 0 ]; then
     host="$( $hostname_list | $fzf --query="$host" )"
 fi
 
+set -u
 rsync $rsync_options --rsh "ssh $ssh_options" \
     --exclude-from "$dotdir/apps/rsync_exclude.list" \
     "$dotdir/server/" \
