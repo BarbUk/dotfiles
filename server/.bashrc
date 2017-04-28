@@ -57,7 +57,9 @@ export THEME_SHOW_CLOCK=false
 # Load Bash It
 source $BASH_IT/bash_it.sh
 # Load z
-source "$HOME/.rupaz"
+_Z_OWNER="$USER"
+source "$HOME/.modules/z"
+source "$HOME/.modules/goto"
 # systend helpers
 source "$HOME/.systemd_helpers"
 export PATH=~/.bin:$PATH:/usr/sbin:/sbin

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-readonly give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
+give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
 # To redraw line after fzf closes (printf '\e[5n')
 bind '"\e[0n": redraw-current-line'
-
+export FZF_DEFAULT_COMMAND='ag -g ""'
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
 _complete() {
@@ -36,6 +36,10 @@ _fzf_complete_ssh() {
 
 _fzf_complete_net() {
   _fzf_complete '+m' "$@" < <(give_me_hostname)
+}
+
+_fzf_compgen_path() {
+  ag -g "" "$1"
 }
 
 _fzf_complete() {
@@ -114,6 +118,23 @@ __fzf_cd__() {
   cmd="${FZF_ALT_C_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
     -o -type d -print 2> /dev/null | sed 1d | cut -b3-"}"
   dir=$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_ALT_C_OPTS" fzf +m) && printf 'cd %q' "$dir"
+}
+
+# v - open files in ~/.viminfo
+v() {
+  local files
+  files=$(grep '^>' ~/.viminfo | cut -c3- |
+          while read line; do
+            [ -f "${line/\~/$HOME}" ] && echo "$line"
+          done | fzf-tmux --select-1 --height 45% --reverse --inline-info +s --tac -m --preview '(highlight --force -O ansi -l {} 2> /dev/null) 2> /dev/null | head -200' --query "$*" -1) && vim ${files//\~/$HOME}
+}
+
+fmpc() {
+  local song_position
+  song_position=$(mpc -f "%position%) %artist% - %title%" playlist | \
+    fzf-tmux --query="$1" --height 30% --reverse --inline-info +s --select-1 --exit-0 | \
+    sed -ne 's/^\([0-9].*\)).*/\1/p') || return 1
+  [ -n "$song_position" ] && mpc -q play $song_position
 }
 
 # Net tools completions

@@ -6,23 +6,27 @@ PS1='[\u@\h \W]\$ '
 stty stop undef
 shopt -s checkwinsize
 
-dotdir="$HOME/.dotfiles"
-export PATH="$PATH:$dotdir/bin"
+dot_dir="$HOME/.dotfiles"
+modules_dir="$HOME/.modules"
+export PATH="$PATH:$dot_dir/bin"
 
 . "$HOME/.tokens"
-. "$dotdir/shell/export"
+. "$dot_dir/shell/export"
 . "$BASH_IT/bash_it.sh"
-. "$dotdir/shell/aliases"
-. "$dotdir/shell/functions"
-. "$dotdir/shell/systemd_helpers"
-. "$dotdir/shell/completion"
-. "$HOME/.rupaz"
+. "$dot_dir/shell/aliases"
+. "$dot_dir/shell/functions"
+. "$dot_dir/shell/systemd_helpers"
+. "$dot_dir/shell/completion"
+. "$modules_dir/goto"
+_Z_OWNER="$USER"
+. "$modules_dir/z"
+. "$modules_dir/fz"
 
 if [ "$(uname)" = "Darwin" ]; then
-    . "$dotdir/shell/darwin"
+    . "$dot_dir/shell/darwin"
 else
-    . "$dotdir/shell/linux"
-    . "$dotdir/shell/keychain"
+    . "$dot_dir/shell/linux"
+    . "$dot_dir/shell/keychain"
 fi
 
 PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
