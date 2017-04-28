@@ -124,9 +124,11 @@ __fzf_cd__() {
 v() {
   local files
   files=$(grep '^>' ~/.viminfo | cut -c3- |
-          while read line; do
-            [ -f "${line/\~/$HOME}" ] && echo "$line"
-          done | fzf-tmux --select-1 --height 45% --reverse --inline-info +s --tac -m --preview '(highlight --force -O ansi -l {} 2> /dev/null) 2> /dev/null | head -200' --query "$*" -1) && vim ${files//\~/$HOME}
+          while read -r line; do
+            [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
+          done | fzf-tmux --select-1 --reverse --inline-info +s \
+            --tac -m --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
+            && vim "${files//\~/$HOME}"
 }
 
 fmpc() {
@@ -134,7 +136,7 @@ fmpc() {
   song_position=$(mpc -f "%position%) %artist% - %title%" playlist | \
     fzf-tmux --query="$1" --height 30% --reverse --inline-info +s --select-1 --exit-0 | \
     sed -ne 's/^\([0-9].*\)).*/\1/p') || return 1
-  [ -n "$song_position" ] && mpc -q play $song_position
+  [ -n "$song_position" ] && mpc -q play "$song_position"
 }
 
 # Net tools completions
