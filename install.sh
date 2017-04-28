@@ -23,8 +23,13 @@ mkdir -p "$HOME"/.config/htop
 ${LN} "$dotfiles_dir/shell/bashrc" "$HOME/.bashrc"
 ${LN} "$dotfiles_dir/shell/inputrc" "$HOME/.inputrc"
 
-${LN}n "$dotfiles_dir/modules/bash-it" "$HOME/.bash_it"
-${LN} "$dotfiles_dir/modules/z/z.sh" "$HOME/.rupaz"
+modules_dir="$HOME/.modules"
+mkdir -p "$modules_dir"
+
+${LN}n "$dotfiles_dir/modules/bash-it" "$modules_dir/bash_it"
+${LN} "$dotfiles_dir/modules/z/z.sh" "$modules_dir/z"
+${LN} "$dotfiles_dir/modules/goto/goto.sh" "$modules_dir/goto"
+${LN} "$dotfiles_dir/modules/fz/fz.sh" "$modules_dir/fz"
 
 ${LN} "$dotfiles_dir/apps/tmux.conf" "$HOME/.tmux.conf"
 ${LN} "$dotfiles_dir/apps/vimrc" "$HOME/.vimrc"

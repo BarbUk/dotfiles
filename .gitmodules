@@ -10,3 +10,9 @@
 [submodule "modules/v"]
 	path = modules/v
 	url = git@github.com:rupa/v.git
+[submodule "modules/goto"]
+	path = modules/goto
+	url = https://github.com/Fakerr/goto.git
+[submodule "modules/fz"]
+	path = modules/fz
+	url = https://github.com/changyuheng/fz
