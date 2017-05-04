@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
 # To redraw line after fzf closes (printf '\e[5n')
 bind '"\e[0n": redraw-current-line'
@@ -55,7 +54,7 @@ _fzf_complete() {
       CURRENT_PROMPT="${CURRENT_PROMPT/*@/}"
   fi
 
-  selected=$(cat | $fzf --select-1 $FZF_COMPLETION_OPTS $1 -q "$CURRENT_PROMPT" | $post | tr '\n' ' ')
+  selected=$(cat | $fzf --select-1 --height 30% --reverse --inline-info +s $1 -q "$CURRENT_PROMPT" | $post | tr '\n' ' ')
   selected=${selected% } # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
