@@ -153,5 +153,5 @@ nnoremap <leader>x :bdelete<cr>
 " use - as a switch key
 let g:switch_mapping = "-"
 
-inoremap ;; <END>;
-inoremap ,, <END>,
+nnoremap ;; m`A;<Esc>``
+nnoremap ,, m`A,<Esc>``
