@@ -13,3 +13,5 @@
         keepBackup = false
 [pull]
 	rebase = true
+[init]
+	templatedir = ~/.git-templates
