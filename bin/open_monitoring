@@ -4,8 +4,10 @@ host="$*"
 
 set -e -o nounset
 
+readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info +s"
+
 if [ -z "$host" ]; then
-    host="$(give_me_hostname ssh | fzf --select-1)"
+    host="$(give_me_hostname ssh | $fzf)"
 fi
 
 if [ "$(uname)" = "Darwin" ]; then
@@ -17,9 +19,9 @@ else
 fi
 
 if [ $resolve = 0 ]; then
-    host="$(give_me_hostname ssh | fzf --select-1 --query="$host")"
+    host="$(give_me_hostname ssh | $fzf --query="$host")"
 fi
 
-url='https://monitoring.isvtec.com/cgi-bin/nagios3/status.cgi?navbarsearch=1\&host=*$host*\&limit=0'
+url="${MONITORING_URL}host=*$host*"
 
 eval "$browser" "$url"

@@ -47,14 +47,14 @@ _fzf_complete() {
   local OPTIONS=''
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
-  fzf="fzf --height 25%"
+  fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info +s"
 
   if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
       OPTIONS="${CURRENT_PROMPT/@*/}@"
       CURRENT_PROMPT="${CURRENT_PROMPT/*@/}"
   fi
 
-  selected=$(cat | $fzf --select-1 --height 30% --reverse --inline-info +s $1 -q "$CURRENT_PROMPT" | $post | tr '\n' ' ')
+  selected=$(cat | $fzf $1 --query "$CURRENT_PROMPT" | $post | tr '\n' ' ')
   selected=${selected% } # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
