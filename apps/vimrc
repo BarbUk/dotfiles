@@ -156,3 +156,5 @@ let g:switch_mapping = "-"
 nnoremap ;; m`A;<Esc>``
 nnoremap ,, m`A,<Esc>``
 nnoremap ## m`I#<Esc>``
+nnoremap <leader>' di'
+nnoremap <leader>" di"
