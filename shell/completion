@@ -140,6 +140,10 @@ _fzf_complete_net() {
   _fzf_complete '+m' "$@" < <(give_me_hostname)
 }
 
+_fzf_complete_ips() {
+  _fzf_complete '+m' "$@" < <(give_me_hostname ips)
+}
+
 # Net tools completions
 net_tools="ping host mtr mosh telnet ftp dig drill nslookup"
 ssh_tools="ssh s n rsync scp sftp"
@@ -148,6 +152,7 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_net $net_tools
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
 else
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
