@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034
 give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
+
 # To redraw line after fzf closes (printf '\e[5n')
 bind '"\e[0n": redraw-current-line'
 export FZF_DEFAULT_COMMAND='ag -g ""'
@@ -7,6 +9,7 @@ export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
 _complete() {
     local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
+    local ssh_hosts="$1"
 
     if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
         local OPTIONS="-P ${CURRENT_PROMPT/@*/}@ -- ${CURRENT_PROMPT/*@/}"
@@ -14,19 +17,16 @@ _complete() {
         local OPTIONS=" -- ${CURRENT_PROMPT}"
     fi
 
-    local ssh_hosts
-    ssh_hosts=$1
     COMPREPLY=( $(compgen -W "$ssh_hosts"  ${OPTIONS}) )
-
     return 0
 }
 
 _complete_ssh() {
-  _complete < <(give_me_hostname ssh)
+  _complete '' "$@" < <(give_me_hostname ssh)
 }
 
 _complete_net() {
-  _complete < <(give_me_hostname)
+  _complete '' "$@" < <(give_me_hostname)
 }
 
 _fzf_complete_ssh() {
@@ -45,6 +45,7 @@ _fzf_complete() {
   local selected fzf post
   local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
   local OPTIONS=''
+  local hosts="$1"
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
   fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info +s"
@@ -54,7 +55,7 @@ _fzf_complete() {
       CURRENT_PROMPT="${CURRENT_PROMPT/*@/}"
   fi
 
-  selected=$(cat | $fzf $1 --query "$CURRENT_PROMPT" | $post | tr '\n' ' ')
+  selected=$(cat | $fzf "$hosts" --query "$CURRENT_PROMPT" | $post | tr '\n' ' ')
   selected=${selected% } # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
@@ -69,6 +70,7 @@ __fzf_history__() {
   local line
   shopt -u nocaseglob nocasematch
   line=$(
+    # shellcheck disable=SC1007
     HISTTIMEFORMAT= history |
     FZF_DEFAULT_OPTS="--height 25% $FZF_DEFAULT_OPTS +s --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
     command grep '^ *[0-9]') &&
@@ -107,7 +109,8 @@ __fzf_select__() {
 }
 
 fzf-file-widget() {
-  local selected="$(__fzf_select__)"
+  local selected
+  selected="$(__fzf_select__ "$@")"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
@@ -142,10 +145,14 @@ fmpc() {
 net_tools="ping host mtr mosh telnet ftp dig drill nslookup"
 ssh_tools="ssh s n rsync scp sftp"
 if hash fzf 2>/dev/null; then
+    # shellcheck disable=SC2086
     complete -o default -o bashdefault -o nospace -F _fzf_complete_net $net_tools
+    # shellcheck disable=SC2086
     complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
 else
+    # shellcheck disable=SC2086
     complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
+    # shellcheck disable=SC2086
     complete -o default -o bashdefault -o nospace -F _complete_ssh $ssh_tools
 fi
 
@@ -156,8 +163,10 @@ complete -F _fzf_complete_kill -o nospace -o default -o bashdefault kill
 bind '"\er": redraw-current-line'
 bind '"\e^": history-expand-line'
 # CTRL-R - Paste the selected command from history into the command line
+# shellcheck disable=SC2016
 bind '"\C-r": " \C-e\C-u`__fzf_history__`\e\C-e\e^\er"'
 # CTRL-T - Paste the selected file path into the command line
 bind -x '"\C-f": "fzf-file-widget"'
 # ALT-C - cd into the selected directory
+# shellcheck disable=SC2016
 bind '"\ed": " \C-e\C-u`__fzf_cd__`\e\C-e\er\C-m"'
