@@ -1,1 +1,1 @@
-../../../../.bash_it/themes/colors.theme.bash
+../../../modules/bash-it/themes/colors.theme.bash

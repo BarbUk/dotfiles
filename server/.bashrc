@@ -49,7 +49,7 @@ export EDITOR=vim
 source /etc/bash_completion
 
 export BASH_IT="$HOME/.bash_it"
-export BASH_IT_THEME='serveur'
+export BASH_IT_THEME='server'
 export SCM_CHECK=true
 export THEME_SHOW_SUDO=false
 export THEME_SHOW_CLOCK=false

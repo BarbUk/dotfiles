@@ -1,1 +1,1 @@
-../../../../.bash_it/themes/base.theme.bash
+../../../modules/bash-it/themes/base.theme.bash
