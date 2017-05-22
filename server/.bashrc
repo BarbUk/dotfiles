@@ -59,6 +59,7 @@ source $BASH_IT/bash_it.sh
 # Load z
 _Z_OWNER="$USER"
 source "$HOME/.modules/z"
+GOTO_KEY="\C-g"
 source "$HOME/.modules/goto"
 # systend helpers
 source "$HOME/.systemd_helpers"
