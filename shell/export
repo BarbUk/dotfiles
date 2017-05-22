@@ -62,6 +62,7 @@ PROMPT_COMMAND='history -a'
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLOR="1;33"
+export MANPAGER="less -X"
 
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
