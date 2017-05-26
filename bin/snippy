@@ -92,7 +92,7 @@ run(){
     cursor=0
 
     # replace {clipboard} by the cliboard comtent
-    sed -i -e "s/{clipboard}/$current_clip/g" "$TMPFILE"
+    sed -i -e "s_{clipboard}_${current_clip}_g" "$TMPFILE"
 
     # Check if there is a {cursor} placeholder
     if grep -qF '{cursor}' "$TMPFILE";then
