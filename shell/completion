@@ -32,7 +32,7 @@ _fzf_complete() {
   local hosts="$1"
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
-  fzf="fzf --select-1 $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info +s "
+  fzf="fzf --select-1 $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info"
 
   if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
     OPTIONS="${CURRENT_PROMPT/@*/}@"
