@@ -9,15 +9,15 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
 _complete() {
-  local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
+  local cur="${COMP_WORDS[COMP_CWORD]}"
 
-  if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
-    local OPTIONS="-P ${CURRENT_PROMPT/@*/}@ -- ${CURRENT_PROMPT/*@/}"
+  if [[ ${cur} == *@*  ]] ; then
+    local opts="-P ${cur/@*/}@ -- ${cur/*@/}"
   else
-    local OPTIONS=" -- ${CURRENT_PROMPT}"
+    local opts=" -- ${cur}"
   fi
   # shellcheck disable=SC2086
-  COMPREPLY=( $(compgen -W "$(</dev/stdin)" ${OPTIONS}) )
+  COMPREPLY=( $(compgen -W "$(</dev/stdin)" ${opts}) )
   return 0
 }
 
@@ -25,26 +25,31 @@ _fzf_compgen_path() {
     ag -g "" "$1"
 }
 
+_privkey() {
+  find "$HOME"/.ssh -type f -name id_rsa
+}
+
 _fzf_complete() {
   local selected fzf post
-  local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
-  local OPTIONS=''
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local opts=''
   local hosts="$1"
+
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
   fzf="fzf --select-1 $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info"
 
-  if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
-    OPTIONS="${CURRENT_PROMPT/@*/}@"
-    CURRENT_PROMPT="${CURRENT_PROMPT/*@/}"
+  if [[ ${cur} == *@*  ]] ; then
+    opts="${cur/@*/}@"
+    cur="${cur/*@/}"
   fi
 
-  selected=$(cat | $fzf "$hosts" --query "$CURRENT_PROMPT" | $post | tr '\n' ' ')
+  selected=$(cat | $fzf "$hosts" --query "$cur" | $post | tr '\n' ' ')
   selected=${selected% } # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
   if [ -n "$selected" ]; then
-    COMPREPLY=(${OPTIONS}"$selected")
+    COMPREPLY=(${opts}"$selected")
     return 0
   fi
 }
@@ -133,7 +138,27 @@ _complete_net() {
 }
 
 _fzf_complete_ssh() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  case $prev in
+    -i)
+      opts=$(_privkey)
+      COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+      return 0
+  ;;
+  esac
+
   _fzf_complete '+m' "$@" < <(give_me_hostname ssh)
+}
+
+_fzf_complete_ansible() {
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  case $prev in
+    -i)
+      _fzf_complete '+m' "$@" < <(give_me_hostname ssh)
+      return 0
+  ;;
+  esac
 }
 
 _fzf_complete_net() {
@@ -153,6 +178,7 @@ if hash fzf 2>/dev/null; then
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook
 else
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
