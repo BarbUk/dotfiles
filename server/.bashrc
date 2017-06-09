@@ -4,7 +4,6 @@
 export LC_ALL=en_US.UTF-8
 
 unset MAILCHECK
-set -o noclobber
 shopt -s checkwinsize
 shopt -s histappend
 shopt -s cmdhist
