@@ -29,6 +29,10 @@ _privkey() {
   find "$HOME"/.ssh -type f -name id_rsa
 }
 
+_playbook() {
+  find playbooks -depth 1 -type f -name '*.yml'
+}
+
 _fzf_complete() {
   local selected fzf post
   local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -158,7 +162,12 @@ _fzf_complete_ansible() {
       _fzf_complete '+m' "$@" < <(give_me_hostname ssh)
       return 0
   ;;
+    -u)
+      return 0
+  ;;
   esac
+
+  _fzf_complete '+m' "$@" < <(_playbook)
 }
 
 _fzf_complete_net() {
