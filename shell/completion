@@ -30,7 +30,11 @@ _privkey() {
 }
 
 _playbook() {
-  find playbooks -depth 1 -type f -name '*.yml'
+  find playbooks -maxdepth 1 -type f -name '*.yml'
+}
+
+_archlinux_installed_packages() {
+   pacman -Qqe
 }
 
 _fzf_complete() {
@@ -41,7 +45,7 @@ _fzf_complete() {
 
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
-  fzf="fzf --select-1 $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info"
+  fzf="fzf --select-1 --multi $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info"
 
   if [[ ${cur} == *@*  ]] ; then
     opts="${cur/@*/}@"
@@ -146,8 +150,7 @@ _fzf_complete_ssh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -i)
-      opts=$(_privkey)
-      COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+      _fzf_complete '+m' "$@" < <(_privkey)
       return 0
   ;;
   esac
@@ -170,6 +173,16 @@ _fzf_complete_ansible() {
   _fzf_complete '+m' "$@" < <(_playbook)
 }
 
+_fzf_complete_yaourt() {
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  case $prev in
+    -Rcs)
+      _fzf_complete '+m' "$@" < <(_archlinux_installed_packages)
+      return 0
+  ;;
+  esac
+}
+
 _fzf_complete_net() {
   _fzf_complete '+m' "$@" < <(give_me_hostname)
 }
@@ -188,6 +201,7 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_yaourt yaourt
 else
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
