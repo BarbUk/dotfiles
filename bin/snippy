@@ -42,6 +42,7 @@
 
 DIR=${HOME}/.snippy
 MENU_ENGINE="dmenu"
+# shellcheck disable=SC1090
 . "$HOME/.dmenurc"
 DMENU_ARGS="$DMENU_CONF -l 10 -p Snippets:"
 # if nothing happens, try "xdotool click 2", "xdotool key ctrl+v" or "xdotool key ctrl+shift+v"
@@ -69,7 +70,8 @@ run(){
     cd "${DIR}" || exit
     # Use the filenames in the snippy directory as menu entries.
     # Get the menu selection from the user.
-    FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | grep -v .git/ | ${MENU_ENGINE} ${MENU_ARGS})
+    # shellcheck disable=SC2086
+    FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | grep -vE '\.git/|\.gitconfig|\.gitkeep' | ${MENU_ENGINE} ${MENU_ARGS})
     # just return if nothing was selected
     [[ -z "${FILE}" ]] && return 1
 
@@ -117,6 +119,7 @@ run(){
             until [  $cursor -eq 0 ]; do
                 keyup+="Up "
             let cursor-=1
+            # shellcheck disable=SC2086
             xdotool key --delay -0.1 $keyup
         done
         fi
