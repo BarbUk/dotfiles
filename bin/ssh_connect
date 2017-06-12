@@ -24,12 +24,13 @@ else
     resolve="$(getent hosts "$resolvable_host" | wc -l)"
 fi
 
-if [ $resolve == 0 ]; then
+if [[ $resolve -eq 0 ]]; then
     host="$( $hostname_list | $fzf --query="$host" )"
 fi
 
 set -u
 echo "Rsyncing dotfiles..."
+# shellcheck disable=SC2086
 rsync $rsync_options --rsh "ssh $ssh_options" \
     --exclude-from "$dotdir/apps/rsync_exclude.list" \
     "$dotdir/server/" \
@@ -38,6 +39,8 @@ rsync $rsync_options --rsh "ssh $ssh_options" \
 echo -ne "\033]0;$host\007"
 
 echo "Sshing..."
+# shellcheck disable=SC2086
+# shellcheck disable=SC2029
 ssh $ssh_options -t "$host" "
 if test \$SSH_AUTH_SOCK; then
     ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
