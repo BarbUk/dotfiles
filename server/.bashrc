@@ -45,6 +45,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'
 export EDITOR=vim
 
+# shellcheck disable=1091
 source /etc/bash_completion
 
 export BASH_IT="$HOME/.bash_it"
@@ -54,13 +55,19 @@ export THEME_SHOW_SUDO=false
 export THEME_SHOW_CLOCK=false
 
 # Load Bash It
-source $BASH_IT/bash_it.sh
+# shellcheck disable=1090
+source "$BASH_IT/bash_it.sh"
 # Load z
+# shellcheck disable=2034
 _Z_OWNER="$USER"
+# shellcheck disable=1090
 source "$HOME/.modules/z"
+# shellcheck disable=2034
 GOTO_KEY="\C-g"
+# shellcheck disable=1090
 source "$HOME/.modules/goto"
 # systend helpers
+# shellcheck disable=1090
 source "$HOME/.systemd_helpers"
 export PATH=~/.bin:$PATH:/usr/sbin:/sbin
 
@@ -93,3 +100,20 @@ alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,
 alias meteo='curl -4 http://wttr.in'
 
 alias tmux='tmux -2'
+
+# v - open files in ~/.viminfo
+v() {
+  local files
+  files=$(grep '^>' ~/.viminfo | cut -c3- |
+    while read -r line; do
+      [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
+    done | fzf --select-1 --reverse --inline-info +s \
+      --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
+      && vim "${files//\~/$HOME}"
+}
+
+log() {
+  local cmd log_file
+  cmd="command find /var/log/ -type f -name '*log' 2>/dev/null"
+  log_file=$(eval "$cmd" | fzf --height 40% --min-height 25 --tac --tiebreak=length,begin,index --reverse --inline-info) && less "$log_file"
+}

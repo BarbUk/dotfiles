@@ -37,6 +37,12 @@ _archlinux_installed_packages() {
    pacman -Qqe
 }
 
+log() {
+  local cmd log_file
+  cmd="command find /var/log/ -type f -name '*log' 2>/dev/null"
+  log_file=$(eval "$cmd" | fzf "$fzf_height" --tac --tiebreak=length,begin,index --reverse --inline-info) && less "$log_file"
+}
+
 _fzf_complete() {
   local selected fzf post
   local cur="${COMP_WORDS[COMP_CWORD]}"
