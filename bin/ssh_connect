@@ -3,7 +3,7 @@ set -e -o nounset
 
 readonly port="${2:-22}"
 
-readonly rsync_options="--archive --compress --copy-links --no-owner --no-group --sparse --partial --ipv4"
+readonly rsync_options="--archive --compress --copy-links --no-owner --no-group --sparse --partial --ipv4 --info=progress2"
 readonly ssh_options="-4 -o PreferredAuthentications=publickey -p $port"
 
 readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info"
