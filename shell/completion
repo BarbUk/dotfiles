@@ -48,18 +48,19 @@ _fzf_complete() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local opts=''
   local hosts="$1"
+  local separator=${2:- }
 
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
-  fzf="fzf --select-1 --multi $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info"
+  fzf="fzf --select-1 $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info"
 
   if [[ ${cur} == *@*  ]] ; then
     opts="${cur/@*/}@"
     cur="${cur/*@/}"
   fi
 
-  selected=$(cat | $fzf "$hosts" --query "$cur" | $post | tr '\n' ' ')
-  selected=${selected% } # Strip trailing space not to repeat "-o nospace"
+  selected=$(cat | $fzf "$hosts" --query "$cur" | $post | tr '\n' "$separator")
+  selected=${selected%$separator} # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
   if [ -n "$selected" ]; then
@@ -156,19 +157,19 @@ _fzf_complete_ssh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -i)
-      _fzf_complete '+m' "$@" < <(_privkey)
+      _fzf_complete '+m' ' ' "$@" < <(_privkey)
       return 0
   ;;
   esac
 
-  _fzf_complete '+m' "$@" < <(give_me_hostname ssh)
+  _fzf_complete '+m' ' ' "$@" < <(give_me_hostname ssh)
 }
 
 _fzf_complete_ansible() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -i)
-      _fzf_complete '+m' "$@" < <(give_me_hostname ssh)
+      _fzf_complete '--multi' ',' "$@" < <(give_me_hostname ssh)
       return 0
   ;;
     -u)
@@ -176,25 +177,25 @@ _fzf_complete_ansible() {
   ;;
   esac
 
-  _fzf_complete '+m' "$@" < <(_playbook)
+  _fzf_complete '--multi' ' ' "$@" < <(_playbook)
 }
 
 _fzf_complete_yaourt() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -Rcs)
-      _fzf_complete '+m' "$@" < <(_archlinux_installed_packages)
+      _fzf_complete '--multi' ' ' "$@" < <(_archlinux_installed_packages)
       return 0
   ;;
   esac
 }
 
 _fzf_complete_net() {
-  _fzf_complete '+m' "$@" < <(give_me_hostname)
+  _fzf_complete '+m' ' ' "$@" < <(give_me_hostname)
 }
 
 _fzf_complete_ips() {
-  _fzf_complete '+m' "$@" < <(give_me_hostname ips)
+  _fzf_complete '+m' ' ' "$@" < <(give_me_hostname ips)
 }
 
 # Net tools completions
