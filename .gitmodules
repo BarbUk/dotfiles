@@ -13,3 +13,6 @@
 [submodule "modules/fz"]
 	path = modules/fz
 	url = https://github.com/changyuheng/fz
+[submodule "modules/rmate"]
+	path = modules/rmate
+	url = https://github.com/aurora/rmate
