@@ -1,1 +1,1 @@
-../../../../../.bash_it/aliases/enabled/git.aliases.bash
+../../../../../.bash_it/aliases/available/git.aliases.bash
