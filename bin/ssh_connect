@@ -2,13 +2,12 @@
 set -e -o nounset
 
 readonly port="${2:-22}"
-
 readonly rsync_options="--archive --compress --copy-links --no-owner --no-group --sparse --partial --ipv4 --info=progress2"
 readonly ssh_options="-4 -o PreferredAuthentications=publickey -p $port"
-
 readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info"
 readonly dotdir="$HOME/.dotfiles"
 readonly hostname_list="$dotdir/bin/give_me_hostname ssh"
+readonly tmux_session_name="buk"
 
 host="${1:-$( $hostname_list | $fzf )}"
 
@@ -41,15 +40,23 @@ echo -ne "\033]0;$host\007"
 echo "Sshing..."
 # shellcheck disable=SC2086
 # shellcheck disable=SC2029
-ssh $ssh_options -t "$host" "
+ssh $ssh_options -t "$host" \
+"
+if ! hash tmux 2>/dev/null; then
+  bash
+  exit
+fi
+
 if test \$SSH_AUTH_SOCK; then
     ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
 fi
-export h=$host
+
+export tmux_connect_hostname=$host
 export TERM=xterm-256color
 
-if ! tmux list-session 2> /dev/null | grep -qF buk; then
-   tmux new-session -d -s buk
+if ! tmux has-session -t $tmux_session_name; then
+  tmux new-session -d -s $tmux_session_name
 fi
-
-tmux at -t buk"
+  tmux attach-session -t $tmux_session_name
+"
+exit
