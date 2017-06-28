@@ -207,7 +207,7 @@ if hash fzf 2>/dev/null; then
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
-  complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook ap
   complete -o default -o bashdefault -o nospace -F _fzf_complete_yaourt yaourt
 else
   # shellcheck disable=SC2086

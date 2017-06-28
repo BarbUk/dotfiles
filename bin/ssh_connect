@@ -54,7 +54,7 @@ fi
 export tmux_connect_hostname=$host
 export TERM=xterm-256color
 
-if ! tmux has-session -t $tmux_session_name; then
+if ! tmux has-session -t $tmux_session_name 2>/dev/null; then
   tmux new-session -d -s $tmux_session_name
 fi
   tmux attach-session -t $tmux_session_name
