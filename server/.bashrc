@@ -95,7 +95,7 @@ alias q='exit'
 alias s='netstat -tanpu'
 alias _="sudo -s"
 alias c='clear'
-alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,command:120,cgroup'
+alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
 
 alias meteo='curl -4 http://wttr.in'
 
