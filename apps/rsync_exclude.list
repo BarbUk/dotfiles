@@ -2,6 +2,7 @@
 .gitignore
 .vim/backup/*
 .vim/swp/*
+.vim/bundle/ale
 doc/
 docs/
 test/
