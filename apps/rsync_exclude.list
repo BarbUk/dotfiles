@@ -1,5 +1,7 @@
 .git
 .gitignore
+.gitattributes
+.gitmodules
 .vim/backup/*
 .vim/swp/*
 .vim/bundle/ale
