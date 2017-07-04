@@ -78,3 +78,5 @@ export GIT_EDITOR='vim'
 # Don't check mail when opening terminal.
 unset MAILCHECK
 export IRC_CLIENT='irssi'
+# stop ranger from loading both the default and your custom rc.conf
+export RANGER_LOAD_DEFAULT_RC=false
