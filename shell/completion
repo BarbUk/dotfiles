@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
+fzf_default_options="--select-1  --tac --tiebreak=length,begin,index --reverse --inline-info"
 fzf_height="--height ${FZF_TMUX_HEIGHT:-40%} --min-height 25"
 
 # To redraw line after fzf closes (printf '\e[5n')
@@ -52,7 +53,7 @@ _fzf_complete() {
 
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" > /dev/null 2>&1 || post=cat
-  fzf="fzf --select-1 $fzf_height --tac --tiebreak=length,begin,index --reverse --inline-info"
+  fzf="fzf $fzf_default_options $fzf_height"
 
   if [[ ${cur} == *@*  ]] ; then
     opts="${cur/@*/}@"
@@ -75,7 +76,7 @@ __fzf_history__() {
   line=$(
     # shellcheck disable=SC1007
     HISTTIMEFORMAT= history |
-    FZF_DEFAULT_OPTS="$fzf_height +s --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
+    FZF_DEFAULT_OPTS="$fzf_height $fzf_default_options --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
     command grep '^ *[0-9]') &&
     if [[ $- =~ H ]]; then
       sed 's/^ *\([0-9]*\)\** .*/!\1/' <<< "$line"
