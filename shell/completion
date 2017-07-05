@@ -146,7 +146,7 @@ fmpc() {
 }
 
 # c - browse chrome history
-c() {
+ch() {
   local cols sep google_history open
   cols=$(( COLUMNS / 3 ))
   sep='{::}'
