@@ -2,7 +2,7 @@
 
 declare -i active_id
 declare -i win_id
-
+# shellcheck disable=1090
 . "$HOME/.dmenurc"
 DMENU_ARGS="-i $DMENU_CONF -l"
 

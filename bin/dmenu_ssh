@@ -2,10 +2,11 @@
 
 set -e -o pipefail -o nounset
 readonly dotbin="$HOME/.dotfiles/bin"
-
+# shellcheck disable=1090
 . "$HOME/.dmenurc"
 DMENU_ARGS="-i $DMENU_CONF -l 15"
 
+# shellcheck disable=2086
 ssh="$("$dotbin/give_me_hostname" ssh | dmenu ${DMENU_ARGS} -p 'ssh to :' "$@")"
 
 [ "$ssh" ] && termite --exec "$dotbin/ssh_connect $ssh" &

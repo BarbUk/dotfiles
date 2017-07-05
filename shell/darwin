@@ -25,4 +25,5 @@ up() {
     say -v thomas updated
 }
 
+# shellcheck disable=1091
 . /usr/local/share/bash-completion/bash_completion

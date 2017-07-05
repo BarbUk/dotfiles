@@ -12,8 +12,8 @@ fi
 
 if [ -z "$GPG_AGENT_INFO" ]
 then
-    PID=`pidof gpg-agent | awk '{print $1}'`
-    SOCK=`ls /tmp/|grep gpg|tail -1`
-    GPG_AGENT_INFO="/tmp/"$SOCK"/S.gpg-agent:"$PID":1"
+    PID=$(pidof gpg-agent | awk '{print $1}')
+    SOCK=$(ls /tmp/|grep gpg|tail -1)
+    GPG_AGENT_INFO="/tmp/$SOCK/S.gpg-agent:$PID:1"
     export GPG_AGENT_INFO
 fi
