@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-eval "$(keychain --eval --agents ssh,gpg --quiet id_rsa id_ecdsa apocope/id_rsa isvtec/id_rsa 772424/id_rsa)"
+eval "$(keychain --eval --agents ssh,gpg --quiet \
+    id_rsa id_ecdsa \
+    apocope/id_rsa \
+    isvtec/id_rsa \
+    772424/id_rsa 772424/clef-profileo \
+)"
