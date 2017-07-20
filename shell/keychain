@@ -2,5 +2,6 @@
 
 eval "$(keychain --eval --agents ssh,gpg --quiet \
     id_ecdsa \
-    $(find "$HOME"/.ssh -type f -name id_rsa)
+    id_rsa \
+    $(find "$HOME"/.ssh/keys/live -type f -name id_rsa)
 )"
