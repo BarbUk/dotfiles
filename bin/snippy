@@ -90,11 +90,11 @@ run(){
 
     local current_clip cursor
     current_clip=$(xsel -b)
-    # define cursor at -1, we don't need to go up if there is no {cursor}
+    # define cursor at 0, we don't need to go up if there is no {cursor}
     cursor=0
 
     # replace {clipboard} by the cliboard comtent
-    sed -i -e "s_{clipboard}_${current_clip}_g" "$TMPFILE"
+    sed -i -e "s~{clipboard}~${current_clip}~g" "$TMPFILE"
 
     # Check if there is a {cursor} placeholder
     if grep -qF '{cursor}' "$TMPFILE";then
