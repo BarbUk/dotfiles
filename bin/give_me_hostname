@@ -39,6 +39,14 @@ ssh_config() {
     local file
     file="$HOME/.ssh/config"
     if [ -d "$(dirname "$file")" ]; then
+        awk '/^Host/ && ! /*/ {print $2}' "$file"
+    fi
+}
+
+ssh_config_d() {
+    local file
+    file="$HOME/.ssh/config.d/*"
+    if [ -d "$(dirname "$file")" ]; then
         awk '/^Host/ && ! /*/ {print $2}' $file
     fi
 }
@@ -50,6 +58,7 @@ main() {
         "ssh")
             (
                 dsh_hosts
+                ssh_config_d
                 known_hosts
             ) | grep -vE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | sort -u
         ;;
@@ -61,7 +70,8 @@ main() {
         ;;
         *)
             (
-                ssh_config
+                ssh_config_d
+                dsh_hosts
                 known_hosts
                 bash_history
             ) | grep -vE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b|^@|^\+|^\.'" | sort -u
