@@ -19,3 +19,7 @@
 set completion-ignore-case on
 set completion-map-case on
 set show-all-if-ambiguous on
+set colored-stats On
+set mark-symlinked-directories On
+set show-all-if-unmodified On
+set visible-stats On
