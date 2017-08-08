@@ -34,6 +34,12 @@ _playbook() {
   find playbooks -maxdepth 1 -type f -name '*.yml'
 }
 
+_ansible_groups() {
+  local inventory
+  inventory=$(awk '/inventory/ {print $3}' "$HOME"/.ansible.cfg)
+  awk '/\[/' "${inventory/\~/$HOME}" | tr -d '[]'
+}
+
 _archlinux_installed_packages() {
    pacman -Qqe
 }
@@ -230,6 +236,10 @@ _fzf_complete_ansible() {
   case $prev in
     -i)
       _fzf_complete '--multi' ',' "$@" < <(give_me_hostname ssh)
+      return 0
+  ;;
+  -l)
+      _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
       return 0
   ;;
     -u)
