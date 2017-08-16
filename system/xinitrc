@@ -10,8 +10,7 @@ fi
 
 xmodmap -e 'keycode 135 = Menu'
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
-export QT_STYLE_OVERRIDE='adwaita'
-export QT_QPA_PLATFORMTHEME='adwaita'
+export QT_QPA_PLATFORMTHEME='qt5ct'
 export GOPATH="/home/barbuk/.go"
 export PATH=$GOPATH/bin:/usr/share/perl5/vendor_perl/auto/share/dist/Cope:/usr/lib/ccache/bin/:$PATH:/usr/local/bin
 xset s 120 120

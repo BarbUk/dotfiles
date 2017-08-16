@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 eval "$(keychain --eval --agents ssh,gpg --quiet \
-    id_ecdsa \
     id_rsa \
     $(find "$HOME"/.ssh/keys/live -type f -name id_rsa)
 )"
