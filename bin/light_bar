@@ -19,8 +19,8 @@ set -e -o pipefail -o nounset
 
 progress(){
     local percent=$1
-    local completed=$(( $percent / 4 ))
-    local remaining=$(( 25 - $completed ))
+    local completed=$(( percent / 4 ))
+    local remaining=$(( 25 - completed ))
 
     printf "%0.s▊" $(seq $completed)
     [[ $remaining != 0 ]] && printf "%0.s " $(seq $remaining)
@@ -28,4 +28,4 @@ progress(){
 }
 
 percent=$(light | xargs printf '%.*f' 0)
-progress $percent
+progress "$percent"
