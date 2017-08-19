@@ -20,5 +20,6 @@ export SSH_ASKPASS=ssh-askpass
 eval "$(keychain --eval --agents ssh,gpg)"
 copyq &
 xss-lock -- slock &
+unclutter --ignore-scrolling --fork
 pgrep redshift &> /dev/null || redshift -l -20.2696363:57.4759043 &> /dev/null &
 exec startlxde
