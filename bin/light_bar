@@ -17,6 +17,8 @@
 
 set -e -o pipefail -o nounset
 
+action="$1"
+
 progress(){
     local percent=$1
     local completed=$(( percent / 4 ))
@@ -26,6 +28,15 @@ progress(){
     [[ $remaining != 0 ]] && printf "%0.s " $(seq $remaining)
     echo -n
 }
+
+case $action in
+    "up" )
+        light -A 5
+        ;;
+    "down" )
+        light -U 5
+        ;;
+esac
 
 percent=$(light | xargs printf '%.*f' 0)
 progress "$percent"
