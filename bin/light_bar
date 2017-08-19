@@ -15,7 +15,7 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-set -e -o pipefail -o nounset
+set -o errexit -o pipefail -o nounset
 
 action="$1"
 

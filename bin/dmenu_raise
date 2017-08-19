@@ -1,4 +1,21 @@
-#!/usr/bin/env bash
+#!/bin/bash
+#
+# Copyright (C) 2015 barbUk
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+set -o errexit -o pipefail -o nounset
 
 declare -i active_id
 declare -i win_id
@@ -11,6 +28,8 @@ winlist=$(xprop -root _NET_CLIENT_LIST|cut -d "#" -f 2|tr "," " ")
 count=$(echo "$winlist" | wc -w)
 
 active_id=$(xprop -root _NET_ACTIVE_WINDOW|awk -F' ' '{ print $NF }')
+
+# shellcheck disable=2086
 window=$(for i in $winlist; do
     win_id="${i}"
     if [ "$win_id" -eq "$active_id" ]; then
@@ -21,7 +40,7 @@ window=$(for i in $winlist; do
 
     win_class=$(xprop -id "${win_id}" WM_CLASS | cut -d'"' -f2)
     win_title=$(xprop -id "${win_id}" WM_NAME | cut -d'=' -f2-)
-    printf  "%10.10s${focustag}| %60.60s | 0x%7.7x\n" "${win_class}" "${win_title}" "${win_id}"
+    printf "%20.20s${focustag} | %80.80s | 0x%7.7x\n" "${win_class}" "${win_title}" "${win_id}"
 done | sort | dmenu ${DMENU_ARGS} "$count")
 
 
