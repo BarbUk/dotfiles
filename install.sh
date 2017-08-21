@@ -29,7 +29,6 @@ mkdir -p "$modules_dir"
 # shellcheck disable=2086
 ${LN}n "$dotfiles_dir/modules/bash-it" "$HOME/.bash_it"
 ${LN} "$dotfiles_dir/modules/z/z.sh" "$modules_dir/z"
-${LN} "$dotfiles_dir/modules/goto/goto.sh" "$modules_dir/goto"
 ${LN} "$dotfiles_dir/modules/fz/fz.sh" "$modules_dir/fz"
 
 ${LN} "$dotfiles_dir/apps/tmux.conf" "$HOME/.tmux.conf"

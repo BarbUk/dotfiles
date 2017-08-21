@@ -62,10 +62,6 @@ source "$BASH_IT/bash_it.sh"
 _Z_OWNER="$USER"
 # shellcheck disable=1090
 source "$HOME/.modules/z"
-# shellcheck disable=2034
-GOTO_KEY="\C-g"
-# shellcheck disable=1090
-source "$HOME/.modules/goto"
 # systend helpers
 # shellcheck disable=1090
 source "$HOME/.systemd_helpers"

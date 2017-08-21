@@ -7,9 +7,6 @@
 [submodule "tpm"]
 	path = modules/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule "modules/goto"]
-	path = modules/goto
-	url = https://github.com/Fakerr/goto.git
 [submodule "modules/fz"]
 	path = modules/fz
 	url = https://github.com/changyuheng/fz

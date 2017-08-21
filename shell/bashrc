@@ -18,9 +18,6 @@ export PATH="$PATH:$dot_dir/bin"
 . "$dot_dir/shell/systemd_helpers"
 . "$dot_dir/shell/completion"
 # shellcheck disable=2034
-GOTO_KEY="\C-g"
-. "$modules_dir/goto"
-# shellcheck disable=2034
 _Z_OWNER="$USER"
 . "$modules_dir/z"
 . "$modules_dir/fz"
