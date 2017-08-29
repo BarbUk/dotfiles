@@ -17,7 +17,7 @@
 
 set -o errexit -o pipefail -o nounset
 
-readonly mode="$1"
+readonly mode="${1:-}"
 
 dsh_hosts() {
     local file
