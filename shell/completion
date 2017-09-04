@@ -41,7 +41,7 @@ _ansible_groups() {
 }
 
 _archlinux_installed_packages() {
-   pacman -Qqn
+   pacman -Qqe
 }
 
 log() {
