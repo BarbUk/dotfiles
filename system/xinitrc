@@ -16,10 +16,9 @@ export PATH=$GOPATH/bin:/usr/share/perl5/vendor_perl/auto/share/dist/Cope:/usr/l
 xset s 120 120
 compton --config ~/.compton.conf -b
 wmname LG3D
-dbus-update-activation-environment --systemd DISPLAY
 export SSH_ASKPASS=ssh-askpass
 eval "$(keychain --eval --agents ssh,gpg)"
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
+eval $(/usr/bin/gnome-keyring-daemon --start --components=secrets)
 copyq &
 xss-lock -- slock &
 unclutter --ignore-scrolling --fork
