@@ -17,9 +17,10 @@
 
 set -o errexit -o pipefail -o nounset
 
-action="$1"
+action="${1:-''}"
+step="${2:-5}"
 
-progress(){
+progress() {
     local percent=$1
     local completed=$(( percent / 5 ))
     local remaining=$(( 20 - completed ))
@@ -30,13 +31,22 @@ progress(){
     echo -n '▎'
 }
 
+usage() {
+    echo "Usage: $0 up/down [step]" >&2
+    echo "Example: $0 up 5" >&2
+    exit 1
+}
+
 case $action in
     "up" )
-        light -A 5
-        ;;
+        light -A "$step"
+    ;;
     "down" )
-        light -U 5
-        ;;
+        light -U "$step"
+    ;;
+    * )
+        usage
+    ;;
 esac
 
 percent=$(light | xargs printf '%.*f' 0)
