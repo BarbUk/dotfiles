@@ -31,40 +31,41 @@ modify_other_keys = false
 #size_hints = false
 
 [colors]
+
 # special
-foreground      = #373b41
-foreground_bold = #373b41
-cursor          = #373b41
-background      = #ffffff
+foreground      = #586e75
+foreground_bold = #586e75
+cursor          = #586e75
+background      = #fdf6e3
 
 # black
-color0  = #1d1f21
-color8  = #969896
+color0  = #002b36
+color8  = #657b83
 
 # red
-color1  = #cc6666
-color9  = #cc6666
+color1  = #dc322f
+color9  = #dc322f
 
 # green
-color2  = #b5bd68
-color10 = #b5bd68
+color2  = #859900
+color10 = #859900
 
 # yellow
-color3  = #f0c674
-color11 = #f0c674
+color3  = #b58900
+color11 = #b58900
 
 # blue
-color4  = #81a2be
-color12 = #81a2be
+color4  = #268bd2
+color12 = #268bd2
 
 # magenta
-color5  = #b294bb
-color13 = #b294bb
+color5  = #6c71c4
+color13 = #6c71c4
 
 # cyan
-color6  = #8abeb7
-color14 = #8abeb7
+color6  = #2aa198
+color14 = #2aa198
 
 # white
-color7  = #c5c8c6
-color15 = #ffffff
+color7  = #93a1a1
+color15 = #fdf6e3
