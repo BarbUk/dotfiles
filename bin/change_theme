@@ -20,7 +20,7 @@ icon=Papirus
 theme=Arc
 sublime_light="Boxy Solarized Light"
 sublime_dark="Boxy Ocean"
-color_light="#fdf6e3P"
+color_light="#fdf6e3"
 color_dark="#2d2d2d"
 
 changetheme() {
