@@ -41,7 +41,7 @@ _ansible_groups() {
 }
 
 _archlinux_installed_packages() {
-   pacman -Qqe
+   pacman -Qq
 }
 
 log() {
@@ -253,7 +253,7 @@ _fzf_complete_ansible() {
 _fzf_complete_yaourt() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
-    -Rcs)
+    -Rcs|-Qo|-Qi|-Ql)
       _fzf_complete '--multi' ' ' "$@" < <(_archlinux_installed_packages)
       return 0
   ;;
@@ -278,7 +278,7 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook ap
-  complete -o default -o bashdefault -o nospace -F _fzf_complete_yaourt yaourt
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_yaourt yaourt pacman
 else
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
