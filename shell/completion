@@ -237,14 +237,14 @@ _fzf_complete_ansible() {
     -i)
       _fzf_complete '--multi' ',' "$@" < <(give_me_hostname ssh)
       return 0
-  ;;
-  -l)
-      _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
-      return 0
-  ;;
+    ;;
+    -l)
+        _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
+        return 0
+    ;;
     -u)
       return 0
-  ;;
+    ;;
   esac
 
   _fzf_complete '--multi' ' ' "$@" < <(_playbook)
