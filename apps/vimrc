@@ -62,7 +62,7 @@ set softtabstop=4	" Largeur de tab
 set sta                 " Smart tabs
 set shiftwidth=4	" Largeur d'indentation
 set ru                  " Position dans le fichier donnée
-set hlg=fr              " Langue de l'aide : français
+set hlg=en              " Langue de l'aide : english
 set mousemodel=popup    " Affiche un popup au clic droit
 set showtabline=2       " Affiche tout le temps la ligne des tabs
 set numberwidth=5       " Nombre de colonnes que prend les numéros de lignes
@@ -89,6 +89,7 @@ set ul=100              " Niveaux d'annulation
 set mouse=a             " Utiliser la souris partout
 
 source ~/.vim/vimrc.background
+
 if v:version < 800
     set t_Co=256           " Terminaux à 256 couleurs
     colorscheme desert
