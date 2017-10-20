@@ -22,12 +22,8 @@ DISPLAY=":$displaynum"
 XAUTHORITY=$(ps -C Xorg -f --no-header | awk '{print $14}')
 
 screen=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | grep -w connected | awk '!/LVDS/ {print $1}')
-logger test
-if [ "$screen" == "DP-1" ]; then
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --off
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output DP-1 --mode 1920x1200 --pos 0x0 --rotate normal --output VGA-1 --mode 1920x1080 --pos 1960x56 --rotate normal
-elif [ "$screen" == "VGA-1" ]; then
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output VGA-1 --mode 1440x900 --pos 0x0 --rotate normal --output LVDS-1 --primary --mode 1366x768 --pos 1440x132 --rotate normal
+if [ "$screen" == "VGA-1" ] || [ "$screen" == "DP-1" ] || [ "$screen" == "HDMI-1" ]; then
+    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --primary --auto --right-of "$screen" --output "$screen" --auto
 else
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --mode 1366x768 --output DP-1 --off --output VGA-1 --off
+    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --auto --output DP-1 --off --output VGA-1 --off --output HDMI-1 --off
 fi
