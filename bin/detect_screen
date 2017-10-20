@@ -14,6 +14,11 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 #
+# =================================
+# Put this script in your path, make it executable
+# and add a new uedv rule in /etc/udev/rules.d/99-monitor.rules:
+# ACTION=="change", SUBSYSTEM=="drm", ENV{HOTPLUG}=="1", RUN+=detect-screen"
+#
 set -o errexit -o pipefail -o nounset
 
 # shellcheck disable=2012
