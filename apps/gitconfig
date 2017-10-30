@@ -6,7 +6,7 @@
 [color]
         ui = true
 [core]
-        pager = less -FRSX
+        pager = less --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
 [push]
 	default = simple
 [mergetool]

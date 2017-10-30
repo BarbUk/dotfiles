@@ -38,7 +38,7 @@ bind '"\e[B": history-search-forward'
 bind '"\e[C": forward-char'
 bind '"\e[D": backward-char'
 
-export LESS='-WiSFRX'
+export LESS='--chop-long-lines --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS --no-init'
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -62,7 +62,7 @@ PROMPT_COMMAND='history -a'
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLOR="1;33"
-export MANPAGER="less -X"
+export MANPAGER="less --no-init --RAW-CONTROL-CHARS"
 
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
