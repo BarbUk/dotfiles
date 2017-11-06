@@ -33,9 +33,9 @@ modify_other_keys = false
 [colors]
 
 # special
-foreground      = #586e75
-foreground_bold = #586e75
-cursor          = #586e75
+foreground      = #34484E
+foreground_bold = #34484E
+cursor          = #34484E
 background      = #fdf6e3
 
 # black
