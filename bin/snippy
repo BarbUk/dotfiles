@@ -41,10 +41,8 @@
 #    CLIPASTE="xdotool key ctrl+shift+v"
 
 DIR=${HOME}/.snippy
-MENU_ENGINE="dmenu"
-# shellcheck disable=SC1090
-. "$HOME/.dmenurc"
-DMENU_ARGS="$DMENU_CONF -l 10 -p Snippets:"
+MENU_ENGINE="rofi"
+DMENU_ARGS='-dmenu -i -sort'
 # if nothing happens, try "xdotool click 2", "xdotool key ctrl+v" or "xdotool key ctrl+shift+v"
 GUIPASTE="xdotool key ctrl+v"
 CLIPASTE="xdotool key ctrl+shift+v"
@@ -71,7 +69,7 @@ run(){
     # Use the filenames in the snippy directory as menu entries.
     # Get the menu selection from the user.
     # shellcheck disable=SC2086
-    FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | grep -vE '\.git/|\.gitconfig|\.gitkeep' | ${MENU_ENGINE} ${MENU_ARGS})
+    FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | grep -vE '\.git/|\.gitconfig|\.gitkeep' | ${MENU_ENGINE} ${MENU_ARGS} -p '❯ ')
     # just return if nothing was selected
     [[ -z "${FILE}" ]] && return 1
 
