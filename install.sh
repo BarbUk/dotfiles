@@ -17,7 +17,7 @@ else
     ${LN} "$dotfiles_dir/apps/compton.conf" "$HOME/.compton.conf"
     ${LN} "$dotfiles_dir/apps/termite.dark" "$HOME/.config/termite/config"
     ${LN} "$dotfiles_dir/apps/rofi.config" "$HOME/.config/rofi/config"
-    ${LN} "$dotfiles_dir/apps/style.rasi" "$HOME/.config/rofi/"
+    cp "$dotfiles_dir/apps/style.rasi" "$HOME/.config/rofi/"
 fi
 
 mkdir -p "$HOME"/.config/htop
