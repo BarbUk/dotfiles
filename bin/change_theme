@@ -33,7 +33,7 @@ changetheme() {
     local vim_conf="$HOME/.vim/vimrc.background"
     local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
     local awesome_conf="$HOME/.config/awesome/themes/barbuk/theme.lua"
-    local rofi_conf="$HOME/.config/rofi/style.rasi"
+    local rofi_conf="$HOME/.config/rofi/config"
 
     if [ -e "$theme_file" ]; then
         ln -sf "$HOME/.dotfiles/apps/termite.dark" "$termite_conf"
@@ -46,7 +46,7 @@ changetheme() {
         sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
         sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
         sed -i -e "s/= theme.soud0/= theme.nord0/" -e "s/= theme.soud4/= theme.nord4/" -e "s/= theme.soud6/= theme.nord6/" "$awesome_conf"
-        sed -i -e "s/Black/White/" -e "s/#fdf6e3/#2E3440/" -e "s/#fdf6e3F0/#2E3440F0/" "$rofi_conf"
+        sed -i -e "s/Paper.rasi/glue_pro_blue.rasi/" "$rofi_conf"
 
         rm -f "$theme_file"
     else
@@ -60,7 +60,7 @@ changetheme() {
         sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
         sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
         sed -i -e "s/= theme.nord0/= theme.soud0/" -e "s/= theme.nord4/= theme.soud4/" -e "s/= theme.nord6/= theme.soud6/" "$awesome_conf"
-        sed -i -e "s/White/Black/" -e "s/#2E3440/#fdf6e3/" -e "s/#2E3440F0/#fdf6e3F0/" "$rofi_conf"
+        sed -i -e "s/glue_pro_blue.rasi/Paper.rasi/" "$rofi_conf"
 
         touch "$theme_file"
     fi
