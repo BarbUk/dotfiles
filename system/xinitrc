@@ -24,6 +24,6 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=secrets)
 #copyq &
 greenclip daemon &
 xss-lock -- slock &
-unclutter --ignore-scrolling --fork
+unclutter --ignore-scrolling --exclude-root --fork
 pgrep redshift &> /dev/null || redshift -l -20.2696363:57.4759043 &> /dev/null &
 exec startlxde

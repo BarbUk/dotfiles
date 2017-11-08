@@ -14,15 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 #
-
 set -o errexit -o pipefail -o nounset
 
 readonly dotbin="$HOME/.dotfiles/bin"
-# shellcheck disable=1090
-. "$HOME/.dmenurc"
-DMENU_ARGS="-i $DMENU_CONF -l 15"
+DMENU_ARGS="rofi -dmenu -i -sort -lines 25"
 
 # shellcheck disable=2086
-ssh="$("$dotbin/give_me_hostname" ssh | dmenu ${DMENU_ARGS} -p 'ssh to :' "$@")"
+host="$("$dotbin/give_me_hostname" ssh | ${DMENU_ARGS} -p 'ssh to :' "$@")"
 
-[ "$ssh" ] && termite --exec "$dotbin/ssh_connect $ssh" &
+[ "$host" ] && termite --exec "ssh $host" &
