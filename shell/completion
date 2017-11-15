@@ -250,6 +250,16 @@ _fzf_complete_ansible() {
   _fzf_complete '--multi' ' ' "$@" < <(_playbook)
 }
 
+_fzf_complete_dsh() {
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  case $prev in
+    -g)
+        _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
+        return 0
+    ;;
+  esac
+}
+
 _fzf_complete_yaourt() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
@@ -279,6 +289,7 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook ap
   complete -o default -o bashdefault -o nospace -F _fzf_complete_yaourt yaourt pacman
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_dsh dsh
 else
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
