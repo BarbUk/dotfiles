@@ -35,4 +35,4 @@ alias backup='sudo borg create --stats --progress --compression lz4 /run/media/b
 alias backup-prune='sudo borg prune -v --list --keep-within=1m --keep-weekly=4 /run/media/barbuk/place/backup'
 alias backup-list='sudo borg list /run/media/barbuk/place/backup'
 alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
-alias wifi-taff='sudo create_ap wlan lan fcZ7XWSasn7r bukbukbuk'
+alias wifi-taff='sudo create_ap --daemon wlan lan fcZ7XWSasn7r bukbukbuk'
