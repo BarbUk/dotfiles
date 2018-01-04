@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
-fzf_default_options="--select-1 --exit-0 --tac --tiebreak=length,begin,index --reverse --inline-info"
+fzf_default_options="-i --select-1 --exit-0 --tac --tiebreak=length,begin,index --reverse --inline-info"
 fzf_height="--height ${FZF_TMUX_HEIGHT:-40%} --min-height 25"
 
 # To redraw line after fzf closes (printf '\e[5n')
