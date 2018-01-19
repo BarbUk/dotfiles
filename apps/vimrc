@@ -67,7 +67,7 @@ set mousemodel=popup    " Affiche un popup au clic droit
 set showtabline=2       " Affiche tout le temps la ligne des tabs
 set numberwidth=5       " Nombre de colonnes que prend les numéros de lignes
 set pastetoggle=<F2>    " pour eviter de faire de la cascade
-set ffs=dos,unix
+set ffs=unix,dos
 cmap w!! w !sudo tee % >/dev/null
 cmap hex %!xxd
 " Options du GUI
