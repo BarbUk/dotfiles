@@ -68,6 +68,7 @@ set showtabline=2       " Affiche tout le temps la ligne des tabs
 set numberwidth=5       " Nombre de colonnes que prend les numéros de lignes
 set pastetoggle=<F2>    " pour eviter de faire de la cascade
 set ffs=unix,dos
+"set paste
 cmap w!! w !sudo tee % >/dev/null
 cmap hex %!xxd
 " Options du GUI
@@ -163,3 +164,14 @@ nnoremap <leader>" di"
 nnoremap <Leader>q" ciw""<Esc>P
 nnoremap <Leader>q' ciw''<Esc>P
 nnoremap <Leader>qd daW"=substitute(@@,"'\\\|\"","","g")<CR>P
+
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
