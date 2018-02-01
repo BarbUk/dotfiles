@@ -64,6 +64,12 @@ bashdown(){
     done < <(cat "${DIR}/${FILE}")
 }
 
+is_gui(){
+    name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
+    [[ "$name" =~ term|tilda ]] && return 1
+    return 0
+}
+
 run(){
     cd "${DIR}" || exit
     # Use the filenames in the snippy directory as menu entries.
@@ -109,14 +115,14 @@ run(){
 
     xsel -b --input < "$TMPFILE"
     # Paste into the current application.
-    if is_window; then
+    if is_gui; then
         ${GUIPASTE}
 
         if [[ $cursor -gt 0 ]]; then
             local keyup
             until [  $cursor -eq 0 ]; do
                 keyup+="Up "
-            let cursor-=1
+            ((cursor-=1))
             # shellcheck disable=SC2086
             xdotool key --delay -0.1 $keyup
         done
@@ -126,12 +132,6 @@ run(){
     fi
 
     echo -ne "$current_clip" | xsel -b --input
-}
-
-is_window(){
-    name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
-    [[ "$name" =~ term|tilda ]] && return 1
-    return 0
 }
 
 run
