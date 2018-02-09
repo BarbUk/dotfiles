@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-eval "$(dircolors -b)"
+eval "$(dircolors -b $HOME/.dir_colors)"
 eval "$(rbenv init -)"
 alias ls='ls --color=auto'
 alias up='yaourt -Syu --aur --noconfirm'
