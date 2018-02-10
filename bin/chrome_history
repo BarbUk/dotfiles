@@ -19,28 +19,36 @@ set -o errexit -o pipefail -o nounset
 
 sep='<>'
 if [ "$(uname)" = "Darwin" ]; then
-  google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+  chrome_history_files=(
+    "$HOME/Library/Application Support/Google/Chrome/Default/History"
+  )
   open=open
 else
-  google_history="$HOME/.config/google-chrome/Profile 2/History"
+  chrome_history_files=(
+    "$HOME/.config/google-chrome/Profile 2/History"
+    "$HOME/.config/google-chrome/Profile 4/History"
+  )
   open=xdg-open
 fi
 
+# If we have an input, extract the url and open it in the default browser
 if [ ! -z ${1+x} ]; then
     $open "${1##*$sep}" > /dev/null 2>&1
     exit 0
 fi
 
-chrome_history() {
-  cp -f "$google_history" /tmp/h
+extract_chrome_history() {
+  local history_file=$1
+  cp -f "$history_file" /tmp/h
   # shellcheck disable=2086
   sqlite3 -separator $sep /tmp/h \
       "SELECT substr(title, 1, 50) as label, url
        FROM urls
        GROUP BY label
        ORDER BY last_visit_time DESC
-       LIMIT 100"
+       LIMIT 50"
 }
 
-chrome_history
-
+for chrome_history_file in "${chrome_history_files[@]}"; do
+  extract_chrome_history "$chrome_history_file"
+done
