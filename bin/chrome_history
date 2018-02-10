@@ -35,8 +35,11 @@ chrome_history() {
   cp -f "$google_history" /tmp/h
   # shellcheck disable=2086
   sqlite3 -separator $sep /tmp/h \
-      "select substr(title, 1, 50), url
-     from urls order by last_visit_time desc limit 100"
+      "SELECT substr(title, 1, 50) as label, url
+       FROM urls
+       GROUP BY label
+       ORDER BY last_visit_time DESC
+       LIMIT 100"
 }
 
 chrome_history
