@@ -2,7 +2,8 @@
 eval "$(dircolors -b $HOME/.dir_colors)"
 eval "$(rbenv init -)"
 alias ls='ls --color=auto'
-alias up='yaourt -Syu --aur --noconfirm'
+alias up='trizen -Syu --noconfirm'
+alias yaourt='trizen'
 alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
 alias ping='ping -O'
 
