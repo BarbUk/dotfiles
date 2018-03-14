@@ -24,9 +24,9 @@ set -o errexit -o pipefail -o nounset
 # shellcheck disable=2012
 displaynum=$(ls /tmp/.X11-unix/* | sed s#/tmp/.X11-unix/X##)
 DISPLAY=":$displaynum"
-XAUTHORITY=$(ps -C Xorg -f --no-header | awk '{print $14}')
+XAUTHORITY=$(ps -C Xorg -f --no-header | awk '{print $(NF-1)}')
 
-screen=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | grep -w connected | awk '!/LVDS/ {print $1}')
+screen=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '/\<connected\>/ && !/LVDS/ {print $1}')
 if [ "$screen" == "VGA-1" ] || [ "$screen" == "DP-1" ] || [ "$screen" == "HDMI-1" ]; then
     DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --primary --auto --right-of "$screen" --output "$screen" --auto
 else
