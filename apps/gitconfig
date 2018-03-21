@@ -4,9 +4,9 @@
 [alias]
         lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 [color]
-        ui = true
+	ui = true
 [core]
-        pager = less --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
+	pager = diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
 [push]
 	default = simple
 [mergetool]
@@ -15,3 +15,15 @@
 	rebase = true
 [diff]
         indentHeuristic = on
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
