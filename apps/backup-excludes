@@ -7,3 +7,5 @@
 /media/*
 /lost+found
 /home/barbuk/ztemp/swapfile
+/home/barbuk/.ccache
+/home/barbuk/.cache
