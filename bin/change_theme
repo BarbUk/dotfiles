@@ -18,8 +18,10 @@ set -o errexit -o pipefail -o nounset
 
 icon=Papirus
 theme=Arc
-sublime_light="Boxy Solarized Light"
-sublime_dark="Boxy Ocean"
+sublime_theme_light="Boxy Yesterday"
+sublime_colorscheme_light="Color Scheme - Default\\/Celeste.sublime-color-scheme"
+sublime_theme_dark="Boxy Ocean"
+sublime_colorscheme_dark="Boxy Theme\\/schemes\\/Boxy Ocean.tmTheme"
 color_light="#fdf6e3"
 color_dark="#2d2d2d"
 
@@ -37,8 +39,8 @@ changetheme() {
     if [ -e "$theme_file" ]; then
         ln -sf "$HOME/.dotfiles/apps/termite.dark" "$termite_conf"
         ln -sf "$HOME/.dotfiles/apps/vimrc.dark" "$vim_conf"
-        sed -i -e "s/$sublime_light.tmTheme/$sublime_dark.tmTheme/g" "$sublime_conf"
-        sed -i -e "s/$sublime_light.sublime-theme/$sublime_dark.sublime-theme/g" "$sublime_conf"
+        sed -i -e "s/$sublime_colorscheme_light/$sublime_colorscheme_dark/g" "$sublime_conf"
+        sed -i -e "s/$sublime_theme_light.sublime-theme/$sublime_theme_dark.sublime-theme/g" "$sublime_conf"
         sed -i -e "s/ThemeName=$theme/ThemeName=$theme-Dark/g" "$gtk_conf"
         sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
@@ -50,8 +52,8 @@ changetheme() {
     else
         ln -sf "$HOME/.dotfiles/apps/termite.light" "$termite_conf"
         ln -sf "$HOME/.dotfiles/apps/vimrc.light" "$vim_conf"
-        sed -i -e "s/$sublime_dark.tmTheme/$sublime_light.tmTheme/g" "$sublime_conf"
-        sed -i -e "s/$sublime_dark.sublime-theme/$sublime_light.sublime-theme/g" "$sublime_conf"
+        sed -i -e "s/$sublime_colorscheme_dark/$sublime_colorscheme_light/g" "$sublime_conf"
+        sed -i -e "s/$sublime_theme_dark.sublime-theme/$sublime_theme_light.sublime-theme/g" "$sublime_conf"
         sed -i -e "s/ThemeName=$theme-Dark/ThemeName=$theme/g" "$gtk_conf"
         sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
