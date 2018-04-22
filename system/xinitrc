@@ -19,7 +19,7 @@ compton --config ~/.compton.conf -b
 wmname LG3D
 export SSH_ASKPASS=ssh-askpass
 eval "$(keychain --eval --agents ssh,gpg)"
-eval $(/usr/bin/gnome-keyring-daemon --start --components=secrets)
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
 #export _JAVA_OPTIONS='-Dsun.java2d.opengl=true'
 export _JAVA_AWT_WM_NONREPARENTING=1
 xss-lock -- slock &
