@@ -61,7 +61,7 @@ bashdown(){
     while read -r line; do
         line="$(eval "printf -- \"$( printf "%s" "$line" | sed 's/"/\\"/g')\"")";
         echo -e "$line"
-    done < <(cat "${DIR}/${FILE}")
+    done
 }
 
 is_gui(){
