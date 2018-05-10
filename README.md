@@ -1,7 +1,14 @@
-# dotfiles
+<p align="center" >
+    <img src="img/header.png" alt="dotfiles" title="dotfiles">
+</p>
 
+## About
 
-![Screenshot light shell](http://imgur.com/kKpNkPx.png) 
+This repository contains files for configuring my Terminal environment and other various macOS settings. See [Github does dotfiles](https://dotfiles.github.io) for more info
+
+## What does it look like
+
+![Screenshot light shell](http://imgur.com/kKpNkPx.png)
 ![Screenshot dark shell](http://imgur.com/Jw7QkWI.png)
 
 ## Installation
@@ -15,7 +22,7 @@ Clone the repository in `~/.dotfiles`:
 ```bash
 git clone https://github.com/barbuk/dotfiles ~/.dotfiles && ~/.dotfiles
 ```
-init the submodules: 
+init the submodules:
 
 ```bash
 git submodule update --init
