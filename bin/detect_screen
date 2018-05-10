@@ -27,8 +27,8 @@ DISPLAY=":$displaynum"
 XAUTHORITY=$(ps -C Xorg -f --no-header | awk '{print $(NF-1)}')
 
 screen=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '/\<connected\>/ && !/LVDS/ {print $1}')
-if [ "$screen" == "VGA1" ] || [ "$screen" == "DP1" ] || [ "$screen" == "HDMI1" ]; then
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS1 --primary --auto --right-of "$screen" --output "$screen" --auto
+if [ "$screen" == "VGA-1" ] || [ "$screen" == "DP-1" ] || [ "$screen" == "HDMI-1" ]; then
+    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --primary --auto --right-of "$screen" --output "$screen" --auto
 else
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS1 --auto --output DP1 --off --output VGA1 --off --output HDMI1 --off
+    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --auto --output DP-1 --off --output VGA-1 --off --output HDMI-1 --off
 fi
