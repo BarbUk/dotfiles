@@ -8,8 +8,8 @@ This repository contains files for configuring my Terminal environment and other
 
 ## What does it look like
 
-![Screenshot light shell](http://imgur.com/kKpNkPx.png)
-![Screenshot dark shell](http://imgur.com/Jw7QkWI.png)
+![Screenshot light shell](img/term_light.png)
+![Screenshot dark shell](img/term_dark.png)
 
 ## Installation
 
