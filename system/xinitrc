@@ -13,7 +13,7 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export QT_QPA_PLATFORMTHEME='qt5ct'
 export GOPATH="$HOME/.go"
 export COMPOSERPATH="$HOME/.composer/vendor/bin"
-export COPEPATH="/usr/share/perl5/vendor_perl/auto/share/dist/Cope"
+export COPEPATH=$(cope_path)
 export CCACHEPATH="/usr/lib/ccache/bin"
 export PATH="$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:$COPEPATH:/usr/local/bin:$PATH"
 xcalib -d :0 $HOME/.dotfiles/system/lenovo_x220_4290rv5.icc
