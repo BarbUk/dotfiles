@@ -60,7 +60,7 @@ MENU_ARGS=${DMENU_ARGS}
 # fetches a document and interprets bashsyntax in string (bashdown) templates
 # @param string - string with bash(down) syntax (usually surrounded by ' quotes instead of ")
 bashdown(){
-    while read -r line; do
+    while IFS= read -r line; do
         line="$(eval "printf -- \"$( printf "%s" "$line" | sed 's/"/\\"/g')\"")";
         echo -e "$line"
     done
