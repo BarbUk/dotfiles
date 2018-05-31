@@ -13,6 +13,9 @@ bupc() {
     | grep -v '^\-e' \
     | cut -d = -f 1  \
     | xargs -n1 sudo -H pip install -U
+    gem update --system
+    gem update
+    rbenv rehash
 }
 
 xclip=$(command -v xclip)
