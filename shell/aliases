@@ -36,3 +36,7 @@ alias backup-prune='sudo borg prune -v --stats --list --keep-within=1m /run/medi
 alias backup-list='sudo borg list /run/media/barbuk/place/backup'
 alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
 alias wifi-taff='sudo create_ap --daemon wlan lan fcZ7XWSasn7r bukbukbuk'
+alias local-timezone='curl -s https://ipapi.co/timezone'
+alias set-local-timezone='timedatectl set-timezone $(curl -s https://ipapi.co/timezone)'
+alias set-france-timezone='timedatectl set-timezone Europe/Paris'
+alias set-maurice-timezone='timedatectl set-timezone Indian/Mauritius'
