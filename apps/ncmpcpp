@@ -1,39 +1,52 @@
-mpd_music_dir = "~/Zik"
-mpd_crossfade_time = 5
-system_encoding = "UTF-8"
+active_column_color = "cyan"
+autocenter_mode = "yes"
+browser_display_mode = "columns" (classic/columns)
 
-
-visualizer_fifo_path = "/dev/shm/mpd.fifo"
-visualizer_output_name = "my_fifo"
-visualizer_in_stereo = "no"
-visualizer_type = "spectrum" (spectrum/wave)
-visualizer_look = "∙▋"
-visualizer_color = "green"
-
-current_item_prefix = "$(white)$r"
-current_item_suffix = "$/r$(end)"
-
-progressbar_look = "▀▀ "
-progressbar_color = "black"
-progressbar_elapsed_color = "blue"
-
-song_list_format = "{$7%a $6> $5}{%t$6$R$b} [{%l}]"
-song_status_format = "$7%a $6$b> $5%t $6$b> $2%b$6"
+color1 = "cyan"
+color2 = "blue"
 colors_enabled = "yes"
 
-now_playing_prefix = "$b$2⟩$3⟩ "
-now_playing_suffix = "$8$/b"
+display_remaining_time = "yes"
+empty_tag_marker = ""
+enable_window_title = "yes"
 
-alternative_header_first_line_format = $b$1▊▊▊▊▊$aqqu$/a$9 $8♬ {%t}|{%f} ♬ {$9}$1$atqq$/a▊▊▊▊▊$9$/b
-
-
-color1 = "white"
-color2 = "black"
-
-mouse_support = "yes"
+header_text_scrolling = "yes"
 header_visibility = "no"
-statusbar_visibility = "yes"
+header_window_color = "magenta"
+
+ignore_leading_the = "yes"
+main_window_color = "cyan"
+main_window_highlight_color = "cyan"
+message_delay_time = "4"
+mouse_support = "yes"
+
+mpd_crossfade_time = 5
+mpd_music_dir = "~/Zik"
+
+playlist_disable_highlight_delay = "3"
 playlist_display_mode = "columns" (classic/columns)
-autocenter_mode = "yes"
-titles_visibility = "no"
-enable_window_title = "no"
+
+progressbar_color = "yellow"
+progressbar_look = "─╼"
+
+song_columns_list_format = "(5f)[blue]{l} (33)[cyan]{t} (32)[green]{a} (30)[magenta]{b}"
+song_list_format = "{%a - }{%t}|{$5%f$9}$R{$7(%l)$9}"
+song_status_format = "$2%a $1• $3%t $1• $4%b {(Disc %d) }$1• $5%y$1"
+song_window_title_format = "{%a - }{%t}|{%f}"
+
+state_flags_color = "blue"
+state_line_color = "yellow"
+statusbar_color = "cyan"
+statusbar_visibility = "yes"
+system_encoding = "UTF-8"
+titles_visibility = "yes"
+user_interface = "classic" (classic/alternative)
+
+visualizer_color = "green"
+visualizer_fifo_path = "/dev/shm/mpd.fifo"
+visualizer_in_stereo = "no"
+visualizer_look = "∙▋"
+visualizer_output_name = "my_fifo"
+visualizer_type = "spectrum" (spectrum/wave)
+
+volume_color = "green"
