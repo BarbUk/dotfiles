@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 eval "$(dircolors -b $HOME/.dir_colors)"
-eval "$(rbenv init -)"
+#eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/shims:${PATH}"
+export RBENV_SHELL=bash
 alias ls='ls --color=auto'
 alias up='yay -Syu --noconfirm'
 alias yaourt='yay'
@@ -18,12 +20,10 @@ bupc() {
     rbenv rehash
 }
 
-xclip=$(command -v xclip)
-
 pbcopy() {
-    $xclip -selection clipboard
+    xclip -selection clipboard
 }
 pbpaste() {
-    $xclip -selection clipboard -o
+    xclip -selection clipboard -o
 }
 
