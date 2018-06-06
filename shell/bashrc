@@ -29,5 +29,4 @@ else
     . "$dot_dir/shell/keychain"
 fi
 
-PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
 export TERM=xterm-256color

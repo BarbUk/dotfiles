@@ -55,10 +55,6 @@ HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s:gs:ll:l:env:?:??"
 HISTTIMEFORMAT='%F %T '
 # Avoid duplicate entries
 HISTCONTROL="erasedups:ignoreboth"
-# Record each line as it gets issued
-
-PROMPT_COMMAND='history -a'
-
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLOR="1;33"
