@@ -2,7 +2,8 @@
 	name = BarbUk
 	useConfigOnly = true
 [alias]
-        lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	quick-stats = ! /usr/bin/git-quick-stats
 [color]
 	ui = true
 [core]
@@ -10,11 +11,11 @@
 [push]
 	default = simple
 [mergetool]
-        keepBackup = false
+	keepBackup = false
 [pull]
 	rebase = true
 [diff]
-        indentHeuristic = on
+	indentHeuristic = on
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
