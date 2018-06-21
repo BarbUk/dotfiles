@@ -44,7 +44,7 @@
 
 DIR=${HOME}/.snippy
 MENU_ENGINE="rofi"
-DMENU_ARGS='-dmenu -i -sort -lines 25'
+DMENU_ARGS='-dmenu -i -sort'
 # if nothing happens, try "xdotool click 2", "xdotool key ctrl+v" or "xdotool key ctrl+shift+v"
 GUIPASTE="xdotool key ctrl+v"
 CLIPASTE="xdotool key ctrl+shift+v"
