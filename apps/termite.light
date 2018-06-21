@@ -31,8 +31,6 @@ modify_other_keys = false
 #size_hints = false
 
 [colors]
-
-# special
 foreground      = #34484E
 foreground_bold = #34484E
 cursor          = #34484E

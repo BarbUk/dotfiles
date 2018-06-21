@@ -54,14 +54,3 @@ color12 = #81A1C1
 color13 = #B48EAD
 color14 = #8FBCBB
 color15 = #ECEFF4
-
-[hints]
-#font = Monospace 12
-#foreground = #dcdccc
-#background = #3f3f3f
-#active_foreground = #e68080
-#active_background = #3f3f3f
-#padding = 2
-#border = #3f3f3f
-#border_width = 0.5
-#roundness = 2.0
