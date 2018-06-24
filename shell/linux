@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-eval "$(dircolors -b $HOME/.dir_colors)"
+eval "$(dircolors -b "$HOME"/.dir_colors)"
 #eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/shims:${PATH}"
 export RBENV_SHELL=bash
@@ -23,7 +23,7 @@ bupc() {
 pbcopy() {
     xclip -selection clipboard
 }
+
 pbpaste() {
     xclip -selection clipboard -o
 }
-
