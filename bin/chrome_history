@@ -29,8 +29,8 @@ if [ "$(uname)" = "Darwin" ]; then
   open=open
 else
   chrome_history_files=(
-    "$HOME/.config/google-chrome/Profile 2/History"
-    "$HOME/.config/google-chrome/Profile 4/History"
+    "$HOME/.config/google-chrome/Default/History"
+    "$HOME/.config/google-chrome/Profile 1/History"
   )
   open=xdg-open
 fi
