@@ -1,24 +1,22 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/bundle')
+Plug 'vim-airline/vim-airline'
+Plug 'airblade/vim-gitgutter'
+Plug 'morhetz/gruvbox'
+Plug 'AndrewRadev/switch.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'w0rp/ale'
+Plug 'tpope/vim-surround'
+Plug 'ryanoasis/vim-devicons'
+Plug 'ervandew/supertab'
+Plug 'sheerun/vim-polyglot'
+Plug 'justinmk/vim-sneak'
+" Initialize plugin system
+call plug#end()
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'morhetz/gruvbox'
-Plugin 'AndrewRadev/switch.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'w0rp/ale'
-Plugin 'tpope/vim-surround'
-Plugin 'ryanoasis/vim-devicons'
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+let g:sneak#s_next = 1
 
 set updatetime=250
 set laststatus=2
@@ -133,7 +131,6 @@ nmap <silent> ,/ :nohlsearch<CR>
 set completeopt=menu,menuone,longest
 " Limit popup menu height
 set pumheight=15
-
 
 " Options de complétion générale
 set completeopt=menu,longest " Options de completion
