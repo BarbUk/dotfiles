@@ -5,7 +5,7 @@
 # note: opengl has numerous quality/performance trade-off options.
 # as per the mpv(1), "opengl-hq" is just an alias for "opengl:lscale=lanczos2:dither-depth=auto:fbo-format=rgb16"
 hwdec=vaapi
-vo=opengl,xv,wayland
+vo=gpu,xv,wayland
 profile=opengl-hq
 deband=no
 save-position-on-quit
