@@ -16,15 +16,15 @@
 #
 # =================================
 # Put this script in your path, make it executable
-# and add a new uedv rule in /etc/udev/rules.d/99-monitor.rules:
-# ACTION=="change", SUBSYSTEM=="drm", ENV{HOTPLUG}=="1", RUN+=detect-screen"
+# and add a new udev rule in /etc/udev/rules.d/99-monitor.rules:
+# ACTION=="change", SUBSYSTEM=="drm", ENV{HOTPLUG}=="1", ENV{XAUTHORITY}="/home/user/.Xauthority", RUN+=detect-screen"
 #
 set -o errexit -o pipefail -o nounset
 
 # shellcheck disable=2012
 displaynum=$(ls /tmp/.X11-unix/* | sed s#/tmp/.X11-unix/X##)
 DISPLAY=":$displaynum"
-XAUTHORITY=$(ps -C Xorg -f --no-header | awk '{print $(NF-1)}')
+XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
 
 screen=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '/\<connected\>/ && !/LVDS/ {print $1}')
 if [ "$screen" == "VGA-1" ] || [ "$screen" == "DP-1" ] || [ "$screen" == "HDMI-1" ]; then
