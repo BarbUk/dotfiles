@@ -70,4 +70,10 @@ change_theme() {
     fi
 }
 
-changetheme
+notify_apps() {
+    killall -USR1 termite
+    echo 'awesome.restart()' | awesome-client
+}
+
+change_theme
+notify_apps
