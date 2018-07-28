@@ -71,7 +71,7 @@ change_theme() {
 }
 
 notify_apps() {
-    killall -USR1 termite
+    killall -USR1 termite || true
     echo 'awesome.restart()' | awesome-client
 }
 
