@@ -68,7 +68,7 @@ bashdown(){
 
 is_gui(){
     name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
-    [[ "$name" =~ term|tilda|kitty ]] && return 1
+    [[ "$name" =~ term|tilda|kitty|alacritty ]] && return 1
     return 0
 }
 
