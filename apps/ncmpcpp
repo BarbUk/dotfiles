@@ -1,4 +1,5 @@
-active_column_color = "cyan"
+current_item_inactive_column_prefix = "cyan"
+current_item_inactive_column_suffix = "cyan"
 autocenter_mode = "yes"
 browser_display_mode = "columns" (classic/columns)
 
@@ -15,8 +16,8 @@ header_visibility = "no"
 header_window_color = "magenta"
 
 ignore_leading_the = "yes"
-main_window_color = "cyan"
-main_window_highlight_color = "cyan"
+current_item_prefix = "$(cyan)$r"
+current_item_suffix = "$/r$(end)"
 message_delay_time = "4"
 mouse_support = "yes"
 
