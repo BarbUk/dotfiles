@@ -84,7 +84,6 @@ main() {
         ;;
         *)
             (
-                ssh_config_d
                 dsh_hosts
                 known_hosts
                 bash_history
