@@ -174,3 +174,7 @@ function! XTermPasteBegin()
   set paste
   return ""
 endfunction
+
+let g:ale_linters = {
+\ 'sh': ['language_server'],
+\ }
