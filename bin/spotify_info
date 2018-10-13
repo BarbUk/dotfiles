@@ -21,4 +21,6 @@ if playerctl status > /dev/null 2>&1; then
     playerctl metadata artist
     echo -ne '\ntitle|'
     playerctl metadata title
+    echo -ne '\nstate|'
+    playerctl status
 fi
