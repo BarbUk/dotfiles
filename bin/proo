@@ -18,12 +18,17 @@
 set -o errexit -o pipefail -o nounset
 
 readonly vm="$1"
-readonly search=$(grep "$vm" "$HOME"/.dsh/group/proo* | cut -d/ -f 6)
-proo=${search%:*}
+readonly search=$(grep "$vm" "$HOME"/.dsh/group/pro* | cut -d/ -f 6)
 
-resolve="$(getent hosts "$proo" | wc -l)"
+if [ ! -z "$search" ] && [ $(echo "$search" | wc -l ) -gt 1 ]; then
+    echo "${search//:/: }"
+else
+    proo=${search%:*}
 
-if [[ $resolve -gt 0 ]]; then
-    echo "Sshing to $proo"
-    ssh "$proo"
+    resolve="$(getent hosts "$proo" | wc -l)"
+
+    if [[ $resolve -gt 0 ]]; then
+        echo "Sshing to $proo"
+        ssh "$proo"
+    fi
 fi
