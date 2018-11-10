@@ -3,7 +3,7 @@ ssh_agent_file=/tmp/.ssh-agent-thing
 
 if [ ! -f $ssh_agent_file ]; then
     keychain --eval --agents ssh,gpg --quiet \
-    id_rsa \
+    id_rsa id_ed25519 \
     "$(find "$HOME"/.ssh/keys/live -type f -name id_rsa)" > $ssh_agent_file
 fi
 
