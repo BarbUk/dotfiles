@@ -38,10 +38,12 @@ change_theme() {
     local vim_conf="$HOME/.vim/vimrc.background"
     local awesome_conf="$HOME/.config/awesome/themes/barbuk/theme.lua"
     local rofi_conf="$HOME/.config/rofi/config"
+    local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
 
     if [ -e "$theme_file" ]; then
         ln -sf "$HOME/.dotfiles/apps/termite.dark" "$termite_conf"
         ln -sf "$HOME/.dotfiles/apps/vimrc.dark" "$vim_conf"
+        cp "$HOME/.dotfiles/apps/alacritty-dark.yml" "$alacritty_conf"
         sed -i -e "s/$sublime_colorscheme_light/$sublime_colorscheme_dark/g" "$sublime_conf"
         sed -i -e "s/$sublime_theme_light.sublime-theme/$sublime_theme_dark.sublime-theme/g" "$sublime_conf"
         sed -i -e "s/$plaintasks_colorscheme_light/$plaintasks_colorscheme_dark/g" "$plaintasks_conf"
@@ -56,6 +58,7 @@ change_theme() {
     else
         ln -sf "$HOME/.dotfiles/apps/termite.light" "$termite_conf"
         ln -sf "$HOME/.dotfiles/apps/vimrc.light" "$vim_conf"
+        cp "$HOME/.dotfiles/apps/alacritty-light.yml" "$alacritty_conf"
         sed -i -e "s/$sublime_colorscheme_dark/$sublime_colorscheme_light/g" "$sublime_conf"
         sed -i -e "s/$sublime_theme_dark.sublime-theme/$sublime_theme_light.sublime-theme/g" "$sublime_conf"
         sed -i -e "s/$plaintasks_colorscheme_dark/$plaintasks_colorscheme_light/g" "$plaintasks_conf"
@@ -72,7 +75,7 @@ change_theme() {
 
 notify_apps() {
     killall -USR1 termite || true
-    echo 'awesome.restart()' | awesome-client
+    #echo 'awesome.restart()' | awesome-client
 }
 
 change_theme
