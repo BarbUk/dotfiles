@@ -239,8 +239,8 @@ _fzf_complete_ansible() {
       return 0
     ;;
     -l)
-        _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
-        return 0
+      _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
+      return 0
     ;;
     -u)
       return 0
@@ -254,8 +254,8 @@ _fzf_complete_dsh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -g)
-        _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
-        return 0
+      _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
+      return 0
     ;;
   esac
 }
