@@ -50,9 +50,11 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # Huge history. Doesn't appear to slow things down, so why not?
 HISTSIZE=50000
 HISTFILESIZE=100000
+
 # Don't record some commands
 HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s:gs:ll:l:env:?:??"
 HISTTIMEFORMAT='%F %T '
+
 # Avoid duplicate entries
 HISTCONTROL="erasedups:ignoreboth"
 export CLICOLOR=1
@@ -65,6 +67,7 @@ export BASH_IT=$HOME/.bash_it
 export SCM_GIT_SHOW_DETAILS=true
 export SCM_CHECK=true
 
+# Bashit theme
 export BASH_IT_THEME='barbuk'
 
 # Set my editor and git editor
@@ -74,4 +77,5 @@ export GIT_EDITOR='vim'
 # Don't check mail when opening terminal.
 unset MAILCHECK
 export IRC_CLIENT='irssi'
+# https://github.com/sickill/stderred
 export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
