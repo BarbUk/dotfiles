@@ -1,10 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 # video demo at: http://www.youtube.com/watch?v=90xoathBYfk
 
 # augmented by barbuk: https://github.com/BarbUk/dotfiles/blob/master/bin/snippy
 #  . restore current clipboard
 #  . {clipboard} placeholder to use current clipboard in snippet
 #  . {cursor} placeholder to place the cursor
+#    . go left to the correct position for cli and gui paste
+#    . go up for block snippet for gui paste
 #  . ##noparse header in snippet to not parse
 #  . execute command begining by $
 #
@@ -42,16 +44,20 @@
 #    GUIPASTE="xdotool key ctrl+v"
 #    CLIPASTE="xdotool key ctrl+shift+v"
 
-DIR=${HOME}/.snippy
-MENU_ENGINE="rofi"
-DMENU_ARGS='-dmenu -i -sort'
+readonly snippets_directory=${HOME}/.snippy
+readonly MENU_ENGINE="rofi"
+readonly DMENU_ARGS='-dmenu -i -sort'
+
 # if nothing happens, try "xdotool click 2", "xdotool key ctrl+v" or "xdotool key ctrl+shift+v"
-GUIPASTE="xdotool key ctrl+v"
-CLIPASTE="xdotool key ctrl+shift+v"
+readonly GUIPASTE="xdotool key ctrl+v"
+readonly CLIPASTE="xdotool key ctrl+shift+v"
 
-TMPFILE="/tmp/.snippy.tmp"; :>$TMPFILE
+readonly MENU_ARGS=${DMENU_ARGS}
+readonly cursor_placeholder="{cursor}"
+readonly clipboard_placeholder="{clipboard}"
 
-MENU_ARGS=${DMENU_ARGS}
+readonly tmpfile=$(mktemp)
+trap 'rm -f \$tmpfile' EXIT HUP INT TRAP TERM
 
 # smarty like template engine which executes inline bash in (bashdown) strings (replaces variables with values e.g.)
 # @link http://github.com/coderofsalvation/bashdown
@@ -59,81 +65,121 @@ MENU_ARGS=${DMENU_ARGS}
 # @example: echo 'hi $NAME it is $(date)' | bashdown
 # fetches a document and interprets bashsyntax in string (bashdown) templates
 # @param string - string with bash(down) syntax (usually surrounded by ' quotes instead of ")
-bashdown(){
+bashdown() {
     while IFS= read -r line; do
         line="$(eval "printf -- \"$( printf "%s" "$line" | sed 's/"/\\"/g')\"")";
         echo -e "$line"
     done
 }
 
-is_gui(){
+# Detect if focused app is a terminal or a gui
+is_gui() {
     name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
     [[ "$name" =~ term|tilda|kitty|alacritty ]] && return 1
     return 0
 }
 
-run(){
-    cd "${DIR}" || exit
+# Find the index of a string in a string
+strindex() {
+    x="${1%%$2*}"
+    [[ "$x" = "$1" ]] && echo -1 || echo "${#x}"
+}
+
+# Move the cursor up or left
+move_cursor() {
+    local key=$1
+    local count=$2
+    local keys="End "
+    if [[ $count -gt 0 ]]; then
+        until [  "$count" -eq 0 ]; do
+            keys+="${key} "
+            ((count-=1))
+        done
+        # shellcheck disable=SC2086
+        xdotool key --delay 0.1 $keys
+    fi
+}
+
+run() {
+    cd "${snippets_directory}" || exit
+
+    local current_clipboard cursor_line cursor_line_position cursor_line cursor_position cursor_line_lenght
+    current_clipboard=$(xsel -b)
+
     # Use the filenames in the snippy directory as menu entries.
     # Get the menu selection from the user.
     # shellcheck disable=SC2086
-    FILE=$(find -L .  -type f | grep -v '^\.$' | sed 's!\.\/!!' | grep -vE '\.git/|\.gitconfig|\.gitkeep' | ${MENU_ENGINE} ${MENU_ARGS} -p '❯ ')
-    # just return if nothing was selected
-    [[ -z "${FILE}" ]] && return 1
+    snippet=$( find -L .  -type f \
+        | grep -v '^\.$' \
+        | sed 's!\.\/!!' \
+        | grep -vE '\.git/|\.gitconfig|\.gitkeep' \
+        | ${MENU_ENGINE} ${MENU_ARGS} -p '❯ ')
 
-    if [ -f "${DIR}/${FILE}" ]; then
+    # just return if nothing was selected
+    [[ -z "${snippet}" ]] && return 1
+
+    if [ -f "${snippets_directory}/${snippet}" ]; then
         # Put the contents of the selected file into the paste buffer.
         # don't parse file with the ##noparse header
-        if grep -qE "^##noparse" "${FILE}"; then
-            content="$(tail -n +2 "${DIR}/${FILE}")"
+        if grep -qE "^##noparse" "${snippets_directory}/${snippet}"; then
+            content="$( tail -n +2 "${snippets_directory}/${snippet}" )"
         else
-            content="$(bashdown < "${DIR}/${FILE}")"
+            content="$( bashdown < "${snippets_directory}/${snippet}" )"
         fi
-        printf "%s" "$content" > $TMPFILE
-    else [[ ${FILE} =~ ^$ ]]
-        ${FILE##*$} 2>/dev/null > $TMPFILE # execute as bashcommand
+
+        # replace {clipboard} by the clipboard content
+        # use awk to handle correctly multiline clipboard
+        printf "%s" "$content" | awk \
+        -v clipboard="$current_clipboard" \
+        -v placeholder="$clipboard_placeholder" \
+        '{ gsub(placeholder, clipboard); print }' > "$tmpfile"
+
+    else [[ ${snippet} =~ ^$ ]]
+        ${snippet##*$} 2>/dev/null > "$tmpfile" # execute as bashcommand
     fi
 
-    local current_clip cursor
-    current_clip=$(xsel -b)
-    # define cursor at 0, we don't need to go up if there is no {cursor}
-    cursor=0
-
-    # replace {clipboard} by the cliboard comtent
-    sed -i -e "s~{clipboard}~${current_clip}~g" "$TMPFILE"
+    # define cursor position and line at 0, we don't need to go up or left if there is no {cursor} placeholder
+    cursor_line_position=0
+    cursor_position=0
 
     # Check if there is a {cursor} placeholder
-    if grep -qF '{cursor}' "$TMPFILE";then
-        local file_lines
+    if grep -qF $cursor_placeholder "$tmpfile"; then
+        # retrieve the line number of the cursor placeholder
+        cursor_line_position=$(grep -n "$cursor_placeholder" "$tmpfile" | cut -d: -f1)
         # retrieve the line
-        cursor=$(grep -n '{cursor}' "$TMPFILE" | cut -d: -f1)
+        cursor_line=$(grep $cursor_placeholder "$tmpfile")
         # calculate snippet total lines
-        file_lines=$(wc -l < "$TMPFILE")
-        # determine the number of line to go
-        cursor=$((file_lines - cursor))
+        file_lines=$(wc -l < "$tmpfile")
+        # determine the number of line to go up
+        cursor_line_position=$(( file_lines - cursor_line_position + 1 ))
+        # Extract cursor position
+        cursor_position=$(strindex "$cursor_line" $cursor_placeholder)
+        # total cursor line lenght
+        cursor_line_lenght=${#cursor_line}
+        # Compute the final cursor position ( 8 is the lenght of the placeholder {cursor} )
+        cursor_position=$(( cursor_line_lenght - cursor_position - 8 ))
         # remove the placeholder
-        sed -i -e "s/{cursor}//g" "$TMPFILE"
+        sed -i -e "s/$cursor_placeholder//g" "$tmpfile"
     fi
 
-    xsel -b --input < "$TMPFILE"
+    # Copy snippet in clipboard
+    xsel -b --input < "$tmpfile"
+
     # Paste into the current application.
     if is_gui; then
-        ${GUIPASTE}
+        # We need a little pause to handle the time to focus on the window
+        sleep 0.1
 
-        if [[ $cursor -gt 0 ]]; then
-            local keyup
-            until [  $cursor -eq 0 ]; do
-                keyup+="Up "
-            ((cursor-=1))
-            # shellcheck disable=SC2086
-            xdotool key --delay -0.1 $keyup
-        done
-        fi
+        ${GUIPASTE}
+        move_cursor "Up" $cursor_line_position
     else
         ${CLIPASTE}
     fi
 
-    echo -ne "$current_clip" | xsel -b --input
+    move_cursor "Left" $cursor_position
+
+    # Restore current clipboard
+    echo -ne "$current_clipboard" | xsel -b --input
 }
 
 run
