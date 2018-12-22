@@ -57,7 +57,7 @@ readonly cursor_placeholder="{cursor}"
 readonly clipboard_placeholder="{clipboard}"
 
 readonly tmpfile=$(mktemp)
-trap 'rm -f \$tmpfile' EXIT HUP INT TRAP TERM
+trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
 
 # smarty like template engine which executes inline bash in (bashdown) strings (replaces variables with values e.g.)
 # @link http://github.com/coderofsalvation/bashdown
