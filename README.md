@@ -18,13 +18,27 @@ While my dotfiles are optimised for my workflow, you can maybe find something in
 ### Snippy
 
 [`Snippy`](https://github.com/BarbUk/dotfiles/blob/master/bin/snippy) is enhanced version of the snippy snippet utility.
-I use it everyday with more than 1600 snippets.
+I use it everyday with more than 600 snippets.
 
 Here some enhancements that I made:
-* restore current clipboard after pasting the snippet
+* keep current clipboard after pasting the snippet
 * `{clipboard}` placeholder to use current clipboard in snippet
+```
+CREATE DATABASE \`{clipboard}\` CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
 * `{cursor}` placeholder to place the cursor
+  * go left to the correct position for cli and gui paste
+  ```
+  <pre>{cursor}</pre>
+  ```
+  * go up for block snippet for gui paste
+  ```
+  <pre>
+    {cursor}
+  </pre>
+  ```
 * `##noparse` header in snippet to not parse
+* directly execute command begining by $
 
 ### Chrome history
 
