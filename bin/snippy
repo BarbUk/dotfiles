@@ -134,6 +134,9 @@ run() {
         -v placeholder="$clipboard_placeholder" \
         '{ gsub(placeholder, clipboard); print }' > "$tmpfile"
 
+        # remove last EOL
+        perl -pi -e 'chomp if eof' "$tmpfile"
+
     else [[ ${snippet} =~ ^$ ]]
         ${snippet##*$} 2>/dev/null > "$tmpfile" # execute as bashcommand
     fi
