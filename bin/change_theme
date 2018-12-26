@@ -53,6 +53,7 @@ change_theme() {
         sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
         sed -i -e "s/= theme.soud0/= theme.nord0/" -e "s/= theme.soud4/= theme.nord4/" -e "s/= theme.soud6/= theme.nord6/" -e "s/black/white/" "$awesome_conf"
         sed -i -e "s/Paper.rasi/glue_pro_blue.rasi/" "$rofi_conf"
+        gsettings set org.gnome.meld style-scheme meld-dark
 
         rm -f "$theme_file"
     else
@@ -68,6 +69,7 @@ change_theme() {
         sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
         sed -i -e "s/= theme.nord0/= theme.soud0/" -e "s/= theme.nord4/= theme.soud4/" -e "s/= theme.nord6/= theme.soud6/" -e "s/white/black/" "$awesome_conf"
         sed -i -e "s/glue_pro_blue.rasi/Paper.rasi/" "$rofi_conf"
+        gsettings set org.gnome.meld style-scheme meld-base
 
         touch "$theme_file"
     fi
