@@ -15,7 +15,7 @@
 # Based on "snippy" by "sessy"
 # (https://bbs.archlinux.org/viewtopic.php?id=71938)
 #
-# You will also need "dmenu", "zenity", "xsel" and "xdotool". Get them from your linux
+# You will also need "dmenu", "zenity", "xsel", "sponge" and "xdotool". Get them from your linux
 # distro in the usual way.
 #
 # To use:
@@ -104,7 +104,6 @@ run() {
     cd "${snippets_directory}" || exit
 
     local current_clipboard cursor_line cursor_line_position cursor_line cursor_position cursor_line_lenght
-    current_clipboard=$(xsel -b)
 
     # Use the filenames in the snippy directory as menu entries.
     # Get the menu selection from the user.
@@ -127,19 +126,26 @@ run() {
             content="$( bashdown < "${snippets_directory}/${snippet}" )"
         fi
 
-        # replace {clipboard} by the clipboard content
-        # use awk to handle correctly multiline clipboard
-        printf "%s" "$content" | awk \
-        -v clipboard="$current_clipboard" \
-        -v placeholder="$clipboard_placeholder" \
-        '{ gsub(placeholder, clipboard); print }' > "$tmpfile"
-
-        # remove last EOL
-        perl -pi -e 'chomp if eof' "$tmpfile"
+        printf "%s" "$content" > "$tmpfile"
 
     else [[ ${snippet} =~ ^$ ]]
         ${snippet##*$} 2>/dev/null > "$tmpfile" # execute as bashcommand
     fi
+
+    # save current clipboard
+    current_clipboard=$(xsel -b)
+    # replace {clipboard} by the clipboard content
+    # use awk to handle correctly multiline clipboard
+    if grep -q "$clipboard_placeholder" "$tmpfile"; then
+        awk \
+            -v clipboard="$current_clipboard" \
+            -v placeholder="$clipboard_placeholder" \
+            '{ gsub(placeholder, clipboard); print }' "$tmpfile" | sponge "$tmpfile"
+
+        # remove last EOL
+        perl -pi -e 'chomp if eof' "$tmpfile"
+    fi
+
 
     # define cursor position and line at 0, we don't need to go up or left if there is no {cursor} placeholder
     cursor_line_position=0
