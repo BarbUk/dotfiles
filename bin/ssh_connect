@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2015 barbUk
+# Copyright (C) 2015 BarbUk
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -49,7 +49,7 @@ rsync $rsync_options --rsh "ssh $ssh_options" \
     "$dotdir/server/" \
     "$host": || true
 
-echo -ne "\033]0;$host\007"
+echo -ne "\\033]0;$host\\007"
 
 echo "Sshing..."
 # shellcheck disable=SC2086
