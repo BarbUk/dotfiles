@@ -84,6 +84,14 @@ main() {
                 known_hosts
             ) | grep -oE "\\b([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | sort -u
         ;;
+        "all")
+            (
+                dsh_hosts
+                ssh_config_d
+                known_hosts
+                bash_history
+            ) | sort -u
+        ;;
         *)
             (
                 dsh_hosts
