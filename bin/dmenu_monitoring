@@ -17,12 +17,9 @@
 set -o errexit -o pipefail -o nounset
 
 readonly dotbin="$HOME/.dotfiles/bin"
-# shellcheck disable=1090
-. "$HOME/.dmenurc"
-DMENU_ARGS="-i $DMENU_CONF -l 15"
+dmenu="rofi -dmenu -i -sort -lines 25"
 
 # shellcheck disable=2086
-host="$("$dotbin/give_me_hostname" ssh | dmenu ${DMENU_ARGS} -p 'open :' "$@")"
-url="${MONITORING_URL}host=*$host*"
+host="$("$dotbin/give_me_hostname" ssh | $dmenu -p 'open ' "$@")"
+url="${MONITORING_URL}$host"
 [ "$host" ] && google-chrome-stable "$url"
-

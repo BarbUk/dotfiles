@@ -1,4 +1,4 @@
-#!/usr/bin/env bash#!/bin/bash
+#!/bin/bash
 #
 # Copyright (C) 2016 barbUk
 #
@@ -37,6 +37,6 @@ if [ $resolve = 0 ]; then
     host="$(give_me_hostname ssh | $fzf --query="$host")"
 fi
 
-url="${MONITORING_URL}host=*$host*"
+url="${MONITORING_URL}$host"
 
 eval "$browser" "$url"
