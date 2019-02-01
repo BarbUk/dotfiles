@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Copyright (C) 2019 BarbUk <barbarisme@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+set -o errexit -o pipefail -o nounset
+
+readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info"
+readonly dotdir="$HOME/.dotfiles"
+readonly hostname_list="$dotdir/bin/give_me_hostname all"
+readonly dmenu="rofi -dmenu -i -sort -lines 25"
+
+host="$( $hostname_list | ${dmenu} -p 'host ' "$@")"
+
+# If ip, get reverse
+if "$dotdir/bin/ipv4_validation" "$host" >/dev/null 2>&1; then
+  host "$host" | awk '{print $5}'
+  exit 0
+fi
+
+# if hostname, get ip
+getent hosts "$host" | awk '{print $1}'
