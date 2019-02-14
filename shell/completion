@@ -308,6 +308,6 @@ bind '"\e^": history-expand-line'
 bind '"\C-r": " \C-e\C-u`__fzf_history__`\e\C-e\e^\er"'
 # CTRL-T - Paste the selected file path into the command line
 bind -x '"\C-f": "fzf-file-widget"'
-# ALT-C - cd into the selected directory
+# ALT-S - cd into the selected directory
 # shellcheck disable=SC2016
-bind '"\ed": " \C-e\C-u`__fzf_cd__`\e\C-e\er\C-m"'
+bind '"\es": " \C-e\C-u`__fzf_cd__`\e\C-e\er\C-m"'
