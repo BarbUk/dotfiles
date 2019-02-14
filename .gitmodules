@@ -7,9 +7,9 @@
 [submodule "tpm"]
 	path = modules/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule "modules/fz"]
-	path = modules/fz
-	url = https://github.com/changyuheng/fz
 [submodule "modules/rmate"]
 	path = modules/rmate
 	url = https://github.com/aurora/rmate
+[submodule "modules/z.lua"]
+	path = modules/z.lua
+	url = git@github.com:skywind3000/z.lua.git
