@@ -113,12 +113,21 @@ run() {
     [[ -z "${snippet}" ]] && return 1
 
     if [ -f "${snippets_directory}/${snippet}" ]; then
+
         # Put the contents of the selected file into the paste buffer.
+        # If file is empty, the content is the basename of the file
+        if [ ! -s "${snippets_directory}/${snippet}" ]; then
+            content="$(basename "${snippet}")"
+
         # don't parse file with the ##noparse header
-        if grep -qE "^##noparse" "${snippets_directory}/${snippet}"; then
+        elif grep -qE "^##noparse" "${snippets_directory}/${snippet}"; then
             content="$( tail -n +2 "${snippets_directory}/${snippet}" )"
+
+        # execute bash script in scripts dir
         elif [[ $(dirname "${snippet}") == 'scripts' ]] && grep -qE "^#!/bin/bash" "${snippets_directory}/${snippet}"; then
             content="$( bash "${snippets_directory}/${snippet}" )"
+
+        # default action
         else
             content="$( bashdown < "${snippets_directory}/${snippet}" )"
         fi
