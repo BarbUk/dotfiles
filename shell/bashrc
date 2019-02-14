@@ -6,8 +6,8 @@
 stty stop undef
 
 dot_dir="$HOME/.dotfiles"
-modules_dir="$HOME/.modules"
-export PATH="$PATH:$dot_dir/bin"
+
+eval "$(lua "$dot_dir/modules/z.lua/z.lua" --init bash enhanced once fzf)"
 
 . "$HOME/.tokens"
 . "$dot_dir/shell/export"
@@ -16,16 +16,12 @@ export PATH="$PATH:$dot_dir/bin"
 . "$dot_dir/shell/functions"
 . "$dot_dir/shell/systemd_helpers"
 . "$dot_dir/shell/completion"
-# shellcheck disable=2034
-_Z_OWNER="$USER"
-. "$modules_dir/z"
-. "$modules_dir/fz"
 
 if [ "$(uname)" = "Darwin" ]; then
-    . "$dot_dir/shell/darwin"
+  . "$dot_dir/shell/darwin"
 else
-    . "$dot_dir/shell/linux"
-    . "$dot_dir/shell/keychain"
+  . "$dot_dir/shell/linux"
+  . "$dot_dir/shell/keychain"
 fi
 
 export TERM=xterm-256color
