@@ -52,26 +52,26 @@ log() {
 
 _fzf_complete() {
   local selected fzf post
-  local cur="${COMP_WORDS[COMP_CWORD]}"
-  local opts=''
-  local hosts="$1"
+  local current="${COMP_WORDS[COMP_CWORD]}"
+  local user_prefix=''
+  local options=${1:-'--multi'}
   local separator=${2:- }
 
   post="$(caller 0 | awk '{print $2}')_post"
-  type -t "$post" > /dev/null 2>&1 || post=cat
+  type -t "$post" >/dev/null 2>&1 || post=cat
   fzf="fzf $fzf_default_options $fzf_height"
 
-  if [[ ${cur} == *@*  ]] ; then
-    opts="${cur/@*/}@"
-    cur="${cur/*@/}"
+  if [[ ${current} == *@*  ]] ; then
+    user_prefix="${current/@*/}@"
+    current="${current/*@/}"
   fi
 
-  selected=$(cat | $fzf "$hosts" --query "$cur" | $post | tr '\n' "$separator")
+  selected=$(cat | $fzf "$options" --query "$current" | $post | tr '\n' "$separator")
   selected=${selected%$separator} # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
   if [ -n "$selected" ]; then
-    COMPREPLY=(${opts}"$selected")
+    COMPREPLY=("${user_prefix}${selected}")
     return 0
   fi
 }
@@ -223,12 +223,12 @@ _fzf_complete_ssh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -i)
-      _fzf_complete '+m' ' ' "$@" < <(_privkey)
+      _fzf_complete '--no-multi' ' ' '' "$@" < <(_privkey)
       return 0
   ;;
   esac
 
-  _fzf_complete '+m' ' ' "$@" < <(give_me_hostname ssh)
+  _fzf_complete '--no-multi' ' ' '' "$@" < <(give_me_hostname ssh)
 }
 
 _fzf_complete_ansible() {
@@ -270,17 +270,32 @@ _fzf_complete_yaourt() {
   esac
 }
 
+_fzf_complete_pssh() {
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  case $prev in
+    --hosts|-h)
+      _fzf_complete '--no-multi' ' ' "$@" < <(_ansible_groups)
+      return 0
+  ;;
+  esac
+}
+
+_fzf_complete_pssh_post() {
+  # shellcheck disable=2088
+  echo "~/.dsh/group/$(cat -)"
+}
+
 _fzf_complete_net() {
-  _fzf_complete '+m' ' ' "$@" < <(give_me_hostname)
+  _fzf_complete '--no-multi' ' ' "$@" < <(give_me_hostname)
 }
 
 _fzf_complete_ips() {
-  _fzf_complete '+m' ' ' "$@" < <(give_me_hostname ips)
+  _fzf_complete '--no-multi' ' ' "$@" < <(give_me_hostname ips)
 }
 
 # Net tools completions
-net_tools="ping host mtr mosh telnet ftp lftp dig drill nslookup"
-ssh_tools="ssh s n rsync scp sftp proo"
+net_tools="ping host mtr mosh telnet ftp lftp dig drill nslookup ansible"
+ssh_tools="ssh s n rsync scp sftp proo curl"
 if hash fzf 2>/dev/null; then
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _fzf_complete_net $net_tools
@@ -290,6 +305,7 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook ap
   complete -o default -o bashdefault -o nospace -F _fzf_complete_yaourt yaourt pacman
   complete -o default -o bashdefault -o nospace -F _fzf_complete_dsh dsh
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_pssh pssh psshscp
 else
   # shellcheck disable=SC2086
   complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
