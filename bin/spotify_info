@@ -16,7 +16,7 @@
 #
 set -o errexit -o pipefail -o nounset
 
-if playerctl status > /dev/null 2>&1; then
+if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
     echo -n 'artist|'
     playerctl metadata artist
     echo -ne '\ntitle|'
