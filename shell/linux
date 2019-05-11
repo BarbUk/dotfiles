@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 eval "$(dircolors -b "$HOME"/.dir_colors)"
 #eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/shims:${PATH}"
+export PATH="$HOME/.dotfiles/bin:$HOME/.rbenv/shims:${PATH}"
 export RBENV_SHELL=bash
 alias ls='ls --color=auto'
 alias up='yay -Syu --noconfirm'
