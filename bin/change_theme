@@ -36,7 +36,6 @@ change_theme() {
     local qt_conf="$HOME/.config/qt5ct/qt5ct.conf"
     local dmenu_conf="$HOME/.dmenurc"
     local vim_conf="$HOME/.vim/vimrc.background"
-    local awesome_conf="$HOME/.config/awesome/themes/barbuk/theme.lua"
     local rofi_conf="$HOME/.config/rofi/config"
     local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
 
@@ -51,7 +50,6 @@ change_theme() {
         sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
         sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
-        sed -i -e "s/= theme.soud0/= theme.nord0/" -e "s/= theme.soud4/= theme.nord4/" -e "s/= theme.soud6/= theme.nord6/" -e "s/black/white/" "$awesome_conf"
         sed -i -e "s/Paper.rasi/glue_pro_blue.rasi/" "$rofi_conf"
         gsettings set org.gnome.meld style-scheme meld-dark
 
@@ -67,7 +65,6 @@ change_theme() {
         sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
         sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
-        sed -i -e "s/= theme.nord0/= theme.soud0/" -e "s/= theme.nord4/= theme.soud4/" -e "s/= theme.nord6/= theme.soud6/" -e "s/white/black/" "$awesome_conf"
         sed -i -e "s/glue_pro_blue.rasi/Paper.rasi/" "$rofi_conf"
         gsettings set org.gnome.meld style-scheme meld-base
 
@@ -77,7 +74,6 @@ change_theme() {
 
 notify_apps() {
     killall -USR1 termite || true
-    #echo 'awesome.restart()' | awesome-client
 }
 
 change_theme
