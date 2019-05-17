@@ -62,9 +62,18 @@ trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
 # @param string - string with bash(down) syntax (usually surrounded by ' quotes instead of ")
 bashdown() {
     while IFS= read -r line; do
-        line="$(eval "printf -- \"$( printf "%s" "$line" | sed 's/"/\\"/g')\"")";
+        line="$(eval "printf -- \"$( printf "%s" "$line" | sed 's/"/\\"/g' )\"")";
         echo -e "$line"
     done
+}
+
+# Simplified version of bashdown, use echo and bash var search and replace
+# Better handling of symbol char
+bashdown2() {
+  while IFS= read -r line; do
+    line="$(eval "echo \"${line//\"/\\\"}\"")"
+    echo "$line"
+  done
 }
 
 # Detect if focused app is a terminal or a gui
@@ -129,7 +138,7 @@ run() {
 
         # default action
         else
-            content="$( bashdown < "${snippets_directory}/${snippet}" )"
+            content="$( bashdown2 < "${snippets_directory}/${snippet}" )"
         fi
 
         printf "%s" "$content" > "$tmpfile"
