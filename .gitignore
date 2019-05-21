@@ -1,0 +1,4 @@
+/system/pulse/*
+!/system/pulse/daemon.conf
+!/system/pulse/daemon.conf.d
+!/system/pulse/default.pa
