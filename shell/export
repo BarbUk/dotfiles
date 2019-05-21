@@ -78,4 +78,7 @@ export GIT_EDITOR='vim'
 unset MAILCHECK
 export IRC_CLIENT='irssi'
 # https://github.com/sickill/stderred
-export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
+stderred=/usr/lib/libstderrred.so
+if [ -e  "$stderred" ]; then
+    export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
+fi
