@@ -6,6 +6,7 @@
 /mnt/*
 /media/*
 /lost+found
-/home/barbuk/ztemp/swapfile
+/swapfile
+/var/cache/pacman
 /home/barbuk/.ccache
 /home/barbuk/.cache
