@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
 fzf_default_options="-i --select-1 --exit-0 --tac --tiebreak=length,begin,index --reverse --inline-info"
-fzf_height="--height ${FZF_TMUX_HEIGHT:-40%} --min-height 25"
+fzf_height="--height ${FZF_TMUX_HEIGHT:-50%} --min-height 25"
 
 # To redraw line after fzf closes (printf '\e[5n')
 bind '"\e[0n": redraw-current-line'
@@ -56,17 +56,17 @@ _fzf_complete() {
   local user_prefix=''
   local options=${1:-'--multi'}
   local separator=${2:- }
+  local preview="fzf_preview {}"
 
   post="$(caller 0 | awk '{print $2}')_post"
   type -t "$post" >/dev/null 2>&1 || post=cat
-  fzf="fzf $fzf_default_options $fzf_height"
+  fzf="fzf $fzf_default_options $options $fzf_height --preview-window down:90%:hidden --bind ?:toggle-preview"
 
   if [[ ${current} == *@*  ]] ; then
     user_prefix="${current/@*/}@"
     current="${current/*@/}"
   fi
-
-  selected=$(cat | $fzf "$options" --query "$current" | $post | tr '\n' "$separator")
+  selected=$(cat | $fzf --preview "$preview" --query "$current" | $post | tr '\n' "$separator")
   selected=${selected%$separator} # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
@@ -161,7 +161,7 @@ ch() {
     google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
     open=open
   else
-    google_history="$HOME/.config/google-chrome/Profile 4/History"
+    google_history="$HOME/.config/google-chrome/Profile 1/History"
     open=xdg-open
   fi
   cp -f "$google_history" /tmp/h
@@ -227,7 +227,6 @@ _fzf_complete_ssh() {
       return 0
   ;;
   esac
-
   _fzf_complete '--no-multi' ' ' '' "$@" < <(give_me_hostname ssh)
 }
 

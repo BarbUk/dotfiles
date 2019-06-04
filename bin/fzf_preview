@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# Copyright (C) 2019 BarbUk <barbarisme@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+set -o errexit -o pipefail -o nounset
+
+readonly item=$1
+
+# shellcheck source=color_echo
+. color_echo
+
+if [[ $item == *\.hosting ]] || [[ $item == *\.net ]]; then
+    information "Informations"
+    echo "$RDA_URL$item"
+    echo
+    information "Monitoring"
+    echo "$MONITORING_URL$item"
+    if [[ $(nmcli networking connectivity) == 'full' ]]; then
+      echo
+      information "Ongoing problems"
+      ssh -t "$MONITORING_HOST" -- icingacli monitoring list service --host="$item" --verbose --problems 2>/dev/null
+    fi
+fi
+
+if [ -d "$item" ]; then
+  ls -l "$item"
+fi
+
+if [ -f "$item" ]; then
+  highlight --force -O ansi -l "$item" 2> /dev/null | head -50
+fi
