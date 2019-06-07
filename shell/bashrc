@@ -7,19 +7,29 @@ stty stop undef
 
 dot_dir="$HOME/.dotfiles"
 
-eval "$(lua "$dot_dir/modules/z.lua/z.lua" --init bash enhanced once fzf)"
+check_and_source() {
+  if [ -e "$1" ]; then
+    . "$1"
+  fi
+}
 
-. "$HOME/.tokens"
+if [ -e "$dot_dir/modules/z.lua/z.lua" ]; then
+  eval "$(lua "$dot_dir/modules/z.lua/z.lua" --init bash enhanced once fzf)"
+fi
+
+check_and_source "$HOME/.tokens"
 . "$dot_dir/shell/export"
-. "$BASH_IT/bash_it.sh"
+check_and_source "$BASH_IT/bash_it.sh"
 . "$dot_dir/shell/aliases"
 . "$dot_dir/shell/functions"
-. "$dot_dir/shell/systemd_helpers"
 . "$dot_dir/shell/completion"
 
 if [ "$(uname)" = "Darwin" ]; then
   . "$dot_dir/shell/darwin"
+elif [ "$(uname -o)" = "Android" ]; then
+  . "$dot_dir/shell/android"
 else
+  . "$dot_dir/shell/systemd_helpers"
   . "$dot_dir/shell/linux"
   . "$dot_dir/shell/keychain"
 fi
