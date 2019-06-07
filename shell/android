@@ -1,1 +1,2 @@
-## Android placeholder
+#!/usr/bin/env bash
+export PATH="$HOME/.dotfiles/bin:${PATH}"
