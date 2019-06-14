@@ -3,15 +3,13 @@
 set -e -o pipefail -o nounset
 
 # GPG Agent
-if ! ps -C gpg-agent >/dev/null 2>&1 && which gpg-agent >/dev/null 2>&1
-then
+if ! ps -C gpg-agent >/dev/null 2>&1 && which gpg-agent >/dev/null 2>&1; then
     eval "$(gpg-agent --daemon)"
     export GPG_TTY
     GPG_TTY=$(tty)
 fi
 
-if [ -z "$GPG_AGENT_INFO" ]
-then
+if [ -z "$GPG_AGENT_INFO" ]; then
     PID=$(pidof gpg-agent | awk '{print $1}')
     SOCK=$(ls /tmp/|grep gpg|tail -1)
     GPG_AGENT_INFO="/tmp/$SOCK/S.gpg-agent:$PID:1"
