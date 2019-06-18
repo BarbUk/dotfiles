@@ -82,3 +82,7 @@ stderred=/usr/lib/libstderrred.so
 if [ -e  "$stderred" ]; then
     export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
 fi
+
+# gpg tty
+GPG_TTY=$(tty)
+export GPG_TTY
