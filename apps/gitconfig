@@ -1,30 +1,40 @@
 [user]
-	name = BarbUk
-	useConfigOnly = true
+  name = BarbUk
+  useConfigOnly = true
+  signingkey = B6D01F84A7519939
 [alias]
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	quick-stats = ! /usr/bin/git-quick-stats
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  quick-stats = ! /usr/bin/git-quick-stats
 [color]
-	ui = true
+  ui = true
 [core]
-	pager = diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
+  pager = diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
 [push]
-	default = simple
+  default = simple
 [mergetool]
-	keepBackup = false
+  keepBackup = false
+[merge]
+  tool = sublimerge
+[mergetool "sublimerge"]
+  cmd = subl -n --wait \"$REMOTE\" \"$BASE\" \"$LOCAL\" \"$MERGED\" --command \"sublimerge_diff_views\"
+  trustExitCode = false
 [pull]
-	rebase = true
+  rebase = true
 [diff]
-	indentHeuristic = on
+  indentHeuristic = on
+[difftool "sublimerge"]
+  cmd = subl -n --wait \"$REMOTE\" \"$LOCAL\" --command \"sublimerge_diff_views {\\\"left_read_only\\\": true, \\\"right_read_only\\\": true}\"
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
 [color "diff"]
-	meta = yellow
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
+  meta = yellow
+  frag = magenta bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+[commit]
+  gpgsign = true
