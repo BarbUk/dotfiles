@@ -51,22 +51,24 @@ log() {
 }
 
 _fzf_complete() {
-  local selected fzf post
+  local selected fzf post caller
   local current="${COMP_WORDS[COMP_CWORD]}"
   local user_prefix=''
   local options=${1:-'--multi'}
   local separator=${2:- }
   local preview="fzf_preview {}"
+  caller=$(caller 0 | awk '{print $2}')
+  local delete="fzf_delete $caller {}"
 
-  post="$(caller 0 | awk '{print $2}')_post"
+  post="${caller}_post"
   type -t "$post" >/dev/null 2>&1 || post=cat
-  fzf="fzf $fzf_default_options $options $fzf_height --preview-window down:90%:hidden --bind ?:toggle-preview"
+  fzf="fzf $fzf_default_options $options $fzf_height --preview-window right:75%:hidden --bind ?:toggle-preview"
 
   if [[ ${current} == *@*  ]] ; then
     user_prefix="${current/@*/}@"
     current="${current/*@/}"
   fi
-  selected=$(cat | $fzf --preview "$preview" --query "$current" | $post | tr '\n' "$separator")
+  selected=$(cat | $fzf --preview "$preview" --bind "alt-bspace:execute:$delete" --query "$current" | $post | tr '\n' "$separator")
   selected=${selected%$separator} # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 

@@ -17,29 +17,15 @@
 
 set -o errexit -o pipefail -o nounset
 
-readonly item=$1
+readonly post=$1
+readonly item=$2
 
-# shellcheck source=color_echo
-. color_echo
+## For ssh completion, delete item from ~/.ssh/known_hosts
+if [[ $post == '_fzf_complete_ssh' ]]; then
+  ssh-keygen -R "$item" >/dev/null 2>&1
 
-if [[ $item == *\.hosting ]] || [[ $item == *\.net ]]; then
-    information "Informations"
-    echo "$RDA_URL$item"
-    echo
-    information "Monitoring"
-    echo "$MONITORING_URL$item"
-
-    if [[ $(nmcli networking connectivity) == 'full' ]]; then
-      echo
-      information "Ongoing problems"
-      ssh -t "$MONITORING_HOST" -- icingacli monitoring list service --host="$item" --verbose --problems 2>/dev/null
-    fi
-fi
-
-if [ -d "$item" ]; then
-  ls -l "$item"
-fi
-
-if [ -f "$item" ]; then
-  highlight --force -O ansi -l "$item" 2> /dev/null | head -50
+  ## for item like [hostname]:port, delete the line
+  if grep -q "$item" "$HOME/.ssh/known_hosts"; then
+    sed -i -e "/$item/ d" .ssh/known_hosts
+  fi
 fi
