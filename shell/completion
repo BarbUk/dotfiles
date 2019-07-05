@@ -295,7 +295,7 @@ _fzf_complete_ips() {
 }
 
 # Net tools completions
-net_tools="ping host mtr mosh telnet ftp lftp dig drill nslookup ansible"
+net_tools="ping host mtr mosh telnet ftp lftp dig drill nslookup ansible nmap"
 ssh_tools="ssh s n rsync scp sftp proo curl"
 if hash fzf 2>/dev/null; then
   # shellcheck disable=SC2086
