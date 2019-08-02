@@ -52,6 +52,7 @@ change_theme() {
         sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
         sed -i -e "s/Paper.rasi/glue_pro_blue.rasi/" "$rofi_conf"
         gsettings set org.gnome.meld style-scheme meld-dark
+        spicetify config current_theme dark
 
         rm -f "$theme_file"
     else
@@ -67,6 +68,7 @@ change_theme() {
         sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
         sed -i -e "s/glue_pro_blue.rasi/Paper.rasi/" "$rofi_conf"
         gsettings set org.gnome.meld style-scheme meld-base
+        spicetify config current_theme light
 
         touch "$theme_file"
     fi
@@ -74,6 +76,7 @@ change_theme() {
 
 notify_apps() {
     killall -USR1 termite || true
+    spicetify update
 }
 
 change_theme
