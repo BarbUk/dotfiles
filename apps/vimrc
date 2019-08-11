@@ -185,3 +185,6 @@ autocmd VimEnter * silent !echo -ne "\e[1 q"
 autocmd VimLeave * silent !echo -ne "\e[5 q"
 augroup END
 :autocmd InsertEnter,InsertLeave * set cul!
+
+let g:ale_linters = { 'php': ['php', 'psalm'] }
+
