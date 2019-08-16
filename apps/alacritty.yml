@@ -101,39 +101,22 @@ tabspaces: 8
 # Font configuration (changes require restart)
 font:
   # Normal (roman) font face
-  #normal:
-    # Font family
-    #
-    # Default:
-    #   - (macOS) Menlo
-    #   - (Linux) monospace
-    #   - (Windows) Consolas
-    #family: monospace
+  normal:
+    family: PragmataPro Liga
+    # Style can be specified to pick a specific face.
+    style: Regular
 
-    # The `style` can be specified to pick a specific face.
-    #style: Regular
+   # The bold font face
+  bold:
+    family: PragmataPro Liga
+    # Style can be specified to pick a specific face.
+    style: Bold
 
-  # Bold font face
-  #bold:
-    # Font family
-    #
-    # If the bold family is not specified, it will fall back to the
-    # value specified for the normal font.
-    #family: monospace
-
-    # The `style` can be specified to pick a specific face.
-    #style: Bold
-
-  # Italic font face
-  #italic:
-    # Font family
-    #
-    # If the italic family is not specified, it will fall back to the
-    # value specified for the normal font.
-    #family: monospace
-
-    # The `style` can be specified to pick a specific face.
-    #style: Italic
+   # The italic font face
+  italic:
+    family: PragmataPro Liga
+    # Style can be specified to pick a specific face.
+    style: Italic
 
   # Point size
   size: 11.0
