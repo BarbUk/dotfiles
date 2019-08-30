@@ -18,6 +18,7 @@
 "\e[F": end-of-line
 TAB: menu-complete
 "\e[Z": menu-complete-backward
+
 set completion-ignore-case on
 set completion-map-case on
 set show-all-if-ambiguous on
