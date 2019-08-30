@@ -75,6 +75,13 @@ When you need a list of your server to ssh to: [Give me hostname](https://github
  * sync my server dotfiles
  * connect to my tmux session or create a new one
 
+### Open sftp
+[Open sftp](https://github.com/BarbUk/dotfiles/blob/master/bin/open_sftp) is a script that:
+ * get the active window
+ * check if it's a terminal
+ * grab the title (user@server:path)
+ * open your filemanager to that remote server (sftp://user@server/path)
+
 ## Installation
 
 **Warning:** If you want to give these dotfiles a try, you should first fork this repository, review the code, and remove things you don’t want or need. Don’t blindly use my settings unless you know what that entails. Use at your own risk!
