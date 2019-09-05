@@ -19,7 +19,7 @@ export DOTBIN="$HOME/.dotfiles/bin"
 export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:$COPEPATH:/usr/local/bin:$PATH"
 xcalib -d :0 $HOME/.dotfiles/system/lenovo_x220_4290rv5.icc
 xset s 120 120
-compton --config ~/.compton.conf -b
+compton --config ~/.compton.conf --experimental-backends &
 wmname LG3D
 export SSH_ASKPASS=ssh-askpass
 eval "$(keychain --eval --agents ssh,gpg)"
