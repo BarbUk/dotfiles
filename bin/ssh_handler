@@ -19,4 +19,10 @@ set -o errexit -o pipefail -o nounset
 readonly dotbin="$HOME/.dotfiles/bin"
 readonly dest=${1#ssh://}
 
-termite --exec "$dotbin/ssh_connect $dest" &
+# use ssh_connect if we connect with own user
+if [[ $dest == *@* ]] && [[ ${dest%%@*} == "$USER" ]]; then
+    termite --exec "$dotbin/ssh_connect $dest" &
+else
+    TERM=xterm-256color
+    termite --exec "ssh $dest" &
+fi
