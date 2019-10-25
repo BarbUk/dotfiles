@@ -9,6 +9,7 @@
   ui = true
 [core]
   pager = diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
+  #pager = delta --dark | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
   quotepath = off
 [push]
   default = simple
