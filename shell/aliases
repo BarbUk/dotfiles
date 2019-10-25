@@ -9,12 +9,12 @@ alias xev="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.
 alias pip-update="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo -H pip install -U"
 
 # enable color support of ls and also add handy aliases
-alias dir='dir --color=always'
-alias grep='grep --color=always'
-alias fgrep='fgrep --color=always'
-alias egrep='egrep --color=always'
-alias bzgrep='bzgrep --color=always'
-alias zgrep='zgrep --color=always'
+alias dir='dir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias bzgrep='bzgrep --color=auto'
+alias zgrep='zgrep --color=auto'
 
 # some more ls aliases
 alias ll='ls -lha'
@@ -40,3 +40,4 @@ alias local-timezone='curl -s https://ipapi.co/timezone'
 alias set-local-timezone='timedatectl set-timezone $(curl -s https://ipapi.co/timezone)'
 alias set-france-timezone='timedatectl set-timezone Europe/Paris'
 alias set-maurice-timezone='timedatectl set-timezone Indian/Mauritius'
+alias gd='GIT_PAGER="delta --light" git diff'
