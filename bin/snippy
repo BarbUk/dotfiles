@@ -150,10 +150,17 @@ run() {
             content="$( bashdown_simple < "${snippets_directory}/${snippet}" )"
         fi
 
-        printf "%s" "$content" > "$tmpfile"
+        if [ -n "$content" ]; then
+            printf "%s" "$content" > "$tmpfile"
+        fi
 
     else [[ ${snippet} =~ ^$ ]]
         ${snippet##*$} 2>/dev/null > "$tmpfile" # execute as bashcommand
+    fi
+
+    # if tmpfile is empty at this step, nothing to do.
+    if [ ! -s "$tmpfile" ]; then
+        return
     fi
 
     # save current clipboard
