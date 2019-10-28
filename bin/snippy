@@ -137,6 +137,10 @@ run() {
         elif grep -qE "^##noparse" "${snippets_directory}/${snippet}"; then
             content="$( tail -n +2 "${snippets_directory}/${snippet}" )"
 
+        # replace tmpfile for snippets with ##tmpfile header
+        elif grep -qE "^##tmpfile" "${snippets_directory}/${snippet}"; then
+            content="$( bashdown_simple <<< "$(tail -n +2 "${snippets_directory}/${snippet}" | sed "s%\$tmpfile%$tmpfile%g" )" )"
+
         # execute bash script in scripts dir
         elif [[ $(dirname "${snippet}") == 'scripts' ]] && grep -qE "^#!/bin/bash" "${snippets_directory}/${snippet}"; then
             content="$( bash "${snippets_directory}/${snippet}" )"
