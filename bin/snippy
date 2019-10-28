@@ -223,7 +223,7 @@ run() {
     move_cursor "Left" $cursor_position
 
     # Restore current clipboard
-    echo -ne "$current_clipboard" | xsel -b --input
+    echo -ne "$current_clipboard" | xsel --clipboard --input
 }
 
 run
