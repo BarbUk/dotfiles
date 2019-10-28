@@ -89,6 +89,11 @@ strindex() {
     [[ "$x" = "$1" ]] && echo -1 || echo "${#x}"
 }
 
+is_rich_snippet() {
+    file="$1"
+    grep -q "##richsnippet" "$file"
+}
+
 # Move the cursor up or left
 move_cursor() {
     local key=$1
@@ -187,7 +192,11 @@ run() {
     fi
 
     # Copy snippet in clipboard
-    xsel -b --input < "$tmpfile"
+    if is_rich_snippet "${snippets_directory}/${snippet}"; then
+        xclip -t text/html -selection clipboard < "$tmpfile"
+    else
+        xclip -selection clipboard < "$tmpfile"
+    fi
 
     # Paste into the current application.
     if is_gui; then
