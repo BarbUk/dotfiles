@@ -8,6 +8,8 @@
 #    . go left to the correct position for cli and gui paste
 #    . go up for block snippet for gui paste
 #  . ##noparse header in snippet to not parse
+#  . ##tmpfile header in snippet to replace $tmpfile by the temp filename used in the script
+#  . ##richsnippet header in snippet to use paste buffer in rich mode (To copy html content in gui)
 #  . execute command begining by $
 #  . execute bash script in $snippets_directory/scripts
 #
