@@ -26,7 +26,7 @@ progress() {
     local remaining=$(( 20 - completed ))
 
     echo -ne "\n💡 "
-    printf "%0.s▊" $(seq $completed)
+    printf "%0.s█" $(seq $completed)
     [[ $remaining != 0 ]] && printf "%0.s " $(seq $remaining)
     echo -n '▎'
 }
