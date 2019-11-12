@@ -50,7 +50,7 @@ change_theme() {
         sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
         sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
-        sed -i -e "s/Paper.rasi/glue_pro_blue.rasi/" "$rofi_conf"
+        sed -i -e "s/$theme.rasi/${theme}-Dark.rasi/" "$rofi_conf"
         gsettings set org.gnome.meld style-scheme meld-dark
         spicetify config current_theme dark
 
@@ -66,7 +66,7 @@ change_theme() {
         sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
         sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
-        sed -i -e "s/glue_pro_blue.rasi/Paper.rasi/" "$rofi_conf"
+        sed -i -e "s/${theme}-Dark.rasi/${theme}.rasi/" "$rofi_conf"
         gsettings set org.gnome.meld style-scheme meld-base
         spicetify config current_theme light
 
