@@ -219,5 +219,6 @@ end)
 
 return {
   mpd = mpd,
-  spotify = spotify
+  spotify = spotify,
+  volume = volume.helper,
 }

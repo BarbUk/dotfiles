@@ -10,6 +10,7 @@ local altkey  = require('config.keys.mod').altkey
 local apps    = require('config.apps')
 local mpd     = require('config.widgets').mpd
 local spotify = require('config.widgets').spotify
+local volume  = require('config.widgets').volume
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -176,15 +177,19 @@ globalkeys = gears.table.join(
 
   -- Volume control
   awful.key({ }, "XF86AudioRaiseVolume", function ()
-    awful.util.spawn_with_shell(volume_up_cmd)
+    awful.spawn.easy_async(apps.dir.scripts .. "vol_bar up", function(stdout)
+      noti:notify(stdout)
+    end)
     volume.update()
   end, {description = "volume up", group = "sound"} ),
   awful.key({ }, "XF86AudioLowerVolume", function ()
-    awful.util.spawn_with_shell(volume_down_cmd)
+    awful.spawn.easy_async(apps.dir.scripts .. "vol_bar down", function(stdout)
+      noti:notify(stdout)
+    end)
     volume.update()
   end, {description = "volume down", group = "sound"}),
   awful.key({ }, "XF86AudioMute", function ()
-    awful.util.spawn_with_shell(volume_mute_cmd)
+    awful.util.spawn_with_shell(apps.cmd.volume.mute)
     volume.update()
   end, {description = "volume mute", group = "sound"}),
 

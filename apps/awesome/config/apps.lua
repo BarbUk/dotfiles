@@ -33,7 +33,6 @@ return {
     brightness = {
       up = 'light -A ' .. step,
       down = 'light -U ' .. step,
-      get = 'light',
       get = 'light'
     },
 

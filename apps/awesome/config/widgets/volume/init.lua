@@ -44,5 +44,6 @@ volume.widget:connect_signal("button::press", function(_, _, _, button)
 
 return {
   widget = volume.widget,
-  icon = volicon
+  icon = volicon,
+  helper = volume,
 }
