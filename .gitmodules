@@ -13,3 +13,6 @@
 [submodule "modules/z.lua"]
 	path = modules/z.lua
 	url = git@github.com:skywind3000/z.lua.git
+[submodule "apps/awesome/lain"]
+	path = apps/awesome/lain
+	url = git@github.com:lcpz/lain.git
