@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Copyright (C) 2017 barbUk
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+set -o errexit -o pipefail -o nounset
+
+action="${1:-''}"
+step="${2:-5}"
+
+progress() {
+    local percent=$1
+    local completed=$(( percent / 5 ))
+    local remaining=$(( 20 - completed ))
+
+    echo -ne "\n "
+    printf "%0.s█" $(seq $completed)
+    [[ $remaining != 0 ]] && printf "%0.s " $(seq $remaining)
+    echo -n '▎'
+}
+
+usage() {
+    echo "Usage: $0 up/down [step]" >&2
+    echo "Example: $0 up 5" >&2
+    exit 1
+}
+
+case $action in
+    "up" )
+        pamixer --increase "$step" --sink @DEFAULT_SINK@
+    ;;
+    "down" )
+        pamixer --decrease "$step" --sink @DEFAULT_SINK@
+    ;;
+    * )
+        usage
+    ;;
+esac
+
+percent=$(pamixer --get-volume)
+progress "$percent"
