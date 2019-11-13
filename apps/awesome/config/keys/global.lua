@@ -44,14 +44,17 @@ globalkeys = gears.table.join(
   end, { description="take a screenshot accessible from clipboard", group="awesome" }),
 
   awful.key({ modkey,           }, "p", function ()
+    sloppyfocus_last.focus = false
     awful.spawn("rofi -combi-modi 'clipboard:greenclip print,chrome:" .. apps.dir.scripts .. "chrome_history,window,drun' -show combi -modi combi")
   end, { description="Rofi launcher", group="awesome" }),
 
   awful.key({ modkey,           }, "=", function ()
+    sloppyfocus_last.focus = false
     awful.spawn("=")
   end, { description="calculator", group="awesome" }),
 
   awful.key({ modkey,           }, "-", function ()
+    sloppyfocus_last.focus = false
     awful.spawn("/usr/local/bin/splatmoji/splatmoji type")
   end, { description="emoji", group="awesome" }),
 
@@ -293,6 +296,7 @@ globalkeys = gears.table.join(
     awful.spawn(apps.dir.scripts .. "dmenu_monitoring")
   end, {description = "launch monitoring menu", group = "launcher"}),
   awful.key({ modkey, "Shift"   }, "p",      function ()
+    sloppyfocus_last.focus = false
     awful.spawn(apps.dir.scripts .. "snippy")
   end, {description = "snippets", group = "launcher"}),
   awful.key({ modkey, "Shift"   }, "m",
