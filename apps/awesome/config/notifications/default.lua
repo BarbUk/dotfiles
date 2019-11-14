@@ -1,15 +1,13 @@
 local gears     = require("gears")
 local beautiful = require("beautiful")
-local dpi       = require('beautiful').xresources.apply_dpi
 local naughty   = require("naughty")
 
 -- Defaults
-naughty.config.defaults.timeout = 5
-naughty.config.defaults.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, dpi(6)) end
+naughty.config.defaults.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, beautiful.border_radius) end
 
 -- Apply theme variables
-naughty.config.padding = 8
-naughty.config.spacing = 8
+naughty.config.padding = 5
+naughty.config.spacing = 5
 naughty.config.defaults.border_width = 0
 
 -- Icon size
