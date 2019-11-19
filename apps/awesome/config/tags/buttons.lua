@@ -1,8 +1,11 @@
-local awful = require('awful')
-local gears = require('gears')
+local awful  = require('awful')
+local gears  = require('gears')
+local modkey = require('config.keys.mod').modkey
 
 return gears.table.join(
-  awful.button({ }, 1, function(t) t:view_only() end),
+  awful.button({ }, 1, function(t)
+    t:view_only()
+  end),
   awful.button({ modkey }, 1, function(t)
     if client.focus then
       client.focus:move_to_tag(t)
