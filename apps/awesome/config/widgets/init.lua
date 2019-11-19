@@ -7,7 +7,7 @@ local beautiful = require("beautiful")
 local apps      = require('config.apps')
 local bat       = require('config.widgets.battery')
 local volume    = require('config.widgets.volume')
-local spotify_info   = require('config.widgets.spotify')
+local mpris_info   = require('config.widgets.mpris')
 
 -- {{{ Wibox
 local markup = lain.util.markup
@@ -69,25 +69,25 @@ mpd.widget:connect_signal("button::press", function(_, _, _, button)
   end
 )
 
--- Spotify
-local spotify = spotify_info({
-  cmd = apps.dir.scripts .. "spotify_info",
+-- mpris
+local mpris = mpris_info({
+  cmd = apps.dir.scripts .. "mpris_info",
   settings = function()
-    if spotify_now.state ~= "not_running" then
+    if mpris_now[1] ~= "not_running" then
       state = "  "
-      if spotify_now.state == "Playing" then
+      if mpris_now[1] == "Playing" then
         state = markup(beautiful.nord7, "  ")
-      elseif spotify_now.state == "Paused" then
+      elseif mpris_now[1] == "Paused" then
         state = markup(beautiful.nord7, "  ")
       end
-      widget:set_markup(state .. markup(white, spotify_now.artist) .. " - " .. markup(white, spotify_now.title) .. " ")
+      widget:set_markup(state .. markup(white, mpris_now[2]) .. " - " .. markup(white, mpris_now[3]) .. " ")
     else
       widget:set_markup("")
     end
   end
 })
 
-spotify.widget:connect_signal("button::press", function(_, _, _, button)
+mpris.widget:connect_signal("button::press", function(_, _, _, button)
     if (button == 4) then
       awful.util.spawn_with_shell(apps.cmd.player.next, false)
     elseif (button == 5) then
@@ -95,7 +95,7 @@ spotify.widget:connect_signal("button::press", function(_, _, _, button)
     elseif (button == 1) then
       awful.util.spawn_with_shell(apps.cmd.player.toggle, false)
     end
-    widget.update()
+    mpris.update()
   end
 )
 
@@ -163,7 +163,7 @@ awful.screen.connect_for_each_screen(function(s)
 
   local right = { -- Right widgets
     layout = wibox.layout.fixed.horizontal,
-    spotify.widget,
+    mpris.widget,
     mpd.widget,
     separator.center,
     wibox.widget.systray(),
@@ -219,6 +219,6 @@ end)
 
 return {
   mpd = mpd,
-  spotify = spotify,
+  mpris = mpris,
   volume = volume.helper,
 }

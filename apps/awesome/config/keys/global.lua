@@ -9,7 +9,7 @@ local modkey  = require('config.keys.mod').modkey
 local altkey  = require('config.keys.mod').altkey
 local apps    = require('config.apps')
 local mpd     = require('config.widgets').mpd
-local spotify = require('config.widgets').spotify
+local mpris = require('config.widgets').mpris
 local volume  = require('config.widgets').volume
 
 -- Enable hotkeys help widget for VIM and other apps
@@ -209,22 +209,22 @@ globalkeys = gears.table.join(
   awful.key({ }, "XF86AudioPlay", function ()
      os.execute("mpc toggle || playerctl play-pause", false)
     mpd.update()
-    spotify.update()
+    mpris.update()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ }, "Pause", function ()
      os.execute("mpc toggle || playerctl play-pause", false)
     mpd.update()
-    spotify.update()
+    mpris.update()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ }, "XF86AudioPrev", function ()
      os.execute("mpc prev || playerctl previous", false)
     mpd.update()
-    spotify.update()
+    mpris.update()
   end, {description = "music previous", group = "sound"}),
   awful.key({ }, "XF86AudioNext", function ()
      os.execute("mpc next || playerctl next", false)
     mpd.update()
-    spotify.update()
+    mpris.update()
   end, {description = "music next", group = "sound"}),
 
   -- Backlight control

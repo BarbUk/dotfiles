@@ -85,13 +85,3 @@ awful.rules.rules = {
   }
 }
 -- }}}
-
--- client.connect_signal("property::class",function(c)
-
---   if c.class == 'Spotify' then
---     local t = awful.tag.find_by_name(nil, '')
---     c:move_to_tag(t)
---     t:view_only()
---   end
-
--- end)
