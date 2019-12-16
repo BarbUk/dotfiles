@@ -4,10 +4,10 @@ local lain      = require("lain")
 local helpers   = require("lain.helpers")
 local beautiful = require("beautiful")
 
-local apps      = require('config.apps')
-local bat       = require('config.widgets.battery')
-local volume    = require('config.widgets.volume')
-local mpris_info   = require('config.widgets.mpris')
+local apps       = require('config.apps')
+local bat        = require('config.widgets.battery')
+local volume     = require('config.widgets.volume')
+local mpris_info = require('config.widgets.mpris')
 
 -- {{{ Wibox
 local markup = lain.util.markup
@@ -35,7 +35,7 @@ local calendar = lain.widget.cal({
   icons     = helpers.icons_dir .. "cal/" .. beautiful.iconcolor .. "/",
   followtag = true,
   notification_preset = {
-    font = 'PragmataPro Liga 11',
+    font = beautiful.notification_font,
     fg   = beautiful.notification_fg,
     bg   = beautiful.notification_bg
 }})
@@ -218,7 +218,9 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 
 return {
-  mpd = mpd,
-  mpris = mpris,
-  volume = volume.helper,
+  mpd      = mpd,
+  mpris    = mpris,
+  volume   = volume.helper,
+  calendar = calendar,
+  fsroot = fsroot,
 }

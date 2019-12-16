@@ -5,12 +5,14 @@ local beautiful     = require('beautiful')
 local hotkeys_popup = require('awful.hotkeys_popup').widget
 local lain          = require('lain')
 
-local modkey  = require('config.keys.mod').modkey
-local altkey  = require('config.keys.mod').altkey
-local apps    = require('config.apps')
-local mpd     = require('config.widgets').mpd
-local mpris = require('config.widgets').mpris
-local volume  = require('config.widgets').volume
+local modkey   = require('config.keys.mod').modkey
+local altkey   = require('config.keys.mod').altkey
+local apps     = require('config.apps')
+local mpd      = require('config.widgets').mpd
+local mpris    = require('config.widgets').mpris
+local volume   = require('config.widgets').volume
+local calendar = require('config.widgets').calendar
+local fsroot   = require('config.widgets').fsroot
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
