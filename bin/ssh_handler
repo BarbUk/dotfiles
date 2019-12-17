@@ -21,8 +21,8 @@ readonly dest=${1#ssh://}
 
 # use ssh_connect if we connect with own user
 if [[ $dest == *@* ]] && [[ ${dest%%@*} == "$USER" ]]; then
-    termite --exec "$dotbin/ssh_connect $dest" &
+  termite --exec "$dotbin/ssh_connect $dest" &
 else
-    TERM=xterm-256color
-    termite --exec "ssh $dest" &
+  # else connect with default parameters
+  termite --exec "bash -c 'TERM=xterm-256color ssh $dest'" &
 fi
