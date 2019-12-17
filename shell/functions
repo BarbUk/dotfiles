@@ -17,3 +17,7 @@ t () {
         echo "  ☐ $*" >> ~/.t;
     fi
 }
+
+homestead() {
+     HOMESTEAD=true vagrant $*
+}
