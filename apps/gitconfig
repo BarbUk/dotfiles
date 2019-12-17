@@ -16,16 +16,22 @@
 [mergetool]
   keepBackup = false
 [merge]
-  tool = sublimerge
-[mergetool "sublimerge"]
-  cmd = subl -n --wait \"$REMOTE\" \"$BASE\" \"$LOCAL\" \"$MERGED\" --command \"sublimerge_diff_views\"
-  trustExitCode = false
+  #stool = meld
+  tool = smerge
+[mergetool "meld"]
+  cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+[mergetool "smerge"]
+  cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
+  trustExitCode = true
 [pull]
   rebase = true
 [diff]
   indentHeuristic = on
-[difftool "sublimerge"]
-  cmd = subl -n --wait \"$REMOTE\" \"$LOCAL\" --command \"sublimerge_diff_views {\\\"left_read_only\\\": true, \\\"right_read_only\\\": true}\"
+  tool = meld
+[difftool]
+  prompt = false
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = red bold 52
