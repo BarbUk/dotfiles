@@ -37,7 +37,20 @@ _playbook() {
 _ansible_groups() {
   local inventory
   inventory=$(awk '/inventory/ {print $3}' "$HOME"/.ansible.cfg)
-  awk '/\[/' "${inventory/\~/$HOME}" | tr -d '[]'
+  inventory=${inventory/\~/$HOME}
+  if [ -d "$inventory" ]; then
+    awk '/\[/' "${inventory}"* | tr -d '[]'
+  else
+    awk '/\[/' "$inventory" | tr -d '[]'
+  fi
+}
+
+_dsh_groups() {
+  local inventory
+  inventory="$HOME/.dsh/group"
+  if [ -d "$inventory" ]; then
+    ls -1 "$inventory"
+  fi
 }
 
 _archlinux_installed_packages() {
@@ -255,7 +268,7 @@ _fzf_complete_dsh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -g)
-      _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
+      _fzf_complete '--multi' ',' "$@" < <(_dsh_groups)
       return 0
     ;;
   esac
