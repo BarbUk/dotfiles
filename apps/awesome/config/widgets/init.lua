@@ -151,6 +151,7 @@ local cpu = lain.widget.sysload({
 awful.screen.connect_for_each_screen(function(s)
   -- Create the wibox
   s.mywibox = awful.wibar({ position = "top", screen = s, height = beautiful.wibar_height })
+  s.mypromptbox = awful.widget.prompt()
 
   local left = { -- Left widgets
     layout = wibox.layout.fixed.horizontal,
