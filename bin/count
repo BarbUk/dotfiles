@@ -1,0 +1,2 @@
+#!/usr/bin/perl
+system("sort @ARGV | uniq -c | sort -n");

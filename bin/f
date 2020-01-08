@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+my $field = shift or usage();
+$field -= 1 if $field > 0;
+$|=1;
+
+while (<>) {
+        chomp;
+        my @f = split;
+        print $f[$field], "\n";
+}
+
+sub usage {
+        print STDERR "$0 fieldnumber\n"; 
+        exit 1;
+}
