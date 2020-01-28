@@ -41,3 +41,4 @@ alias set-local-timezone='timedatectl set-timezone $(curl -s https://ipapi.co/ti
 alias set-france-timezone='timedatectl set-timezone Europe/Paris'
 alias set-maurice-timezone='timedatectl set-timezone Indian/Mauritius'
 alias gd='GIT_PAGER="delta --light" git diff'
+alias lg='lazygit'
