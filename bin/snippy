@@ -214,8 +214,8 @@ run() {
     # Paste into the current application.
     if is_gui; then
         # We need a little pause to handle the time to focus on the window
-        sleep 0.25
-
+        sleep 0.05
+        wait
         ${GUIPASTE}
         move_cursor "Up" $cursor_line_position
     else
