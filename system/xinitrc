@@ -17,9 +17,9 @@ export COPEPATH=$(cope_path)
 export CCACHEPATH="/usr/lib/ccache/bin"
 export DOTBIN="$HOME/.dotfiles/bin"
 export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:$COPEPATH:/usr/local/bin:$PATH"
-xcalib -d :0 $HOME/.dotfiles/system/lenovo_x220_4290rv5.icc
+xcalib -d :0 $HOME/.dotfiles/system/icc/lenovo_x220_4290rv5.icc
 xset s 120 120
-picom --config ~/.compton.conf --experimental-backends &
+picom --config $HOME/.compton.conf --experimental-backends --daemon
 wmname LG3D
 export SSH_ASKPASS=ssh-askpass
 eval "$(keychain --eval --agents ssh,gpg)"
