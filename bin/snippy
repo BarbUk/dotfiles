@@ -80,9 +80,23 @@ bashdown_simple() {
 
 # Detect if focused app is a terminal or a gui
 is_gui() {
-    name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
-    [[ "$name" =~ term|tilda|kitty|alacritty ]] && return 1
+    class="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
+    # Return false if the class if a term
+    if [[ "$class" =~ term|tilda|kitty|alacritty ]]; then
+        return 1
+    fi
     return 0
+}
+
+# Detect vim
+is_vim() {
+    name="$(xprop -id "$(xdotool getwindowfocus)" WM_NAME | cut -d'"' -f2)"
+    # vim with `set title` set the term title with:
+    # document - VIM
+    if [[ "${name:(-3)}" == VIM ]]; then
+        return 0
+    fi
+    return 1
 }
 
 # Find the index of a string in a string
@@ -214,12 +228,15 @@ run() {
     # Paste into the current application.
     if is_gui; then
         # We need a little pause to handle the time to focus on the window
-        sleep 0.05
+        sleep 0.225
         wait
         ${GUIPASTE}
         move_cursor "Up" $cursor_line_position
     else
         ${CLIPASTE}
+        if is_vim; then
+            move_cursor "Up" $cursor_line_position
+        fi
     fi
 
     move_cursor "Left" $cursor_position
