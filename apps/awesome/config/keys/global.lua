@@ -194,7 +194,9 @@ globalkeys = gears.table.join(
     volume.update()
   end, {description = "volume down", group = "sound"}),
   awful.key({ }, "XF86AudioMute", function ()
-    awful.util.spawn_with_shell(apps.cmd.volume.mute)
+    awful.spawn.easy_async(apps.dir.scripts .. "vol_bar mute", function(stdout)
+      noti:notify(stdout)
+    end)
     volume.update()
   end, {description = "volume mute", group = "sound"}),
 
