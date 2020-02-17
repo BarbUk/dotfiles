@@ -81,13 +81,13 @@ When you need a list of your server to ssh to: [Give me hostname](https://github
 
 ### Light bar
 
-![snippy](img/light_bar.png)
+![light_bar](img/light_bar.png)
 
 [Light bar](https://github.com/BarbUk/dotfiles/blob/master/bin/light_bar) is a minimal script to change screen brightness and display a simple bar. Good to include in awesomewm or any other wm.
 
 ### Volume bar
 
-![snippy](img/vol_bar.png)
+![vol_bar](img/vol_bar.png)
 
 [Volume bar](https://github.com/BarbUk/dotfiles/blob/master/bin/vol_bar) is a minimal script to change volume and display a simple bar. Good to include in awesomewm or any other wm.
 
