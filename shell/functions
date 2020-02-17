@@ -19,5 +19,10 @@ t () {
 }
 
 homestead() {
-     HOMESTEAD=true vagrant $*
+    HOMESTEAD=true vagrant $*
+}
+
+tmpdir() {
+    tmpdir=$(mktemp --directory)
+    cd "$tmpdir" || exit
 }
