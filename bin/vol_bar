@@ -19,20 +19,37 @@ set -o errexit -o pipefail -o nounset
 
 action="${1:-''}"
 step="${2:-5}"
+icon_mute=
+icon_off=
+icon_low=
+icon_high=
 
 progress() {
     local percent=$1
     local completed=$(( percent / 5 ))
     local remaining=$(( 20 - completed ))
 
-    echo -ne "\n "
-    printf "%0.s█" $(seq $completed)
+    if pamixer --get-mute >/dev/null 2>&1; then
+        icon=$icon_mute
+
+    elif [ "$percent" -gt 50 ]; then
+        icon=$icon_high
+
+    elif [ "$percent" -gt 0 ]; then
+        icon=$icon_low
+
+    else
+        icon=$icon_off
+    fi
+    echo -ne "\n$icon "
+    if [ "$percent" -gt 0 ]; then
+        printf "%0.s█" $(seq $completed)
+    fi
     [[ $remaining != 0 ]] && printf "%0.s " $(seq $remaining)
-    echo -n '▎'
 }
 
 usage() {
-    echo "Usage: $0 up/down [step]" >&2
+    echo "Usage: $0 up/down/mute [step]" >&2
     echo "Example: $0 up 5" >&2
     exit 1
 }
@@ -44,10 +61,14 @@ case $action in
     "down" )
         pamixer --decrease "$step" --sink @DEFAULT_SINK@
     ;;
+    "mute" )
+        pamixer --toggle-mute --sink @DEFAULT_SINK@
+    ;;
     * )
         usage
     ;;
 esac
-
+set +o errexit
 percent=$(pamixer --get-volume)
+set -o errexit
 progress "$percent"
