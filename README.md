@@ -20,6 +20,8 @@ While my dotfiles are optimised for my workflow, you can maybe find something in
 [`Snippy`](https://github.com/BarbUk/dotfiles/blob/master/bin/snippy) is enhanced version of the snippy snippet utility.
 I use it everyday with more than 600 snippets.
 
+![snippy](img/snippy.png)
+
 Here some enhancements that I made:
 * keep current clipboard after pasting the snippet
 * `{clipboard}` placeholder to use current clipboard in snippet
@@ -79,9 +81,13 @@ When you need a list of your server to ssh to: [Give me hostname](https://github
 
 ### Light bar
 
+![snippy](img/light_bar.png)
+
 [Light bar](https://github.com/BarbUk/dotfiles/blob/master/bin/light_bar) is a minimal script to change screen brightness and display a simple bar. Good to include in awesomewm or any other wm.
 
 ### Volume bar
+
+![snippy](img/vol_bar.png)
 
 [Volume bar](https://github.com/BarbUk/dotfiles/blob/master/bin/vol_bar) is a minimal script to change volume and display a simple bar. Good to include in awesomewm or any other wm.
 
