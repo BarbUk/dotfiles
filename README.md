@@ -4,7 +4,7 @@
 
 ## About
 
-This repository contains files for configuring my Terminal environment and other various macOS settings. See [Github does dotfiles](https://dotfiles.github.io) for more info
+This repository contains files for configuring my Terminal environment and other various linux settings. See [Github does dotfiles](https://dotfiles.github.io) for more info
 
 ## What does it look like
 
@@ -39,6 +39,19 @@ CREATE DATABASE \`{clipboard}\` CHARACTER SET utf8 COLLATE utf8_general_ci;
   ```
 * `##noparse` header in snippet to not parse
 * directly execute command begining by $
+* execute bash script in $snippets_directory/scripts
+* copy script content when selection is selected by CTRL+Return, exemple:
+  - with the following snippet: `$(date +%Y-%m-%d-%Hh%Mm%S)`
+  - using Return will paste the current date
+  - using CTRL+Return will paste the command directly
+* icons ! Icon name is set from first dir name. If you have the following snippets, the terminal icon will be displayed in rofi:
+```
+    terminal/
+    ├── other
+    │   └── date
+    └── script
+        └── test
+```
 
 ### Chrome history
 
@@ -67,6 +80,10 @@ When you need a list of your server to ssh to: [Give me hostname](https://github
 ### Light bar
 
 [Light bar](https://github.com/BarbUk/dotfiles/blob/master/bin/light_bar) is a minimal script to change screen brightness and display a simple bar. Good to include in awesomewm or any other wm.
+
+### Volume bar
+
+[Volume bar](https://github.com/BarbUk/dotfiles/blob/master/bin/vol_bar) is a minimal script to change volume and display a simple bar. Good to include in awesomewm or any other wm.
 
 ### Ssh connect
 [Ssh connect](https://github.com/BarbUk/dotfiles/blob/master/bin/ssh_connect) is a script that:
