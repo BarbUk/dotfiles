@@ -4,10 +4,23 @@ give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
 fzf_default_options="-i --select-1 --exit-0 --tac --tiebreak=length,begin,index --reverse --inline-info"
 fzf_height="--height ${FZF_TMUX_HEIGHT:-50%} --min-height 25"
 
-# To redraw line after fzf closes (printf '\e[5n')
-bind '"\e[0n": redraw-current-line'
-export FZF_DEFAULT_COMMAND='ag -g ""'
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
+export FZF_COMPLETION_TRIGGER='**'
+
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --max-depth 5 --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --max-depth 3 --follow --exclude ".git" . "$1"
+}
+
+test -f /usr/share/fzf/completion.bash && source /usr/share/fzf/completion.bash
 
 _complete() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -22,19 +35,15 @@ _complete() {
   return 0
 }
 
-_fzf_compgen_path() {
-    ag -g "" "$1"
-}
-
-_privkey() {
+_fzf_privkey() {
   find "$HOME"/.ssh -type f -name id_rsa
 }
 
-_playbook() {
+_fzf_playbook() {
   find playbooks -maxdepth 1 -type f -name '*.yml'
 }
 
-_ansible_groups() {
+_fzf_ansible_groups() {
   local inventory
   inventory=$(awk '/inventory/ {print $3}' "$HOME"/.ansible.cfg)
   inventory=${inventory/\~/$HOME}
@@ -45,7 +54,7 @@ _ansible_groups() {
   fi
 }
 
-_dsh_groups() {
+_fzf_dsh_groups() {
   local inventory
   inventory="$HOME/.dsh/group"
   if [ -d "$inventory" ]; then
@@ -53,11 +62,11 @@ _dsh_groups() {
   fi
 }
 
-_archlinux_installed_packages() {
+_fzf_archlinux_installed_packages() {
    pacman -Qq
 }
 
-log() {
+_fzf_log() {
   local cmd log_file
   cmd="command find /var/log/ -type f -name '*log' 2>/dev/null"
   log_file=$(eval "$cmd" | fzf "$fzf_height" --tac --tiebreak=length,begin,index --reverse --inline-info) && less "$log_file"
@@ -127,13 +136,14 @@ __fzf_select__() {
     -o -type f -print \
     -o -type d -print \
     -o -type l -print 2> /dev/null | cut -b3-"}"
-  eval "$cmd" | FZF_DEFAULT_OPTS="$fzf_height --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" fzf -m "$@" | while read -r item; do
+
+  eval "$cmd" | FZF_DEFAULT_OPTS="$fzf_height --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS --preview='fzf_preview {}'" fzf -m "$@" | while read -r item; do
     printf '%q ' "$item"
   done
   echo
 }
 
-fzf-file-widget() {
+_fzf_file_widget() {
   local selected
   selected="$(__fzf_select__ "$@")"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
@@ -238,7 +248,7 @@ _fzf_complete_ssh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -i)
-      _fzf_complete '--no-multi' ' ' '' "$@" < <(_privkey)
+      _fzf_complete '--no-multi' ' ' '' "$@" < <(_fzf_privkey)
       return 0
   ;;
   esac
@@ -253,7 +263,7 @@ _fzf_complete_ansible() {
       return 0
     ;;
     -l)
-      _fzf_complete '--multi' ',' "$@" < <(_ansible_groups)
+      _fzf_complete '--multi' ',' "$@" < <(_fzf_ansible_groups)
       return 0
     ;;
     -u)
@@ -261,14 +271,14 @@ _fzf_complete_ansible() {
     ;;
   esac
 
-  _fzf_complete '--multi' ' ' "$@" < <(_playbook)
+  _fzf_complete '--multi' ' ' "$@" < <(_fzf_playbook)
 }
 
 _fzf_complete_dsh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -g)
-      _fzf_complete '--multi' ',' "$@" < <(_dsh_groups)
+      _fzf_complete '--multi' ',' "$@" < <(_fzf_dsh_groups)
       return 0
     ;;
   esac
@@ -278,7 +288,7 @@ _fzf_complete_yaourt() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -Rcs|-Qo|-Qi|-Ql)
-      _fzf_complete '--multi' ' ' "$@" < <(_archlinux_installed_packages)
+      _fzf_complete '--multi' ' ' "$@" < <(_fzf_archlinux_installed_packages)
       return 0
   ;;
   esac
@@ -288,7 +298,7 @@ _fzf_complete_pssh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     --hosts|-h)
-      _fzf_complete '--no-multi' ' ' "$@" < <(_ansible_groups)
+      _fzf_complete '--no-multi' ' ' "$@" < <(_fzf_ansible_groups)
       return 0
   ;;
   esac
@@ -336,8 +346,8 @@ bind '"\e^": history-expand-line'
 # CTRL-R - Paste the selected command from history into the command line
 # shellcheck disable=SC2016
 bind '"\C-r": " \C-e\C-u`__fzf_history__`\e\C-e\e^\er"'
-# CTRL-T - Paste the selected file path into the command line
-bind -x '"\C-f": "fzf-file-widget"'
+# CTRL-f - Paste the selected file path into the command line
+bind -x '"\C-f": "_fzf_file_widget"'
 # ALT-S - cd into the selected directory
 # shellcheck disable=SC2016
 bind '"\es": " \C-e\C-u`__fzf_cd__`\e\C-e\er\C-m"'

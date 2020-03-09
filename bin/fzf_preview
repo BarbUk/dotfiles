@@ -18,11 +18,29 @@
 set -o errexit -o pipefail -o nounset
 
 readonly item=$1
+readonly monitored_hosts="$HOME/.dsh/group/monitored"
+
+# Define apps to use
+tree="tree -C"
+if command -v lsd >/dev/null 2>&1; then
+  tree="lsd --tree --color always --icon always"
+fi
+
+highlight="highlight --force -O ansi -l"
+if command -v bat >/dev/null 2>&1; then
+  highlight="bat --style=numbers,changes --color=always"
+fi
 
 # shellcheck source=color_echo
 . color_echo
 
-if [[ $item == *\.hosting ]] || [[ $item == *\.net ]]; then
+if [ -d "$item" ]; then
+  $tree "$item" | head -100
+
+elif [ -f "$item" ]; then
+  $highlight "$item" | head -100
+
+elif grep -q "$item" "$monitored_hosts"; then
     information "Informations"
     echo "$RDA_URL$item"
     echo
@@ -34,12 +52,4 @@ if [[ $item == *\.hosting ]] || [[ $item == *\.net ]]; then
       information "Ongoing problems"
       ssh -t "$MONITORING_HOST" -- icingacli monitoring list service --host="$item" --verbose --problems 2>/dev/null
     fi
-fi
-
-if [ -d "$item" ]; then
-  ls -l "$item"
-fi
-
-if [ -f "$item" ]; then
-  highlight --force -O ansi -l "$item" 2> /dev/null | head -50
 fi
