@@ -69,6 +69,7 @@ export SCM_CHECK=true
 
 # Bashit theme
 export BASH_IT_THEME='barbuk'
+export BAT_THEME="GitHub"
 
 # Set my editor and git editor
 export EDITOR="vim"
