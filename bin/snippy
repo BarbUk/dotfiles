@@ -50,7 +50,7 @@
 #
 set -o errexit -o pipefail -o nounset
 
-readonly snippets_directory=${HOME}/.snippy
+readonly snippets_directory=$XDG_CONFIG_HOME/snippy
 readonly MENU_ENGINE="rofi"
 readonly DMENU_ARGS=(-dmenu -i -sort -async-pre-read 20 -theme-str 'element-icon { size: 2.35ch;}' -kb-accept-custom "" -kb-custom-1 "Ctrl+Return")
 
