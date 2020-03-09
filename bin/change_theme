@@ -39,6 +39,7 @@ change_theme() {
     local vim_conf="$HOME/.vim/vimrc.background"
     local rofi_conf="$HOME/.config/rofi/config"
     local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
+    local lazygit_conf="$HOME/.config/jesseduffield/lazygit/config.yml"
 
     if [ -e "$theme_file" ]; then
         cat "$conf_dir/termite/termite.conf" "$conf_dir/termite/termite.dark" > "$termite_conf"
@@ -52,6 +53,7 @@ change_theme() {
         sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
         sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
         sed -i -e "s/$theme.rasi/${theme}-Dark.rasi/" "$rofi_conf"
+        sed -i -e 's/lighttheme: true/lighttheme: false/' "$lazygit_conf"
         gsettings set org.gnome.meld style-scheme meld-dark
         spicetify config current_theme dark
 
@@ -68,6 +70,7 @@ change_theme() {
         sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
         sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
         sed -i -e "s/${theme}-Dark.rasi/${theme}.rasi/" "$rofi_conf"
+        sed -i -e 's/lighttheme: false/lighttheme: true/' "$lazygit_conf"
         gsettings set org.gnome.meld style-scheme meld-base
         spicetify config current_theme light
 
