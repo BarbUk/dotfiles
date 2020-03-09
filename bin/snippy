@@ -1,6 +1,5 @@
 #!/usr/bin/bash
-# video demo at: http://www.youtube.com/watch?v=90xoathBYfk
-
+#
 # augmented by barbuk: https://github.com/BarbUk/dotfiles/blob/master/bin/snippy
 #  . restore current clipboard
 #  . {clipboard} placeholder to use current clipboard in snippet
