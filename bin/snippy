@@ -136,6 +136,15 @@ move_cursor() {
     fi
 }
 
+init() {
+    # Check
+    if [[ ! -d "$snippets_directory" ]]; then
+        mkdir -p "$snippets_directory"
+        echo "$snippets_directory created"
+        echo "hi it is \$(date)" > "$snippets_directory/test"
+    fi
+}
+
 run() {
     cd "${snippets_directory}" || exit
 
@@ -267,4 +276,4 @@ run() {
     echo -ne "$current_clipboard" | xsel --clipboard --input
 }
 
-run
+init && run
