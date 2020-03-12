@@ -263,7 +263,7 @@ globalkeys = gears.table.join(
   end, {description = "lock", group = "screen"}),
 
   awful.key({ }, "XF86Display", function ()
-      awful.util.spawn_with_shell(apps.dir.scripts .. "detect_screen")
+      awful.util.spawn("autorandr -c")
   end, {description = "detect display", group = "screen"}),
 
   -- Copy primary to clipboard (terminals to gtk)
@@ -299,26 +299,29 @@ globalkeys = gears.table.join(
   awful.key({ modkey, altkey, "Control" }, "Return", function ()
     awful.spawn(apps.dir.scripts .. "dmenu_monitoring")
   end, {description = "launch monitoring menu", group = "launcher"}),
-  awful.key({ modkey, "Shift"   }, "p",      function ()
+  awful.key({ modkey, "Shift"   }, "p", function ()
     sloppyfocus_last.focus = false
     awful.spawn(apps.dir.scripts .. "snippy")
   end, {description = "snippets", group = "launcher"}),
-  awful.key({ modkey, "Shift"   }, "m",
-    function () awful.util.spawn_with_shell("termite --class='center' --geometry='700x400' --exec=ncmpcpp &")
+  awful.key({ modkey, "Shift"   }, "m", function ()
+    awful.util.spawn_with_shell("termite --class='center' --geometry='700x400' --exec=ncmpcpp &")
   end, {description = "terminal centered", group = "launcher"}),
-  awful.key({ modkey }, "0",
-    function () awful.spawn( apps.dir.scripts .. "qrcodize", false )
+  awful.key({ modkey }, "0", function ()
+    awful.spawn( apps.dir.scripts .. "qrcodize", false )
   end, {description = "qrcodize your clipboard ", group = "launcher"}),
-  awful.key({ modkey }, "t",
-    function ()
-      awful.spawn( apps.default.browser .. " --profile-directory='Default' https://mail.google.com/mail/u/0/#inbox", false )
-    end
-  , {description = "launch perso browser", group = "launcher"}),
-  awful.key({ modkey }, "y",
-    function ()
-      awful.spawn( apps.default.browser .. " --profile-directory='Profile 1' https://mail.google.com/mail/u/0/#inbox https://app.frontapp.com", false )
-    end
-  , {description = "launch work browser", group = "launcher"}),
+  awful.key({ modkey }, "t", function ()
+    awful.spawn( apps.default.browser .. " --profile-directory='Default' https://mail.google.com/mail/u/0/#inbox", false )
+  end, {description = "launch perso browser", group = "launcher"}),
+  awful.key({ modkey }, "y", function ()
+    awful.spawn( apps.default.browser .. " --profile-directory='Profile 1' https://mail.google.com/mail/u/0/#inbox https://app.frontapp.com", false )
+  end, {description = "launch work browser", group = "launcher"}),
+  awful.key({ modkey }, "u", function ()
+    spawn_and_move("mattermost-desktop", "Mattermost", 1)
+    spawn_and_move("skypeforlinux", "Skype", 1)
+    spawn_and_move("slack", "Slack", 2)
+    spawn_and_move("google-chrome-stable --profile-directory='Profile 1' https://mail.google.com/mail/u/0/#inbox https://app.frontapp.com", "Google-chrome", 3)
+    spawn_and_move("subl", "Sublime_text", 4)
+  end, {description = "launch work apps on their tag", group = "launcher"}),
 
   -- Default
   -- Prompt

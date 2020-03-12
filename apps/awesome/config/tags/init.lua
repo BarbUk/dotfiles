@@ -1,9 +1,9 @@
-local awful   = require('awful')
-local gears   = require('gears')
-local wibox   = require('wibox')
-local beautiful   = require('beautiful')
-local lain    = require('lain')
-local buttons = require('config.tags.buttons')
+local awful     = require('awful')
+local gears     = require('gears')
+local wibox     = require('wibox')
+local beautiful = require('beautiful')
+local lain      = require('lain')
+local buttons   = require('config.tags.buttons')
 
 -- table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
