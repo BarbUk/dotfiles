@@ -17,7 +17,8 @@
 set -o errexit -o pipefail -o nounset
 
 readonly icon=Papirus
-readonly theme=Arc
+readonly theme_light=Arc
+readonly theme_dark=Nordic
 readonly sublime_theme_light="Boxy Yesterday"
 readonly sublime_colorscheme_light="Color Scheme - Default\\/Celeste.sublime-color-scheme"
 readonly sublime_theme_dark="Boxy Ocean"
@@ -48,11 +49,11 @@ change_theme() {
         sed -i -e "s/$sublime_colorscheme_light/$sublime_colorscheme_dark/g" "$sublime_conf"
         sed -i -e "s/$sublime_theme_light.sublime-theme/$sublime_theme_dark.sublime-theme/g" "$sublime_conf"
         sed -i -e "s/$plaintasks_colorscheme_light/$plaintasks_colorscheme_dark/g" "$plaintasks_conf"
-        sed -i -e "s/ThemeName=$theme/ThemeName=$theme-Dark/g" "$gtk_conf"
+        sed -i -e "s/ThemeName=$theme_light/ThemeName=$theme_dark/g" "$gtk_conf"
         sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
         sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
-        sed -i -e "s/$theme.rasi/${theme}-Dark.rasi/" "$rofi_conf"
+        sed -i -e "s/${theme_light}.rasi/nord.rasi/" "$rofi_conf"
         sed -i -e 's/lighttheme: true/lighttheme: false/' "$lazygit_conf"
         gsettings set org.gnome.meld style-scheme meld-dark
         spicetify config current_theme dark
@@ -65,11 +66,11 @@ change_theme() {
         sed -i -e "s/$sublime_colorscheme_dark/$sublime_colorscheme_light/g" "$sublime_conf"
         sed -i -e "s/$sublime_theme_dark.sublime-theme/$sublime_theme_light.sublime-theme/g" "$sublime_conf"
         sed -i -e "s/$plaintasks_colorscheme_dark/$plaintasks_colorscheme_light/g" "$plaintasks_conf"
-        sed -i -e "s/ThemeName=$theme-Dark/ThemeName=$theme/g" "$gtk_conf"
+        sed -i -e "s/ThemeName=$theme_dark/ThemeName=$theme_light/g" "$gtk_conf"
         sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
         sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
         sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
-        sed -i -e "s/${theme}-Dark.rasi/${theme}.rasi/" "$rofi_conf"
+        sed -i -e "s/nord.rasi/${theme_light}.rasi/" "$rofi_conf"
         sed -i -e 's/lighttheme: false/lighttheme: true/' "$lazygit_conf"
         gsettings set org.gnome.meld style-scheme meld-base
         spicetify config current_theme light
