@@ -55,6 +55,25 @@ CREATE DATABASE \`{clipboard}\` CHARACTER SET utf8 COLLATE utf8_general_ci;
         └── test
 ```
 
+### Mprisctl
+
+[`Mprisctl`](https://github.com/BarbUk/dotfiles/blob/master/bin/mprisctl) is wrapper around [`playerctl`](https://github.com/altdesktop/playerctl). By default, it shows the status, artist and track title of the last detected player.
+
+* default: shows the status, artist and track title of the last detected player
+```bash
+$ mprisctl 
+Playing
+ARTE Concert
+Kompromat @ La Cigale (Full Show HiRes) – ARTE Concert
+```
+* Support action from playerctl and apply them to the current playing player or the last active player:
+  - play      
+  - pause     
+  - play-pause
+  - stop      
+  - next      
+  - previous  
+
 ### Chrome history
 
 [`Chrome history`](https://github.com/BarbUk/dotfiles/blob/master/bin/chrome_history) is a basic shell script that output your chrome browser history. It's made to work with [`rofi`](https://github.com/DaveDavenport/rofi).
