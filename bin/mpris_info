@@ -16,21 +16,49 @@
 #
 set -o errexit -o pipefail -o nounset
 
+readonly state_file=/tmp/mpris_last_player
+action="${1:-info}"
 mpris=false
 
+info() {
+  playerctl \
+    --all-players \
+    --format '{{playerName}};{{status}};{{xesam:artist}};{{markup_escape(xesam:title)}}' \
+    metadata 2>/dev/null
+}
+
 if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
-    while IFS=';' read -r player status artist title; do
-        if [ $status = Playing ]; then
-            mpris="$status\n$artist\n$title"
+  case "$action" in
+    'info' )
+      while IFS=';' read -r player status artist title; do
+        if [ "$status" = Playing ]; then
+          mpris="$status\n$artist\n$title"
+        elif [ -e "$state_file" ] && [ "$(cat "$state_file")" = "$player" ]; then
+          mpris="$status\n$artist\n$title"
         elif [ "$mpris" = false ]; then
-            mpris="$status\n$artist\n$title"
+          mpris="$status\n$artist\n$title"
         fi
-    done <<EOF
-        $(playerctl -a metadata --format '{{playerName}};{{status}};{{xesam:artist}};{{markup_escape(xesam:title)}}' 2>/dev/null)
-EOF
-    echo -e "$mpris"
+      done < <(info)
+
+      echo -e "$mpris"
+      ;;
+    * )
+      while IFS=';' read -r player status artist title; do
+        if [ "$status" = Playing ]; then
+          playerctl --player="$player" "$action"
+          mpris="$player"
+          echo "$player" > "$state_file"
+        fi
+      done < <(info)
+
+      if [ "$mpris" = false ] && [ -e "$state_file" ]; then
+        if ! playerctl --player="$(cat "$state_file")" "$action" 2>/dev/null; then
+          playerctl "$action"
+          rm "$state_file"
+        fi
+      fi
+      ;;
+  esac
 else
     echo 'not_running'
 fi
-
-
