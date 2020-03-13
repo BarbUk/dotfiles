@@ -71,7 +71,7 @@ mpd.widget:connect_signal("button::press", function(_, _, _, button)
 
 -- mpris
 local mpris = mpris_info({
-  cmd = apps.dir.scripts .. "mpris_info",
+  cmd = apps.dir.scripts .. "mprisctl",
   settings = function()
     if mpris_now[1] ~= "not_running" then
       state = "  "
@@ -223,5 +223,5 @@ return {
   mpris    = mpris,
   volume   = volume.helper,
   calendar = calendar,
-  fsroot = fsroot,
+  fsroot   = fsroot,
 }

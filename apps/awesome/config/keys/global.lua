@@ -207,26 +207,26 @@ globalkeys = gears.table.join(
 
   -- Music control
   awful.key({ }, "XF86AudioStop", function ()
-     os.execute("mpc stop || playerctl stop", false)
+    os.execute("mpc stop || " .. apps.dir.scripts .. "mprisctl stop", false)
     mpd.update()
   end, {description = "music stop", group = "sound"}),
   awful.key({ }, "XF86AudioPlay", function ()
-     os.execute("mpc toggle || playerctl play-pause", false)
+    os.execute("mpc toggle || " .. apps.dir.scripts .. "mprisctl play-pause", false)
     mpd.update()
     mpris.update()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ }, "Pause", function ()
-     os.execute("mpc toggle || playerctl play-pause", false)
+    os.execute("mpc toggle || " .. apps.dir.scripts .. "mprisctl play-pause", false)
     mpd.update()
     mpris.update()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ }, "XF86AudioPrev", function ()
-     os.execute("mpc prev || playerctl previous", false)
+    os.execute("mpc prev || " .. apps.dir.scripts .. "mprisctl previous", false)
     mpd.update()
     mpris.update()
   end, {description = "music previous", group = "sound"}),
   awful.key({ }, "XF86AudioNext", function ()
-     os.execute("mpc next || playerctl next", false)
+    os.execute("mpc next || " .. apps.dir.scripts .. "mprisctl next", false)
     mpd.update()
     mpris.update()
   end, {description = "music next", group = "sound"}),
