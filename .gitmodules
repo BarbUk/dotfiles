@@ -13,3 +13,6 @@
 [submodule "apps/awesome/lain"]
 	path = apps/awesome/lain
 	url = git@github.com:lcpz/lain.git
+[submodule "modules/bash-it"]
+	path = modules/bash-it
+	url = git@github.com:Bash-it/bash-it.git
