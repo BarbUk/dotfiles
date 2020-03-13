@@ -129,7 +129,7 @@ move_cursor() {
     if [[ $count -gt 0 ]]; then
         until [  "$count" -eq 0 ]; do
             keys+="${key} "
-            ((count-=1))
+            ((count-=1)) || true
         done
         # shellcheck disable=SC2086
         xdotool key --delay 0.1 $keys
