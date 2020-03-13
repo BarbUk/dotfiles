@@ -16,9 +16,21 @@
 #
 set -o errexit -o pipefail -o nounset
 
+mpris=false
+
 if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
-    playerctl status 2>/dev/null
-    playerctl -a metadata 2>/dev/null | awk '/xesam:artist/ || /xesam:title/ {$1=$2=""; print $0}' | awk '{$1=$1};1'
+    while IFS=';' read -r player status artist title; do
+        if [ $status = Playing ]; then
+            mpris="$status\n$artist\n$title"
+        elif [ "$mpris" = false ]; then
+            mpris="$status\n$artist\n$title"
+        fi
+    done <<EOF
+        $(playerctl -a metadata --format '{{playerName}};{{status}};{{xesam:artist}};{{markup_escape(xesam:title)}}' 2>/dev/null)
+EOF
+    echo -e "$mpris"
 else
     echo 'not_running'
 fi
+
+
