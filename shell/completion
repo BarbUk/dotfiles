@@ -20,7 +20,11 @@ _fzf_compgen_dir() {
   fd --type d --max-depth 3 --follow --exclude ".git" . "$1"
 }
 
-test -f /usr/share/fzf/completion.bash && source /usr/share/fzf/completion.bash
+# To redraw line after fzf closes (printf '\e[5n')
+bind '"\e[0n": redraw-current-line'
+
+# fzf default completion
+#[[ -f /usr/share/fzf/completion.bash ]] && source /usr/share/fzf/completion.bash
 
 _complete() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
