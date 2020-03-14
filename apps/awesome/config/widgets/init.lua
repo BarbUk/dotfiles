@@ -73,7 +73,7 @@ mpd.widget:connect_signal("button::press", function(_, _, _, button)
 local mpris = mpris_info({
   cmd = apps.dir.scripts .. "mprisctl",
   settings = function()
-    if mpris_now[1] ~= "not_running" then
+    if mpris_now[1] ~= "no player detected" then
       state = "  "
       if mpris_now[1] == "Playing" then
         state = markup(beautiful.nord7, "  ")

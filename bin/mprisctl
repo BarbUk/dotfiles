@@ -18,7 +18,7 @@ set -o errexit -o pipefail -o nounset
 
 readonly state_file=/tmp/mpris_last_player
 action="${1:-info}"
-mpris=false
+mpris='no player detected'
 
 info() {
   playerctl \
@@ -35,7 +35,7 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
           mpris="$status\n$artist\n$title"
         elif [ -e "$state_file" ] && [ "$(cat "$state_file")" = "$player" ]; then
           mpris="$status\n$artist\n$title"
-        elif [ "$mpris" = false ]; then
+        elif [ "$mpris" = 'no player detected' ]; then
           mpris="$status\n$artist\n$title"
         fi
       done < <(info)
@@ -51,7 +51,7 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
         fi
       done < <(info)
 
-      if [ "$mpris" = false ] && [ -e "$state_file" ]; then
+      if [ "$mpris" = 'no player detected' ] && [ -e "$state_file" ]; then
         if ! playerctl --player="$(cat "$state_file")" "$action" 2>/dev/null; then
           playerctl "$action"
           rm "$state_file"
@@ -60,5 +60,5 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
       ;;
   esac
 else
-    echo 'not_running'
+    echo 'no player detected'
 fi
