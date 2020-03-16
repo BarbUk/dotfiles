@@ -21,7 +21,7 @@ xcalib -d :0 $HOME/.dotfiles/system/icc/lenovo_x220_4290rv5.icc
 xset s 120 120
 picom --config $HOME/.compton.conf --experimental-backends --daemon
 wmname LG3D
-export SSH_ASKPASS=ssh-askpass
+export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
 eval "$(keychain --eval --agents ssh,gpg)"
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
 export _JAVA_AWT_WM_NONREPARENTING=1
