@@ -203,6 +203,9 @@ globalkeys = gears.table.join(
   awful.key({ }, "XF86Launch1", function ()
     awful.spawn(apps.dir.scripts .. "change_theme")
   end, {description = "change theme", group = "theme"}),
+  awful.key({ }, "XF86LaunchA", function ()
+    awful.spawn(apps.dir.scripts .. "change_theme")
+  end, {description = "change theme", group = "theme"}),
 
   -- Music control
   awful.key({ }, "XF86AudioStop", function ()
@@ -210,6 +213,11 @@ globalkeys = gears.table.join(
     mpd.update()
   end, {description = "music stop", group = "sound"}),
   awful.key({ }, "XF86AudioPlay", function ()
+    os.execute("mpc toggle || " .. apps.dir.scripts .. "mprisctl play-pause", false)
+    mpd.update()
+    mpris.update()
+  end, {description = "music toggle", group = "sound"}),
+  awful.key({ modkey, "Control" }, "Down", function ()
     os.execute("mpc toggle || " .. apps.dir.scripts .. "mprisctl play-pause", false)
     mpd.update()
     mpris.update()
@@ -224,7 +232,17 @@ globalkeys = gears.table.join(
     mpd.update()
     mpris.update()
   end, {description = "music previous", group = "sound"}),
+  awful.key({ modkey, "Control" }, "Left", function ()
+    os.execute("mpc prev || " .. apps.dir.scripts .. "mprisctl previous", false)
+    mpd.update()
+    mpris.update()
+  end, {description = "music previous", group = "sound"}),
   awful.key({ }, "XF86AudioNext", function ()
+    os.execute("mpc next || " .. apps.dir.scripts .. "mprisctl next", false)
+    mpd.update()
+    mpris.update()
+  end, {description = "music next", group = "sound"}),
+  awful.key({ modkey, "Control" }, "Right", function ()
     os.execute("mpc next || " .. apps.dir.scripts .. "mprisctl next", false)
     mpd.update()
     mpris.update()
