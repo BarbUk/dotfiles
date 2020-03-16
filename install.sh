@@ -10,6 +10,7 @@ if [ "$(uname)" = "Darwin" ]; then
 else
     LN='ln -srf'
     mkdir -p "$HOME"/{.vim,.tmux/plugins,.mpv,.mpd,.ncmpcpp,.config/rofi}
+    mkdir -p "$HOME"/.vim/{swp,backup}
     ${LN} "$dotfiles_dir/system/xinitrc" "$HOME/.xinitrc"
     ${LN} "$dotfiles_dir/apps/mpv" "$HOME/.mpv/config"
     ${LN} "$dotfiles_dir/apps/mpd.conf" "$HOME/.mpd/mpd.conf"
