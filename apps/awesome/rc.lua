@@ -26,7 +26,7 @@ function sloppy_focus(c)
   local mcoords = mouse.coords()
   if sloppyfocus_last.focus then
     if c ~= sloppyfocus_last.c and (mcoords.x ~= sloppyfocus_last.x or mcoords.y ~= sloppyfocus_last.y) then
-      c:emit_signal("request::activate", "mouse_enter", {raise = false})
+      c:activate { context = "mouse_enter", raise = false }
       sloppyfocus_last = {c = c, x = mcoords.x, mcoords.y}
     end
   end

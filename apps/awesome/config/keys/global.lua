@@ -1,7 +1,6 @@
 local gears         = require('gears')
 local awful         = require('awful')
 local beautiful     = require('beautiful')
-                      require('awful.autofocus')
 local hotkeys_popup = require('awful.hotkeys_popup').widget
 local lain          = require('lain')
 
