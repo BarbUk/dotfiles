@@ -56,6 +56,8 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
           playerctl "$action"
           rm "$state_file"
         fi
+      elif ! [ -e "$state_file" ]; then
+        playerctl "$action"
       fi
       ;;
   esac
