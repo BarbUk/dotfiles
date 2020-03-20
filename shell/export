@@ -48,8 +48,8 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=50000
-HISTFILESIZE=100000
+HISTSIZE=500000
+HISTFILESIZE=1000000
 
 # Don't record some commands
 HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s:gs:ll:l:env:?:??"
