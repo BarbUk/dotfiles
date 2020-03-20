@@ -17,14 +17,14 @@ local function worker(args)
     local timeout    = args.timeout or 5
     local settings   = args.settings or function() end
 
-    mpris.cmd      = args.cmd
+    mpris.cmd      = args.cmd or "playerctl --format '{{status}}\n{{xesam:artist}}\n{{markup_escape(xesam:title)}}' metadata"
     mpris.widget   = wibox.widget.textbox()
 
     function mpris.update()
 
         mpris_now = {}
         helpers.async({shell, "-c", mpris.cmd}, function(output)
-            for s in output:gmatch("[^\r\n]+") do
+            for s in output:gmatch("[^\n]+") do
                 table.insert(mpris_now, s)
             end
             widget = mpris.widget
