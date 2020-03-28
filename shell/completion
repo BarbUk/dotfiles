@@ -288,14 +288,18 @@ _fzf_complete_dsh() {
   esac
 }
 
-_fzf_complete_yaourt() {
+_fzf_complete_pacman() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
-    -Rcs|-Qo|-Qi|-Ql)
+    -Rcs|-Qo|-Qi|-Ql|-Sii)
       _fzf_complete '--multi' ' ' "$@" < <(_fzf_archlinux_installed_packages)
       return 0
   ;;
   esac
+}
+
+_fzf_complete_archlinux_installed_packages() {
+  _fzf_complete '--multi' ' ' "$@" < <(_fzf_archlinux_installed_packages)
 }
 
 _fzf_complete_pssh() {
@@ -331,7 +335,8 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook ap
-  complete -o default -o bashdefault -o nospace -F _fzf_complete_yaourt yaourt pacman
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_pacman yaourt pacman yay
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_archlinux_installed_packages pactree
   complete -o default -o bashdefault -o nospace -F _fzf_complete_dsh dsh
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pssh pssh psshscp
 else
