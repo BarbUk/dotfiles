@@ -24,49 +24,51 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 " Options diverses
-set backup            " Backups activés
-set swapfile
-set backupdir=~/.vim/backup//
-set directory=~/.vim/swp//
-set hidden               " hides buffer
-set history=1000         " remember more commands and search history
-set undolevels=1000      " use many muchos levels of undo
+set backup                        " Enable backups
+set swapfile                      " Enable swapfiles
+set backupdir=~/.vim/backup//     " Backup dir
+set directory=~/.vim/swp//        " Swp file dir
+set hidden                        " hides buffer
+set history=1000                  " remember more commands and search history
+set undolevels=1000               " use many muchos levels of undo
 set wildignore=*.swp,*.bak,*.pyc,*.class
-set title                " change the terminal's title
-"set visualbell           " don't beep
-set noerrorbells         " don't beep
+set title                         " change the terminal's title
+set noerrorbells                  " don't beep
+
 " change the mapleader from \ to ,
 let mapleader=","
+
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
-" Affichage
-set ruler               " Position du fichier tjs affichée
-set showmode            " Montre le mode actuel
-set number 		" Afficher les numéros de ligne
-syntax on		" Coloration syntaxique
-set wrap		" Pas de wordwrap
-set showmatch		" Donne parenthèse correspondante
-set showcmd             " Donne commande incomplète
-set autoindent		" Indentation auto
-set copyindent          " Copier l'indentation existante
-set shiftround          " use multiple of shiftwidth when indenting with '<' and '>'
-set showmatch           " set show matching parenthesis
-set ignorecase          " ignore case when searching
-set smartcase           " ignore case if search pattern is all lowercase,
-set smarttab            " insert tabs on the start of a line
-set hlsearch		" Surligne les résultats de recherche
-set incsearch           " Recherche incrémentale
-set expandtab		" Utilise  plutot que
-set softtabstop=4	" Largeur de tab
-set sta                 " Smart tabs
-set shiftwidth=4	" Largeur d'indentation
-set ru                  " Position dans le fichier donnée
-set hlg=en              " Langue de l'aide : english
-set mousemodel=popup    " Affiche un popup au clic droit
-set showtabline=2       " Affiche tout le temps la ligne des tabs
-set numberwidth=5       " Nombre de colonnes que prend les numéros de lignes
-set pastetoggle=<F2>    " pour eviter de faire de la cascade
+
+" Display
+set ruler                       " Position du fichier tjs affichée
+set showmode                    " Montre le mode actuel
+set number                      " Afficher les numéros de ligne
+syntax on                       " Coloration syntaxique
+set wrap                        " Pas de wordwrap
+set showmatch                   " Donne parenthèse correspondante
+set showcmd                     " Donne commande incomplète
+set autoindent                  " Indentation auto
+set copyindent                  " Copier l'indentation existante
+set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
+set showmatch                   " set show matching parenthesis
+set ignorecase                  " ignore case when searching
+set smartcase                   " ignore case if search pattern is all lowercase,
+set smarttab                    " insert tabs on the start of a line
+set hlsearch                    " Surligne les résultats de recherche
+set incsearch                   " Recherche incrémentale
+set expandtab                   " Utilise  plutot que
+set softtabstop=4               " Largeur de tab
+set sta                         " Smart tabs
+set shiftwidth=4                " Largeur d'indentation
+set ru                          " Position dans le fichier donnée
+set hlg=en                      " Langue de l'aide : english
+set mousemodel=popup            " Affiche un popup au clic droit
+set showtabline=2               " Affiche tout le temps la ligne des tabs
+set numberwidth=5               " Nombre de colonnes que prend les numéros de lignes
+set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
 set listchars=tab:▸\ ,eol:¬,extends:›,precedes:‹,nbsp:␣,trail:•
 "set paste
@@ -89,7 +91,7 @@ let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
 
 " Options internes
 set ul=100              " Niveaux d'annulation
-set mouse=a             " Utiliser la souris partout
+set mouse=v             " only in visual mode
 
 source ~/.vim/vimrc.background
 
@@ -188,4 +190,3 @@ augroup END
 :autocmd InsertEnter,InsertLeave * set cul!
 
 let g:ale_linters = { 'php': ['php', 'psalm'] }
-
