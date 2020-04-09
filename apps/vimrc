@@ -108,6 +108,9 @@ else
     let g:airline_theme='gruvbox'
 endif
 
+" italic comment
+highlight Comment cterm=italic gui=italic
+
 " trailing white space
 match ErrorMsg '\s\+$'
 
