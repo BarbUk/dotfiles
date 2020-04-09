@@ -47,9 +47,8 @@ export EDITOR=vim
 
 # shellcheck disable=1091
 source /etc/bash_completion
-
 export BASH_IT="$HOME/.bash_it"
-export BASH_IT_THEME='server'
+export BASH_IT_THEME='barbuk'
 export SCM_CHECK=true
 export THEME_SHOW_SUDO=false
 export THEME_SHOW_CLOCK=false
