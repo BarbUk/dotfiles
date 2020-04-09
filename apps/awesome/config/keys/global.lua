@@ -181,21 +181,15 @@ globalkeys = gears.table.join(
 
   -- Volume control
   awful.key({ }, "XF86AudioRaiseVolume", function ()
-    awful.spawn.easy_async(apps.dir.scripts .. "vol_bar up", function(stdout)
-      noti:notify(stdout)
-    end)
+    apps.osd.volume.up()
     volume.update()
   end, {description = "volume up", group = "sound"} ),
   awful.key({ }, "XF86AudioLowerVolume", function ()
-    awful.spawn.easy_async(apps.dir.scripts .. "vol_bar down", function(stdout)
-      noti:notify(stdout)
-    end)
+    apps.osd.volume.down()
     volume.update()
   end, {description = "volume down", group = "sound"}),
   awful.key({ }, "XF86AudioMute", function ()
-    awful.spawn.easy_async(apps.dir.scripts .. "vol_bar mute", function(stdout)
-      noti:notify(stdout)
-    end)
+    apps.osd.volume.mute()
     volume.update()
   end, {description = "volume mute", group = "sound"}),
 

@@ -1,7 +1,9 @@
 local beautiful = require('beautiful')
+local awful     = require('awful')
 local lain      = require('lain')
 local helpers   = require("lain.helpers")
 local wibox     = require('wibox')
+local apps      = require('config.apps')
 local markup    = lain.util.markup
 
 local volumeicon = markup(beautiful.nord9, " ")
@@ -29,11 +31,11 @@ local volume = lain.widget.pulse({
 
 volume.widget:connect_signal("button::press", function(_, _, _, button)
     if (button == 4) then
-      awful.util.spawn_with_shell(volume_up_cmd, false)
+      apps.osd.volume.up()
     elseif (button == 5) then
-      awful.util.spawn_with_shell(volume_down_cmd, false)
+      apps.osd.volume.down()
     elseif (button == 1) then
-      awful.util.spawn_with_shell(volume_mute_cmd, false)
+      apps.osd.volume.mute()
     elseif (button == 3) then
       awful.util.spawn('pavucontrol', false)
     end
