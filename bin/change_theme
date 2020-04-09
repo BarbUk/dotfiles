@@ -38,7 +38,7 @@ change_theme() {
     local qt_conf="$HOME/.config/qt5ct/qt5ct.conf"
     local dmenu_conf="$HOME/.dmenurc"
     local vim_conf="$HOME/.vim/vimrc.background"
-    local rofi_conf="$HOME/.config/rofi/config"
+    local rofi_conf="$HOME/.config/rofi/config.rasi"
     local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
     local lazygit_conf="$HOME/.config/jesseduffield/lazygit/config.yml"
 
