@@ -211,7 +211,9 @@ run() {
     fi
 
     # save current clipboard
-    current_clipboard=$(xsel -b)
+    current_clipboard=$(xsel --clipboard)
+    # clear clipboard
+    xsel --clipboard --clear
     # replace {clipboard} by the clipboard content
     # use awk to handle correctly multiline clipboard
     if grep -q "$clipboard_placeholder" "$tmpfile"; then
@@ -223,7 +225,6 @@ run() {
         # remove last EOL
         perl -pi -e 'chomp if eof' "$tmpfile"
     fi
-
 
     # define cursor position and line at 0, we don't need to go up or left if there is no {cursor} placeholder
     cursor_line_position=0
@@ -251,16 +252,15 @@ run() {
 
     # Copy snippet in clipboard
     if is_rich_snippet "${snippets_directory}/${snippet}"; then
-        xclip -t text/html -selection clipboard < "$tmpfile"
+        xclip -target text/html -selection clipboard -in -loops 1 < "$tmpfile"
     else
-        xclip -selection clipboard < "$tmpfile"
+        xsel --clipboard --input < "$tmpfile"
     fi
 
     # Paste into the current application.
     if is_gui; then
         # We need a little pause to handle the time to focus on the window
         sleep 0.225
-        wait
         ${GUIPASTE}
         move_cursor "Up" $cursor_line_position
     else
