@@ -83,7 +83,7 @@ bashdown() {
 # Simplified version of bashdown, use echo and bash var search and replace
 # Better handling of symbol char
 bashdown_simple() {
-  while IFS= read -r line; do
+  while IFS= read -r line || [[ -n "$line" ]]; do
     line="$(eval "echo \"${line//\"/\\\"}\"")"
     echo "$line"
   done
