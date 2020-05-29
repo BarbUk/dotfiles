@@ -8,5 +8,8 @@
 /lost+found
 /swapfile
 /var/cache/pacman
-/home/barbuk/.ccache
-/home/barbuk/.cache
+/home/*/.ccache
+/home/*/.cache
+/home/*/.config/google-chrome-backup
+/home/*/.config/google-chrome-back-ovfs
+/home/*/VirtualBox\ VMs
