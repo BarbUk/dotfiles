@@ -10,12 +10,23 @@ alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
 alias ping='ping -O'
 
 bupc() {
+    update_gem
+    update_vagrant
+    rustup update
+    up
+}
+
+update_gem() {
     gem update --system
     gem update
     gem cleanup
     rbenv rehash
-    rustup update
-    up
+}
+
+update_vagrant() {
+    vagrant plugin update
+    vagrant box update
+    vagrant box prune
 }
 
 pbcopy() {
