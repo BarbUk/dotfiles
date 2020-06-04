@@ -56,20 +56,20 @@ return {
   osd = {
      volume = {
       up   = function()
-              awful.spawn.easy_async(scripts_dir .. "vol_bar up", function(stdout)
-                noti:notify(stdout)
-              end)
-            end,
+        awful.spawn.easy_async(scripts_dir .. "vol_bar up", function(stdout)
+          noti:notify(stdout)
+        end)
+      end,
       down   = function()
       awful.spawn.easy_async(scripts_dir .. "vol_bar down", function(stdout)
-              noti:notify(stdout)
-            end)
-          end,
+          noti:notify(stdout)
+        end)
+      end,
       mute   = function()
-            awful.spawn.easy_async(scripts_dir .. "vol_bar mute", function(stdout)
-              noti:notify(stdout)
-            end)
-          end
+        awful.spawn.easy_async(scripts_dir .. "vol_bar mute", function(stdout)
+          noti:notify(stdout)
+        end)
+      end
     },
 
     brightness = {
