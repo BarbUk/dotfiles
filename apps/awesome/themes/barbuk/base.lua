@@ -76,6 +76,7 @@ theme.layout_txt_dwindle            = ""
 theme.layout_txt_fullscreen         = ""
 theme.layout_txt_floating           = ""
 theme.tasklist_disable_icon         = false
+theme.icon_theme                    = "Papirus"
 theme.fr_flag                       = theme.dir .. "/icons/fr.png"
 theme.local_flag                    = theme.dir .. "/icons/mu.png"
 
