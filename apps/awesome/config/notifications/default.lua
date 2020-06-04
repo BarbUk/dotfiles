@@ -1,6 +1,7 @@
 local gears     = require("gears")
 local beautiful = require("beautiful")
 local naughty   = require("naughty")
+local menubar = require("menubar")
 
 -- Defaults
 naughty.config.defaults.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, beautiful.border_radius) end
@@ -16,9 +17,11 @@ naughty.config.icon_dirs              = {
   "/usr/share/icons/Papirus/48x48/apps/",
   "/usr/share/icons/Papirus/48x48/devices/",
   "/usr/share/icons/Papirus/48x48/status/",
+  "/usr/share/icons/hicolor" ,
   "/usr/share/pixmaps/"
 }
-naughty.config.icon_formats           = { "png", "svg"}
+naughty.config.icon_formats = { "png", "gif", "svg" }
+
 
 -- Timeouts
 naughty.config.defaults.timeout = 10
@@ -62,3 +65,15 @@ naughty.config.presets.critical = {
 naughty.config.presets.ok = naughty.config.presets.low
 naughty.config.presets.info = naughty.config.presets.low
 naughty.config.presets.warn = naughty.config.presets.normal
+
+
+naughty.connect_signal("request::icon", function(n, context, hints)
+    if context ~= "app_icon" then return end
+
+    local path = menubar.utils.lookup_icon(hints.app_icon) or
+        menubar.utils.lookup_icon(hints.app_icon:lower())
+
+    if path then
+        n.icon = path
+    end
+end)
