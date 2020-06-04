@@ -11,7 +11,18 @@ naughty.config.padding = 5
 naughty.config.spacing = 5
 naughty.config.defaults.border_width = 0
 
--- Icon size
+naughty.config.notify_callback = function(args)
+    if args.app_name and args.message then
+        args.message = args.message:gsub("<(.+)>", "%1")
+        args.message = args.message:gsub("^PROBLEM", "🔴 <span foreground='red'>PROBLEM</span>")
+        args.message = args.message:gsub("^RECOVERY", "🔵 <span foreground='blue'>RECOVERY</span>")
+        args.message = args.message:gsub("```(.+)```", "\n\n<span background='#1D1C1D' background_alpha='7500' foreground='black'>%1</span>")
+    end
+    return args
+end
+
+
+-- -- Icon size
 naughty.config.defaults['icon_size']  = beautiful.notification_icon_size
 naughty.config.icon_dirs              = {
   "/usr/share/icons/Papirus/48x48/apps/",
