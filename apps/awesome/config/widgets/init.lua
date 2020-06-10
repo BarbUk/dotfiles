@@ -21,8 +21,23 @@ local separator = {
   right = wibox.widget.textbox(markup(white, markup.bold('  '))),
 }
 
+-- flags
 local fr_flag     = wibox.widget.imagebox(beautiful.fr_flag, true)
 local local_flag  = wibox.widget.imagebox(beautiful.local_flag, true)
+
+fr_flag:connect_signal("button::press", function(_, _, _, button)
+    if (button == 1) then
+      awful.util.spawn_with_shell(apps.cmd.timezone.france, false)
+    end
+  end
+)
+
+local_flag:connect_signal("button::press", function(_, _, _, button)
+    if (button == 1) then
+      awful.util.spawn_with_shell(apps.cmd.timezone.mauritius, false)
+    end
+  end
+)
 
 -- Text
 local clockfr = wibox.widget.textclock(markup(white, "%H:%M"), 30, "Europe/Paris")
