@@ -50,6 +50,11 @@ return {
       prev = 'mpd previous',
       toggle = 'mpc toggle',
       stop = 'mpc stop',
+    },
+
+    timezone = {
+      france = 'timedatectl set-timezone Europe/Paris',
+      mauritius = 'timedatectl set-timezone Indian/Mauritius',
     }
   },
 
