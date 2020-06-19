@@ -51,8 +51,8 @@
 set -o errexit -o pipefail -o nounset
 
 readonly snippets_directory=$XDG_CONFIG_HOME/snippy
-readonly MENU_ENGINE="rofi"
-readonly DMENU_ARGS=(-dmenu -i -sort -async-pre-read 20 -theme-str 'element-icon { size: 2.35ch;}' -kb-accept-custom "" -kb-custom-1 "Ctrl+Return")
+readonly rofi_args=(-dmenu -i -sort -async-pre-read 20 -theme-str 'element-icon { size: 2.35ch;}' -kb-accept-custom "" -kb-custom-1 "Ctrl+Return")
+readonly fzf_args=(--select-1 --reverse --inline-info --multi --preview '( bat --style auto --color always --language bash {} || highlight --force -O ansi -l {} 2> /dev/null ) | head -200' -1)
 
 # if nothing happens, try "xdotool click 2", "xdotool key ctrl+v" or "xdotool key ctrl+shift+v"
 readonly GUIPASTE="xdotool key ctrl+v"
@@ -65,7 +65,14 @@ readonly clipboard_placeholder="{clipboard}"
 readonly tmpfile=$(mktemp)
 trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
 
+# colors
+readonly normal="\e[0m"
+readonly bold="\e[1m"
+readonly underline="\e[4m"
+
 script_content=false
+action=gui
+snippet=
 
 # smarty like template engine which executes inline bash in (bashdown) strings (replaces variables with values e.g.)
 # @link http://github.com/coderofsalvation/bashdown
@@ -137,7 +144,22 @@ move_cursor() {
 }
 
 init() {
-    # Check
+    # Check basic dependency
+    local all_needed_programs_installed=true
+    local needed_programs=( rofi fzf xsel xclip)
+    for program in "${needed_programs[@]}"; do
+        if ! command -v "$program" >/dev/null 2>&1; then
+            all_needed_programs_installed=false
+            echo -e "${bold}$program${normal} missing"
+        fi
+    done
+
+    if [ "$all_needed_programs_installed" = false ] ; then
+        echo -e "\nPlease install the previous dependancies"
+        exit 1
+    fi
+
+    # Check snippet directory
     if [[ ! -d "$snippets_directory" ]]; then
         mkdir -p "$snippets_directory"
         echo "$snippets_directory created"
@@ -145,29 +167,123 @@ init() {
     fi
 }
 
-run() {
-    cd "${snippets_directory}" || exit
+usage() {
+    echo "Usage:"
+    echo -e "\t${bold}$0${normal} [OPTION] ACTION"
+    echo -e "\tSnippy snippets manager"
 
-    local current_clipboard cursor_line cursor_line_position cursor_line cursor_position cursor_line_lenght
+    echo "Options"
+    echo -e "\t-h, --help Show help"
 
+    echo "Actions"
+    echo -ne "\t${bold}gui${normal}"
+    echo -e "\t Browse snippet and paste it in the focused window ${underline}(default)${normal}"
+
+    echo -ne "\t${bold}cli${normal}"
+    echo -e "\t list snippet in cli mode, only copy snippet in the paste buffer"
+
+    echo -ne "\t${bold}edit${normal}"
+    echo -e "\t Browse snippet and edit it"
+
+    echo -ne "\t${bold}add${normal}"
+    echo -e "\t Add a new snippet"
+
+    echo -ne "\t${bold}list${normal}"
+    echo -e "\t list snippet"
+
+    echo -ne "\t${bold}cat${normal}"
+    echo -e "\t list category"
+
+    echo -ne "\t${bold}completion${normal}"
+    echo -e "\t bash completion"
+
+    exit
+}
+
+parse_options() {
+
+  while (( "$#" )); do
+    case "$1" in
+      -h|--help)
+        usage
+        exit
+        ;;
+      --) # end argument parsing
+        shift
+        break
+        ;;
+      *)
+        action="$1"
+        shift
+        return
+        ;;
+    esac
+  done
+
+}
+
+error() {
+  local message="$1"
+  echo "$message" >&2
+}
+
+cli() {
+    snippet=$( list | fzf "${fzf_args[@]}")
+}
+
+list() {
+    local type="${1:-f}"
+
+    find -L . -type "$type" \
+        | grep -vE '^\.$|\.git|\.gitconfig|\.gitkeep|\.gitignore' \
+        | sed -e 's!\.\/!!'
+}
+
+add() {
+    local snippet="$*"
+    if [ -e "${snippet}" ]; then
+        error "snippet ${snippet} already exists"
+        return 1
+    fi
+
+    if [ -z "$EDITOR" ]; then
+        EDITOR=vim
+    fi
+
+    $EDITOR "$snippet"
+}
+
+edit() {
+    [ -z "${snippet}" ] && return 1
+
+    if [ -z "$EDITOR" ]; then
+        EDITOR=vim
+    fi
+
+    $EDITOR "$snippet"
+}
+
+gui() {
     # Use the filenames in the snippy directory as menu entries.
     # Get the menu selection from the user.
     # shellcheck disable=SC2086
     set +o errexit
 
-    snippet=$( find -L .  -type f \
-        | grep -vE '^\.$|\.git/|\.gitconfig|\.gitkeep|\.gitignore' \
-        | sed -e 's!\.\/!!' -re 's_^([^/]*)/(.*)_&\x0icon\x1f\1_' \
-        | ${MENU_ENGINE} "${DMENU_ARGS[@]}" -p '❯ ')
+    snippet=$( list | sed -re 's_^([^/]*)/(.*)_&\x0icon\x1f\1_' | rofi "${rofi_args[@]}" -p '❯ ')
 
     if [ $? -eq 10 ]; then
         script_content=true
     fi
 
     set -o errexit
+}
+
+run() {
+    local paste="${1:-true}"
+    local current_clipboard cursor_line cursor_line_position cursor_line cursor_position cursor_line_lenght
 
     # just return if nothing was selected
-    [[ -z "${snippet}" ]] && return 1
+    [ -z "${snippet}" ] && return 1
 
     if [ -f "${snippets_directory}/${snippet}" ]; then
 
@@ -257,23 +373,60 @@ run() {
         xsel --clipboard --input < "$tmpfile"
     fi
 
-    # Paste into the current application.
-    if is_gui; then
-        # We need a little pause to handle the time to focus on the window
-        sleep 0.225
-        ${GUIPASTE}
-        move_cursor "Up" $cursor_line_position
-    else
-        ${CLIPASTE}
-        if is_vim; then
+    if [ "$paste" = true ] ; then
+        # Paste into the current application.
+        if is_gui; then
+            # We need a little pause to handle the time to focus on the window
+            sleep 0.225
+            ${GUIPASTE}
             move_cursor "Up" $cursor_line_position
+        else
+            ${CLIPASTE}
+            if is_vim; then
+                move_cursor "Up" $cursor_line_position
+            fi
         fi
+
+        move_cursor "Left" $cursor_position
+
+        # Restore current clipboard
+        echo -ne "$current_clipboard" | xsel --clipboard --input
     fi
-
-    move_cursor "Left" $cursor_position
-
-    # Restore current clipboard
-    echo -ne "$current_clipboard" | xsel --clipboard --input
 }
 
-init && run
+main() {
+    parse_options "$@"
+
+    cd "${snippets_directory}" || exit
+
+    case "$action" in
+        'gui' )
+            gui
+            run
+        ;;
+        'cli' )
+            cli
+            run false
+        ;;
+        'list' )
+            list
+        ;;
+        'cat' )
+            list d
+        ;;
+        'add' )
+            shift
+            add "$@"
+        ;;
+        'edit' )
+            cli
+            edit
+        ;;
+        *)
+            error "Action $action does not exists"
+            exit 1
+        ;;
+    esac
+}
+
+init && main "$@"
