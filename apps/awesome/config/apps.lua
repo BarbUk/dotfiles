@@ -2,6 +2,8 @@ local awful       = require('awful')
 local pulse_sink  = "@DEFAULT_SINK@"
 local step        = 5
 local scripts_dir = os.getenv("HOME") .. "/.dotfiles/bin/"
+local music_player_client = 'mpc'
+local mpris_player_client = 'mprisctl'
 
 return {
   -- List of apps to start by default on some actions
@@ -39,48 +41,71 @@ return {
     },
 
     player = {
-      next = 'playerctl next',
-      prev = 'playerctl previous',
-      toggle = 'playerctl play-pause',
-      stop = 'playerctl stop'
+      next = mpris_player_client .. ' next',
+      prev = mpris_player_client .. ' previous',
+      toggle = mpris_player_client .. ' play-pause',
+      stop = mpris_player_client .. ' stop'
     },
 
     mpd = {
-      next = 'mpd next',
-      prev = 'mpd previous',
-      toggle = 'mpc toggle',
-      stop = 'mpc stop',
+      next = music_player_client .. ' next',
+      prev = music_player_client .. ' previous',
+      toggle = music_player_client .. ' toggle',
+      stop = music_player_client .. ' stop',
     },
 
     timezone = {
       france = 'timedatectl set-timezone Europe/Paris',
       mauritius = 'timedatectl set-timezone Indian/Mauritius',
     }
+
   },
 
   osd = {
      volume = {
-      up   = function()
-        awful.spawn.easy_async(scripts_dir .. "vol_bar up", function(stdout)
+      up = function()
+        awful.spawn.easy_async("vol_bar up", function(stdout)
           noti:notify(stdout)
         end)
       end,
-      down   = function()
-      awful.spawn.easy_async(scripts_dir .. "vol_bar down", function(stdout)
+      down = function()
+      awful.spawn.easy_async("vol_bar down", function(stdout)
           noti:notify(stdout)
         end)
       end,
-      mute   = function()
-        awful.spawn.easy_async(scripts_dir .. "vol_bar mute", function(stdout)
+      mute = function()
+        awful.spawn.easy_async("vol_bar mute", function(stdout)
           noti:notify(stdout)
         end)
       end
     },
 
     brightness = {
-      up = 'light -A ' .. step,
-      down = 'light -U ' .. step,
-      get = 'light'
+      up = function()
+        awful.spawn.easy_async("light_bar up", function(stdout)
+          noti:notify(stdout)
+        end)
+      end,
+      down = function()
+        awful.spawn.easy_async("light_bar down", function(stdout)
+          noti:notify(stdout)
+        end)
+      end,
+    },
+
+    player = {
+      stop = function()
+        os.execute(music_player_client .. " stop || " .. mpris_player_client .. " stop", false)
+      end,
+      toggle = function()
+        os.execute(music_player_client .. " toggle || " .. mpris_player_client .. " play-pause", false)
+      end,
+      prev = function()
+        os.execute(music_player_client .. " prev || " .. mpris_player_client .. " previous", false)
+      end,
+      next = function()
+        os.execute(music_player_client .. " next || " .. mpris_player_client .. " next", false)
+      end,
     }
   }
 }

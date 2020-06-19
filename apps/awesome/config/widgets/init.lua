@@ -86,7 +86,7 @@ mpd.widget:connect_signal("button::press", function(_, _, _, button)
 
 -- mpris
 local mpris = mpris_info({
-  cmd = apps.dir.scripts .. "mprisctl",
+  cmd = "mprisctl",
   settings = function()
     if mpris_now[1] ~= "no player detected" then
       state = "  "

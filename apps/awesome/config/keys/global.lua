@@ -21,6 +21,11 @@ require("awful.hotkeys_popup.keys")
 awful.util.terminal = apps.default.terminal
 hotkeys_popup.default_widget.labels = beautiful.hotkeys_popup_labels
 
+local widget_refresh = function()
+  mpd.update()
+  mpris.update()
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
   awful.key({ modkey, "Shift" }, "s", hotkeys_popup.show_help, { description="show help", group="awesome" }),
@@ -195,74 +200,59 @@ globalkeys = gears.table.join(
 
   -- Theme control
   awful.key({ }, "XF86Launch1", function ()
-    awful.spawn(apps.dir.scripts .. "change_theme")
+    awful.spawn("change_theme")
   end, {description = "change theme", group = "theme"}),
   awful.key({ }, "XF86LaunchA", function ()
-    awful.spawn(apps.dir.scripts .. "change_theme")
+    awful.spawn("change_theme")
   end, {description = "change theme", group = "theme"}),
 
   -- Music control
   awful.key({ }, "XF86AudioStop", function ()
-    os.execute("mpc stop || " .. apps.dir.scripts .. "mprisctl stop", false)
-    mpd.update()
+    apps.osd.player.stop()
+    widget_refresh()
   end, {description = "music stop", group = "sound"}),
   awful.key({ }, "XF86AudioPlay", function ()
-    os.execute("mpc toggle || " .. apps.dir.scripts .. "mprisctl play-pause", false)
-    mpd.update()
-    mpris.update()
+    apps.osd.player.toggle()
+    widget_refresh()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ modkey, "Control" }, "Down", function ()
-    os.execute("mpc toggle || " .. apps.dir.scripts .. "mprisctl play-pause", false)
-    mpd.update()
-    mpris.update()
+    apps.osd.player.toggle()
+    widget_refresh()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ }, "Pause", function ()
-    os.execute("mpc toggle || " .. apps.dir.scripts .. "mprisctl play-pause", false)
-    mpd.update()
-    mpris.update()
+    apps.osd.player.toggle()
+    widget_refresh()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ }, "XF86AudioPrev", function ()
-    os.execute("mpc prev || " .. apps.dir.scripts .. "mprisctl previous", false)
-    mpd.update()
-    mpris.update()
+    apps.osd.player.prev()
+    widget_refresh()
   end, {description = "music previous", group = "sound"}),
   awful.key({ modkey, "Control" }, "Left", function ()
-    os.execute("mpc prev || " .. apps.dir.scripts .. "mprisctl previous", false)
-    mpd.update()
-    mpris.update()
+    apps.osd.player.prev()
+    widget_refresh()
   end, {description = "music previous", group = "sound"}),
   awful.key({ }, "XF86AudioNext", function ()
-    os.execute("mpc next || " .. apps.dir.scripts .. "mprisctl next", false)
-    mpd.update()
-    mpris.update()
+    apps.osd.player.next()
+    widget_refresh()
   end, {description = "music next", group = "sound"}),
   awful.key({ modkey, "Control" }, "Right", function ()
-    os.execute("mpc next || " .. apps.dir.scripts .. "mprisctl next", false)
-    mpd.update()
-    mpris.update()
+    apps.osd.player.next()
+    widget_refresh()
   end, {description = "music next", group = "sound"}),
 
   -- Backlight control
   awful.key({ }, "XF86MonBrightnessUp", function ()
-      awful.spawn.easy_async(apps.dir.scripts .. "light_bar up", function(stdout)
-        noti:notify(stdout)
-      end)
+      apps.osd.brightness.up()
   end, {description = "brightness up", group = "screen"}),
   awful.key({ }, "XF86MonBrightnessDown", function ()
-      awful.spawn.easy_async(apps.dir.scripts .. "light_bar down", function(stdout)
-        noti:notify(stdout)
-      end)
+      apps.osd.brightness.down()
   end, {description = "brightness down", group = "screen"}),
 
   awful.key({ modkey }, "F12", function ()
-      awful.spawn.easy_async(apps.dir.scripts .. "light_bar up", function(stdout)
-        noti:notify(stdout)
-      end)
+      apps.osd.brightness.up()
   end, {description = "brightness up", group = "screen"}),
   awful.key({ modkey }, "F11", function ()
-      awful.spawn.easy_async(apps.dir.scripts .. "light_bar down", function(stdout)
-        noti:notify(stdout)
-      end)
+      apps.osd.brightness.down()
   end, {description = "brightness down", group = "screen"}),
 
   awful.key({ modkey }, "l", function ()
@@ -280,7 +270,7 @@ globalkeys = gears.table.join(
   -- Copy primary to clipboard (terminals to gtk)
   awful.key({ modkey }, "c", function () awful.util.spawn_with_shell("xsel | xsel -i -b") end, {description = "copy", group = "clipboard"}),
   -- Copy clipboard to primary (gtk to terminals)
-  awful.key({ modkey }, "v", function () awful.spawn.easy_async(apps.dir.scripts .. "paste", function(stdout)
+  awful.key({ modkey }, "v", function () awful.spawn.easy_async("paste", function(stdout)
         noti:notify(stdout)
   end) end, {description = "paste", group = "clipboard"}),
 
@@ -295,30 +285,30 @@ globalkeys = gears.table.join(
     {description = "open " .. apps.default.graphics, group = "launcher"}),
   awful.key({ modkey }, "d", function () awful.spawn(apps.default.filemanager) end,
     {description = "open " .. apps.default.filemanager, group = "launcher"}),
-  awful.key({ modkey, "Shift" }, "d", function () awful.spawn(apps.dir.scripts .. "open_sftp") end,
+  awful.key({ modkey, "Shift" }, "d", function () awful.spawn("open_sftp") end,
     {description = "open " .. apps.default.filemanager, group = "launcher"}),
 
   -- awful.key({ modkey, "Shift"   }, "Return", function ()
-  --   awful.spawn(apps.dir.scripts .. "dmenu_ssh")
+  --   awful.spawn("dmenu_ssh")
   -- end, {description = "launch ssh session", group = "launcher"}),
   awful.key({ modkey, "Control" }, "Return", function ()
-    awful.spawn(apps.dir.scripts .. "dmenu_raise")
+    awful.spawn("dmenu_raise")
   end, {description = "launch window selection", group = "launcher"}),
   awful.key({ modkey, altkey    }, "Return", function ()
-    awful.spawn(apps.dir.scripts .. "dmenu_edit")
+    awful.spawn("dmenu_edit")
   end, {description = "launch edit menu", group = "launcher"}),
   awful.key({ modkey, altkey, "Control" }, "Return", function ()
-    awful.spawn(apps.dir.scripts .. "dmenu_monitoring")
+    awful.spawn("dmenu_monitoring")
   end, {description = "launch monitoring menu", group = "launcher"}),
   awful.key({ modkey, "Shift"   }, "p", function ()
     sloppyfocus_last.focus = false
-    awful.spawn(apps.dir.scripts .. "snippy")
+    awful.spawn("snippy")
   end, {description = "snippets", group = "launcher"}),
   awful.key({ modkey, "Shift"   }, "m", function ()
     awful.util.spawn_with_shell("termite --class='center' --geometry='700x400' --exec=ncmpcpp &")
   end, {description = "terminal centered", group = "launcher"}),
   awful.key({ modkey }, "0", function ()
-    awful.spawn( apps.dir.scripts .. "qrcodize", false )
+    awful.spawn( "qrcodize", false )
   end, {description = "qrcodize your clipboard ", group = "launcher"}),
   awful.key({ modkey }, "t", function ()
     awful.spawn( apps.default.browser .. " --profile-directory='Default' https://mail.google.com/mail/u/0/#inbox", false )
