@@ -1,0 +1,14 @@
+[Unit]
+Description=Picom X11 compositor
+After=graphical-session-pre.target
+PartOf=graphical-session.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/picom --daemon --config %h/.compton.conf
+ExecReload=kill -HUP $MAINPID
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=graphical-session.target

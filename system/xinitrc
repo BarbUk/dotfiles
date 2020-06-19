@@ -29,9 +29,8 @@ case "$model" in
     ;;
 esac
 # Use menu key as right clic
-xmodmap -e 'keycode 135 = Menu'
-# Start compositor
-picom --config "$HOME/.compton.conf" --experimental-backends --daemon
+#xmodmap -e 'keycode 135 = Menu'
+[[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
 # Rename wmname and configure java non reparenting
 wmname LG3D
 export _JAVA_AWT_WM_NONREPARENTING=1
