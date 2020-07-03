@@ -26,7 +26,6 @@ alias _="sudo -s"
 alias c='clear'
 alias o='xdg-open'
 
-alias meteo='curl -4 http://wttr.in'
 alias tmux='tmux -2'
 alias s='ssh_connect'
 alias n='open_monitoring'

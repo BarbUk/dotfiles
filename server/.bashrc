@@ -96,9 +96,15 @@ else
     alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,command:220'
 fi
 
-alias meteo='curl -4 http://wttr.in'
-
 alias tmux='tmux -2'
+
+meteo()
+{
+    local request="wttr.in/${1-Paris}"
+    [ "$(tput cols)" -lt 125 ] && request+='?n'
+    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+}
+
 
 # v - open files in ~/.viminfo
 v() {
