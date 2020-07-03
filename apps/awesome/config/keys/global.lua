@@ -321,7 +321,7 @@ globalkeys = gears.table.join(
     spawn_and_move("skypeforlinux", "Skype", 1)
     spawn_and_move("slack", "Slack", 2)
     spawn_and_move("google-chrome-stable --profile-directory='Profile 1' https://mail.google.com/mail/u/0/#inbox https://app.frontapp.com", "Google-chrome", 3)
-    spawn_and_move("subl", "Sublime_text", 4)
+    spawn_and_move("subl", "Subl", 4)
   end, {description = "launch work apps on their tag", group = "launcher"}),
 
   -- Default
