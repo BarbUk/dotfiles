@@ -4,6 +4,11 @@ local step        = 5
 local scripts_dir = os.getenv("HOME") .. "/.dotfiles/bin/"
 local music_player_client = 'mpc'
 local mpris_player_client = 'mprisctl'
+local timezone = {
+  france = 'Europe/Paris',
+  mauritius = 'Indian/Mauritius',
+  canada = 'America/Toronto',
+}
 
 return {
   -- List of apps to start by default on some actions
@@ -15,6 +20,8 @@ return {
     browser     = 'google-chrome-stable',
     graphics    = "gimp",
   },
+
+  timezone = timezone,
 
   alt = {
     terminal = 'alacritty',
@@ -55,8 +62,9 @@ return {
     },
 
     timezone = {
-      france = 'timedatectl set-timezone Europe/Paris',
-      mauritius = 'timedatectl set-timezone Indian/Mauritius',
+      france = 'timedatectl set-timezone ' .. timezone.france,
+      mauritius = 'timedatectl set-timezone ' .. timezone.mauritius,
+      canada = 'timedatectl set-timezone ' .. timezone.canada,
     }
 
   },

@@ -77,8 +77,12 @@ theme.layout_txt_fullscreen         = ""
 theme.layout_txt_floating           = ""
 theme.tasklist_disable_icon         = false
 theme.icon_theme                    = "Papirus"
-theme.fr_flag                       = theme.dir .. "/icons/fr.png"
-theme.local_flag                    = theme.dir .. "/icons/mu.png"
+theme.flag                          = {
+  france                            = theme.dir .. "/icons/fr.png",
+  mauritius                         = theme.dir .. "/icons/mu.png",
+  canada                            = theme.dir .. "/icons/ca.png"
+}
+
 
 -- lain related
 theme.layout_txt_termfair           = "[termfair]"

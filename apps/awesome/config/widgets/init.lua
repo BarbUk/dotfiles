@@ -3,6 +3,7 @@ local wibox     = require("wibox")
 local lain      = require("lain")
 local helpers   = require("lain.helpers")
 local beautiful = require("beautiful")
+local naughty = require("naughty")
 
 local apps       = require('config.apps')
 local bat        = require('config.widgets.battery')
@@ -22,30 +23,22 @@ local separator = {
 }
 
 -- flags
-local fr_flag     = wibox.widget.imagebox(beautiful.fr_flag, true)
-local local_flag  = wibox.widget.imagebox(beautiful.local_flag, true)
-
-fr_flag:connect_signal("button::press", function(_, _, _, button)
-    if (button == 1) then
-      awful.util.spawn_with_shell(apps.cmd.timezone.france, false)
+local flag = {}
+local clock = {}
+for k, v in pairs(beautiful.flag) do
+  flag[k] = wibox.widget.imagebox(beautiful.flag[k], true)
+  flag[k]:connect_signal("button::press", function(_, _, _, button)
+      if (button == 1) then
+        awful.spawn(apps.cmd.timezone[k], false)
+      end
     end
-  end
-)
-
-local_flag:connect_signal("button::press", function(_, _, _, button)
-    if (button == 1) then
-      awful.util.spawn_with_shell(apps.cmd.timezone.mauritius, false)
-    end
-  end
-)
-
--- Text
-local clockfr = wibox.widget.textclock(markup(white, "%H:%M"), 30, "Europe/Paris")
-local clock = wibox.widget.textclock(markup(white, "%H:%M "), 30, "Indian/Mauritius")
+  )
+  clock[k] = wibox.widget.textclock(markup(white, "%H:%M"), 30, apps.timezone[k])
+end
 
 -- Calendar
 local calendar = lain.widget.cal({
-  attach_to = { clock, clockfr },
+  attach_to = { clock.france, clock.canada, clock.mauritius },
   three     = true,
   icons     = helpers.icons_dir .. "cal/" .. beautiful.iconcolor .. "/",
   followtag = true,
@@ -199,9 +192,11 @@ awful.screen.connect_for_each_screen(function(s)
     weather.icon,
     weather.widget,
     separator.left,
-    fr_flag,clockfr,
+    flag.canada,clock.canada,
     separator.left,
-    local_flag,clock
+    flag.france,clock.france,
+    separator.left,
+    flag.mauritius,clock.mauritius
   }
 
   local time = {
@@ -209,9 +204,11 @@ awful.screen.connect_for_each_screen(function(s)
     weather.icon,
     weather.widget,
     separator.left,
-    fr_flag,clockfr,
+    flag.canada,clock.canada,
     separator.left,
-    local_flag,clock
+    flag.france,clock.france,
+    separator.left,
+    flag.mauritius,clock.mauritius
   }
 
   if s.index == 1 then
