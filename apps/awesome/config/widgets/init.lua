@@ -192,11 +192,12 @@ awful.screen.connect_for_each_screen(function(s)
     weather.icon,
     weather.widget,
     separator.left,
-    flag.canada,clock.canada,
+    flag.canada,separator.center,clock.canada,
     separator.left,
-    flag.france,clock.france,
+    flag.france,separator.center,clock.france,
     separator.left,
-    flag.mauritius,clock.mauritius
+    flag.mauritius,separator.center,clock.mauritius,
+    separator.center,
   }
 
   local time = {
@@ -204,11 +205,12 @@ awful.screen.connect_for_each_screen(function(s)
     weather.icon,
     weather.widget,
     separator.left,
-    flag.canada,clock.canada,
+    flag.canada,separator.center,clock.canada,
     separator.left,
-    flag.france,clock.france,
+    flag.france,separator.center,clock.france,
     separator.left,
-    flag.mauritius,clock.mauritius
+    flag.mauritius,separator.center,clock.mauritius,
+    separator.center,
   }
 
   if s.index == 1 then
