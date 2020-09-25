@@ -55,8 +55,10 @@ readonly rofi_args=(-dmenu -i -sort -async-pre-read 20 -theme-str 'element-icon 
 readonly fzf_args=(--select-1 --reverse --inline-info --multi --preview '( bat --style auto --color always --language bash {} || highlight --force -O ansi -l {} 2> /dev/null ) | head -200' -1)
 
 # Placeholders
-readonly cursor_placeholder="{cursor}"
-readonly clipboard_placeholder="{clipboard}"
+readonly placeholder_cursor="{cursor}"
+readonly placeholder_clipboard="{clipboard}"
+readonly placeholder_clipboard_urlencode="{clipboard_urlencode}"
+readonly placeholder_date="{clipboard_urlencode}"
 
 readonly tmpfile=$(mktemp)
 trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
@@ -142,7 +144,7 @@ move_cursor() {
 init() {
     # Check basic dependency
     local all_needed_programs_installed=true
-    local needed_programs=( rofi fzf xsel xclip)
+    local needed_programs=( rofi fzf xsel xclip jq )
     for program in "${needed_programs[@]}"; do
         if ! command -v "$program" >/dev/null 2>&1; then
             all_needed_programs_installed=false
@@ -328,10 +330,20 @@ run() {
     xsel --clipboard --clear
     # replace {clipboard} by the clipboard content
     # use awk to handle correctly multiline clipboard
-    if grep -q "$clipboard_placeholder" "$tmpfile"; then
+    if grep -q "$placeholder_clipboard" "$tmpfile"; then
         awk -i inplace \
             -v clipboard="$current_clipboard" \
-            -v placeholder="$clipboard_placeholder" \
+            -v placeholder="$placeholder_clipboard" \
+            '{ gsub(placeholder, clipboard); print }' "$tmpfile"
+
+        # remove last EOL
+        perl -pi -e 'chomp if eof' "$tmpfile"
+    fi
+
+    if grep -q "$placeholder_clipboard_urlencode" "$tmpfile"; then
+        awk -i inplace \
+            -v clipboard="$( echo "$current_clipboard" | jq -sRr @uri)" \
+            -v placeholder="$placeholder_clipboard_urlencode" \
             '{ gsub(placeholder, clipboard); print }' "$tmpfile"
 
         # remove last EOL
@@ -343,23 +355,23 @@ run() {
     cursor_position=0
 
     # Check if there is a {cursor} placeholder
-    if grep -qF $cursor_placeholder "$tmpfile"; then
+    if grep -qF $placeholder_cursor "$tmpfile"; then
         # retrieve the line number of the cursor placeholder
-        cursor_line_position=$(grep -n "$cursor_placeholder" "$tmpfile" | cut -d: -f1)
+        cursor_line_position=$(grep -n "$placeholder_cursor" "$tmpfile" | cut -d: -f1)
         # retrieve the line
-        cursor_line=$(grep $cursor_placeholder "$tmpfile")
+        cursor_line=$(grep $placeholder_cursor "$tmpfile")
         # calculate snippet total lines
         file_lines=$(wc -l < "$tmpfile")
         # determine the number of line to go up
         cursor_line_position=$(( file_lines - cursor_line_position + 1 ))
         # Extract cursor position
-        cursor_position=$(strindex "$cursor_line" $cursor_placeholder)
+        cursor_position=$(strindex "$cursor_line" $placeholder_cursor)
         # total cursor line lenght
         cursor_line_lenght=${#cursor_line}
         # Compute the final cursor position ( 8 is the lenght of the placeholder {cursor} )
         cursor_position=$(( cursor_line_lenght - cursor_position - 8 ))
         # remove the placeholder
-        sed -i -e "s/$cursor_placeholder//g" "$tmpfile"
+        sed -i -e "s/$placeholder_cursor//g" "$tmpfile"
     fi
 
     # Copy snippet in clipboard
