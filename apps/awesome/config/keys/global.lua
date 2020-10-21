@@ -56,6 +56,11 @@ globalkeys = gears.table.join(
     ]])
   end, { description="take a screenshot and save it", group="awesome" }),
 
+  -- OCR !
+  awful.key({ modkey, "Control" }, "Print", function ()
+    awful.util.spawn_with_shell('ocr')
+  end, { description="Select a zone to OCR", group="awesome" }),
+
   awful.key({ modkey,           }, "p", function ()
     sloppyfocus_last.focus = false
     awful.spawn("rofi -theme-str 'element-icon { size: 2.5ch;}' -combi-modi 'clipboard:greenclip print,chrome:" .. apps.dir.scripts .. "chrome_history,window,drun' -show combi -modi combi")
