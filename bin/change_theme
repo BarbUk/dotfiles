@@ -56,7 +56,7 @@ change_theme() {
         sed -i -e "s/${theme_light}.rasi/nord.rasi/" "$rofi_conf"
         sed -i -e 's/lighttheme: true/lighttheme: false/' "$lazygit_conf"
         gsettings set org.gnome.meld style-scheme meld-dark
-        spicetify config current_theme dark
+        spicetify config current_theme Nord
 
         rm -f "$theme_file"
     else
@@ -73,7 +73,7 @@ change_theme() {
         sed -i -e "s/nord.rasi/${theme_light}.rasi/" "$rofi_conf"
         sed -i -e 's/lighttheme: false/lighttheme: true/' "$lazygit_conf"
         gsettings set org.gnome.meld style-scheme meld-base
-        spicetify config current_theme light
+        spicetify config current_theme Midnight-Light
 
         touch "$theme_file"
     fi
