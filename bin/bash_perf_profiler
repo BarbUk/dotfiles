@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import datetime
 import heapq
 
 parser = argparse.ArgumentParser(description='Analyze bashstart log for speed.')
@@ -11,6 +12,8 @@ filename, n = args.filename, int(args.n)
 with open(filename, 'r') as f:
     q = []
     prev_time = None
+    total_time = datetime.timedelta(microseconds=0)
+    total_lines = 1
     for line in f.readlines():
         line = line.split()
         try:
@@ -19,13 +22,28 @@ with open(filename, 'r') as f:
             if '+' not in line[0]:
                 continue
             text = ' '.join(line[2:])
-            seconds, nanoseconds = line[1].split('.')
-            time = int(nanoseconds)
-            diff = time - prev_time if prev_time is not None else 0
+            timestamp = line[1]
+            # seconds, milliseconds = line[1].split('.')
+            time = float(timestamp)
+            time = datetime.datetime.fromtimestamp(time)
+            
+            # print(time.microseconds)
+            # continue
+            if prev_time is not None and prev_time > time:
+                continue
+
+            diff = time - prev_time if prev_time is not None else datetime.timedelta(microseconds=0)
+            # print(diff.microseconds)
+            # print(diff, text)
             prev_time = time
-            heapq.heappush(q, (diff, text))
+            total_time += diff
+            total_lines += 1
+            heapq.heappush(q, (diff.microseconds, text))
         except IndexError:
             print('error')
 
 for diff, text in heapq.nlargest(n, q):
-    print(float(diff) / 1000000000, 's:', text)
+    print(diff / 1e3, 'ms:', text)
+
+print('Total time: ', total_time.microseconds / 1e3, ' ms')
+print('Total lines', total_lines)
