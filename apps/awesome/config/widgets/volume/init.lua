@@ -11,7 +11,8 @@ local volicon = wibox.widget.textbox(volumeicon)
 local internal_soundcard = 'alsa_output.pci'
 local volume = lain.widget.pulse({
   settings = function()
-    helpers.async_with_shell("pacmd stat | awk -F': ' '/^Default sink name: /{print $2}'",
+    helpers.async_with_shell("pactl list short sinks | awk '/RUNNING/ {print $2}'",
+
     function(soundcard)
       if soundcard:sub(1, #internal_soundcard) == internal_soundcard then
         volumeicon = markup(beautiful.nord9, " ")
@@ -29,20 +30,28 @@ local volume = lain.widget.pulse({
   end
 })
 
-volume.widget:connect_signal("button::press", function(_, _, _, button)
-    if (button == 4) then
-      apps.osd.volume.up()
-    elseif (button == 5) then
-      apps.osd.volume.down()
-    elseif (button == 1) then
-      apps.osd.volume.mute()
-    elseif (button == 3) then
-      awful.util.spawn('pavucontrol', false)
-    end
-
+volume.widget:buttons( awful.util.table.join (
+  awful.button({ }, 1, function()
+    apps.osd.volume.mute()
     volume.update()
-  end
-)
+  end),
+  awful.button({ }, 2, function()
+    awful.util.spawn(apps.cmd.volume.toggle, false)
+    volume.update()
+  end),
+  awful.button({ }, 3, function()
+    awful.util.spawn('pavucontrol', false)
+    volume.update()
+  end),
+  awful.button({ }, 4, function()
+    apps.osd.volume.up()
+    volume.update()
+  end),
+  awful.button({ }, 5, function()
+    apps.osd.volume.down()
+    volume.update()
+  end)
+))
 
 return {
   widget = volume.widget,
