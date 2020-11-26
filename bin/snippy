@@ -51,7 +51,7 @@
 set -o errexit -o pipefail -o nounset
 
 readonly snippets_directory=$XDG_CONFIG_HOME/snippy
-readonly rofi_args=(-dmenu -i -sort -async-pre-read 20 -theme-str 'element-icon { size: 2.35ch;}' -kb-accept-custom "" -kb-custom-1 "Ctrl+Return")
+readonly rofi_args=(-dmenu -i -sort -sorting-method fzf -async-pre-read 20 -theme-str 'element-icon { size: 2.35ch;}' -kb-accept-custom "" -kb-custom-1 "Ctrl+Return")
 readonly fzf_args=(--select-1 --reverse --inline-info --multi --preview '( bat --style auto --color always --language bash {} || highlight --force -O ansi -l {} 2> /dev/null ) | head -200' -1)
 
 # Placeholders
