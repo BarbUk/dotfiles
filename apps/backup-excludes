@@ -11,5 +11,7 @@
 /home/*/.ccache
 /home/*/.cache
 /home/*/.config/google-chrome-backup
-/home/*/.config/google-chrome-back-ovfs
+/home/*/.config/*-back-ovfs
+/home/*/.config/.*-back-ovfs
 /home/*/VirtualBox\ VMs
+/var/lib/docker
