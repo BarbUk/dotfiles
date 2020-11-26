@@ -49,15 +49,16 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Huge history. Doesn't appear to slow things down, so why not?
 HISTFILE="$HOME/.bash_history_$USER"
-HISTSIZE=500000
-HISTFILESIZE=1000000
+HISTSIZE=100000
+HISTFILESIZE=$HISTSIZE
 
 # Don't record some commands
-HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:c:q:gg:s:gs:ll:l:env:?:??"
+HISTIGNORE="&:[ ]*:exit:history:clear:?:??"
 HISTTIMEFORMAT='%F %T '
 
 # Avoid duplicate entries
 HISTCONTROL="erasedups:ignoreboth"
+
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLOR="1;33"
@@ -67,6 +68,7 @@ export MANPAGER="less --no-init --RAW-CONTROL-CHARS"
 export BASH_IT=$HOME/.bash_it
 export SCM_GIT_SHOW_DETAILS=true
 export SCM_CHECK=true
+export BASH_IT_COMMAND_DURATION=true
 
 # Bashit theme
 export BASH_IT_THEME='barbuk'
