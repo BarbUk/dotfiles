@@ -36,12 +36,10 @@ volume.widget:buttons( awful.util.table.join (
     volume.update()
   end),
   awful.button({ }, 2, function()
-    awful.util.spawn(apps.cmd.volume.toggle, false)
-    volume.update()
+    awful.util.spawn(apps.cmd.volume.toggle, false, volume.update())
   end),
   awful.button({ }, 3, function()
     awful.util.spawn('pavucontrol', false)
-    volume.update()
   end),
   awful.button({ }, 4, function()
     apps.osd.volume.up()
