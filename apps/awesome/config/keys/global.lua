@@ -152,7 +152,7 @@ globalkeys = gears.table.join(
   awful.key({ altkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end, {description = "resize -", group = "client"}),
 
   -- Dynamic tagging
-  awful.key({ modkey, "Shift" }, "n", function () lain.util.add_tag() end, { description = "add_tag", group = "client"}),
+  awful.key({ modkey, "Shift" }, "n", function () awful.tag.add("💻", { screen = awful.screen.focused(), layout = awful.layout.suit.tile }):view_only() end, { description = "add_tag", group = "client"}),
   awful.key({ modkey, "Shift" }, "r", function () lain.util.rename_tag() end, { description = "rename_tag", group = "client"}),
   awful.key({ modkey, "Shift" }, "Left", function () lain.util.move_tag(-1) end, { description = "move_tag", group = "client"}),  -- move to previous tag
   awful.key({ modkey, "Shift" }, "Right", function () lain.util.move_tag(1) end, { description = "move_tag", group = "client"}),  -- move to next tag
