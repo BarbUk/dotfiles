@@ -23,4 +23,6 @@ available_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ &&
 
 if [[ -n $available_sink ]]; then
   pacmd set-default-sink "$available_sink"
+  sink_description=$(pactl list sinks | awk -F: '/State: RUNNING/,/Properties/ { if (/Description:/) {p=1;info=$2}} p {print info;p=0}' | awk '{$1=$1};1')
+  notify-send "Changed output to $sink_description"
 fi
