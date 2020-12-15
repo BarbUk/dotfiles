@@ -16,11 +16,11 @@ naughty.config.defaults.border_width = 0
 -- Notification callback to style monitoring notification
 naughty.config.notify_callback = function(args)
     if args.app_name and args.message then
-        args.message = args.message:gsub('<(%w+%.%w+%.%w+)>', "%1")
+        args.message = args.message:gsub('<([^<>]+)>', "%1")
         args.message = args.message:gsub("PROBLEM", markup(beautiful.nord11, "PROBLEM"))
         args.message = args.message:gsub("RECOVERY", markup(beautiful.nord9, "RECOVERY"))
         args.message = args.message:gsub("on host (%w+%.%w+%.%w+)", "on host " .. markup.bold("%1"))
-        args.message = args.message:gsub("([%a://]*%w+%.[%w%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.underline("%1"))
+        args.message = args.message:gsub("([%a://]*[%w(%-)@]+%.[%w%-%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.underline("%1"))
         args.message = args.message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.foreground, markup.bold("%1")))
     end
     return args
