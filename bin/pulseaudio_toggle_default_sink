@@ -18,12 +18,12 @@
 
 set -o errexit -o pipefail -o nounset
 
-# Get sink that are not running and are not echo cancel
-available_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ && $7 !~ /^RUNNING$/ {print $1}')
+current_sink=$(pacmd list-sinks | awk '/\* index:/ {print $3}')
+available_sink=$(pactl list short sinks | awk -v current_sink="$current_sink" '$1 !~ current_sink && $3 !~ /^module-echo-cancel.c$/ && $7 !~ /^RUNNING$/ {print $1}')
 
-if [[ -n $available_sink ]] && [[ ${#available_sink} -eq 1 ]]; then
+if [[ -n $available_sink ]] && [[ $(wc -w <<< "$available_sink") -eq 1 ]]; then
   pacmd set-default-sink "$available_sink"
-  sink_description=$(pactl list sinks | awk -F: '/State: RUNNING/,/Properties/ { if (/Description:/) {p=1;info=$2}} p {print info;p=0}' | awk '{$1=$1};1')
+  sink_description=$(pamixer --list-sinks | awk -v current_sink="$available_sink" -F'"' '$1 ~ current_sink {print $4}')
   notify-send "Changed output to $sink_description"
 else
   notify-send "No available sink playing"
