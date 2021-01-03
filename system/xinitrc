@@ -25,7 +25,7 @@ case "$model" in
     xcalib -d :0 "$HOME/.dotfiles/system/icc/lenovo_x220_4290rv5.icc"
     ;;
   'x260' )
-    xcalib -d :0 "$HOME/.dotfiles/system/icc/lenovo_x260_hd_gn1.icm.icc"
+    xcalib -d :0 "$HOME/.dotfiles/system/icc/ICC_Lenovo_Thinkpad_X260_1920x1080_non_glossy_N125HCE_GN1.icm"
     ;;
 esac
 # Use menu key as right clic
