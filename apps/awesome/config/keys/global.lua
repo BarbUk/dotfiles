@@ -283,6 +283,10 @@ globalkeys = gears.table.join(
       awful.util.spawn("autorandr -c")
   end, {description = "detect display", group = "screen"}),
 
+  awful.key({ }, "XF86TouchpadToggle", function ()
+      awful.spawn(apps.cmd.picom.toggle, false)
+  end, {description = "Toggle picom", group = "screen"}),
+
   -- Copy primary to clipboard (terminals to gtk)
   awful.key({ modkey }, "c", function () awful.util.spawn_with_shell("xsel | xsel -i -b") end, {description = "copy", group = "clipboard"}),
   -- Copy clipboard to primary (gtk to terminals)

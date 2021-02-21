@@ -62,6 +62,10 @@ return {
       stop = music_player_client .. ' stop',
     },
 
+    picom = {
+      toggle = 'toggle_picom',
+    },
+
     timezone = {
       france = 'timedatectl set-timezone ' .. timezone.france,
       mauritius = 'timedatectl set-timezone ' .. timezone.mauritius,
