@@ -18,11 +18,12 @@
 
 set -o errexit -o pipefail -o nounset
 
-current_sink=$(pacmd list-sinks | awk '/\* index:/ {print $3}')
-available_sink=$(pactl list short sinks | awk -v current_sink="$current_sink" '$1 !~ current_sink && $3 !~ /^module-echo-cancel.c$/ && $7 !~ /^RUNNING$/ {print $1}')
+# Compatible with pipewire !
+current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
+available_sink=$(pactl list short sinks | awk -v current_sink="$current_sink" '$2 !~ current_sink && $3 !~ /^module-echo-cancel.c$/ && $7 !~ /^RUNNING$/ {print $1}')
 
 if [[ -n $available_sink ]] && [[ $(wc -w <<< "$available_sink") -eq 1 ]]; then
-  pacmd set-default-sink "$available_sink"
+  pactl set-default-sink "$available_sink"
   sink_description=$(pamixer --list-sinks | awk -v current_sink="$available_sink" -F'"' '$1 ~ current_sink {print $4}')
   notify-send "Changed output to $sink_description"
 else
