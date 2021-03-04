@@ -10,6 +10,19 @@ local volumeicon = markup(beautiful.nord9, " ")
 local volicon = wibox.widget.textbox(volumeicon)
 local internal_soundcard = 'alsa_output.pci'
 local volume = lain.widget.pulse({
+  cmd = [[
+    current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p');
+    pactl list sinks | sed -n -e '/'"$current_sink"'/,$!d' \
+      -e '/Base Volume/d' \
+      -e 's/Volume:/volume:/' \
+      -e '/volume:/p' \
+      -e 's/device.description/device.string/' \
+      -e '/device.string/p' \
+      -e 's/object.id/index/' \
+      -e '/index/p' \
+      -e 's/Mute:/muted:/' \
+      -e '/muted:/p'
+  ]],
   settings = function()
     helpers.async_with_shell("pactl list short sinks | awk '/RUNNING/ {print $2}'",
 
