@@ -22,6 +22,7 @@ export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:$COPEPATH:/usr/local/
 model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_version)
 case "$model" in
   'x220' )
+    export LIBGL_DRI3_DISABLE=1
     xcalib -d :0 "$HOME/.dotfiles/system/icc/lenovo_x220_4290rv5.icc"
     ;;
   'x260' )
