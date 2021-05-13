@@ -23,6 +23,27 @@ return {
 
   timezone = timezone,
 
+  weather = {
+    w01d = '滛',
+    w01n = '望',
+    w02d = '滛',
+    w02n = '望',
+    w03d = '杖',
+    w03n = '杖',
+    w04d = '摒',
+    w04n = '摒',
+    w09d = '殺',
+    w09n = '殺',
+    w10d = '歹',
+    w10n = '歹',
+    w11d = '朗',
+    w11n = '朗',
+    w13d = '流',
+    w13n = '流',
+    w50d = '',
+    w50n = '',
+  },
+
   alt = {
     terminal = 'alacritty',
     editor   = 'gvim',

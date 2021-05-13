@@ -126,12 +126,24 @@ local fsroot = lain.widget.fs({
 local weather = lain.widget.weather({
   city_id = 934131,
   APPID = "869faf1aac21d680efcfd1a6ce1ece93",
-  current_call  = "curl --connect-timeout 1 --max-time 5 -s 'http://api.openweathermap.org/data/2.5/weather?id=%s&units=%s&lang=%s&APPID=%s'",
-  forecast_call = "curl --connect-timeout 1 --max-time 5 -s 'http://api.openweathermap.org/data/2.5/forecast/daily?id=%s&units=%s&lang=%s&cnt=%s&APPID=%s'",
+  cnt = 5,
+  units = "metric",
+  lang = "fr",
+  current_call  = "curl --connect-timeout 1 --max-time 5 -s 'https://api.openweathermap.org/data/2.5/weather?id=%s&units=%s&lang=%s&APPID=%s'",
+  forecast_call = "curl --connect-timeout 1 --max-time 5 -s 'https://api.openweathermap.org/data/2.5/forecast?id=%s&units=%s&lang=%s&APPID=%s'",
   settings = function()
     descr = weather_now["weather"][1]["description"]
     units = math.floor(weather_now["main"]["temp"])
     widget:set_markup(" " .. units .. "°C")
+  end,
+  notification_text_fun = function (wn)
+    local day = os.date("%a %d", wn["dt"])
+    local temp = math.floor(wn["main"]["temp"])
+    local humi = math.floor(wn["main"]["humidity"])
+    local wind = math.floor(wn["wind"]["speed"])
+    local desc = wn["weather"][1]["description"]
+    local icon = "w" .. wn["weather"][1]["icon"]
+    return string.format("<b>%s  %s</b>:%d°C%d%%%d %s", apps.weather[icon], day, temp, humi, wind, desc)
   end
 })
 
