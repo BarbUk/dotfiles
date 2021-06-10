@@ -72,6 +72,7 @@ awful.rules.rules = {
         "MPlayer",
         "sun-awt-X11-XDialogPeer",
         "sun-awt-X11-XWindowPeer",
+        "Evolution-alarm-notify",
       },
       type = {
         "dialog"
