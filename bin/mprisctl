@@ -23,7 +23,7 @@ mpris='no player detected'
 info() {
   playerctl \
     --all-players \
-    --format '{{playerName}};{{status}};{{xesam:artist}};{{markup_escape(xesam:title)}}' \
+    --format '{{playerName}};{{status}};{{xesam:artist}};{{xesam:title}}' \
     metadata 2>/dev/null
 }
 
