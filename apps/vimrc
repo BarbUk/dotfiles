@@ -93,13 +93,17 @@ let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
 set ul=100              " Niveaux d'annulation
 set mouse=v             " only in visual mode
 
-source ~/.vim/vimrc.background
 
 if v:version < 800
     set t_Co=256           " Terminaux à 256 couleurs
     colorscheme desert
     let g:airline_theme='base16_tomorrow'
 else
+    if empty($DISPLAY)
+        set background=dark
+    else
+        source ~/.vim/vimrc.background
+    endif
     set termguicolors
 
     colorscheme gruvbox
