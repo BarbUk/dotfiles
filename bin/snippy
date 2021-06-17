@@ -234,7 +234,8 @@ list() {
 
     find -L . -type "$type" \
         | grep -vE '^\.$|\.git|\.gitconfig|\.gitkeep|\.gitignore' \
-        | sed -e 's!\.\/!!'
+        | sed -e 's!\.\/!!' \
+        | sort
 }
 
 add() {
