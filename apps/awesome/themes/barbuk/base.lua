@@ -14,9 +14,17 @@ end
 
 local theme               = require("themes/barbuk/" .. color)
 local gears               = require("gears")
+--local awful               = require("awful")
 local xresources          = require("beautiful.xresources")
 local dpi                 = xresources.apply_dpi
 
+-- awful.screen.connect_for_each_screen(function(s)
+--   if s.outputs["eDP-1"] then
+--     xresources.set_dpi(120, s)
+--   end
+-- end)
+
+-- awful.screen.set_auto_dpi_enabled(true)
 
 theme.dir                 = home .. "/.config/awesome/themes/barbuk"
 theme.wallpaper           = theme.dir .. "/archlinux.png"
@@ -46,7 +54,7 @@ theme.border_radius       = dpi(6)
 theme.screen_margin       = dpi(5)
 
 theme.notification_position         = "top_right"
-theme.notification_border_width     = 2
+theme.notification_border_width     = dpi(2)
 theme.notification_border_radius    = theme.border_radius
 theme.notification_border_color     = theme.nord14
 theme.notification_bg               = theme.background
