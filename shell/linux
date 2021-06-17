@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 eval "$(dircolors -b "$HOME"/.dir_colors)"
-#eval "$(rbenv init -)"
-export PATH="$HOME/.dotfiles/bin:$HOME/.rbenv/shims:${PATH}"
-export RBENV_SHELL=bash
+# rbenv gem
+if [ -d "$HOME/.rbenv/shims" ]; then
+    export PATH="$HOME/.rbenv/shims:${PATH}"
+    export RBENV_SHELL=bash
+else
+    # system ruby gem
+    ruby_gem_bin_dir=$(gem env | awk '/USER INSTALLATION DIRECTORY/ {print $NR}')
+    if [ -d "$ruby_gem_bin_dir/bin" ]; then
+        export PATH="$ruby_gem_bin_dir/bin:${PATH}"
+    fi
+fi
+
 alias ls='ls --color=auto'
 alias up='yay -Syu --noconfirm'
 alias yaourt='yay'
