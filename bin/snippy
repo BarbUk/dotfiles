@@ -52,15 +52,15 @@ set -o errexit -o pipefail -o nounset
 
 readonly snippets_directory=${XDG_CONFIG_HOME:-$HOME/.config}/snippy
 readonly rofi_args=(-no-lazy-grab -dmenu -i -sort -sorting-method fzf -async-pre-read 20 -theme-str 'element-icon { size: 2.35ch;}' -kb-accept-custom "" -kb-custom-1 "Ctrl+Return")
-readonly fzf_args=(--select-1 --reverse --inline-info --multi --preview '( bat --style auto --color always --language bash {} || highlight --force -O ansi -l {} 2> /dev/null ) | head -200' -1)
+readonly fzf_args=(--select-1 --reverse --inline-info --multi --preview '( bat --style auto --color always --language bash {} 2> /dev/null || highlight --force -O ansi -l {} 2> /dev/null ) | head -200' -1)
 
 # Placeholders
 readonly placeholder_cursor="{cursor}"
 readonly placeholder_clipboard="{clipboard}"
 readonly placeholder_clipboard_urlencode="{clipboard_urlencode}"
-readonly placeholder_date="{clipboard_urlencode}"
 
-readonly tmpfile=$(mktemp)
+readonly tmpfile
+tmpfile=$(mktemp)
 trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
 
 # colors
