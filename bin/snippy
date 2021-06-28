@@ -59,8 +59,8 @@ readonly placeholder_cursor="{cursor}"
 readonly placeholder_clipboard="{clipboard}"
 readonly placeholder_clipboard_urlencode="{clipboard_urlencode}"
 
-readonly tmpfile
 tmpfile=$(mktemp)
+readonly tmpfile
 trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
 
 # colors
