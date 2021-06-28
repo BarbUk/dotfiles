@@ -90,7 +90,7 @@ swap_role_sink() {
           while read -r index sink_name; do
             if [ "$index" != "$sink" ] ; then
               pactl move-sink-input "$input" "$index"
-              notify-send -i multimedia-volume-control "Swaped music sinks" "Changed $name input to $(sink_decription "$index")"
+              notify-send -i multimedia-volume-control "Swaped $role_to_change input" "Changed $name input to $(sink_decription "$index")"
             fi
           done <<< "$availables_sink"
         fi
@@ -104,7 +104,7 @@ reset_inputs() {
   while read -r name role sink input; do
     if [ "$sink" != "$default_sink_index" ] ; then
       pactl move-sink-input "$input" "$default_sink_index"
-      notify-send -i multimedia-volume-control "Swaped music sinks" "Changed $name input to $(sink_decription "$default_sink_index")"
+      notify-send -i multimedia-volume-control "Input reset" "Changed $name input to $(sink_decription "$default_sink_index")"
     fi
   done < <(get_sink_inputs)
 }
