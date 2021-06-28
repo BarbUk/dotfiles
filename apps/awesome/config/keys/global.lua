@@ -230,6 +230,10 @@ globalkeys = gears.table.join(
   awful.key({ altkey }, "XF86AudioPlay", function ()
     awful.util.spawn(apps.cmd.volume.toggle, false)
     widget_refresh()
+  end, {description = "Toggle soundcard", group = "sound"}),
+  awful.key({ "Control" }, "XF86AudioPlay", function ()
+    awful.util.spawn(apps.cmd.volume.toggle .. " media music", false)
+    widget_refresh()
   end, {description = "music toggle", group = "sound"}),
   awful.key({ modkey, "Control" }, "Down", function ()
     apps.osd.player.toggle()
