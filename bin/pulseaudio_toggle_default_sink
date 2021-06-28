@@ -18,14 +18,106 @@
 
 set -o errexit -o pipefail -o nounset
 
-# Compatible with pipewire !
-current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
-available_sink=$(pactl list short sinks | awk -v current_sink="$current_sink" '$2 !~ current_sink && $3 !~ /^module-echo-cancel.c$/ && $7 !~ /^RUNNING$/ {print $1}')
+default_sink_name=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
+availables_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ {print $1,$2}')
+music_only=false
 
-if [[ -n $available_sink ]] && [[ $(wc -w <<< "$available_sink") -eq 1 ]]; then
-  pactl set-default-sink "$available_sink"
-  sink_description=$(pamixer --list-sinks | awk -v current_sink="$available_sink" -F'"' '$1 ~ current_sink {print $4}')
-  notify-send "Changed output to $sink_description"
-else
-  notify-send "No available sink playing"
-fi
+readonly availables_sink default_sink_name
+
+get_sink_inputs() {
+  pactl list sink-inputs | awk '/Sink Input #/,/^$/ {
+    if (/module-stream-restore.id/) {
+      p=1
+    }
+    if (/^[[:space:]]*application.name/) {
+      gsub("\"","",$3); name=$3
+    }
+    if (/^[[:space:]]*object.id/) {
+      gsub("\"","",$3); input = $3
+    }
+    if (/^[[:space:]]*media.role/) {
+      gsub("\"","",$3); role = $3
+    }
+    if (/^[[:space:]]*Sink:/) {
+      sink = $2
+    }
+  }
+  p {
+    if (length(role) == 0) {
+      role = "no"
+    }
+    print name, role, sink, input; p=0
+  }'
+}
+
+usage() {
+    echo "Usage:"
+    echo -e "\t$0 [OPTION]"
+    echo -e "\tToggle your defaut sound output or change your music player from an output to another"
+    echo "Options"
+    echo -e "\t-h, --help Show help"
+    echo -e "\t-d, --default toggle the default output"
+    echo -e "\t-m, --music change music to another output"
+    exit
+}
+
+sink_decription() {
+  local current_sink=$1
+  pamixer --list-sinks | awk -v current_sink="$current_sink" -F'"' '$1 ~ current_sink {print $4}'
+}
+
+swap_sink() {
+  while read -r index name; do
+    if [ "$name" != "$default_sink_name" ] ; then
+      pactl set-default-sink "$index"
+      notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_decription "$index")"
+    fi
+  done <<< "$availables_sink"
+}
+
+swap_music_sink() {
+  while read -r name role sink input; do
+        if [ "$role" = music ] ; then
+          while read -r index sink_name; do
+            if [ "$index" != "$sink" ] ; then
+              pactl move-sink-input "$input" "$index"
+              notify-send -i multimedia-volume-control "Swaped music sinks" "Changed $name input to $(sink_decription "$index")"
+            fi
+          done <<< "$availables_sink"
+        fi
+    done < <(get_sink_inputs)
+}
+
+parse_options() {
+  while (( "$#" )); do
+    case "$1" in
+      -m|--music)
+        music_only=true
+        shift
+        ;;
+      -h|--help)
+        usage
+        ;;
+      --) # end argument parsing
+        shift
+        break
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+}
+
+main() {
+
+  parse_options "$@"
+
+  if [ "$music_only" = true ] ; then
+    swap_music_sink
+  else
+    swap_sink
+  fi
+}
+
+main "$@"
