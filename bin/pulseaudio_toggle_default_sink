@@ -20,7 +20,7 @@ set -o errexit -o pipefail -o nounset
 
 default_sink_name=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
 availables_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ {print $1,$2}')
-music_only=false
+action=default
 
 readonly availables_sink default_sink_name
 
@@ -52,12 +52,16 @@ get_sink_inputs() {
 
 usage() {
     echo "Usage:"
-    echo -e "\t$0 [OPTION]"
+    echo -e "\t$0 [OPTION] [ACTION]"
     echo -e "\tToggle your defaut sound output or change your music player from an output to another"
+    echo
     echo "Options"
     echo -e "\t-h, --help Show help"
-    echo -e "\t-d, --default toggle the default output"
-    echo -e "\t-m, --music change music to another output"
+    echo
+    echo "Actions"
+    echo -e "\tdefault change default output (default action)"
+    echo -e "\treset reset all active input to the default output"
+    echo -e "\tmusic change music input to another output"
     exit
 }
 
@@ -88,13 +92,21 @@ swap_music_sink() {
     done < <(get_sink_inputs)
 }
 
+reset_inputs() {
+  local default_sink_index
+  default_sink_index=$(awk -v default_sink="$default_sink_name" '$2 ~ default_sink {print $1}' <<< "$availables_sink")
+
+  while read -r name role sink input; do
+    if [ "$sink" != "$default_sink_index" ] ; then
+      pactl move-sink-input "$input" "$default_sink_index"
+      notify-send -i multimedia-volume-control "Swaped music sinks" "Changed $name input to $(sink_decription "$default_sink_index")"
+    fi
+  done < <(get_sink_inputs)
+}
+
 parse_options() {
   while (( "$#" )); do
     case "$1" in
-      -m|--music)
-        music_only=true
-        shift
-        ;;
       -h|--help)
         usage
         ;;
@@ -103,6 +115,7 @@ parse_options() {
         break
         ;;
       *)
+        action=$1
         shift
         ;;
     esac
@@ -113,11 +126,11 @@ main() {
 
   parse_options "$@"
 
-  if [ "$music_only" = true ] ; then
-    swap_music_sink
-  else
-    swap_sink
-  fi
+  case "$action" in
+    music ) swap_music_sink;;
+    reset ) reset_inputs;;
+    * ) swap_sink;;
+  esac
 }
 
 main "$@"
