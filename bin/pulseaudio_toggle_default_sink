@@ -61,7 +61,11 @@ usage() {
     echo "Actions"
     echo -e "\tdefault: change default output (default action)"
     echo -e "\treset: reset all active input to the default output"
-    echo -e "\tmusic: change music input to another output"
+    echo -e "\tmedia <ROLE>: change <ROLE> input to another output"
+    # http://0pointer.de/lennart/projects/pulseaudio/doxygen/proplist_8h.html#a06b7c7a5bfc7a20974b7785031169596
+    echo
+    echo "Roles"
+    echo -e "\tOne of the strings video, music, game, event, phone, animation, production, a11y, test"
     exit
 }
 
@@ -79,9 +83,10 @@ swap_sink() {
   done <<< "$availables_sink"
 }
 
-swap_music_sink() {
+swap_role_sink() {
+  local role_to_change=$1
   while read -r name role sink input; do
-        if [ "$role" = music ] ; then
+        if [ "$role" = "$role_to_change" ] ; then
           while read -r index sink_name; do
             if [ "$index" != "$sink" ] ; then
               pactl move-sink-input "$input" "$index"
@@ -110,6 +115,15 @@ parse_options() {
       -h|--help)
         usage
         ;;
+      media)
+        action=media
+        if [[ $# -ne 2 ]]; then
+          echo "You need a role"
+          usage
+        fi
+        role=$2
+        shift 2
+        ;;
       --) # end argument parsing
         shift
         break
@@ -127,7 +141,7 @@ main() {
   parse_options "$@"
 
   case "$action" in
-    music ) swap_music_sink;;
+    media ) swap_role_sink "$role";;
     reset ) reset_inputs;;
     * ) swap_sink;;
   esac
