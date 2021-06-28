@@ -59,9 +59,9 @@ usage() {
     echo -e "\t-h, --help Show help"
     echo
     echo "Actions"
-    echo -e "\tdefault change default output (default action)"
-    echo -e "\treset reset all active input to the default output"
-    echo -e "\tmusic change music input to another output"
+    echo -e "\tdefault: change default output (default action)"
+    echo -e "\treset: reset all active input to the default output"
+    echo -e "\tmusic: change music input to another output"
     exit
 }
 
