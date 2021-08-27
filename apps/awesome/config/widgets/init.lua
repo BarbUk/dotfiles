@@ -3,7 +3,6 @@ local wibox     = require("wibox")
 local lain      = require("lain")
 local helpers   = require("lain.helpers")
 local beautiful = require("beautiful")
-local naughty = require("naughty")
 
 local apps       = require('config.apps')
 local bat        = require('config.widgets.battery')
