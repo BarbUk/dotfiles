@@ -53,6 +53,7 @@ set -o errexit -o pipefail -o nounset
 readonly snippets_directory=${XDG_CONFIG_HOME:-$HOME/.config}/snippy
 readonly rofi_args=(-no-lazy-grab -dmenu -i -sort -sorting-method fzf -async-pre-read 20 -theme-str 'element-icon { size: 2.35ch;}' -kb-accept-custom "" -kb-custom-1 "Ctrl+Return")
 readonly fzf_args=(--select-1 --reverse --inline-info --multi --preview '( bat --style auto --color always --language bash {} 2> /dev/null || highlight --force -O ansi -l {} 2> /dev/null ) | head -200' -1)
+readonly focus_wait=0.15
 
 # Placeholders
 readonly placeholder_cursor="{cursor}"
@@ -386,9 +387,9 @@ run() {
         # Paste into the current application.
         if is_gui; then
             # We need a little pause to handle the time to focus on the window
-            sleep 0.15
+            sleep "$focus_wait"
             # Paste
-            xdotool key ctrl+v sleep 0.15
+            xdotool key ctrl+v sleep "$focus_wait"
             move_cursor "Up" $cursor_line_position
         else
             xdotool key ctrl+shift+v
