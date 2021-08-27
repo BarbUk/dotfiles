@@ -5,6 +5,7 @@
 [alias]
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
   quick-stats = ! /usr/bin/git-quick-stats
+  ass = "! echo '(‿ˠ‿)'; git add"
 [color]
   ui = true
 [core]
@@ -47,4 +48,4 @@
 [commit]
   gpgsign = true
 [init]
-	defaultBranch = master
+  defaultBranch = master
