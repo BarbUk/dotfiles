@@ -26,9 +26,16 @@ displaynum=$(ls /tmp/.X11-unix/* | sed s#/tmp/.X11-unix/X##)
 DISPLAY=":$displaynum"
 XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
 
-screen=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '/\<connected\>/ && !/LVDS/ {print $1}')
-if [ "$screen" == "VGA-1" ] || [ "$screen" == "DP-1" ] || [ "$screen" == "HDMI-1" ]; then
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --primary --auto --right-of "$screen" --output "$screen" --auto
+primary_screen=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '/\<connected primary\>/ {print $1}')
+connected_screens=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '/\<connected\>/ && !/primary/  {print $1}')
+other_screens=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '!/^[[:blank:]]/ && $1 !~ /^Screen$/ && $3 !~ /primary/ {print $1}')
+
+if [[ "$connected_screens" == VGA* ]] || [[ "$connected_screens" == DP* ]] || [[ "$connected_screens" == HDMI* ]]; then
+    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output "$primary_screen" --primary --output "$connected_screens" --left-of "$primary_screen" --auto
 else
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output LVDS-1 --auto --output DP-1 --off --output VGA-1 --off --output HDMI-1 --off
+    off=
+    for output in $other_screens; do
+        off="$off --output $output --off"
+    done
+    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output "$primary_screen" --primary $off
 fi
