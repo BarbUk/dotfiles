@@ -11,7 +11,7 @@
 	path = modules/z.lua
 	url = git@github.com:skywind3000/z.lua.git
 [submodule "apps/awesome/lain"]
-	path = apps/awesome/lain
+	path = modules/lain
 	url = git@github.com:lcpz/lain.git
 [submodule "modules/bash-it"]
 	path = modules/bash-it
