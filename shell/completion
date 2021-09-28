@@ -40,7 +40,7 @@ _complete() {
 }
 
 _fzf_privkey() {
-  find "$HOME"/.ssh -type f -name id_rsa
+  find "$HOME/.ssh" -type f -name 'id_*' | grep -v '.pub'
 }
 
 _fzf_playbook() {
