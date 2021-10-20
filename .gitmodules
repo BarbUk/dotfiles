@@ -16,3 +16,6 @@
 [submodule "modules/bash-it"]
 	path = modules/bash-it
 	url = git@github.com:Bash-it/bash-it.git
+[submodule "modules/ttfb.sh"]
+	path = modules/ttfb.sh
+	url = https://github.com/jaygooby/ttfb.sh.git
