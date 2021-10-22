@@ -18,10 +18,12 @@
 
 set -o errexit -o pipefail -o nounset
 
-for dir in {z.lua,rmate,tpm,z,bash-it,lain}; do
+for dir in modules/*; do
     (
-        cd modules/$dir
-        echo -n "Updating module $dir: "
-        git pull
+        if [ -f "$dir/.git" ]; then
+            cd $dir
+            echo -n "Updating $dir: "
+            git pull
+        fi
     )
 done
