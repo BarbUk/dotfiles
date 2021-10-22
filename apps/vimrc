@@ -13,6 +13,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'ervandew/supertab'
 Plug 'sheerun/vim-polyglot'
 Plug 'justinmk/vim-sneak'
+Plug 'tpope/vim-fugitive'
 " Initialize plugin system
 call plug#end()
 
