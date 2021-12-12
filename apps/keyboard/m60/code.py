@@ -6,7 +6,7 @@ ___ = TRANSPARENT
 BOOT = BOOTLOADER
 L1 = LAYER_TAP(1)
 L2 = LAYER_TAP(2)
-L3ESC = LAYER_TAP(3, ESC)
+L3 = LAYER_TAP(3)
 
 PRINT = PRINTSCREEN
 
@@ -21,9 +21,9 @@ PLAY = TRANSPORT_PLAY_PAUSE
 keyboard.keymap = (
     # layer 0
     (
-        L3ESC,   1,   2,   3,   4,   5,   6,   7,   8,   9,   0, '-', '=', BACKSPACE,
+        ESC,   1,   2,   3,   4,   5,   6,   7,   8,   9,   0, '-', '=', BACKSPACE,
         TAB,   Q,   W,   E,   R,   T,   Y,   U,   I,   O,   P, '[', ']', '|',
-         L1,   A,   S,   D,   F,   G,   H,   J,   K,   L, ';', '"',    ENTER,
+        L1 ,   A,   S,   D,   F,   G,   H,   J,   K,   L, ';', '"',    ENTER,
         LSHIFT, Z,   X,   C,   V, B,   N,   M, ',', '.', '/',         RSHIFT,
         LCTRL, LGUI, LALT,          SPACE,            RALT, MENU,  L2, RCTRL
     ),
@@ -31,7 +31,7 @@ keyboard.keymap = (
     # layer 1
     (
         '`',   F1,   F2,   F3,  F4,  F5,  F6,   F7,  F8,   F9,   F10, F11, F12, DEL,
-        ___, PREV, PLAY, NEXT, ___, ___, ___, PGUP,  UP, PGDN, PRINT, ___, ___, ___,
+        L3 , PREV, PLAY, NEXT, ___, ___, ___, PGUP,  UP, PGDN, PRINT, ___, ___, ___,
         ___, VOLD, MUTE, VOLU, ___, ___, HOME, LEFT, DOWN, RIGHT, ___, ___, ___,
         ___,  ___,  ___,  ___, ___,BOOT,  END,  ___,  ___,   ___, ___,      ___,
         ___,  ___,  ___,                ___,               ___, ___, ___,  ___
@@ -93,10 +93,11 @@ keyboard.pairs = [
     {0, 53}  #2 ESC+LCTRL       Remount RO
 ]
 
+# cat /dev/ttyACM0
 keyboard.verbose = False
 
-keyboard.matrix.debounce_time = 5    # about 5 milliseconds
-keyboard.tap_delay = 200
-keyboard.fast_type_thresh = 100
+keyboard.matrix.debounce_time = 5
+keyboard.tap_delay = 100
+keyboard.fast_type_thresh = 50
 
 keyboard.run()
