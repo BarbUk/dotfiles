@@ -1,1 +1,0 @@
-../../../modules/bash-it/themes/colors.theme.bash
