@@ -57,7 +57,7 @@ HISTIGNORE="&:[ ]*:exit:history:clear:?:??"
 HISTTIMEFORMAT='%F %T '
 
 # Avoid duplicate entries
-HISTCONTROL="erasedups:ignoreboth"
+HISTCONTROL="erasedups:ignoreboth:autosave"
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
@@ -67,6 +67,7 @@ export MANPAGER="less --no-init --RAW-CONTROL-CHARS"
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
 export SCM_GIT_SHOW_DETAILS=true
+export THEME_SHOW_RUBY_PROMPT=false
 export SCM_CHECK=true
 export BASH_IT_COMMAND_DURATION=true
 
