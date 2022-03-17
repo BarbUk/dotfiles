@@ -17,7 +17,7 @@ While my dotfiles are optimised for my workflow, you can maybe find something in
 
 ### Snippy
 
-[`Snippy`](https://github.com/BarbUk/dotfiles/blob/master/bin/snippy) is enhanced version of the snippy snippet utility.
+[`Snippy`](https://github.com/BarbUk/snippy) is enhanced version of the snippy snippet utility.
 I use it everyday with more than 600 snippets.
 
 ![snippy](img/snippy.png)
