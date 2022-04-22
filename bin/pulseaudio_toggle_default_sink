@@ -21,12 +21,12 @@ set -o errexit -o pipefail -o nounset
 default_sink_name=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
 availables_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ {print $1,$2}')
 action=default
-declare -A colors;
 
+declare -A colors;
 colors=(\
-    ['bold']=$(tput bold)
-    ['underline']=$(tput smul)
-    ['reset']=$(tput sgr0)
+    ['bold']=$(tput -Txterm-256color bold)
+    ['underline']=$(tput -Txterm-256color smul)
+    ['reset']=$(tput -Txterm-256color sgr0)
 );
 
 readonly availables_sink default_sink_name
