@@ -4,11 +4,13 @@ After=graphical-session-pre.target
 PartOf=graphical-session.target
 
 [Service]
+Environment=DISPLAY=:0
 Type=forking
 ExecStart=/usr/bin/picom --daemon --experimental-backends --config %h/.compton.conf
 ExecReload=kill -HUP $MAINPID
 Restart=always
 RestartSec=3s
+StartLimitBurst=25
 
 [Install]
 WantedBy=graphical-session.target
