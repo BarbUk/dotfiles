@@ -9,7 +9,7 @@ if [ "$(uname)" = "Darwin" ]; then
     mkdir -p "$HOME"/{.vim,.tmux/plugins}
 else
     LN='ln -srf'
-    mkdir -p "$HOME"/{.vim,.tmux/plugins,.mpv,.mpd,.ncmpcpp,.config/rofi}
+    mkdir -p "$HOME"/{.vim,.tmux/plugins,.mpv,.mpd,.ncmpcpp,.config/rofi,.config/termite}
     mkdir -p "$HOME"/.vim/{swp,backup}
     ${LN} "$dotfiles_dir/system/xinitrc" "$HOME/.xinitrc"
     ${LN} "$dotfiles_dir/apps/mpv" "$HOME/.mpv/config"
@@ -18,7 +18,6 @@ else
     ${LN} "$dotfiles_dir/apps/compton.conf" "$HOME/.compton.conf"
     ${LN} "$dotfiles_dir/apps/termite.dark" "$HOME/.config/termite/config"
     ${LN} "$dotfiles_dir/apps/rofi.config" "$HOME/.config/rofi/config"
-    cp "$dotfiles_dir/apps/style.rasi" "$HOME/.config/rofi/"
 fi
 
 mkdir -p "$HOME"/.config/htop
