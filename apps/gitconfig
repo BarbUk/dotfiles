@@ -51,3 +51,5 @@
   verbose = true
 [init]
   defaultBranch = master
+[hub]
+	protocol = ssh
