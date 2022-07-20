@@ -33,7 +33,7 @@ keyboard.keymap = (
         '`',   F1,   F2,   F3,  F4,  F5,  F6,   F7,  F8,   F9,   F10, F11, F12, DEL,
         L3 , PREV, PLAY, NEXT, ___, ___, ___, PGUP,  UP, PGDN, PRINT, ___, ___, ___,
         ___, VOLD, MUTE, VOLU, ___, ___, HOME, LEFT, DOWN, RIGHT, ___, ___, ___,
-        ___,  ___,  ___,  ___, ___,BOOT,  END,  ___,  ___,   ___, ___,      ___,
+        ___,  ___,  ___,  ___, ___, ___,  END,  ___,  ___,   ___, ___,      ___,
         ___,  ___,  ___,                ___,               ___, ___, ___,  ___
     ),
 
@@ -42,7 +42,7 @@ keyboard.keymap = (
         BT_TOGGLE,BT1,BT2, BT3,BT4,BT5,BT6,BT7, BT8, BT9, BT0, ___, ___, SUSPEND,
         RGB_MOD, ___, ___, ___, ___, ___,___,USB_TOGGLE,___,___,___,___,___, ___,
         RGB_TOGGLE,HUE_RGB,RGB_HUE,SAT_RGB,RGB_SAT,___,___,___,___,___,___,___,      SHUTDOWN,
-        ___, ___, ___, ___, ___, ___, ___, ___,VAL_RGB,RGB_VAL, ___,           ___,
+        ___, ___, ___, ___, ___, BOOT, ___, ___,VAL_RGB,RGB_VAL, ___,           ___,
         ___, ___, ___,                ___,               ___, ___, ___,  ___
     ),
 
@@ -97,7 +97,8 @@ keyboard.pairs = [
 keyboard.verbose = False
 
 keyboard.matrix.debounce_time = 5
-keyboard.tap_delay = 100
-keyboard.fast_type_thresh = 50
+keyboard.tap_delay = 50
+keyboard.fast_type_thresh = 30
 
 keyboard.run()
+
