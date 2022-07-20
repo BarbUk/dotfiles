@@ -29,7 +29,9 @@ progress() {
     local completed=$(( percent / 5 ))
     local remaining=$(( 20 - completed ))
 
-    if pamixer --get-mute >/dev/null 2>&1; then
+    # pamixer --get-mute return true or false
+    # with a 0 exit code
+    if [ "$(pamixer --get-mute)" = true ]; then
         icon=$icon_mute
 
     elif [ "$percent" -gt 50 ]; then
