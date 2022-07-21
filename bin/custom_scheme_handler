@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Copyright (C) 2015 barbUk
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Use it with a custom .desktop
+#cat << EOF > ~/.local/share/applications/custom_scheme_handler.desktop
+#[Desktop Entry]
+#Name=custom_scheme_handler
+#Comment=Open custom scheme like ssh:// or ftp:// link
+#Exec=custom_scheme_handler %u
+#Icon=utilities-terminal
+#Type=Application
+#Categories=GTK;System;TerminalEmulator;
+#NoDisplay=true
+#MimeType=x-scheme-handler/ssh;x-scheme-handler/ftp;x-scheme-handler/sftp;x-scheme-handler/ftps
+#EOF
+
+set -o errexit -o pipefail -o nounset
+
+terminal_app=termite
+
+readonly dotbin="$HOME/.dotfiles/bin"
+readonly protocol=${1%%:*}
+readonly dest=${1#*://}
+
+case "$protocol" in
+  ssh )
+    # use ssh_connect if we connect with own user
+    if [[ $dest == *@* ]] && [[ ${dest%%@*} == "$USER" ]]; then
+      $terminal_app --exec "$dotbin/ssh_connect $dest" &
+    else
+      # else connect with default parameters
+      $terminal_app --exec "bash -c 'TERM=xterm-256color ssh $dest'" &
+    fi
+  ;;
+  ftp|ftps )
+    $terminal_app --exec "lftp $dest -e 'set ssl:verify-certificate false'" &
+  ;;
+  sftp )
+    $terminal_app --exec "lftp $dest -e 'set sftp:auto-confirm yes'" &
+  ;;
+esac
