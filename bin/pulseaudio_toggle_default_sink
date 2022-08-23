@@ -85,7 +85,7 @@ usage() {
 
 sink_decription() {
   local current_sink=$1
-  pamixer --list-sinks | awk -v current_sink="$current_sink" -F'"' '$1 ~ current_sink {print $4}'
+  pamixer --list-sinks | awk -v current_sink="$current_sink" -F'"' '$1 ~ current_sink {print $(NF-1)}'
 }
 
 swap_sink() {
