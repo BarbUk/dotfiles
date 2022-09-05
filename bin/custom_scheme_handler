@@ -47,9 +47,9 @@ case "$protocol" in
     fi
   ;;
   ftp|ftps )
-    $terminal_app --exec "lftp $dest -e 'set ssl:verify-certificate false'" &
+    $terminal_app --exec "lftp '$protocol://$dest' -e 'set ssl:verify-certificate false'" &
   ;;
   sftp )
-    $terminal_app --exec "lftp $dest -e 'set sftp:auto-confirm yes'" &
+    $terminal_app --exec "lftp '$protocol://$dest' -e 'set sftp:auto-confirm yes'" &
   ;;
 esac
