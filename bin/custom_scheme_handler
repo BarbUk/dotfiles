@@ -30,9 +30,12 @@
 
 set -o errexit -o pipefail -o nounset
 
-terminal_app=termite
+declare -A apps=(
+  [terminal]=termite
+  [ftp]=lftp
+  [sftp]=lftp
+)
 
-readonly dotbin="$HOME/.dotfiles/bin"
 readonly protocol=${1%%:*}
 readonly dest=${1#*://}
 
@@ -40,16 +43,16 @@ case "$protocol" in
   ssh )
     # use ssh_connect if we connect with own user
     if [[ $dest == *@* ]] && [[ ${dest%%@*} == "$USER" ]]; then
-      $terminal_app --exec "$dotbin/ssh_connect $dest" &
+      "${apps[terminal]}" --exec "ssh_connect $dest" &
     else
       # else connect with default parameters
-      $terminal_app --exec "bash -c 'TERM=xterm-256color ssh $dest'" &
+      "${apps[terminal]}" --exec "bash -c 'TERM=xterm-256color ssh $dest'" &
     fi
   ;;
   ftp|ftps )
-    $terminal_app --exec "lftp '$protocol://$dest' -e 'set ssl:verify-certificate false'" &
+    "${apps[terminal]}" --exec "${apps[ftp]} '$protocol://$dest' -e 'set ssl:verify-certificate false'" &
   ;;
   sftp )
-    $terminal_app --exec "lftp '$protocol://$dest' -e 'set sftp:auto-confirm yes'" &
+    "${apps[terminal]}" --exec "${apps[sftp]} '$protocol://$dest' -e 'set sftp:auto-confirm yes'" &
   ;;
 esac
