@@ -24,13 +24,11 @@ check_and_source() {
   fi
 }
 
-if [ -e "$dot_dir/modules/z.lua/z.lua" ]; then
-  eval "$(lua "$dot_dir/modules/z.lua/z.lua" --init bash enhanced once fzf)"
-fi
+export TERM=xterm-256color
 
 check_and_source "$HOME/.tokens"
 . "$dot_dir/shell/export"
-source "$BASH_IT/bash_it.sh"
+. "$BASH_IT/bash_it.sh"
 . "$dot_dir/shell/aliases"
 . "$dot_dir/shell/functions"
 . "$dot_dir/shell/completion"
@@ -44,5 +42,8 @@ else
   . "$dot_dir/shell/keychain"
 fi
 
-export TERM=xterm-256color
+if [ -e "$dot_dir/modules/z.lua/z.lua" ]; then
+  eval "$(lua "$dot_dir/modules/z.lua/z.lua" --init bash enhanced once fzf)"
+fi
+
 # set +x
