@@ -61,7 +61,7 @@ HISTCONTROL="erasedups:ignoreboth:autosave"
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export GREP_COLOR="1;33"
+export GREP_COLORS='mt=1;33'
 export MANPAGER="less --no-init --RAW-CONTROL-CHARS"
 
 # Path to the bash it configuration
