@@ -31,7 +31,7 @@ PROMPT_COMMAND='history -a'
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export GREP_COLOR="1;33"
+GREP_COLORS='mt=1;33'
 
 export GIT_HOSTING='git@github.com'
 
@@ -46,7 +46,9 @@ export LESS_TERMCAP_us=$'\E[1;32m'
 export EDITOR=vim
 
 # shellcheck disable=1091
-source /etc/bash_completion
+if [ -f /etc/bash_completion ]; then
+    source /etc/bash_completion
+fi
 export BASH_IT="$HOME/.bash_it"
 export SCM_GIT_SHOW_DETAILS=true
 export SCM_CHECK=true
