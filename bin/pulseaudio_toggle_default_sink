@@ -19,7 +19,10 @@
 set -o errexit -o pipefail -o nounset
 
 default_sink_name=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
-availables_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ {print $1,$2}')
+availables_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ && $2 !~ /^easyeffects_sink$/ {print $1, $2}' | sort -n)
+first_sink_index=$(awk 'NR==1{print $1}' <<< "$availables_sink")
+last_sink_index=$(awk 'END{print $1}' <<< "$availables_sink")
+default_sink_index=$(awk -v default_sink="$default_sink_name" '$2 ~ default_sink {print $1}' <<< "$availables_sink")
 action=default
 
 declare -A colors;
@@ -29,7 +32,7 @@ colors=(\
     ['reset']=$(tput -Txterm-256color sgr0)
 );
 
-readonly availables_sink default_sink_name
+readonly availables_sink default_sink_name default_sink_index
 
 get_sink_inputs() {
   pactl list sink-inputs | awk '/Sink Input #/,/^$/ {
@@ -42,6 +45,9 @@ get_sink_inputs() {
     if (/^[[:space:]]*object.id/) {
       gsub("\"","",$3); input = $3
     }
+    if (/^[[:space:]]*object.serial/) {
+      gsub("\"","",$3); serial = $3
+    }
     if (/^[[:space:]]*media.role/) {
       gsub("\"","",$3); role = $3
     }
@@ -53,7 +59,7 @@ get_sink_inputs() {
     if (length(role) == 0) {
       role = "no"
     }
-    print name, role, sink, input; p=0
+    print name, role, sink, input, serial; p=0
   }'
 }
 
@@ -90,9 +96,14 @@ sink_decription() {
 
 swap_sink() {
   while read -r index name; do
-    if [ "$name" != "$default_sink_name" ] ; then
+    if (( index > default_sink_index )); then
       pactl set-default-sink "$index"
       notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_decription "$index")"
+      return
+    elif (( index == last_sink_index )); then
+      pactl set-default-sink "$first_sink_index"
+      notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_decription "$first_sink_index")"
+      return
     fi
   done <<< "$availables_sink"
 }
@@ -112,12 +123,13 @@ swap_role_sink() {
 }
 
 reset_inputs() {
-  local default_sink_index
-  default_sink_index=$(awk -v default_sink="$default_sink_name" '$2 ~ default_sink {print $1}' <<< "$availables_sink")
-
-  while read -r name role sink input; do
+  while read -r name role sink input serial; do
     if [ "$sink" != "$default_sink_index" ] ; then
-      pactl move-sink-input "$input" "$default_sink_index"
+      if is_pipewire; then
+        pactl move-sink-input "$serial" "$default_sink_index"
+      else
+        pactl move-sink-input "$input" "$default_sink_index"
+      fi
       notify-send -i multimedia-volume-control "Input reset" "Changed $name input to $(sink_decription "$default_sink_index")"
     fi
   done < <(get_sink_inputs)
@@ -165,6 +177,10 @@ list_inputs_outputs() {
   echo
   text "Default output:"
   echo "$default_sink_name"
+}
+
+is_pipewire() {
+  pactl info | grep -q PipeWire
 }
 
 main() {
