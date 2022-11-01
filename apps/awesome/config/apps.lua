@@ -45,7 +45,7 @@ return {
   },
 
   alt = {
-    terminal = 'alacritty',
+    terminal = 'wezterm',
     editor   = 'gvim',
     browser  = 'firefox',
   },

@@ -232,7 +232,7 @@ awful.screen.connect_for_each_screen(function(s)
       s.mytasklist, -- Middle widget
       right
   }
-  elseif s.index == 2 then
+  else
     -- Add widgets to the wibox
     s.mywibox:setup {
       layout = wibox.layout.align.horizontal,
