@@ -61,6 +61,7 @@ HISTCONTROL="erasedups:ignoreboth:autosave"
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
+export LS_COLORS="$LS_COLORS:ow=1;7;34:st=30;44:su=30;41"
 export GREP_COLORS='mt=1;33'
 export MANPAGER="less --no-init --RAW-CONTROL-CHARS"
 
