@@ -94,7 +94,6 @@ let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
 set ul=100              " Niveaux d'annulation
 set mouse=v             " only in visual mode
 
-
 if v:version < 800
     set t_Co=256           " Terminaux à 256 couleurs
     colorscheme desert
@@ -137,7 +136,7 @@ imap <C-s> <ESC>:w<CR>a
 
 " Pour avoir tous les buffers en tabs (mauvais pour :help et autres windows)
 "au BufAdd,BufNewFile,BufRead * nested tab sball
-nmap <silent> ,/ :nohlsearch<CR>
+" nmap <silent> ,/ :nohlsearch<CR>
 " Complete options (disable preview scratch window)
 set completeopt=menu,menuone,longest
 " Limit popup menu height
@@ -157,7 +156,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 autocmd BufNewFile,BufRead */nagios*/*.{cache,cfg,jinja2} setlocal filetype=nagios
 
 " soa serial
-:nnoremap <F8> /\<\d\{10}\><CR>ce<C-r>=strftime("%Y%m%d00")<CR><Esc>:echo @"<CR>
+nnoremap <F8> /\<\d\{10}\><CR>ce<C-r>=strftime("%Y%m%d00")<CR><Esc>:echo @"<CR>
 
 nnoremap rm :call delete(expand('%')) \| bdelete! <CR>
 nnoremap <leader>wd :write\|bdelete <CR>
@@ -198,3 +197,5 @@ augroup END
 :autocmd InsertEnter,InsertLeave * set cul!
 
 let g:ale_linters = { 'php': ['php', 'psalm'] }
+
+autocmd VimEnter * redraw!
