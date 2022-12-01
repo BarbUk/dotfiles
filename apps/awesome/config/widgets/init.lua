@@ -48,6 +48,7 @@ local calendar = lain.widget.cal({
 
 -- MPD
 local mpd = lain.widget.mpd({
+  music_dir = os.getenv("HOME") .. "/Zik",
   settings = function()
     if mpd_now.state ~= "N/A" then
       state = "  "
