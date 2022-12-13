@@ -1,3 +1,8 @@
+# NCMPCPP
+ncmpcpp_directory  = ~/.ncmpcpp
+lyrics_directory  = ~/.ncmpcpp/lyrics
+mpd_music_dir = "~/Zik"
+
 allow_for_physical_item_deletion = "no"
 #current_item_inactive_column_prefix = "cyan"
 #current_item_inactive_column_suffix = "cyan"
@@ -23,7 +28,6 @@ message_delay_time = "4"
 mouse_support = "yes"
 
 mpd_crossfade_time = 5
-mpd_music_dir = "~/Zik"
 
 playlist_disable_highlight_delay = "3"
 playlist_display_mode = "columns" (classic/columns)
@@ -52,10 +56,9 @@ alternative_header_first_line_format = $b$5«$/b$5« {%t}|{%f}$/b $5»$b$5»$/b
 alternative_header_second_line_format = {$b{$2%a$9}{ - $7%b$9}{ ($2%y$9)}}|{%D}
 
 ### Visualizer ###
-visualizer_fifo_path = /dev/shm/mpd.fifo
+visualizer_data_source = /dev/shm/mpd.fifo
 visualizer_output_name = "mpd_visualizer"
 visualizer_in_stereo = "yes"
-visualizer_sync_interval = 30
 visualizer_look = ●●
 visualizer_type = "spectrum" (spectrum/wave)
 
