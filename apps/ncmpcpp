@@ -1,31 +1,33 @@
 # NCMPCPP
 ncmpcpp_directory  = ~/.ncmpcpp
-lyrics_directory  = ~/.ncmpcpp/lyrics
+lyrics_directory = ~/.lyrics
 mpd_music_dir = "~/Zik"
 
 allow_for_physical_item_deletion = "no"
 #current_item_inactive_column_prefix = "cyan"
 #current_item_inactive_column_suffix = "cyan"
-autocenter_mode = "yes"
+autocenter_mode = yes
 browser_display_mode = "columns" (classic/columns)
 
 color1 = "cyan"
 color2 = "blue"
-colors_enabled = "yes"
+colors_enabled = yes
 
-display_remaining_time = "yes"
+display_remaining_time = yes
+display_volume_level = yes
+display_bitrate = no
 empty_tag_marker = ""
-enable_window_title = "yes"
+enable_window_title = yes
 
-header_text_scrolling = "yes"
-header_visibility = "yes"
+header_text_scrolling = yes
+header_visibility = yes
 header_window_color = "magenta"
 
-ignore_leading_the = "yes"
+ignore_leading_the = yes
 current_item_prefix = "$(cyan)$r"
 current_item_suffix = "$/r$(end)"
 message_delay_time = "4"
-mouse_support = "yes"
+mouse_support = yes
 
 mpd_crossfade_time = 5
 
@@ -40,15 +42,17 @@ progressbar_look = "─╼"
 song_columns_list_format = "(5f)[blue]{l} (33)[cyan]{t} (32)[green]{a} (30)[magenta]{b}"
 song_list_format = "{%a - }{%t}|{$5%f$9}$R{$7(%l)$9}"
 song_status_format = "$2%a $1• $3%t $1• $4%b {(Disc %d) }$1• $5%y$1"
-now_playing_prefix = "> "
+jump_to_now_playing_song_at_start = yes
+now_playing_prefix = "$b$r"
+now_playing_suffix = "$/b$/r🎶"
 song_window_title_format = "{%a - }{%t}|{%f}"
 
 state_flags_color = "blue"
 state_line_color = "yellow"
 statusbar_color = "cyan"
-statusbar_visibility = "yes"
+statusbar_visibility = yes
 system_encoding = "UTF-8"
-titles_visibility = "yes"
+titles_visibility = yes
 user_interface = "alternative" (classic/alternative)
 # Alternative UI
 alternative_ui_separator_color = "black"
@@ -58,8 +62,14 @@ alternative_header_second_line_format = {$b{$2%a$9}{ - $7%b$9}{ ($2%y$9)}}|{%D}
 ### Visualizer ###
 visualizer_data_source = /dev/shm/mpd.fifo
 visualizer_output_name = "mpd_visualizer"
-visualizer_in_stereo = "yes"
-visualizer_look = ●●
-visualizer_type = "spectrum" (spectrum/wave)
+visualizer_in_stereo = yes
+visualizer_look = ●▮
+## Available values: spectrum, wave, wave_filled, ellipse.
+visualizer_type =  spectrum
+visualizer_fps = 60
+visualizer_autoscale = yes
+visualizer_spectrum_smooth_look = yes
 
 volume_color = "green"
+default_place_to_search_in = database
+connected_message_on_startup = no
