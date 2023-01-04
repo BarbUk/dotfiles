@@ -33,12 +33,14 @@ esac
 #xmodmap -e 'keycode 135 = Menu'
 [[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
 # Rename wmname and configure java non reparenting
-wmname LG3D
+if command -v wmname >/dev/null 2>&1; then
+  wmname LG3D
+fi
 export _JAVA_AWT_WM_NONREPARENTING=1
 # Ssh and keychain configuration
 export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
-eval "$(keychain --eval --agents ssh,gpg)"
 eval "$(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)"
+eval "$(keychain --eval --agents ssh,gpg)"
 # Screensaver timeout and cycle
 xset s 120 120
 # dpms Standby, Suspend and off
@@ -46,8 +48,13 @@ xset dpms 150 200 300
 # Lock session after screen save or lid close
 xss-lock -- slock &
 # pcmanfm daemon, for quick file manager access
-pcmanfm -d &
+#pcmanfm -d &
 # Unclutter hide mouse cursor
 unclutter --ignore-scrolling --exclude-root --fork
+if ! systemctl --user is-active picom.service >/dev/null 2>&1; then
+    systemctl --user start picom.service
+fi
 # Start session
-exec tdm --xstart
+if command -v tdm >/dev/null 2>&1; then
+  exec tdm --xstart
+fi
