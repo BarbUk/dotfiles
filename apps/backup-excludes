@@ -5,7 +5,7 @@
 /run/*
 /mnt/*
 /media/*
-/lost+found
+/lost+found/*
 /swapfile
 /var/cache/pacman
 /home/*/.ccache
@@ -18,3 +18,5 @@
 /home/*/.dogecoin
 /home/*/VirtualBox\ VMs
 /var/lib/docker
+re:/\\.cache/
+re:/\\.ccache/
