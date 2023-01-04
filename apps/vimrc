@@ -71,7 +71,8 @@ set showtabline=2               " Affiche tout le temps la ligne des tabs
 set numberwidth=5               " Nombre de colonnes que prend les numéros de lignes
 set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
-set listchars=tab:▸\ ,eol:¬,extends:›,precedes:‹,nbsp:␣,space:␣,trail:•
+set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,trail:•
+nnoremap <F3> :set list!<CR>
 "set paste
 cmap w!! w !sudo tee % >/dev/null
 cmap hex %!xxd
@@ -111,6 +112,8 @@ else
     let g:gruvbox_contrast_dark='medium'
     let g:airline_theme='gruvbox'
 endif
+
+highlight SpecialKey cterm=NONE ctermbg=160 ctermfg=231 gui=NONE guifg=#ffffff guibg=#d70000
 
 " italic comment
 highlight Comment cterm=italic gui=italic
