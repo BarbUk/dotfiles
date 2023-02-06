@@ -129,16 +129,16 @@ return {
 
     player = {
       stop = function()
-        os.execute(music_player_client .. " stop || " .. mpris_player_client .. " stop", false)
+        os.execute(mpris_player_client .. " stop", false)
       end,
       toggle = function()
-        os.execute(music_player_client .. " toggle || " .. mpris_player_client .. " play-pause", false)
+        os.execute(mpris_player_client .. " play-pause", false)
       end,
       prev = function()
-        os.execute(music_player_client .. " prev || " .. mpris_player_client .. " previous", false)
+        os.execute(mpris_player_client .. " previous", false)
       end,
       next = function()
-        os.execute(music_player_client .. " next || " .. mpris_player_client .. " next", false)
+        os.execute(mpris_player_client .. " next", false)
       end,
     }
   }

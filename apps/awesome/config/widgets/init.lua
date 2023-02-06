@@ -48,20 +48,7 @@ local calendar = lain.widget.cal({
 
 -- MPD
 local mpd = lain.widget.mpd({
-  music_dir = os.getenv("HOME") .. "/Zik",
-  settings = function()
-    if mpd_now.state ~= "N/A" then
-      state = "  "
-      if mpd_now.state == "play" then
-        state = markup(beautiful.nord7, "  ")
-      else
-        state = markup(beautiful.nord7, "  ")
-      end
-        widget:set_markup(state .. markup(white, mpd_now.artist) .. " - " .. markup(white, mpd_now.title) .. " ")
-    else
-        widget:set_markup("")
-    end
-  end
+  music_dir = os.getenv("HOME") .. "/Zik"
 })
 
 mpd.widget:buttons( awful.util.table.join (
