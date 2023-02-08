@@ -54,7 +54,7 @@ ssh_config() {
     local file
     file="$HOME/.ssh/config"
     if [ -d "$(dirname "$file")" ]; then
-        awk '/^Host/ && ! /*/ {print $2}' "$file"
+        awk '/^Host/ && ! /\*/ {print $2}' "$file"
     fi
 }
 
