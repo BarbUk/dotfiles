@@ -16,6 +16,7 @@
 #
 
 # Use it with a custom .desktop
+
 #cat << EOF > ~/.local/share/applications/custom_scheme_handler.desktop
 #[Desktop Entry]
 #Name=custom_scheme_handler
@@ -27,6 +28,10 @@
 #NoDisplay=true
 #MimeType=x-scheme-handler/ssh;x-scheme-handler/ftp;x-scheme-handler/sftp;x-scheme-handler/ftps
 #EOF
+#
+# And add it as a default app:
+# echo 'x-scheme-handler/ssh=custom_scheme_handler.desktop;' >> ~/.local/share/applications/mimeapps.list
+
 
 set -o errexit -o pipefail -o nounset
 
