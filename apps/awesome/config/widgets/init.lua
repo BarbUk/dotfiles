@@ -111,13 +111,12 @@ local fsroot = lain.widget.fs({
 
 -- Weather
 local weather = lain.widget.weather({
-  city_id = 934131,
+  lat =  -20.4172,
+  lon = 57.5413,
   APPID = "869faf1aac21d680efcfd1a6ce1ece93",
   cnt = 5,
   units = "metric",
   lang = "fr",
-  current_call  = "curl --connect-timeout 1 --max-time 5 -s 'https://api.openweathermap.org/data/2.5/weather?id=%s&units=%s&lang=%s&APPID=%s'",
-  forecast_call = "curl --connect-timeout 1 --max-time 5 -s 'https://api.openweathermap.org/data/2.5/forecast?id=%s&units=%s&lang=%s&APPID=%s'",
   settings = function()
     descr = weather_now["weather"][1]["description"]
     units = math.floor(weather_now["main"]["temp"])
