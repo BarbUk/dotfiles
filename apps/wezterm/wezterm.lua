@@ -5,7 +5,7 @@ return {
   font = wezterm.font 'PragmataProMonoLiga Nerd Font',
   font_size = 12,
   adjust_window_size_when_changing_font_size = false,
-  color_scheme = "Solarized Light (base16)",
+  color_scheme = 'Solarized (light) (terminal.sexy)',
   colors = {
     -- The default text color
     foreground = '#34484E',
