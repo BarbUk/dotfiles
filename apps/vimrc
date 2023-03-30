@@ -2,19 +2,21 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 call plug#begin('~/.vim/bundle')
-Plug 'vim-airline/vim-airline'
-Plug 'airblade/vim-gitgutter'
-Plug 'morhetz/gruvbox'
-Plug 'AndrewRadev/switch.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'w0rp/ale'
-Plug 'tpope/vim-surround'
-Plug 'ryanoasis/vim-devicons'
-Plug 'ervandew/supertab'
-Plug 'sheerun/vim-polyglot'
-Plug 'justinmk/vim-sneak'
-Plug 'tpope/vim-fugitive'
-" Initialize plugin system
+  Plug 'vim-airline/vim-airline'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'morhetz/gruvbox'
+  Plug 'AndrewRadev/switch.vim'
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'w0rp/ale'
+  Plug 'tpope/vim-surround'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'ervandew/supertab'
+  Plug 'sheerun/vim-polyglot'
+  Plug 'justinmk/vim-sneak'
+  Plug 'tpope/vim-fugitive'
+  Plug 'junegunn/fzf.vim'
+  Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+  Plug 'preservim/nerdtree'
 call plug#end()
 
 let g:sneak#s_next = 1
@@ -202,3 +204,21 @@ augroup END
 let g:ale_linters = { 'php': ['php', 'psalm'] }
 
 autocmd VimEnter * redraw!
+
+" Open fzf
+map <C-p> :Files<CR>
+
+" Open nerdthree
+map <C-o> :NERDTreeFocus<CR>
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
