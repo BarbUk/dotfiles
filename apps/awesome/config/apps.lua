@@ -129,16 +129,16 @@ return {
 
     player = {
       stop = function()
-        os.execute(mpris_player_client .. " stop", false)
+        awful.spawn(mpris_player_client .. " stop", false)
       end,
       toggle = function()
-        os.execute(mpris_player_client .. " play-pause", false)
+        awful.spawn(mpris_player_client .. " play-pause", false)
       end,
       prev = function()
-        os.execute(mpris_player_client .. " previous", false)
+        awful.spawn(mpris_player_client .. " previous", false)
       end,
       next = function()
-        os.execute(mpris_player_client .. " next", false)
+        awful.spawn(mpris_player_client .. " next", false)
       end,
     }
   }
