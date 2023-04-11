@@ -5,13 +5,18 @@ local beautiful = require('beautiful')
 local lain      = require('lain')
 local buttons   = require('config.tags.buttons')
 
--- table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.layouts = {
-  awful.layout.suit.spiral.dwindle,
-  awful.layout.suit.fair,
-  awful.layout.suit.tile,
-  awful.layout.suit.tile.top,
-}
+-- {{{ Tag layout
+-- @DOC_LAYOUT@
+-- Table of layouts to cover with awful.layout.inc, order matters.
+tag.connect_signal("request::default_layouts", function()
+    awful.layout.append_default_layouts({
+      awful.layout.suit.spiral.dwindle,
+      awful.layout.suit.fair,
+      awful.layout.suit.tile,
+      awful.layout.suit.tile.top,
+    })
+end)
+-- }}}
 
 awful.util.tagnames = {
   {
