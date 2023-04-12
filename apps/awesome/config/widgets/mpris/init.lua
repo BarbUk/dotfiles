@@ -8,6 +8,7 @@
 local helpers      = require("lain.helpers")
 local wibox        = require("wibox")
 local shell        = require("awful.util").shell
+local htmlEntities = require('htmlEntities')
 local setmetatable = setmetatable
 
 local mpris = {}
@@ -23,10 +24,16 @@ local function worker(args)
     function mpris.update()
 
         mpris_now = {}
+        local now = {}
         helpers.async({shell, "-c", mpris.cmd}, function(output)
             for s in output:gmatch("[^\n]+") do
-                table.insert(mpris_now, s)
+                table.insert(now, s)
             end
+            mpris_now = {
+                status = now[1],
+                artist = htmlEntities.encode(now[2]),
+                title = htmlEntities.encode(now[3]),
+            }
             widget = mpris.widget
             settings()
         end)

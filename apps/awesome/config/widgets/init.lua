@@ -67,14 +67,14 @@ mpd.widget:buttons( awful.util.table.join (
 local mpris = mpris_info({
   cmd = "mprisctl",
   settings = function()
-    if mpris_now[1] ~= "no player detected" then
+    if mpris_now.status ~= "no player detected" then
       state = "  "
-      if mpris_now[1] == "Playing" then
+      if mpris_now.status == "Playing" then
         state = markup(beautiful.nord7, "  ")
-      elseif mpris_now[1] == "Paused" then
+      elseif mpris_now.status == "Paused" then
         state = markup(beautiful.nord7, "  ")
       end
-      widget:set_markup(state .. markup(white, mpris_now[2]) .. " - " .. markup(white, mpris_now[3]) .. " ")
+      widget:set_markup(state .. mpris_now.status .. markup(white, mpris_now.artist) .. " - " .. markup(white, mpris_now.title) .. " ")
     else
       widget:set_markup("")
     end
