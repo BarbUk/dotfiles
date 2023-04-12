@@ -1,6 +1,6 @@
 local naughty   = require("naughty")
-require('config.notifications.default')
-require('config.notifications.errors')
+require(... .. ".default")
+require(... .. ".errors")
 
 noti = {}
 noti.notification = nil
