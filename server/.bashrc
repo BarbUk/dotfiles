@@ -93,6 +93,7 @@ alias l='ls -lh'
 alias q='exit'
 alias s='netstat -tanpu'
 alias _="sudo -s"
+alias __="sudo -i"
 alias c='clear'
 if hash systemctl 2> /dev/null; then
     alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'

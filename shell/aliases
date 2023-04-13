@@ -23,6 +23,7 @@ alias l='ls -lh'
 alias q='exit'
 alias ss='netstat -tanpu'
 alias _="sudo -s"
+alias __="sudo -i"
 alias c='clear'
 alias o='xdg-open'
 
