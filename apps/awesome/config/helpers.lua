@@ -1,4 +1,4 @@
-local gears         = require("gears")
+local gears = require("gears")
 
 local helpers = {}
 
@@ -16,6 +16,13 @@ end
 
 function helpers.colorize_text(txt, fg)
     return "<span foreground='" .. fg .."'>" .. txt .. "</span>"
+end
+
+function helpers.vertical_pad(height)
+    return wibox.widget({
+        forced_height = height,
+        layout = wibox.layout.fixed.vertical,
+    })
 end
 
 return helpers
