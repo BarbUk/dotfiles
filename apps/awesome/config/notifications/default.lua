@@ -4,24 +4,46 @@ local naughty   = require("naughty")
 local menubar   = require("menubar")
 local lain      = require('lain')
 local markup    = lain.util.markup
+local dpi       = beautiful.xresources.apply_dpi
+local gstring   = require("gears.string")
+local wibox   = require("wibox")
+local helpers   = require("config.helpers")
 
 -- Defaults
 naughty.config.defaults.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, beautiful.border_radius) end
 
 -- Apply theme variables
-naughty.config.padding = 5
-naughty.config.spacing = 5
-naughty.config.defaults.border_width = 0
+naughty.config.padding = dpi(6)
+naughty.config.spacing = dpi(6)
+naughty.persistence_enabled = true
+naughty.config.defaults.ontop = true
+naughty.config.defaults.margin = dpi(20)
+
+naughty.config.icon_formats = { "png", "svg", "jpg" }
 
 -- Notification callback to style monitoring notification
 naughty.config.notify_callback = function(args)
+    if args.freedesktop_hints["desktop-entry"] and args.icon == nil then
+      local path = menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]) or
+        menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]:lower())
+
+      if path then
+          args.icon = path
+      end
+    end
+    if args.title then
+      args.title = args.title .. "\n"
+    end
     if args.app_name and args.message then
-        args.message = args.message:gsub('<([^<>]+)>', "%1")
-        args.message = args.message:gsub("PROBLEM", markup(beautiful.nord11, "PROBLEM"))
-        args.message = args.message:gsub("RECOVERY", markup(beautiful.nord9, "RECOVERY"))
-        args.message = args.message:gsub("on host (%w+%.%w+%.%w+)", "on host " .. markup.bold("%1"))
-        args.message = args.message:gsub("([%a://]*[%w(%-)@]+%.[%w%-%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.underline("%1"))
-        args.message = args.message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.foreground, markup.bold("%1")))
+      local message = gstring.xml_escape(args.message)
+      message = message:gsub('<([^<>]+)>', "%1")
+      message = message:gsub("PROBLEM", markup(beautiful.nord11, "PROBLEM"))
+      message = message:gsub("RECOVERY", markup(beautiful.nord9, "RECOVERY"))
+      message = message:gsub("on host (%w+%.%w+%.%w+)", "on host " .. markup.bold("%1"))
+      message = message:gsub("([%a://]*[%w(%-)@]+%.[%w%-%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.underline("%1"))
+      message = message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.foreground, markup.bold("%1")))
+
+      args.message = message
     end
     return args
 end
@@ -81,4 +103,9 @@ naughty.connect_signal("request::icon", function(n, context, hints)
     if path then
         n.icon = path
     end
+end)
+
+--- Use XDG icon
+naughty.connect_signal("request::action_icon", function(a, context, hints)
+    a.icon = menubar.utils.lookup_icon(hints.id)
 end)
