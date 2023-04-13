@@ -5,10 +5,10 @@
 
 --]]
 
-local helpers      = require("lain.helpers")
-local wibox        = require("wibox")
-local shell        = require("awful.util").shell
-local htmlEntities = require('htmlEntities')
+local helpers = require("lain.helpers")
+local wibox   = require("wibox")
+local shell   = require("awful.util").shell
+local gstring = require("gears.string")
 local setmetatable = setmetatable
 
 local mpris = {}
@@ -31,8 +31,8 @@ local function worker(args)
             end
             mpris_now = {
                 status = now[1],
-                artist = htmlEntities.encode(now[2]),
-                title = htmlEntities.encode(now[3]),
+                artist = gstring.xml_escape(now[2]),
+                title = gstring.xml_escape(now[3]),
             }
             widget = mpris.widget
             settings()
