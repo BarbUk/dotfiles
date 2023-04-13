@@ -23,26 +23,27 @@ naughty.config.icon_formats = { "png", "svg", "jpg" }
 
 -- Notification callback to style monitoring notification
 naughty.config.notify_callback = function(args)
-    if args.freedesktop_hints["desktop-entry"] and args.icon == nil then
+    if args.freedesktop_hints and args.freedesktop_hints["desktop-entry"] and args.icon == nil and
+        args.freedesktop_hints["image_path"] == nil and args.freedesktop_hints["image-data"] == nil then
       local path = menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]) or
         menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]:lower())
-
       if path then
           args.icon = path
       end
     end
+
     if args.title then
       args.title = args.title .. "\n"
     end
+
     if args.app_name and args.message then
       local message = gstring.xml_escape(args.message)
-      message = message:gsub('<([^<>]+)>', "%1")
-      message = message:gsub("PROBLEM", markup(beautiful.nord11, "PROBLEM"))
-      message = message:gsub("RECOVERY", markup(beautiful.nord9, "RECOVERY"))
-      message = message:gsub("on host (%w+%.%w+%.%w+)", "on host " .. markup.bold("%1"))
-      message = message:gsub("([%a://]*[%w(%-)@]+%.[%w%-%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.underline("%1"))
-      message = message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.foreground, markup.bold("%1")))
+      message = message:gsub("PROBLEM", markup.bold(markup(beautiful.nord11, "PROBLEM")))
+      message = message:gsub("RECOVERY", markup.bold(markup(beautiful.nord9, "RECOVERY")))
+      message = message:gsub("([%a://]*[%w(%-)@]+%.[%w%-%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.bold(markup.underline("%1")))
+      message = message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.nord4, markup.bold("%1")))
 
+      -- args.message = gstring.xml_unescape(message)
       args.message = message
     end
     return args
@@ -52,7 +53,7 @@ end
 naughty.config.defaults['icon_size']  = beautiful.notification_icon_size
 
 -- Timeouts
-naughty.config.defaults.timeout = 10
+naughty.config.defaults.timeout = 35
 naughty.config.defaults.hover_timeout = 1
 naughty.config.presets.low.timeout = 3
 naughty.config.presets.critical.timeout = 0
@@ -109,3 +110,22 @@ end)
 naughty.connect_signal("request::action_icon", function(a, context, hints)
     a.icon = menubar.utils.lookup_icon(hints.id)
 end)
+
+-- naughty.connect_signal("request::display", function(n)
+--     if n.title then
+--         n.title = markup.font("Myriad Pro 16", n.title)
+--     end
+--     if n.app_name and n.message then
+--       local message = gstring.xml_escape(n.message)
+--       message = message:gsub("PROBLEM", markup.bold(markup(beautiful.nord11, "PROBLEM")))
+--       message = message:gsub("RECOVERY", markup.bold(markup(beautiful.nord9, "RECOVERY")))
+--       message = message:gsub("([%a://]*[%w(%-)@]+%.[%w%-%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.bold(markup.underline("%1")))
+--       message = message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.nord4, markup.bold("%1")))
+
+--       n.message = gstring.xml_unescape(message)
+--     end
+
+--     naughty.layout.box {
+--         notification = n,
+--     }
+-- end)
