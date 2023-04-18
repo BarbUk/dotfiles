@@ -7,7 +7,6 @@ local lain          = require('lain')
 local modkey   = require('config.keys.mod').modkey
 local altkey   = require('config.keys.mod').altkey
 local apps     = require('config.apps')
-local mpd      = require('config.widgets').mpd
 local mpris    = require('config.widgets').mpris
 local volume   = require('config.widgets').volume
 local calendar = require('config.widgets').calendar
@@ -22,7 +21,6 @@ awful.util.terminal = apps.default.terminal
 hotkeys_popup.default_widget.labels = beautiful.hotkeys_popup_labels
 
 local widget_refresh = function()
-  mpd.update()
   mpris.update()
 end
 

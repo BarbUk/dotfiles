@@ -6,7 +6,7 @@ local lain      = require('lain')
 local markup    = lain.util.markup
 local dpi       = beautiful.xresources.apply_dpi
 local gstring   = require("gears.string")
-local wibox   = require("wibox")
+local wibox     = require("wibox")
 local helpers   = require("config.helpers")
 
 -- Defaults
@@ -44,6 +44,7 @@ naughty.config.notify_callback = function(args)
       message = message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.nord4, markup.bold("%1")))
 
       -- args.message = gstring.xml_unescape(message)
+      -- args.message = markup.font("PragmataPro Liga " .. dpi(11.5), message)
       args.message = message
     end
     return args
@@ -110,22 +111,3 @@ end)
 naughty.connect_signal("request::action_icon", function(a, context, hints)
     a.icon = menubar.utils.lookup_icon(hints.id)
 end)
-
--- naughty.connect_signal("request::display", function(n)
---     if n.title then
---         n.title = markup.font("Myriad Pro 16", n.title)
---     end
---     if n.app_name and n.message then
---       local message = gstring.xml_escape(n.message)
---       message = message:gsub("PROBLEM", markup.bold(markup(beautiful.nord11, "PROBLEM")))
---       message = message:gsub("RECOVERY", markup.bold(markup(beautiful.nord9, "RECOVERY")))
---       message = message:gsub("([%a://]*[%w(%-)@]+%.[%w%-%.]+[:%d]*[/%w_%.(%%20)(%-)]*)", markup.bold(markup.underline("%1")))
---       message = message:gsub("```(.+)```", "\n\n" .. markup.color(beautiful.background, beautiful.nord4, markup.bold("%1")))
-
---       n.message = gstring.xml_unescape(message)
---     end
-
---     naughty.layout.box {
---         notification = n,
---     }
--- end)

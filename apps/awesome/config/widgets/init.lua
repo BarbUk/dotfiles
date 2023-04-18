@@ -46,26 +46,16 @@ local calendar = lain.widget.cal({
     bg   = beautiful.notification_bg
 }})
 
--- MPD
-local mpd = lain.widget.mpd({
-  music_dir = os.getenv("HOME") .. "/Zik"
-})
-
-mpd.widget:buttons( awful.util.table.join (
-  awful.button({ }, 1, function()
-    awful.util.spawn(apps.cmd.mpd.toggle, false, mpd.update())
-  end),
-  awful.button({ }, 4, function()
-    awful.util.spawn(apps.cmd.mpd.next, false, mpd.update())
-  end),
-  awful.button({ }, 5, function()
-    awful.util.spawn(apps.cmd.mpd.prev, false, mpd.update())
-  end)
-))
-
 -- mpris
 local mpris = mpris_info({
   cmd = "mprisctl",
+  cover_size = 180,
+  notification_preset = {
+    font  = "PragmataPro Liga 13",
+    fg    = beautiful.notification_fg,
+    bg    = beautiful.notification_bg,
+    title = "Now playing\n"
+  },
   settings = function()
     if mpris_now.status ~= "no player detected" then
       state = "  "
@@ -74,7 +64,7 @@ local mpris = mpris_info({
       elseif mpris_now.status == "Paused" then
         state = markup(beautiful.nord7, "  ")
       end
-      widget:set_markup(state .. mpris_now.status .. markup(white, mpris_now.artist) .. " - " .. markup(white, mpris_now.title) .. " ")
+      widget:set_markup(state .. markup(white, mpris_now.artist) .. " - " .. markup(white, mpris_now.title) .. " ")
     else
       widget:set_markup("")
     end
@@ -171,7 +161,6 @@ awful.screen.connect_for_each_screen(function(s)
   local right = { -- Right widgets
     layout = wibox.layout.fixed.horizontal,
     mpris.widget,
-    mpd.widget,
     separator.center,
     wibox.widget.systray(),
     separator.left,
@@ -198,8 +187,10 @@ awful.screen.connect_for_each_screen(function(s)
     separator.center,
   }
 
-  local time = {
+  local general_info = {
     layout = wibox.layout.fixed.horizontal,
+    mpris.widget,
+    separator.center,
     weather.icon,
     weather.widget,
     separator.left,
@@ -225,13 +216,12 @@ awful.screen.connect_for_each_screen(function(s)
       layout = wibox.layout.align.horizontal,
       left,
       s.mytasklist, -- Middle widget,
-      time
+      general_info
     }
   end
 end)
 
 return {
-  mpd      = mpd,
   mpris    = mpris,
   volume   = volume.helper,
   calendar = calendar,
