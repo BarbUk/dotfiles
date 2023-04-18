@@ -17,33 +17,55 @@
 set -o errexit -o pipefail -o nounset
 
 readonly state_file=/tmp/mpris_last_player
+readonly tmp_art_file=/tmp/mpris_tmp_art_file
+readonly tmp_art_filename=/tmp/mpris_tmp_art_filename
 action="${1:-info}"
 mpris='no player detected'
+artfile=
 
 info() {
   playerctl \
     --all-players \
-    --format '{{playerName}};{{status}};{{xesam:artist}};{{xesam:title}}' \
+    --format '{{playerName}};{{status}};{{xesam:artist}};{{xesam:album}};{{xesam:title}};{{mpris:artUrl}}' \
     metadata 2>/dev/null
+}
+
+handle_art() {
+  local art="$1"
+
+  # Online art
+  if [[ "$art" == "https://"* ]]; then
+    if ! ([ -f "$tmp_art_filename" ] && [ -f "$tmp_art_file" ] && grep -q "$art" "$tmp_art_filename"); then
+      curl --silent --output "$tmp_art_file" "$art"
+      echo "$art" > "$tmp_art_filename"
+    fi
+    echo "$tmp_art_file"
+  elif [[ "$art" == "file://"* ]]; then
+    echo "${art#*file://}"
+  fi
 }
 
 if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
   case "$action" in
     'info' )
-      while IFS=';' read -r player status artist title; do
+      while IFS=';' read -r player status artist album title art; do
         if [ "$status" = Playing ]; then
-          mpris="$status\n$artist\n$title"
+          mpris="$status\n$artist\n$album\n$title\n"
+          artfile="$art"
+          echo "$player" > "$state_file"
         elif [ -e "$state_file" ] && [ "$(cat "$state_file")" = "$player" ]; then
-          mpris="$status\n$artist\n$title"
+          mpris="$status\n$artist\n$album\n$title\n"
+          artfile="$art"
         elif [ "$mpris" = 'no player detected' ]; then
-          mpris="$status\n$artist\n$title"
+          mpris="$status\n$artist\n$album\n$title\n"
         fi
       done < <(info)
 
-      echo -e "$mpris"
-      ;;
+      artfile="$(handle_art "$artfile")"
+      echo -e "$mpris$artfile"
+    ;;
     * )
-      while IFS=';' read -r player status artist title; do
+      while IFS=';' read -r player status artist album title art; do
         if [ "$status" = Playing ]; then
           playerctl --player="$player" "$action"
           mpris="$player"
