@@ -81,8 +81,6 @@ local function worker(args)
             mpris.icon = mpris.mpris_now.art
         end
 
-        if #mpris.icon == 0 then mpris.icon = nil end
-
         mpris.notification = naughty.notify {
             preset      = mpris.notification_preset,
             screen      = mpris.followtag and awful.screen.focused() or scr or 1,
