@@ -49,6 +49,15 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
   case "$action" in
     'info' )
       while IFS=';' read -r player status artist album title art; do
+        if [ -z "$album" ]; then
+          album='n/a'
+        fi
+        if [ -z "$artist" ]; then
+          artist='n/a'
+        fi
+        if [ -z "$art" ]; then
+          art="file://$HOME/.dotfiles/img/default_player_icon.svg"
+        fi
         if [ "$status" = Playing ]; then
           mpris="$status\n$artist\n$album\n$title\n"
           artfile="$art"
