@@ -19,6 +19,11 @@ set -o errexit -o pipefail -o nounset
 
 readonly mode="${1:-}"
 
+awk_command=awk
+if [ "$(uname)" = "Darwin" ]; then
+    awk_command=gawk
+fi
+
 dsh_hosts() {
     local file
     file="$HOME/.dsh/group/all"
@@ -31,7 +36,7 @@ known_hosts() {
     local file
     file="$HOME/.ssh/known_hosts"
     if [ -f "$file" ]; then
-        awk '{print $1}' "$file"    \
+        "$awk_command" '{print $1}' "$file"    \
             | grep -v ^\|           \
             | cut -d, -f 1          \
             | sed -e 's/\[//g'      \
@@ -46,7 +51,7 @@ bash_history() {
     file="$HOME/.bash_history"
     if [ -f "$file" ]; then
         grep -E "^host|^dig|^drill|^ping|^whois" "$file" \
-            | awk '{print $NF}'
+            | "$awk_command" '{print $NF}'
     fi
 }
 
@@ -54,7 +59,7 @@ ssh_config() {
     local file
     file="$HOME/.ssh/config"
     if [ -d "$(dirname "$file")" ]; then
-        awk '/^Host/ && ! /\*/ {print $2}' "$file"
+        "$awk_command" '/^Host/ && ! /\*/ {print $2}' "$file"
     fi
 }
 
@@ -63,7 +68,7 @@ ssh_config_d() {
     file="$HOME/.ssh/config.d/*"
     if [ -d "$(dirname "$file")" ]; then
         # shellcheck disable=2086
-        awk '/^Host/ && ! /*/ {print $2}' $file
+        "$awk_command" '/^Host/ && ! /*/ {print $2}' $file
     fi
 }
 
