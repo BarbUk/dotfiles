@@ -99,3 +99,7 @@ fi
 GPG_TTY=$(tty)
 export GPG_TTY
 export SYSTEMD_PAGER=
+
+# Lesspipe
+LESSOPEN="|/usr/bin/lesspipe.sh %s"
+export LESSOPEN
