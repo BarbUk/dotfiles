@@ -110,11 +110,15 @@ swap_sink() {
 
 swap_role_sink() {
   local role_to_change=$1
-  while read -r name role sink input; do
+  while read -r name role sink input serial; do
     if [ "$role" = "$role_to_change" ]; then
       while read -r index sink_name; do
         if [ "$index" != "$sink" ]; then
-          pactl move-sink-input "$input" "$index"
+          if is_pipewire; then
+            pactl move-sink-input "$serial" "$index"
+          else
+            pactl move-sink-input "$input" "$index"
+          fi
           notify-send -i multimedia-volume-control "Swaped $role_to_change input" "Changed $name input to $(sink_decription "$index")"
         fi
       done <<<"$availables_sink"
@@ -188,10 +192,10 @@ main() {
   parse_options "$@"
 
   case "$action" in
-  media) swap_role_sink "$role" ;;
-  reset) reset_inputs ;;
-  list) list_inputs_outputs ;;
-  *) swap_sink ;;
+    media) swap_role_sink "$role" ;;
+    reset) reset_inputs ;;
+    list) list_inputs_outputs ;;
+    *) swap_sink ;;
   esac
 }
 
