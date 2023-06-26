@@ -20,17 +20,17 @@ set -o errexit -o pipefail -o nounset
 
 default_sink_name=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
 availables_sink=$(pactl list short sinks | awk '$3 !~ /^module-echo-cancel.c$/ && $2 !~ /^easyeffects_sink$/ {print $1, $2}' | sort -n)
-first_sink_index=$(awk 'NR==1{print $1}' <<< "$availables_sink")
-last_sink_index=$(awk 'END{print $1}' <<< "$availables_sink")
-default_sink_index=$(awk -v default_sink="$default_sink_name" '$2 ~ default_sink {print $1}' <<< "$availables_sink")
+first_sink_index=$(awk 'NR==1{print $1}' <<<"$availables_sink")
+last_sink_index=$(awk 'END{print $1}' <<<"$availables_sink")
+default_sink_index=$(awk -v default_sink="$default_sink_name" '$2 ~ default_sink {print $1}' <<<"$availables_sink")
 action=default
 
-declare -A colors;
-colors=(\
-    ['bold']=$(tput -Txterm-256color bold)
-    ['underline']=$(tput -Txterm-256color smul)
-    ['reset']=$(tput -Txterm-256color sgr0)
-);
+declare -A colors
+colors=(
+  ['bold']=$(tput -Txterm-256color bold)
+  ['underline']=$(tput -Txterm-256color smul)
+  ['reset']=$(tput -Txterm-256color sgr0)
+)
 
 readonly availables_sink default_sink_name default_sink_index
 
@@ -69,24 +69,24 @@ text() {
 }
 
 usage() {
-    text "Usage:"
-    echo -e "\t$0 [OPTION] [ACTION]"
-    echo -e "\tToggle your defaut sound output or change your music player from an output to another"
-    echo
-    text "Options"
-    echo -e "\t-h, --help: Show help"
-    echo -e "\t-o, --output <output index>: use a specific output"
-    echo
-    text "Actions"
-    echo -e "\t${colors[bold]}default${colors[reset]}: change default output (default action)"
-    echo -e "\t${colors[bold]}list${colors[reset]}: list detected inputs and outputs"
-    echo -e "\t${colors[bold]}reset${colors[reset]}: reset all active input to the default output"
-    echo -e "\t${colors[bold]}media <ROLE>${colors[reset]}: change <ROLE> input to another output"
-    # http://0pointer.de/lennart/projects/pulseaudio/doxygen/proplist_8h.html#a06b7c7a5bfc7a20974b7785031169596
-    echo
-    text "Roles"
-    echo -e "\tOne of the strings video, music, game, event, phone, animation, production, a11y, test"
-    exit
+  text "Usage:"
+  echo -e "\t$0 [OPTION] [ACTION]"
+  echo -e "\tToggle your defaut sound output or change your music player from an output to another"
+  echo
+  text "Options"
+  echo -e "\t-h, --help: Show help"
+  echo -e "\t-o, --output <output index>: use a specific output"
+  echo
+  text "Actions"
+  echo -e "\t${colors[bold]}default${colors[reset]}: change default output (default action)"
+  echo -e "\t${colors[bold]}list${colors[reset]}: list detected inputs and outputs"
+  echo -e "\t${colors[bold]}reset${colors[reset]}: reset all active input to the default output"
+  echo -e "\t${colors[bold]}media <ROLE>${colors[reset]}: change <ROLE> input to another output"
+  # http://0pointer.de/lennart/projects/pulseaudio/doxygen/proplist_8h.html#a06b7c7a5bfc7a20974b7785031169596
+  echo
+  text "Roles"
+  echo -e "\tOne of the strings video, music, game, event, phone, animation, production, a11y, test"
+  exit
 }
 
 sink_decription() {
@@ -96,35 +96,35 @@ sink_decription() {
 
 swap_sink() {
   while read -r index name; do
-    if (( index > default_sink_index )); then
+    if ((index > default_sink_index)); then
       pactl set-default-sink "$index"
       notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_decription "$index")"
       return
-    elif (( index == last_sink_index )); then
+    elif ((index == last_sink_index)); then
       pactl set-default-sink "$first_sink_index"
       notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_decription "$first_sink_index")"
       return
     fi
-  done <<< "$availables_sink"
+  done <<<"$availables_sink"
 }
 
 swap_role_sink() {
   local role_to_change=$1
   while read -r name role sink input; do
-        if [ "$role" = "$role_to_change" ] ; then
-          while read -r index sink_name; do
-            if [ "$index" != "$sink" ] ; then
-              pactl move-sink-input "$input" "$index"
-              notify-send -i multimedia-volume-control "Swaped $role_to_change input" "Changed $name input to $(sink_decription "$index")"
-            fi
-          done <<< "$availables_sink"
+    if [ "$role" = "$role_to_change" ]; then
+      while read -r index sink_name; do
+        if [ "$index" != "$sink" ]; then
+          pactl move-sink-input "$input" "$index"
+          notify-send -i multimedia-volume-control "Swaped $role_to_change input" "Changed $name input to $(sink_decription "$index")"
         fi
-    done < <(get_sink_inputs)
+      done <<<"$availables_sink"
+    fi
+  done < <(get_sink_inputs)
 }
 
 reset_inputs() {
   while read -r name role sink input serial; do
-    if [ "$sink" != "$default_sink_index" ] ; then
+    if [ "$sink" != "$default_sink_index" ]; then
       if is_pipewire; then
         pactl move-sink-input "$serial" "$default_sink_index"
       else
@@ -136,32 +136,32 @@ reset_inputs() {
 }
 
 parse_options() {
-  while (( "$#" )); do
+  while (("$#")); do
     case "$1" in
-      -h|--help|help)
+    -h | --help | help)
+      usage
+      ;;
+    -o | --output)
+      usage
+      ;;
+    media)
+      action=media
+      if [[ $# -ne 2 ]]; then
+        text "You need to specify a role"
+        echo
         usage
-        ;;
-      -o|--output)
-        usage
-        ;;
-      media)
-        action=media
-        if [[ $# -ne 2 ]]; then
-          text "You need to specify a role"
-          echo
-          usage
-        fi
-        role=$2
-        shift 2
-        ;;
-      --) # end argument parsing
-        shift
-        break
-        ;;
-      *)
-        action=$1
-        shift
-        ;;
+      fi
+      role=$2
+      shift 2
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    *)
+      action=$1
+      shift
+      ;;
     esac
   done
 }
@@ -169,11 +169,11 @@ parse_options() {
 list_inputs_outputs() {
   text "Inputs:"
   text "Name\tRole\tOutput\tIndex" "underline"
-  tr ' ' '\t' <<< "$(get_sink_inputs)"
+  tr ' ' '\t' <<<"$(get_sink_inputs)"
   echo
   text "Outputs:"
   text "Index\tName" "underline"
-  tr ' ' '\t' <<< "$availables_sink"
+  tr ' ' '\t' <<<"$availables_sink"
   echo
   text "Default output:"
   echo "$default_sink_name"
@@ -188,10 +188,10 @@ main() {
   parse_options "$@"
 
   case "$action" in
-    media ) swap_role_sink "$role";;
-    reset ) reset_inputs;;
-    list ) list_inputs_outputs;;
-    * ) swap_sink;;
+  media) swap_role_sink "$role" ;;
+  reset) reset_inputs ;;
+  list) list_inputs_outputs ;;
+  *) swap_sink ;;
   esac
 }
 
