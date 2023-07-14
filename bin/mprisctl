@@ -88,7 +88,13 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
           rm "$state_file"
         fi
       elif ! [ -e "$state_file" ]; then
-        playerctl "$action"
+        while IFS=';' read -r player status artist album title art; do
+          if [ "$status" = Playing ]; then
+            playerctl --player="$player" "$action"
+            mpris="$player"
+            echo "$player" > "$state_file"
+          fi
+        done < <(info)
       fi
       ;;
   esac
