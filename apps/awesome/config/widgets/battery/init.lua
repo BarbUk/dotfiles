@@ -8,7 +8,7 @@ local fs        = require("gears.filesystem")
 local icon = wibox.widget.textbox("")
 local bat
 
-if fs.is_dir('/sys/devices/platform/smapi') then
+if fs.is_dir('/sys/devices/platform/smapi/BAT0') then
   local tp_smapi = lain.widget.contrib.tp_smapi('/sys/devices/platform/smapi')
   bat = tp_smapi.create_widget({
     battery = "BAT0",
