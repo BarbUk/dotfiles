@@ -14,10 +14,9 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export QT_QPA_PLATFORMTHEME='qt5ct'
 export GOPATH="$HOME/.go"
 export COMPOSERPATH="$HOME/.composer/vendor/bin"
-export COPEPATH=$(cope_path)
 export CCACHEPATH="/usr/lib/ccache/bin"
 export DOTBIN="$HOME/.dotfiles/bin"
-export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:$COPEPATH:/usr/local/bin:$PATH"
+export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:/usr/local/bin:$PATH"
 # Correct screen configuration for x220 or x260
 model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_version)
 case "$model" in
