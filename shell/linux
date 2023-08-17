@@ -16,7 +16,6 @@ alias ls='ls --color=auto'
 alias up='yay -Syu --noconfirm'
 alias yaourt='yay'
 alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
-alias ping='ping -O'
 
 bupc() {
     update_gem
