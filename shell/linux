@@ -20,21 +20,29 @@ alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
 bupc() {
     update_gem
     update_vagrant
-    rustup update
+    if command -v rustup >/dev/null 2>&1; then
+        rustup update
+    fi
     up
 }
 
 update_gem() {
-    gem update --system
-    gem update
-    gem cleanup
-    rbenv rehash
+    if command -v gem >/dev/null 2>&1; then
+        gem update --system
+        gem update
+        gem cleanup
+    fi
+    if command -v rbenv >/dev/null 2>&1; then
+        rbenv rehash
+    fi
 }
 
 update_vagrant() {
-    vagrant plugin update
-    vagrant box update
-    vagrant box prune
+    if command -v vagrant >/dev/null 2>&1; then
+        vagrant plugin update
+        vagrant box update
+        vagrant box prune
+    fi
 }
 
 pbcopy() {
