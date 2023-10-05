@@ -17,7 +17,7 @@ alias bzgrep='bzgrep --color=auto'
 alias zgrep='zgrep --color=auto'
 
 # some more ls aliases
-alias ll='ls -lha'
+alias ll='eza --classify -l --icons --git --color-scale --color=always'
 alias l='ls -lh'
 
 alias q='exit'
