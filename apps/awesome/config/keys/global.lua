@@ -350,7 +350,6 @@ globalkeys = gears.table.join(
   end, {description = "launch work calendar", group = "launcher"}),
   awful.key({ modkey }, "u", function ()
     spawn_and_move("mattermost-desktop", "Mattermost", 1)
-    spawn_and_move("skypeforlinux", "Skype", 1)
     spawn_and_move("slack", "Slack", 2)
     spawn_and_move(apps.default.browser .. " --profile-directory='Profile 1' https://mail.missiveapp.com", "Google-chrome", 3)
     spawn_and_move("subl", "Subl", 4)
