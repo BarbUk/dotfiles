@@ -22,8 +22,10 @@ readonly monitored_hosts="$HOME/.dsh/group/monitored"
 
 # Define apps to use
 tree="tree -C"
-if command -v lsd >/dev/null 2>&1; then
-  tree="lsd --tree --color always --icon always"
+if command -v eza >/dev/null 2>&1; then
+  tree="eza --colour=always --icons --group-directories-first --level 1"
+elif command -v lsd >/dev/null 2>&1; then
+  tree="lsd --color always --icon always --group-directories-first --depth 1"
 fi
 
 highlight="highlight --force -O ansi -l"
