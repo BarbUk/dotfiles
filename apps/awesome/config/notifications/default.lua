@@ -8,6 +8,7 @@ local dpi       = beautiful.xresources.apply_dpi
 local gstring   = require("gears.string")
 local wibox     = require("wibox")
 local helpers   = require("config.helpers")
+local cst       = require("naughty.constants")
 
 -- Defaults
 naughty.config.defaults.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, beautiful.border_radius) end
@@ -55,7 +56,7 @@ naughty.config.defaults['icon_size']  = beautiful.notification_icon_size
 
 -- Timeouts
 naughty.config.defaults.timeout = 35
-naughty.config.defaults.hover_timeout = 1
+naughty.config.defaults.hover_timeout = 2
 naughty.config.presets.low.timeout = 3
 naughty.config.presets.critical.timeout = 0
 
@@ -110,4 +111,30 @@ end)
 --- Use XDG icon
 naughty.connect_signal("request::action_icon", function(a, context, hints)
     a.icon = menubar.utils.lookup_icon(hints.id)
+end)
+
+naughty.connect_signal("destroyed", function(n, reason)
+    -- If no client, we can guess the client to jump to
+    if not n.clients then
+        return
+    end
+
+    -- If we clicked on a notification, the reason is: dismissed_by_user
+    if reason == cst.notification_closed_reason.dismissed_by_user then
+        -- If we clicked on a notification, we get a new urgent client to jump to
+        client.connect_signal("property::urgent", function(c)
+            -- We don't use notification_client because it's not reliable (Ex: If we have two different instances of chrome)
+            -- cf: https://awesomewm.org/apidoc/core_components/naughty.notification.html#clients
+            -- So we just check if the client name of our notification is the same as the last urgent client
+            -- and jump to this one.
+            for _, notification_client in ipairs(n.clients) do
+                if not notification_client.name then
+                    return
+                end
+                if c.name == notification_client.name then
+                    c:jump_to()
+                end
+            end
+        end)
+    end
 end)
