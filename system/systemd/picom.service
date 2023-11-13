@@ -4,9 +4,8 @@ After=graphical-session-pre.target
 PartOf=graphical-session.target
 
 [Service]
-Environment=DISPLAY=:0
 Type=forking
-ExecStart=/usr/bin/picom --daemon --config %h/.compton.conf
+ExecStart=/usr/bin/picom --daemon --config %h/.picom.conf
 ExecReload=kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=3s
