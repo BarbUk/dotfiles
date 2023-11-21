@@ -5,7 +5,7 @@ PartOf=graphical-session.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/picom --daemon --config %h/.picom.conf
+ExecStart=/usr/bin/picom --daemon --config %h/.config/picom/picom.conf
 ExecReload=kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=3s
