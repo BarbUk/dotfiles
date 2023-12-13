@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # turn bell off
 xset -b
 # Source default config
