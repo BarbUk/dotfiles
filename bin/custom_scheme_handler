@@ -17,20 +17,23 @@
 
 # Use it with a custom .desktop
 
-#cat << EOF > ~/.local/share/applications/custom_scheme_handler.desktop
-#[Desktop Entry]
-#Name=custom_scheme_handler
-#Comment=Open custom scheme like ssh:// or ftp:// link
-#Exec=custom_scheme_handler %u
-#Icon=utilities-terminal
-#Type=Application
-#Categories=GTK;System;TerminalEmulator;
-#NoDisplay=true
-#MimeType=x-scheme-handler/ssh;x-scheme-handler/ftp;x-scheme-handler/sftp;x-scheme-handler/ftps
-#EOF
+# cat << EOF > ~/.local/share/applications/custom_scheme_handler.desktop
+# [Desktop Entry]
+# Name=custom_scheme_handler
+# Comment=Open custom scheme like ssh:// or ftp:// link
+# Exec=custom_scheme_handler %u
+# Icon=utilities-terminal
+# Type=Application
+# Categories=GTK;System;TerminalEmulator;
+# NoDisplay=true
+# MimeType=x-scheme-handler/ssh;x-scheme-handler/ftp;x-scheme-handler/sftp;x-scheme-handler/ftps
+# EOF
 #
 # And add it as a default app:
 # echo 'x-scheme-handler/ssh=custom_scheme_handler.desktop;' >> ~/.local/share/applications/mimeapps.list
+# echo 'x-scheme-handler/ftp=custom_scheme_handler.desktop;' >> ~/.local/share/applications/mimeapps.list
+# echo 'x-scheme-handler/ftps=custom_scheme_handler.desktop;' >> ~/.local/share/applications/mimeapps.list
+# echo 'x-scheme-handler/sftp=custom_scheme_handler.desktop;' >> ~/.local/share/applications/mimeapps.list
 
 
 set -o errexit -o pipefail -o nounset
