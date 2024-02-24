@@ -73,7 +73,7 @@ set showtabline=2               " Affiche tout le temps la ligne des tabs
 set numberwidth=5               " Nombre de colonnes que prend les numéros de lignes
 set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
-# Show invisible char with F3
+" Show invisible char with F3
 set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,trail:•
 nnoremap <F3> :set list!<CR>
 " Detect sqli pattern in the open buffer and cast to int
