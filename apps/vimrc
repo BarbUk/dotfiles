@@ -75,6 +75,8 @@ set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
 set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,trail:•
 nnoremap <F3> :set list!<CR>
+" Detect pattern on active line and cast to int
+nnoremap <F4> :%s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)/\. (int) \1/gci<CR>
 "set paste
 cmap w!! w !sudo tee % >/dev/null
 cmap hex %!xxd
