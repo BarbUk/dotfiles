@@ -73,6 +73,7 @@ set showtabline=2               " Affiche tout le temps la ligne des tabs
 set numberwidth=5               " Nombre de colonnes que prend les numéros de lignes
 set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
+# Show invisible char with F3
 set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,trail:•
 nnoremap <F3> :set list!<CR>
 " Detect sqli pattern in the open buffer and cast to int
@@ -139,11 +140,6 @@ imap sdf <ESC>
 map <c-s> <Esc>:w<CR>a
 map <C-s> <ESC>:w<CR>
 imap <C-s> <ESC>:w<CR>a
-" Options pour affichage
-
-" Pour avoir tous les buffers en tabs (mauvais pour :help et autres windows)
-"au BufAdd,BufNewFile,BufRead * nested tab sball
-" nmap <silent> ,/ :nohlsearch<CR>
 " Complete options (disable preview scratch window)
 set completeopt=menu,menuone,longest
 " Limit popup menu height
@@ -182,9 +178,6 @@ nnoremap <Leader>q' ciw''<Esc>P
 nnoremap <Leader>qd daW"=substitute(@@,"'\\\|\"","","g")<CR>P
 nnoremap <Leader>v <c-v>
 
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
-
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
 function! XTermPasteBegin()
@@ -192,10 +185,9 @@ function! XTermPasteBegin()
   set paste
   return ""
 endfunction
-let &t_SI = "\e[5 q"
-let &t_EI = "\e[1 q"
 
-" tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
+" Cursor shape and color
+" Tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
 if exists('$TMUX')
    " set insert mode to a black blinking vertical line
    let &t_SI .= "\<esc>Ptmux;\<esc>\<esc>[5 q\<esc>\\"
@@ -229,16 +221,14 @@ endif
 " initialize cursor shape/color on startup (silent !echo approach doesn't seem to work for tmux)
 augroup ResetCursorShape
     au!
-    "autocmd VimEnter * startinsert | stopinsert
     autocmd VimEnter * normal! :startinsert :stopinsert
-    "autocmd VimEnter * :normal :startinsert :stopinsert
 augroup END
 
 autocmd InsertEnter,InsertLeave * set cul!
 
 let g:ale_linters = { 'php': ['php', 'psalm'] }
 
-autocmd VimEnter * redraw!
+"autocmd VimEnter * redraw!
 
 " Open fzf
 map <C-p> :Files<CR>
