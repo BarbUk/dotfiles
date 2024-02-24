@@ -195,13 +195,46 @@ endfunction
 let &t_SI = "\e[5 q"
 let &t_EI = "\e[1 q"
 
-" optional reset cursor on start and leave:
-augroup cursor
-au!
-autocmd VimEnter * silent !echo -ne "\e[1 q"
-autocmd VimLeave * silent !echo -ne "\e[5 q"
+" tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
+if exists('$TMUX')
+   " set insert mode to a black blinking vertical line
+   let &t_SI .= "\<esc>Ptmux;\<esc>\<esc>[5 q\<esc>\\"
+   let &t_SI .= "\<esc>Ptmux;\<esc>\<esc>]12;black\x7\<esc>\\"
+   " set normal mode to a cyan solid block
+   let &t_EI .= "\<esc>Ptmux;\<esc>\<esc>[2 q\<esc>\\"
+   let &t_EI .= "\<esc>Ptmux;\<esc>\<esc>]12;cyan\x7\<esc>\\"
+   " set replace mode to an orange blinking underscore
+   let &t_SR .= "\<esc>Ptmux;\<esc>\<esc>[3 q\<esc>\\"
+   let &t_SR .= "\<esc>Ptmux;\<esc>\<esc>]12;orange\x7\<esc>\\"
+
+   " reset cursor when leaving tmux
+   autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033[2 q\033\\"
+   autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]12;gray\007\033\\"
+elseif &term =~ "xterm\\|rxvt"
+  " set insert mode to a black blinking vertical line
+  let &t_SI .= "\<Esc>[5 q"
+  let &t_SI .= "\<Esc>]12;black\x7"
+  " set normal mode to a cyan solid block
+  let &t_EI .= "\<Esc>[2 q"
+  let &t_EI .= "\<Esc>]12;cyan\x7"
+  " set replace mode to an orange blinking underscore
+  let &t_SR .= "\<Esc>[3 q"
+  let &t_SR .= "\<Esc>]12;orange\x7"
+
+  " reset cursor when vim exits
+  autocmd VimLeave * silent !echo -ne "\e]12;black\x7"
+  autocmd VimLeave * silent !echo -ne "\e[5 q"
+endif
+
+" initialize cursor shape/color on startup (silent !echo approach doesn't seem to work for tmux)
+augroup ResetCursorShape
+    au!
+    "autocmd VimEnter * startinsert | stopinsert
+    autocmd VimEnter * normal! :startinsert :stopinsert
+    "autocmd VimEnter * :normal :startinsert :stopinsert
 augroup END
-:autocmd InsertEnter,InsertLeave * set cul!
+
+autocmd InsertEnter,InsertLeave * set cul!
 
 let g:ale_linters = { 'php': ['php', 'psalm'] }
 
@@ -224,3 +257,4 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
