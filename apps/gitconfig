@@ -5,6 +5,8 @@
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
   quick-stats = ! /usr/bin/git-quick-stats
   ass = "! echo '(‿ˠ‿)'; git add"
+  dft = difftool
+  dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
 [color]
   ui = true
 [core]
@@ -24,6 +26,7 @@
 [merge]
   #stool = meld
   tool = smerge
+  conflictstyle = zdiff3
 [mergetool "meld"]
   cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
 [mergetool "smerge"]
@@ -33,11 +36,20 @@
   rebase = true
 [diff]
   indentHeuristic = on
-  tool = meld
+  #tool = meld
+  tool = difftastic
+  external = difft
+  algorithm = histogram
+  colorMoved = default
+  colorMovedWS = allow-indentation-change
 [difftool]
   prompt = false
 [difftool "meld"]
-  cmd = meld "$LOCAL" "$REMOTE"
+    cmd = meld "$LOCAL" "$REMOTE"
+[difftool "difftastic"]
+    cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+    difftool = true
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = red bold 52
@@ -55,6 +67,8 @@
   template = ~/.dotfiles/apps/gitmessage
   verbose = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [hub]
-	protocol = ssh
+  protocol = ssh
+[help]
+  autocorrect = 10
