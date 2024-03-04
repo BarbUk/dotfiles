@@ -110,12 +110,14 @@ else
     else
         source ~/.vim/vimrc.background
     endif
-    set termguicolors
-
-    colorscheme gruvbox
+    if (has("termguicolors"))
+        set termguicolors
+    endif
     let g:gruvbox_italic=1
     let g:gruvbox_contrast_dark='medium'
+    let g:gruvbox_contrast_light='hard'
     let g:airline_theme='gruvbox'
+    colorscheme gruvbox
 endif
 
 highlight SpecialKey cterm=NONE ctermbg=160 ctermfg=231 gui=NONE guifg=#ffffff guibg=#d70000
