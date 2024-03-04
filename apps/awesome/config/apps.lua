@@ -21,6 +21,12 @@ return {
     graphics    = "gimp",
   },
 
+  alt = {
+    terminal = 'wezterm',
+    editor   = 'gvim',
+    browser  = 'firefox',
+  },
+
   timezone = timezone,
 
   weather = {
@@ -42,12 +48,6 @@ return {
     w13n = '流',
     w50d = '',
     w50n = '',
-  },
-
-  alt = {
-    terminal = 'wezterm',
-    editor   = 'gvim',
-    browser  = 'firefox',
   },
 
   dir = {
