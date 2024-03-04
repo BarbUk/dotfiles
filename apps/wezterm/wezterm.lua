@@ -3,7 +3,13 @@ local act = wezterm.action
 
 return {
   font = wezterm.font 'PragmataProMonoLiga Nerd Font',
+  -- front_end = "WebGpu",
+  default_prog = { 'bash' },
+  webgpu_power_preference = "HighPerformance",
   font_size = 12,
+  freetype_load_target = 'Light',
+  freetype_render_target = 'HorizontalLcd',
+  freetype_interpreter_version = 40,
   adjust_window_size_when_changing_font_size = false,
   color_scheme = 'Solarized (light) (terminal.sexy)',
   colors = {
@@ -14,6 +20,9 @@ return {
   hide_tab_bar_if_only_one_tab = true,
   default_cursor_style = 'BlinkingBar',
   animation_fps = 1,
+  max_fps = 60,
+  window_decorations = "NONE",
+  enable_tab_bar = false,
   cursor_blink_ease_in = 'Constant',
   cursor_blink_ease_out = 'Constant',
    keys = {
@@ -37,6 +46,7 @@ return {
         end
       end),
     },
+    { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
   },
   mouse_bindings = {
     -- Change the default click behavior so that it only selects
