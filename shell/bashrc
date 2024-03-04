@@ -24,10 +24,11 @@ check_and_source() {
   fi
 }
 
-export TERM=xterm-256color
+export TERM=termite
 
 check_and_source "$HOME/.tokens"
 . "$dot_dir/shell/export"
+# shellcheck source=/dev/null
 . "$BASH_IT/bash_it.sh"
 . "$dot_dir/shell/aliases"
 . "$dot_dir/shell/functions"
