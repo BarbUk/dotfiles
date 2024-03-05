@@ -38,7 +38,7 @@
   indentHeuristic = on
   #tool = meld
   tool = difftastic
-  external = difft
+  #external = difft
   algorithm = histogram
   colorMoved = default
   colorMovedWS = allow-indentation-change
