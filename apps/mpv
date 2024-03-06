@@ -6,7 +6,7 @@
 # as per the mpv(1), "opengl-hq" is just an alias for "opengl:lscale=lanczos2:dither-depth=auto:fbo-format=rgb16"
 hwdec=vaapi
 vo=gpu,xv,wayland
-profile=opengl-hq
+#profile=opengl-hq
 deband=no
 save-position-on-quit
 x11-bypass-compositor=no
