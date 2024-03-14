@@ -71,6 +71,7 @@ set hlg=en                      " Langue de l'aide : english
 set mousemodel=popup            " Affiche un popup au clic droit
 set showtabline=2               " Affiche tout le temps la ligne des tabs
 set numberwidth=5               " Nombre de colonnes que prend les numéros de lignes
+set paste
 set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
 " Show invisible char with F3
@@ -83,9 +84,10 @@ nnoremap <F4> :s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)
 nnoremap <F5> :%s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)/\. (int) \1/gci<CR>
 " Replace a bad pSQL by a int on the current line
 nnoremap <F6> :s/\.\s*pSQL(\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)\s*)/\. (int) \1/gci<CR>
+" Add a pSQL for user retrieved var on the current line
+nnoremap <F7> :s/\.\s*\(\$_\w*\[.*\]\\|\$\w*\\|Tools::getValue(.*)\)/\. pSQL( \1 )/gci<CR>
 " Replace string by pSQL
 " s/(string)\($\w\+\)\./pSQL(\1)\./gc
-"set paste
 cmap w!! w !sudo tee % >/dev/null
 cmap hex %!xxd
 " Options du GUI
