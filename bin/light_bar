@@ -38,15 +38,14 @@ usage() {
 
 case $action in
     "up" )
-        light -A "$step"
+        percent=$(brightnessctl --machine-readable s "+$step%" | awk -F'[,%]' '{print $4}')
     ;;
     "down" )
-        light -U "$step"
+        percent=$(brightnessctl --machine-readable s "$step%-" | awk -F'[,%]' '{print $4}')
     ;;
     * )
         usage
     ;;
 esac
 
-percent=$(light | xargs printf '%.*f' 0)
 progress "$percent"
