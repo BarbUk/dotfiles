@@ -1,0 +1,172 @@
+@define-color base           #1e242f ;
+@define-color urgent         #b02c36 ;
+@define-color primary_orange #fe9000 ;
+@define-color primary_yellow #ffdd4a ;
+@define-color primary_red    #da1b2b ;
+@define-color primary_blue   #afd2e9 ;
+@define-color primary_blue_2 #6fadd6 ;
+
+@keyframes blink-warning {
+    70% {
+        color: white;
+    }
+
+    to {
+        color: white;
+        background-color: orange;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+      color: white;
+    }
+
+    to {
+        color: white;
+        background-color: red;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Base styles
+ * -------------------------------------------------------------------------- */
+
+/* Reset all styles */
+* {
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* The whole bar */
+#waybar {
+    background: transparent;
+    color: @primary_blue;
+    background-color: @base;
+    font-family: "PragmataProMonoLiga Nerd Font";
+    font-size: 12px;
+    border-radius: 15px;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * Modules styles
+ * -------------------------------------------------------------------------- */
+
+#battery {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.warning {
+    color: @primary_orange;
+}
+
+#battery.critical {
+    color: @primary_red;
+}
+
+#battery.warning.discharging {
+    animation-name: blink-warning;
+    animation-duration: 3s;
+}
+
+#battery.critical.discharging {
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+#cpu.warning {
+    color: @primary_orange;
+}
+
+#cpu.critical {
+    color: @primary_red;
+}
+
+#memory {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#memory.warning {
+    color: @primary_orange;
+ }
+
+#memory.critical {
+    color: red;
+    animation-name: blink-critical;
+    animation-duration: 2s;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+#mode {
+    background: @primary_yellow;
+    border-bottom: 3px @primary_blue;
+    color: @base;
+    margin-left: 5px;
+}
+
+#network.disconnected {
+    color: @primary_orange;
+}
+
+#pulseaudio {
+    padding-top:1px;
+}
+
+#pulseaudio.muted {
+    color: @primary_yellow;
+}
+
+#temperature.critical {
+    color: red;
+}
+
+#window {
+    font-weight: bold;
+}
+
+#workspaces {
+    font-size:12px;
+}
+
+#workspaces button {
+    border-bottom: 3px solid @primary_blue_2;
+    margin-bottom: 0px;
+    padding:0px;
+}
+
+#workspaces button.focused {
+    border-bottom: 3px solid  @primary_yellow;
+    margin-bottom: 0px;
+    padding-left:0;
+}
+
+#workspaces button.urgent {
+    border-color: @primary_red;
+    color: @primary_red;
+}
+
+#custom-power {
+    margin-left:15px;
+    margin-right:15px;
+    font-size:15px;
+}
+
+#custom-launcher {
+    font-size:15px;
+    margin-left:15px;
+    margin-right:10px;
+}
+
+#backlight.icon {
+    padding-right:1px;
+    font-size: 13px;
+}
