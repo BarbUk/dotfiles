@@ -83,6 +83,8 @@ nnoremap <F4> :s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)
 nnoremap <F5> :%s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)/\. (int) \1/gci<CR>
 " Replace a bad pSQL by a int on the current line
 nnoremap <F6> :s/\.\s*pSQL(\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)\s*)/\. (int) \1/gci<CR>
+" Replace string by pSQL
+" s/(string)\($\w\+\)\./pSQL(\1)\./gc
 "set paste
 cmap w!! w !sudo tee % >/dev/null
 cmap hex %!xxd
