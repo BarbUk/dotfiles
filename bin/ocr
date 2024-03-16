@@ -1,13 +1,25 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
-# Siddharth Dushantha 2020
-# 
-# https://github.com/sdushantha/bin
+# Copyright (C) 2024 BarbUk <barbarisme@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-TEXT_FILE="/tmp/ocr.txt"
-IMAGE_FILE="/tmp/ocr.png"
+set -o errexit -o pipefail -o nounset
 
+tmpfile=$(mktemp)
+trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
 
 # Check if the needed dependencies are installed
 dependencies=(tesseract maim notify-send xclip)
@@ -23,45 +35,12 @@ for dependency in "${dependencies[@]}"; do
 done
 
 # Take screenshot by selecting the area
-maim -s "$IMAGE_FILE"
-
-# Get the exit code of the previous command.
-# So in this case, it is the screenshot command. If it did not exit with an
-# exit code 0, then it means the user canceled the process of taking a
-# screenshot by doing something like pressing the escape key
-STATUS=$?
-
-# If the user pressed the escape key or did something to terminate the proccess
-# taking a screenshot, then just exit
-[ $STATUS -ne 0 ] && exit 1
-
-# Do the magic (∩^o^)⊃━☆ﾟ.*･｡ﾟ
-# Notice how I have removing the extension .txt from the file path. This is
-# because tesseract adds .txt to the given file path anyways. So if we were to
-# specify /tmp/ocr.txt as the file path, tesseract would out the text to 
-# /tmp/ocr.txt.txt
-tesseract "$IMAGE_FILE" "${TEXT_FILE//\.txt/}" 2> /dev/null
-
-# Remove the new page character.
-# Source: https://askubuntu.com/a/1276441/782646
-sed -i 's/\x0c//' "$TEXT_FILE"
-
-# Check if the text was detected by checking number
-# of lines in the file
-NUM_LINES=$(wc -l < $TEXT_FILE)
-if [ "$NUM_LINES" -eq 0 ]; then
-    notify-send "ocr" "no text was detected"
-    exit 1
-fi
-
-# Copy text to clipboard
-xclip -selection clip < "$TEXT_FILE"
+maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=3 --format=png --quality=10 \
+    | mogrify -modulate 100,0 -resize 400% png:- \
+    | tesseract - - 2> /dev/null \
+    | sed 's/\x0c//' \
+    | tee "$tmpfile" \
+    | xclip -selection clip
 
 # Send a notification with the text that was grabbed using OCR
-notify-send "ocr" "$(cat $TEXT_FILE)"
-
-# Clean up
-# "Always leave the area better than you found it" 
-#                       - My first grade teacher
-rm "$TEXT_FILE"
-rm "$IMAGE_FILE"
+notify-send "Text extracted" -- "$(cat "$tmpfile")"
