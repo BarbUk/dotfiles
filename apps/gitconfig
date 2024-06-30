@@ -68,6 +68,7 @@
   verbose = true
 [init]
   defaultBranch = main
+  templatedir = ~/.git_template
 [hub]
   protocol = ssh
 [help]
