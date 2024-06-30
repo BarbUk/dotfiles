@@ -86,9 +86,15 @@ nnoremap <F5> :%s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\
 nnoremap <F6> :s/\.\s*pSQL(\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)\s*)/\. (int) \1/gci<CR>
 " Add a pSQL for user retrieved var on the current line
 nnoremap <F7> :s/\.\s*\(\$_\w*\[.*\]\\|\$\w*\\|Tools::getValue(.*)\)/\. pSQL( \1 )/gci<CR>
+" Replace a user provided array by int
+nnoremap <F8> :s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.*)\)/\. implode(', ', array_map('intval', explode(',',  \1 )))/gci<CR>
 " Replace string by pSQL
 " s/(string)\($\w\+\)\./pSQL(\1)\./gc
-cmap w!! w !sudo tee % >/dev/null
+" soa serial
+nnoremap <F9> /\<\d\{10}\><CR>ce<C-r>=strftime("%Y%m%d00")<CR><Esc>:echo @"<CR>
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo /usr/bin/tee > /dev/null %
 cmap hex %!xxd
 " Options du GUI
 set guioptions=ecimMgrp
@@ -167,8 +173,6 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " detect nagios config
 autocmd BufNewFile,BufRead */nagios*/*.{cache,cfg,jinja2} setlocal filetype=nagios
 
-" soa serial
-nnoremap <F8> /\<\d\{10}\><CR>ce<C-r>=strftime("%Y%m%d00")<CR><Esc>:echo @"<CR>
 
 nnoremap rm :call delete(expand('%')) \| bdelete! <CR>
 nnoremap <leader>wd :write\|bdelete <CR>
