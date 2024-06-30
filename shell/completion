@@ -7,6 +7,37 @@ fzf_height="--height ${FZF_TMUX_HEIGHT:-50%} --min-height 25"
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 export FZF_COMPLETION_TRIGGER='**'
 
+# Tools to complete
+net_tools=(
+  ping
+  host
+  mtr
+  mosh
+  telnet
+  ftp
+  lftp
+  dig
+  drill
+  nslookup
+  ansible
+  nmap
+)
+
+ssh_tools=(
+  ssh
+  s
+  n
+  rsync
+  scp
+  sftp
+  proo
+  curl
+  ssh-audit
+  update-services
+  connect_to_proo
+  mysql_get_root_password
+)
+
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
@@ -325,14 +356,9 @@ _fzf_complete_ips() {
   _fzf_complete '--no-multi' ' ' "$@" < <(give_me_hostname ips)
 }
 
-# Net tools completions
-net_tools="ping host mtr mosh telnet ftp lftp dig drill nslookup ansible nmap"
-ssh_tools="ssh s n rsync scp sftp proo curl ssh-audit ./scripts/update-services"
 if hash fzf 2>/dev/null; then
-  # shellcheck disable=SC2086
-  complete -o default -o bashdefault -o nospace -F _fzf_complete_net $net_tools
-  # shellcheck disable=SC2086
-  complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh $ssh_tools
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_net "${net_tools[@]}"
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh "${ssh_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook ap
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pacman yaourt pacman yay
@@ -340,10 +366,8 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_dsh dsh
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pssh pssh psshscp
 else
-  # shellcheck disable=SC2086
-  complete -o default -o bashdefault -o nospace -F _complete_net $net_tools
-  # shellcheck disable=SC2086
-  complete -o default -o bashdefault -o nospace -F _complete_ssh $ssh_tools
+  complete -o default -o bashdefault -o nospace -F _complete_net "${net_tools[@]}"
+  complete -o default -o bashdefault -o nospace -F _complete_ssh "${ssh_tools[@]}"
 fi
 
 # Kill completion
