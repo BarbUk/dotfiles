@@ -71,9 +71,9 @@ set hlg=en                      " Langue de l'aide : english
 set mousemodel=popup            " Affiche un popup au clic droit
 set showtabline=2               " Affiche tout le temps la ligne des tabs
 set numberwidth=5               " Nombre de colonnes que prend les numéros de lignes
-set paste
 set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
+
 " Show invisible char with F3
 set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,trail:•
 highlight SpecialKey cterm=NONE ctermbg=160 ctermfg=231 gui=NONE guifg=#ffffff guibg=#d70000
@@ -191,54 +191,6 @@ nnoremap <Leader>q' ciw''<Esc>P
 nnoremap <Leader>qd daW"=substitute(@@,"'\\\|\"","","g")<CR>P
 nnoremap <Leader>v <c-v>
 
-inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
-
-function! XTermPasteBegin()
-  set pastetoggle=<Esc>[201~
-  set paste
-  return ""
-endfunction
-
-" Cursor shape and color
-" Tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
-if exists('$TMUX')
-   " set insert mode to a black blinking vertical line
-   let &t_SI .= "\<esc>Ptmux;\<esc>\<esc>[5 q\<esc>\\"
-   let &t_SI .= "\<esc>Ptmux;\<esc>\<esc>]12;black\x7\<esc>\\"
-   " set normal mode to a cyan solid block
-   let &t_EI .= "\<esc>Ptmux;\<esc>\<esc>[2 q\<esc>\\"
-   let &t_EI .= "\<esc>Ptmux;\<esc>\<esc>]12;cyan\x7\<esc>\\"
-   " set replace mode to an orange blinking underscore
-   let &t_SR .= "\<esc>Ptmux;\<esc>\<esc>[3 q\<esc>\\"
-   let &t_SR .= "\<esc>Ptmux;\<esc>\<esc>]12;orange\x7\<esc>\\"
-
-   " reset cursor when leaving tmux
-   autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033[2 q\033\\"
-   autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]12;gray\007\033\\"
-elseif &term =~ "xterm\\|rxvt"
-  " set insert mode to a black blinking vertical line
-  let &t_SI .= "\<Esc>[5 q"
-  let &t_SI .= "\<Esc>]12;black\x7"
-  " set normal mode to a cyan solid block
-  let &t_EI .= "\<Esc>[2 q"
-  let &t_EI .= "\<Esc>]12;cyan\x7"
-  " set replace mode to an orange blinking underscore
-  let &t_SR .= "\<Esc>[3 q"
-  let &t_SR .= "\<Esc>]12;orange\x7"
-
-  " reset cursor when vim exits
-  autocmd VimLeave * silent !echo -ne "\e]12;black\x7"
-  autocmd VimLeave * silent !echo -ne "\e[5 q"
-endif
-
-" initialize cursor shape/color on startup (silent !echo approach doesn't seem to work for tmux)
-augroup ResetCursorShape
-    au!
-    autocmd VimEnter * normal! :startinsert :stopinsert
-augroup END
-
-autocmd InsertEnter,InsertLeave * set cul!
-
 let g:ale_linters = { 'php': ['php', 'psalm'] }
 
 "autocmd VimEnter * redraw!
@@ -261,3 +213,91 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+" iTerm2 cursor types:
+"   Ps = 0  -> blinking block.
+"   Ps = 1  -> blinking block (default).
+"   Ps = 2  -> steady block.
+"   Ps = 3  -> blinking underline.
+"   Ps = 4  -> steady underline.
+"   Ps = 5  -> blinking bar (xterm).
+"   Ps = 6  -> steady bar (xterm).
+
+if !exists('g:normal_cursor')
+    let g:normal_cursor = 2
+endif
+if !exists('g:insert_cursor')
+    let g:insert_cursor = 5
+endif
+if !exists('g:replace_cursor')
+    let g:replace_cursor = 1
+endif
+if !exists('g:original_cursor')
+    let g:original_cursor = 5
+endif
+
+if !exists('g:normal_cursor_color')
+    let g:normal_cursor_color = "cyan"
+endif
+if !exists('g:insert_cursor_color')
+    let g:insert_cursor_color = "black"
+endif
+if !exists('g:replace_cursor_color')
+    let g:replace_cursor_color = "orange"
+endif
+if !exists('g:original_cursor_color')
+    let g:original_cursor_color = "black"
+endif
+
+let s:inside_tmux = exists('$TMUX')
+
+function! s:WrapForTmux(s)
+    if !s:inside_tmux
+        return a:s
+    endif
+
+    let tmux_start = "\ePtmux;"
+    let tmux_end   = "\e\\"
+
+    return tmux_start . substitute(a:s, "\e", "\e\e", 'g') . tmux_end
+endfunction
+
+" These sequences save/restore the screen.
+" They should NOT be wrapped in tmux escape sequences for some reason!
+let save_screen    = "\e[?1049h"
+let restore_screen = "\e[?1049l"
+
+let cursor_to_normal = s:WrapForTmux("\e[" . g:normal_cursor . " q\x7\e]12;" . g:normal_cursor_color . "\x7")
+let cursor_to_insert = s:WrapForTmux("\e[" . g:insert_cursor . " q\x7\e]12;" . g:insert_cursor_color . "\x7")
+let cursor_to_replace = s:WrapForTmux("\e[" . g:replace_cursor . " q\x7\e]12;" . g:replace_cursor_color . "\x7")
+let cursor_to_original = s:WrapForTmux("\e[" . g:original_cursor . " q\x7\e]12;" . g:original_cursor_color ."\x7" . '"')
+
+let paste_to_insert = "\e[?2004h"
+let paste_to_normal = "\e[?2004l"
+
+let &t_ti .= cursor_to_normal . save_screen
+let &t_te = restore_screen
+
+let &t_SI .= cursor_to_insert
+let &t_SI .= paste_to_insert
+let &t_EI .= cursor_to_normal
+let &t_EI .= paste_to_normal
+let &t_SR .= cursor_to_replace
+
+" reset cursor when vim exits
+autocmd VimLeave * silent execute '!echo -ne "' . cursor_to_original
+
+" initialize cursor shape/color on startup (silent !echo approach doesn't seem to work for tmux)
+augroup ResetCursorShape
+    au!
+    autocmd VimEnter * normal! :startinsert :stopinsert
+augroup END
+
+autocmd InsertEnter,InsertLeave * set cul!
