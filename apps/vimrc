@@ -186,8 +186,8 @@ nnoremap ,, m`A,<Esc>``
 nnoremap ## m`I#<Esc>``
 nnoremap <leader>' di'
 nnoremap <leader>" di"
-nnoremap <Leader>q" ciw""<Esc>P
-nnoremap <Leader>q' ciw''<Esc>P
+nnoremap <Leader>q" ciW""<Esc>P
+nnoremap <Leader>q' ciW''<Esc>P
 nnoremap <Leader>qd daW"=substitute(@@,"'\\\|\"","","g")<CR>P
 nnoremap <Leader>v <c-v>
 
