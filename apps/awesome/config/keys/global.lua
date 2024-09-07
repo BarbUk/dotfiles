@@ -64,6 +64,11 @@ globalkeys = gears.table.join(
     awful.spawn("rofi -theme-str 'element-icon { size: 2.5ch;}' -combi-modi 'clipboard:greenclip print,chrome:" .. apps.dir.scripts .. "chrome_history,window,drun' -show combi -modi combi")
   end, { description="Rofi launcher", group="awesome" }),
 
+  awful.key({ modkey, altkey    }, "p", function ()
+    sloppyfocus_last.focus = false
+    awful.spawn("rofi-rbw")
+  end, { description="Rofi password", group="awesome" }),
+
   awful.key({ modkey,           }, "=", function ()
     sloppyfocus_last.focus = false
     awful.spawn("=")
@@ -119,9 +124,15 @@ globalkeys = gears.table.join(
     {description = "swap with next client by index", group = "client"}),
   awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
     {description = "swap with previous client by index", group = "client"}),
-  awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
+  awful.key({ modkey, "Control" }, "j", function ()
+    awful.screen.focus_relative( 1)
+    awful.spawn("find-cursor --size 180 --distance 1 --wait 12 --line-width 1 --color '#8FBCBB' --grow --transparent", false)
+  end,
     {description = "focus the next screen", group = "screen"}),
-  awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
+  awful.key({ modkey, "Control" }, "k", function ()
+    awful.screen.focus_relative(-1)
+    awful.spawn("find-cursor --size 180 --distance 1 --wait 12 --line-width 1 --color '#8FBCBB' --grow --transparent", false)
+  end,
     {description = "focus the previous screen", group = "screen"}),
   awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
     {description = "jump to urgent client", group = "client"}),
@@ -343,15 +354,15 @@ globalkeys = gears.table.join(
     awful.spawn( apps.default.browser .. " --profile-directory='Default' --app=https://calendar.google.com", false )
   end, {description = "launch perso calendar", group = "launcher"}),
   awful.key({ modkey }, "y", function ()
-    awful.spawn( apps.default.browser .. " --profile-directory='Profile 1' https://mail.missiveapp.com", false )
+    awful.spawn( apps.default.browser .. " --profile-directory='Profile 3' https://mail.missiveapp.com", false )
   end, {description = "launch work browser", group = "launcher"}),
   awful.key({ modkey, "Shift" }, "y", function ()
-    awful.spawn( apps.default.browser .. " --profile-directory='Profile 1' --app=https://calendar.google.com", false )
+    awful.spawn( apps.default.browser .. " --profile-directory='Profile 3' --app=https://calendar.google.com", false )
   end, {description = "launch work calendar", group = "launcher"}),
   awful.key({ modkey }, "u", function ()
     spawn_and_move("mattermost-desktop", "Mattermost", 1)
     spawn_and_move("slack", "Slack", 2)
-    spawn_and_move(apps.default.browser .. " --profile-directory='Profile 1' https://mail.missiveapp.com", "Google-chrome", 3)
+    spawn_and_move(apps.default.browser .. " --profile-directory='Profile 3' https://mail.missiveapp.com", "Google-chrome", 3)
     spawn_and_move("subl", "Subl", 4)
   end, {description = "launch work apps on their tag", group = "launcher"}),
 
