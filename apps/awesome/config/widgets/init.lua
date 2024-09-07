@@ -8,6 +8,7 @@ local apps       = require('config.apps')
 local bat        = require('config.widgets.battery')
 local volume     = require('config.widgets.volume')
 local mpris_info = require('config.widgets.mpris')
+local toggl      = require('config.widgets.toggl')
 
 -- {{{ Wibox
 local markup = lain.util.markup
@@ -80,6 +81,28 @@ mpris.widget:buttons( awful.util.table.join (
   end),
   awful.button({ }, 5, function()
     awful.util.spawn(apps.cmd.player.prev, false, mpris.update())
+  end)
+))
+
+-- toggl
+local toggl_info = toggl({
+  settings = function()
+    if toggl.now == "No time entry is running at the moment" then
+      state = " 🍹 "
+      widget:set_markup(state .. " ")
+    else
+      state = " ⏳️ "
+      widget:set_markup(state .. markup(white, toggl.now) .. " ")
+    end
+  end
+})
+
+toggl_info.widget:buttons( awful.util.table.join (
+  awful.button({ }, 1, function()
+    awful.util.spawn('toggl stop', false, toggl_info.update())
+  end),
+  awful.button({ }, 3, function()
+    awful.util.spawn('toggl continue', false, toggl_info.update())
   end)
 ))
 
@@ -189,6 +212,7 @@ awful.screen.connect_for_each_screen(function(s)
 
   local general_info = {
     layout = wibox.layout.fixed.horizontal,
+    toggl_info.widget,
     mpris.widget,
     separator.center,
     weather.icon,
