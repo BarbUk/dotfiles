@@ -47,7 +47,7 @@ theme.wibar_height        = dpi(14)
 theme.menu_height         = dpi(12)
 theme.menu_width          = dpi(140)
 theme.menu_border_width   = dpi(0)
-theme.useless_gap         = dpi(0)
+theme.useless_gap         = dpi(0.2)
 
 -- Rounded corners
 theme.border_radius       = dpi(6)
