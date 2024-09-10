@@ -80,14 +80,14 @@ highlight SpecialKey cterm=NONE ctermbg=160 ctermfg=231 gui=NONE guifg=#ffffff g
 nnoremap <F3> :set list!<CR>
 " Detect sqli pattern on current line and cast to int
 nnoremap <F4> :s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.\{-})\)/\. (int) \1/gci<CR>
-" Detect sqli pattern in the open buffer and cast to int
-nnoremap <F5> :%s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.\{-})\)/\. (int) \1/gci<CR>
-" Replace a bad pSQL by a int on the current line
-nnoremap <F6> :s/\.\s*pSQL(\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.\{-})\)\s*)/\. (int) \1/gci<CR>
-" Add a pSQL for user retrieved var on the current line
-nnoremap <F7> :s/\.\s*\(\$_\w*\[.*\]\\|\$\w*\\|Tools::getValue(.\{-})\)/\. pSQL( \1 )/gci<CR>
-" Replace a user provided array by int
-nnoremap <F8> :s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.\{-})\)/\. implode(', ', array_map('intval', explode(',',  \1 )))/gci<CR>
+" Detect sqli pattern in the open buffer from the current line and cast to int
+nnoremap <F5> :,$s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.\{-})\)/\. (int) \1/gci<CR>
+" Replace a bad pSQL by a int from the current line
+nnoremap <F6> :,$s/\.\s*pSQL(\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.\{-})\)\s*)/\. (int) \1/gci<CR>
+" Add a pSQL for user retrieved var from the current line
+nnoremap <F7> :,$s/\.\s*\(\$_\w*\[.*\]\\|\$\w*\\|Tools::getValue(.\{-})\)/\. pSQL( \1 )/gci<CR>
+" Replace a user provided array by int from the current line
+nnoremap <F8> :,$s/\.\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.*\]\\|Tools::getValue(.\{-})\)/\. implode(', ', array_map('intval', explode(',',  \1 )))/gci<CR>
 " Replace string by pSQL
 " s/(string)\($\w\+\)\./pSQL(\1)\./gc
 " soa serial
