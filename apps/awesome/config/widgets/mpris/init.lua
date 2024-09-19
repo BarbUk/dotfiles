@@ -69,8 +69,7 @@ local function worker(args)
 
     function mpris.show(seconds)
 
-        local text = string.format("%s\n%s\n%s", mpris.mpris_now.artist, mpris.mpris_now.album, mpris.mpris_now.title)
-
+        local text = string.format("♫♪ %s ♪♬ • %s\n%s", mpris.mpris_now.title, mpris.mpris_now.artist, mpris.mpris_now.album)
         if mpris.notification then
             local title = mpris.notification_preset.title or nil
             naughty.replace_text(mpris.notification, title, text)
