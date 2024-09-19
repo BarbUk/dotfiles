@@ -8,6 +8,7 @@ local timezone = {
   france = 'Europe/Paris',
   mauritius = 'Indian/Mauritius',
   canada = 'America/Toronto',
+  cambodia = 'Asia/Phnom_Penh',
 }
 
 return {
@@ -91,6 +92,7 @@ return {
       france = 'timedatectl set-timezone ' .. timezone.france,
       mauritius = 'timedatectl set-timezone ' .. timezone.mauritius,
       canada = 'timedatectl set-timezone ' .. timezone.canada,
+      cambodia = 'timedatectl set-timezone ' .. timezone.cambodia,
     }
 
   },

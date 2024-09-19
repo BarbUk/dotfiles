@@ -88,7 +88,8 @@ theme.icon_theme                    = "Papirus"
 theme.flag                          = {
   france                            = theme.dir .. "/icons/fr.png",
   mauritius                         = theme.dir .. "/icons/mu.png",
-  canada                            = theme.dir .. "/icons/ca.png"
+  canada                            = theme.dir .. "/icons/ca.png",
+  cambodia                          = theme.dir .. "/icons/kh.png",
 }
 
 

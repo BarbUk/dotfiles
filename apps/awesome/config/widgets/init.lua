@@ -37,7 +37,7 @@ end
 
 -- Calendar
 local calendar = lain.widget.cal({
-  attach_to = { clock.france, clock.canada, clock.mauritius },
+  attach_to = { clock.france, clock.canada, clock.mauritius, clock.cambodia },
   three     = true,
   icons     = helpers.icons_dir .. "cal/" .. beautiful.iconcolor .. "/",
   followtag = true,
@@ -50,12 +50,11 @@ local calendar = lain.widget.cal({
 -- mpris
 local mpris = mpris_info({
   cmd = "mprisctl",
-  cover_size = 180,
+  cover_size = 80,
   notification_preset = {
-    font  = "PragmataPro Liga 13",
+    font  = "PragmataPro Liga 12",
     fg    = beautiful.notification_fg,
     bg    = beautiful.notification_bg,
-    title = "Now playing\n"
   },
   settings = function()
     if mpris_now.status ~= "no player detected" then
@@ -208,6 +207,8 @@ awful.screen.connect_for_each_screen(function(s)
     separator.left,
     flag.mauritius,separator.center,clock.mauritius,
     separator.center,
+    flag.cambodia,separator.center,clock.cambodia,
+    separator.center,
   }
 
   local general_info = {
@@ -223,6 +224,8 @@ awful.screen.connect_for_each_screen(function(s)
     flag.france,separator.center,clock.france,
     separator.left,
     flag.mauritius,separator.center,clock.mauritius,
+    separator.left,
+    flag.cambodia,separator.center,clock.cambodia,
     separator.center,
   }
 
