@@ -1,0 +1,14 @@
+[Unit]
+Description=Set NVIDIA fan speed
+After=graphical-session-pre.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/nvidia_fan_speed
+Restart=on-failure
+RestartSec=3s
+StartLimitBurst=25
+
+[Install]
+WantedBy=graphical-session.target

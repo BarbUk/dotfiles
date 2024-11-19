@@ -1,0 +1,10 @@
+[Unit]
+Description=Set NVIDIA fan speed
+
+[Timer]
+OnBootSec=5s
+OnUnitActiveSec=4s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# Copyright (C) 2024 Julien Virey <julien.virey@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
+
+set -o errexit -o pipefail -o nounset
+
+set_fan_speed() {
+  local fan1="$1" fan2="$2"
+  read -r current_fan1 current_fan2 <<< "$(nvidia-settings -q "[fan:0]/GPUTargetFanSpeed" -q "[fan:1]/GPUTargetFanSpeed" -t | xargs)"
+  if (( fan1 != current_fan1 )) || (( fan2 != current_fan2 )); then
+    echo "GPU Temp: ${cpu_temp}C, set fan speed to ${fan1}% ${fan2}%"
+    sudo nvidia-settings -a "[gpu:0]/GPUFanControlState=1" -a "[fan:0]/GPUTargetFanSpeed=$fan1" -a "[fan:1]/GPUTargetFanSpeed=$fan2" >/dev/null 2>&1
+  fi
+}
+
+cpu_temp="$(nvidia-settings -q gpucoretemp -t)"
+(( "$cpu_temp" <= 50 )) && fan1=30 && fan2=30
+(( "$cpu_temp" > 50 )) && fan1=30 && fan2=50
+(( "$cpu_temp" > 60 )) && fan1=30 && fan2=70
+(( "$cpu_temp" >= 65 )) && fan1=30 && fan2=85
+(( "$cpu_temp" >= 69 )) && fan1=88 && fan2=88
+(( "$cpu_temp" >= 72 )) && fan1=100 && fan2=100
+
+set_fan_speed "$fan1" "$fan2"
