@@ -16,7 +16,10 @@
 /home/*/.cargo
 /home/*/.vagrant.d
 /home/*/.dogecoin
+/home/*/.go
 /home/*/VirtualBox\ VMs
 /var/lib/docker
 re:/\\.cache/
+re:/\\Cache/
 re:/\\.ccache/
+/home/*/.local/share/Steam
