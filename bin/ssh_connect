@@ -18,7 +18,7 @@ set -o errexit -o nounset
 
 readonly rsync_options=(--archive -zz --copy-links --no-owner --no-group --sparse --partial --info=progress2 --human-readable)
 readonly ssh_options=(-o PreferredAuthentications=publickey)
-readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info"
+readonly fzf="sk --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info"
 readonly dotdir="$HOME/.dotfiles"
 readonly hostname_list="$dotdir/bin/give_me_hostname ssh"
 readonly tmux_session_name="julien"
