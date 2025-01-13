@@ -47,4 +47,8 @@ if [ -e "$dot_dir/modules/z.lua/z.lua" ]; then
   eval "$(lua "$dot_dir/modules/z.lua/z.lua" --init bash enhanced once fzf)"
 fi
 
+if command -v atuin >/dev/null 2>&1; then
+  eval "$(atuin init bash --disable-up-arrow)"
+fi
+
 # set +x
