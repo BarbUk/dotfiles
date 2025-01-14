@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# Copyright (C) 2025 Julien Virey <julien.virey@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
+
+set -o errexit -o pipefail -o nounset
+
+readonly focus_time=0.2
+# Detect if focused app is a terminal or a gui
+is_browser() {
+    name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
+    [[ "$name" =~ chrome|firefox ]] && return 0
+    return 1
+}
+
+main() {
+  if is_browser; then
+    sleep $focus_time
+    xdotool key ctrl+l sleep "$focus_time"
+    xdotool key ctrl+c
+    xdotool key Escape sleep "$focus_time"
+    current_clipboard="$(xsel --clipboard)"
+
+    if [[ $current_clipboard == https://* ]]; then
+      xsel --clipboard --clear
+      domain=$(echo "$current_clipboard" | awk -F[/:] '{print $4}')
+      rofi-rbw --selector-args="-filter '${domain} '"
+    else
+      rofi-rbw
+    fi
+  else
+    rofi-rbw
+  fi
+}
+
+main
