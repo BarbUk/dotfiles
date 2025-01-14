@@ -24,9 +24,8 @@ alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
 bupc() {
     update_gem
     update_vagrant
-    if command -v rustup >/dev/null 2>&1; then
-        rustup update
-    fi
+    update_rustup
+    clean_local_packages
     up
 }
 
@@ -41,12 +40,43 @@ update_gem() {
     fi
 }
 
+update_rustup() {
+    if command -v rustup >/dev/null 2>&1; then
+        rustup update
+    fi
+}
+
 update_vagrant() {
     if command -v vagrant >/dev/null 2>&1; then
         vagrant plugin update
         vagrant box update
         vagrant box prune
     fi
+}
+
+clean_go() {
+    if command -v go >/dev/null 2>&1; then
+        go clean -cache -modcache
+    fi
+}
+
+clean_cargo() {
+    if command -v cargo >/dev/null 2>&1; then
+        cargo install --quiet cargo-cache
+        cargo cache -a
+    fi
+}
+
+clean_npm() {
+    if command -v npm >/dev/null 2>&1; then
+        npm cache verify >/dev/null 2>&1
+    fi
+}
+
+clean_local_packages() {
+    clean_go
+    clean_cargo
+    clean_npm
 }
 
 pbcopy() {
