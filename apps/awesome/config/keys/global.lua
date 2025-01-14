@@ -66,7 +66,7 @@ globalkeys = gears.table.join(
 
   awful.key({ modkey, altkey    }, "p", function ()
     sloppyfocus_last.focus = false
-    awful.spawn("rofi-rbw")
+    awful.spawn("rofi-rbw-filter-current-tab-domain")
   end, { description="Rofi password", group="awesome" }),
 
   awful.key({ modkey,           }, "=", function ()
