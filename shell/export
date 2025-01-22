@@ -71,6 +71,7 @@ export SCM_GIT_SHOW_DETAILS=true
 export THEME_SHOW_RUBY_PROMPT=false
 export SCM_CHECK=true
 export BASH_IT_COMMAND_DURATION=true
+export SCM_GIT_SHOW_CURRENT_USER=true
 
 # Bashit theme
 export BASH_IT_THEME='barbuk'
