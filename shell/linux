@@ -71,12 +71,22 @@ clean_npm() {
     if command -v npm >/dev/null 2>&1; then
         npm cache verify >/dev/null 2>&1
     fi
+    if command -v yarn >/dev/null 2>&1; then
+        yarn cache clean >/dev/null 2>&1
+    fi
+}
+
+clean_nuget() {
+    if command -v dotnet >/dev/null 2>&1; then
+        dotnet nuget locals --clear all
+    fi
 }
 
 clean_local_packages() {
     clean_go
     clean_cargo
     clean_npm
+    clean_nuget
 }
 
 pbcopy() {
