@@ -22,4 +22,7 @@
 re:/\\.cache/
 re:/\\Cache/
 re:/\\.ccache/
+re:/\\.ccache/
+/.snapshots
+/home/.snapshots
 /home/*/.local/share/Steam
