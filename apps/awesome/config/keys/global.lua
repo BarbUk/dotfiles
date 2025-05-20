@@ -1,5 +1,6 @@
 local gears         = require('gears')
 local awful         = require('awful')
+local naughty       = require('naughty')
 local beautiful     = require('beautiful')
 local hotkeys_popup = require('awful.hotkeys_popup').widget
 local lain          = require('lain')
@@ -186,6 +187,9 @@ globalkeys = gears.table.join(
     {description = "select next", group = "layout"}),
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
     {description = "select previous", group = "layout"}),
+  -- Destroy all notifications
+  awful.key({ modkey, "Control" }, "space", function() naughty.destroy_all_notifications() end,
+    {description = "destroy all notifications", group = "hotkeys"}),
 
   awful.key({ modkey, "Control" }, "n",
       function ()
@@ -337,7 +341,7 @@ globalkeys = gears.table.join(
   end, {description = "launch monitoring menu", group = "launcher"}),
   awful.key({ modkey, "Shift"   }, "p", function ()
     sloppyfocus_last.focus = false
-    awful.spawn("snippy")
+    awful.util.spawn_with_shell("snippy")
   end, {description = "snippets", group = "launcher"}),
   awful.key({ modkey, "Shift"   }, "m", function ()
     awful.util.spawn_with_shell("termite --class='center' --geometry='700x400' --exec=ncmpcpp &")
