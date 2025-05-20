@@ -2,7 +2,7 @@
 ssh_agent_file="/tmp/.ssh-agent-thing"
 
 if [ ! -f "$ssh_agent_file" ]; then
-    keychain --eval --agents ssh,gpg --quiet \
+    keychain --systemd --eval --quiet \
     "$(find "$HOME"/.ssh/keys/live -not -type d -not -name '*.pub')" \
     > "$ssh_agent_file"
 fi
