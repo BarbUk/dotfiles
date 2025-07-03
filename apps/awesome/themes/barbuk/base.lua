@@ -14,17 +14,24 @@ end
 
 local theme               = require("themes/barbuk/" .. color)
 local gears               = require("gears")
---local awful               = require("awful")
+local awful               = require("awful")
 local xresources          = require("beautiful.xresources")
 local dpi                 = xresources.apply_dpi
 
--- awful.screen.connect_for_each_screen(function(s)
---   if s.outputs["eDP-1"] then
---     xresources.set_dpi(120, s)
---   end
--- end)
+awful.screen.connect_for_each_screen(function(s)
+  if s.outputs["eDP"] then
+    xresources.set_dpi(192, s)
+    theme.wibar_height = dpi(24)
+    theme.notification_max_width = dpi(1440)
+    theme.notification_icon_size = dpi(128)
+  else
+    theme.wibar_height = dpi(14)
+    theme.notification_max_width = dpi(720)
+    theme.notification_icon_size = dpi(64)
+  end
+end)
 
--- awful.screen.set_auto_dpi_enabled(true)
+awful.screen.set_auto_dpi_enabled(true)
 
 theme.dir                 = home .. "/.config/awesome/themes/barbuk"
 theme.wallpaper           = theme.dir .. "/archlinux.png"
@@ -43,7 +50,6 @@ theme.border_focus        = theme.nord10
 theme.taglist_fg_focus    = theme.foreground
 theme.taglist_bg_focus    = theme.nord9
 theme.taglist_fg_occupied = theme.nord9
-theme.wibar_height        = dpi(14)
 theme.menu_height         = dpi(12)
 theme.menu_width          = dpi(140)
 theme.menu_border_width   = dpi(0)
@@ -62,13 +68,10 @@ theme.notification_fg               = theme.foreground
 theme.notification_crit_bg          = theme.bg_urgent
 theme.notification_crit_fg          = theme.fg_urgent
 theme.notification_margin           = dpi(12)
-theme.notification_icon_size        = dpi(64)
-theme.notification_max_width        = dpi(720)
 theme.notification_font             = "PragmataPro Liga " .. dpi(11)
 theme.notification_padding          = theme.screen_margin * 2
 theme.notification_spacing          = theme.screen_margin * 2
 theme.notification_shape            = helpers.rrect(theme.notification_border_radius)
-
 
 theme.ocol                          = "<span color='" .. theme.nord8 .. "'>"
 theme.ccol                          = "</span>"
@@ -92,15 +95,14 @@ theme.flag                          = {
   cambodia                          = theme.dir .. "/icons/kh.png",
 }
 
-
 -- lain related
 theme.layout_txt_termfair           = "[termfair]"
 theme.layout_txt_centerfair         = "[centerfair]"
 theme.taglist_squares_sel           = gears.surface.load_from_shape(dpi(3), dpi(3), gears.shape.rectangle, theme.fg_focus)
 theme.taglist_squares_unsel         = gears.surface.load_from_shape(dpi(3), dpi(3), gears.shape.rectangle, theme.focus)
 
-theme.hotkeys_font = "PragmataPro Liga Bold 11"
-theme.hotkeys_description_font = "PragmataPro Liga 9"
+theme.hotkeys_font = "PragmataPro Liga Bold " .. dpi(11)
+theme.hotkeys_description_font = "PragmataPro Liga " .. dpi(9)
 -- Use pretty Unicode characters to represent special keys in hotkey hinter
 theme.hotkeys_popup_labels = {
   Mod4 = " ⌥ ",
