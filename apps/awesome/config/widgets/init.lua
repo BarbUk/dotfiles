@@ -1,8 +1,10 @@
-local awful     = require("awful")
-local wibox     = require("wibox")
-local lain      = require("lain")
-local helpers   = require("lain.helpers")
-local beautiful = require("beautiful")
+local awful      = require("awful")
+local wibox      = require("wibox")
+local lain       = require("lain")
+local helpers    = require("lain.helpers")
+local beautiful  = require("beautiful")
+local xresources = require("beautiful.xresources")
+local dpi        = xresources.apply_dpi
 
 local apps       = require('config.apps')
 local bat        = require('config.widgets.battery')
@@ -51,7 +53,7 @@ local mpris = mpris_info({
   cmd = "mprisctl",
   cover_size = 80,
   notification_preset = {
-    font  = "PragmataPro Liga 12",
+    font  = "PragmataPro Liga " .. dpi(12),
     fg    = beautiful.notification_fg,
     bg    = beautiful.notification_bg,
   },
