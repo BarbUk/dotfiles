@@ -19,8 +19,18 @@ export COMPOSERPATH="$HOME/.composer/vendor/bin"
 export CCACHEPATH="/usr/lib/ccache/bin"
 export DOTBIN="$HOME/.dotfiles/bin"
 export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:/usr/local/bin:$PATH"
-# Correct screen configuration for x220 or x260
-model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_version)
+
+# Screen icc
+vendor=$(awk '{print $1}' /sys/devices/virtual/dmi/id/board_vendor)
+case "$vendor" in
+  'LENOVO' )
+      # Correct screen configuration for x220 or x260
+      model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_version)
+      ;;
+  'Framework' )
+      model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_name)
+      ;;
+esac
 case "$model" in
   'x220' )
     export LIBGL_DRI3_DISABLE=1
@@ -29,7 +39,11 @@ case "$model" in
   'x260' )
     xcalib -d :0 "$HOME/.dotfiles/system/icc/ICC_Lenovo_Thinkpad_X260_1920x1080_non_glossy_N125HCE_GN1.icm"
     ;;
+  '13' )
+    xcalib -d :0 "$HOME/.dotfiles/system/icc/framework_amd_2k.icm"
+    ;;
 esac
+
 # Use menu key as right clic
 #xmodmap -e 'keycode 135 = Menu'
 [[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
