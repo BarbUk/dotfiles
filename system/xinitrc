@@ -69,6 +69,11 @@ unclutter --ignore-scrolling --exclude-root --fork
 if ! systemctl --user is-active picom.service >/dev/null 2>&1; then
     systemctl --user start picom.service
 fi
+
+export QT_AUTO_SCREEN_SCALE_FACTOR=2
+export QT_ENABLE_HIGHDPI_SCALING=2
+export QT_SCALE_FACTOR=2
+
 # Start session
 if command -v tdm >/dev/null 2>&1; then
   exec tdm --xstart
