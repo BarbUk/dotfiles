@@ -24,10 +24,10 @@ awful.screen.connect_for_each_screen(function(s)
     theme.wibar_height = dpi(24)
     theme.notification_max_width = dpi(1440)
     theme.notification_icon_size = dpi(128)
-  else
-    theme.wibar_height = dpi(14)
-    theme.notification_max_width = dpi(720)
-    theme.notification_icon_size = dpi(64)
+  -- else
+  --   theme.wibar_height = dpi(14)
+  --   theme.notification_max_width = dpi(720)
+  --   theme.notification_icon_size = dpi(64)
   end
 end)
 

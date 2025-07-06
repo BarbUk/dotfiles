@@ -27,7 +27,7 @@ end
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-  awful.key({ modkey, "Shift" }, "s", hotkeys_popup.show_help, { description="show help", group="awesome" }),
+  awful.key({ modkey, "Shift" }, "h", hotkeys_popup.show_help, { description="show help", group="awesome" }),
 
   -- Take a screenshot
   awful.key({ "Shift" }, "Print", function ()
@@ -175,10 +175,10 @@ globalkeys = gears.table.join(
     {description = "increase master width factor", group = "layout"}),
   awful.key({ altkey, "Shift"   }, "h",     function () awful.tag.incmwfact(-0.05)          end,
     {description = "decrease master width factor", group = "layout"}),
-  awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
-    {description = "increase the number of master clients", group = "layout"}),
-  awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
-    {description = "decrease the number of master clients", group = "layout"}),
+  -- awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+  --   {description = "increase the number of master clients", group = "layout"}),
+  -- awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+  --   {description = "decrease the number of master clients", group = "layout"}),
   awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
     {description = "increase the number of columns", group = "layout"}),
   awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
@@ -319,6 +319,8 @@ globalkeys = gears.table.join(
   awful.key({ modkey, "Shift" }, "Return", function () awful.spawn(apps.alt.terminal) end,
     {description = "open a alt terminal", group = "launcher"}),
   awful.key({ modkey }, "s", function () awful.spawn(apps.default.editor) end,
+    {description = "open " .. apps.default.editor, group = "launcher"}),
+  awful.key({ modkey, "Shift" }, "s", function () awful.spawn(apps.alt.editor) end,
     {description = "open " .. apps.default.editor, group = "launcher"}),
   awful.key({ modkey }, "g", function () awful.spawn(apps.default.graphics) end,
     {description = "open " .. apps.default.graphics, group = "launcher"}),
