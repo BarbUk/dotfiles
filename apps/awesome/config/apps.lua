@@ -24,7 +24,7 @@ return {
 
   alt = {
     terminal = 'wezterm',
-    editor   = 'gvim',
+    editor   = 'zeditor',
     browser  = 'firefox',
   },
 
