@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-eval "$(dircolors -b "$HOME"/.dir_colors)"
+if command -v vivid >/dev/null 2>&1; then
+    LS_COLORS="$(vivid generate ayu_bold)"
+else
+    eval "$(dircolors -b "$HOME"/.dir_colors)"
+fi
 # rbenv gem
 if [ -d "$HOME/.rbenv/shims" ]; then
     export PATH="$HOME/.rbenv/shims:${PATH}"
