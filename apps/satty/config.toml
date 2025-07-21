@@ -1,0 +1,48 @@
+[general]
+# Exit directly after copy/save action
+early-exit = true
+# Draw corners of rectangles round if the value is greater than 0 (0 disables rounded corners)
+corner-roundness = 3
+# Select the tool on startup [possible values: pointer, crop, line, arrow, rectangle, text, marker, blur, brush]
+initial-tool = "arrow"
+# Configure the command to be called on copy, for example `wl-copy`
+copy-command = "xclip -selection clipboard -t image/png"
+# Increase or decrease the size of the annotations
+annotation-size-factor = 1.5
+# After copying the screenshot, save it to a file as well
+save-after-copy = false
+# Hide toolbars by default
+default-hide-toolbars = false
+# The primary highlighter to use, the other is accessible by holding CTRL at the start of a highlight [possible values: block, freehand]
+primary-highlighter = "block"
+# Disable notifications
+disable-notifications = false
+# Actions to trigger on right click (order is important)
+# [possible values: save-to-clipboard, save-to-file, exit]
+actions-on-right-click = []
+# Actions to trigger on Enter key (order is important)
+# [possible values: save-to-clipboard, save-to-file, exit]
+actions-on-enter = ["save-to-clipboard"]
+# Actions to trigger on Escape key (order is important)
+# [possible values: save-to-clipboard, save-to-file, exit]
+actions-on-escape = ["exit"]
+# Action to perform when the Enter key is pressed [possible values: save-to-clipboard, save-to-file]
+# Deprecated: use actions-on-enter instead
+action-on-enter = "save-to-clipboard"
+
+# Font to use for text annotations
+[font]
+family = "PragmataPro"
+style = "Bold"
+
+# Custom colours for the colour palette
+[color-palette]
+# These will be shown in the toolbar for quick selection
+palette = [
+    "#dc143c",
+    "#00ffff",
+    "#a52a2a",
+    "#ff1493",
+    "#ffd700",
+    "#008000",
+]
