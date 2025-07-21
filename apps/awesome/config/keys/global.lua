@@ -32,10 +32,9 @@ globalkeys = gears.table.join(
   -- Take a screenshot
   awful.key({ "Shift" }, "Print", function ()
     awful.util.spawn_with_shell([[
-      maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=3 --format=png --quality=10 |
-      convert - \( +clone -background black -shadow 25x5+10+10 \) +swap -background none -layers merge +repage ~/screenshots/$(date +%F-%T).png
+      maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=5 --format=png --quality=7 | satty --early-exit --filename -
     ]])
-  end, { description="take a screenshot and save it", group="awesome" }),
+  end, { description="take a screenshot and edit it with satty", group="awesome" }),
 
   awful.key({ "Control" }, "Print", function ()
     awful.util.spawn("flameshot gui")
@@ -43,8 +42,7 @@ globalkeys = gears.table.join(
 
   awful.key({ }, "Print", function ()
     awful.util.spawn_with_shell([[
-      maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=3 --format=png --quality=10 |
-      xclip -selection clipboard -t image/png
+      maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=5 --format=png --quality=10 | xclip -selection clipboard -t image/png
     ]])
   end, { description="take a screenshot accessible from clipboard", group="awesome" }),
 
@@ -77,7 +75,7 @@ globalkeys = gears.table.join(
 
   awful.key({ modkey,           }, "-", function ()
     sloppyfocus_last.focus = false
-    awful.spawn("/usr/local/bin/splatmoji/splatmoji type")
+    awful.spawn("splatmoji type")
   end, { description="emoji", group="awesome" }),
 
   -- Tag browsing
