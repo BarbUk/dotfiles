@@ -1,20 +1,13 @@
 shell-integration = bash
 font-family = PragmataPro Liga
 font-size = 11.5
-#freetype-load-flags = no-hinting
 window-theme = system
-#theme = flexoki-light
-#theme = Novel
-#theme = nord-light
-#theme = Material
-#theme = GruvboxLight
-theme = Github
-#theme = farmhouse-light
+#theme = Flexoki Light
+theme = Gruvbox Light Hard
 background = #fdf6e3
 mouse-hide-while-typing = true
 keybind = ctrl+v=paste_from_clipboard
 keybind = performable:ctrl+c=copy_to_clipboard
 window-decoration = false
 gtk-titlebar = false
-gtk-adwaita = false
 minimum-contrast = 2.2
