@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-export LC_ALL=en_US.UTF-8
+if locale -a | grep -q ^en_US.UTF-8; then
+  export LC_ALL=en_US.UTF-8
+else
+  export LC_ALL=C.utf8
+fi
 
 unset MAILCHECK
 shopt -s checkwinsize
@@ -102,6 +106,8 @@ else
 fi
 
 alias tmux='tmux -2'
+
+. "$HOME/.config/completion"
 
 meteo()
 {
