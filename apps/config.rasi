@@ -1,6 +1,6 @@
 configuration {
 	font: "PragmataPro Liga 14";
-	dpi: 192;
+	dpi: 128;
 	show-icons: true;
 	terminal: "termite";
 	sort: true;
