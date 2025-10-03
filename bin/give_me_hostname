@@ -64,11 +64,11 @@ ssh_config() {
     fi
 
     if [ -d "$HOME/.ssh/config.d" ]; then
-        readarray -d $'\0' -t -O"${#files[@]}" files < <(find "$HOME/.ssh/config.d" -type f -name '*.conf' -print0)
+        readarray -d $'\0' -t -O"${#files[@]}" files < <(find "$HOME/.ssh/config.d" -type f -print0)
     fi
 
     if [ -d /etc/ssh/ssh_config.d ]; then
-        readarray -d $'\0' -t -O"${#files[@]}" files < <(find /etc/ssh/ssh_config.d -type f -name '*.conf')
+        readarray -d $'\0' -t -O"${#files[@]}" files < <(find /etc/ssh/ssh_config.d -type f -print0)
     fi
 
     "$awk_command" '/^Host/ && ! /\*/ {print $2}' "${files[@]}"
