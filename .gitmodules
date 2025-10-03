@@ -22,3 +22,6 @@
 [submodule "modules/snippy"]
 	path = modules/snippy
 	url = https://github.com/BarbUk/snippy
+[submodule "modules/fz"]
+	path = modules/fz
+	url = https://github.com/mrjohannchang/fz.sh
