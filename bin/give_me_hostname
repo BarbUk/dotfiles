@@ -56,20 +56,22 @@ bash_history() {
 }
 
 ssh_config() {
-    local file
-    file="$HOME/.ssh/config"
-    if [ -d "$(dirname "$file")" ]; then
-        "$awk_command" '/^Host/ && ! /\*/ {print $2}' "$file"
-    fi
-}
+    local files
+    declare -a files
 
-ssh_config_d() {
-    local file
-    file="$HOME/.ssh/config.d/*"
-    if [ -d "$(dirname "$file")" ]; then
-        # shellcheck disable=2086
-        "$awk_command" '/^Host/ && ! /*/ {print $2}' $file
+    if [ -e "$HOME/.ssh/config" ]; then
+        files+=("$HOME/.ssh/config")
     fi
+
+    if [ -d "$HOME/.ssh/config.d" ]; then
+        readarray -d $'\0' -t -O"${#files[@]}" files < <(find "$HOME/.ssh/config.d" -type f -name '*.conf' -print0)
+    fi
+
+    if [ -d /etc/ssh/ssh_config.d ]; then
+        readarray -d $'\0' -t -O"${#files[@]}" files < <(find /etc/ssh/ssh_config.d -type f -name '*.conf')
+    fi
+
+    "$awk_command" '/^Host/ && ! /\*/ {print $2}' "${files[@]}"
 }
 
 main() {
@@ -78,7 +80,7 @@ main() {
         "hosts") known_hosts | sort -u;;
         "ssh")
             (
-                ssh_config_d
+                ssh_config
                 dsh_hosts
                 known_hosts
             ) | grep -vE "\\b([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | sort -u
@@ -92,7 +94,7 @@ main() {
         "all")
             (
                 dsh_hosts
-                ssh_config_d
+                ssh_config
                 known_hosts
                 bash_history
             ) | sort -u
