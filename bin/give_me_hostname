@@ -57,7 +57,7 @@ bash_history() {
 
 ssh_config() {
     local files
-    declare -a files
+    declare -a files=()
 
     if [ -e "$HOME/.ssh/config" ]; then
         files+=("$HOME/.ssh/config")
