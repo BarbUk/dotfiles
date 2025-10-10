@@ -186,7 +186,7 @@ globalkeys = gears.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
     {description = "select previous", group = "layout"}),
   -- Destroy all notifications
-  awful.key({ modkey, "Control" }, "space", function() naughty.destroy_all_notifications() end,
+  awful.key({ modkey, altkey }, "space", function() naughty.destroy_all_notifications() end,
     {description = "destroy all notifications", group = "hotkeys"}),
 
   awful.key({ modkey, "Control" }, "n",
@@ -359,7 +359,10 @@ globalkeys = gears.table.join(
     awful.spawn( apps.default.browser .. " --profile-directory='Profile 3' https://mail.missiveapp.com", false )
   end, {description = "launch work browser", group = "launcher"}),
   awful.key({ modkey, "Shift" }, "y", function ()
-    awful.spawn( apps.default.browser .. " --profile-directory='Profile 3' --app=https://calendar.google.com", false )
+    awful.spawn( apps.default.browser .. " --profile-directory='Default' --app=https://mail.zoho.com/zm/#mail/folder/inbox", false )
+  end, {description = "launch work calendar", group = "launcher"}),
+  awful.key({ altkey, "Shift" }, "y", function ()
+    awful.spawn( apps.default.browser .. " --profile-directory='Default' --app=https://calendar.zoho.com/", false )
   end, {description = "launch work calendar", group = "launcher"}),
   awful.key({ modkey }, "u", function ()
     spawn_and_move("mattermost-desktop", "Mattermost", 1)
