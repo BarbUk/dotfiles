@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+# shellcheck shell=bash
 [[ $- != *i* ]] && return
 
 if locale -a | grep -q ^en_US.UTF-8; then
-  export LC_ALL=en_US.UTF-8
+	export LC_ALL=en_US.UTF-8
 else
-  export LC_ALL=C.utf8
+	export LC_ALL=C.UTF-8
 fi
 
 unset MAILCHECK
@@ -18,7 +18,7 @@ CDPATH="."
 PROMPT_DIRTRIM=3
 bind Space:magic-space
 shopt -s globstar 2> /dev/null
-shopt -s nocaseglob;
+shopt -s nocaseglob
 bind "set completion-ignore-case on"
 bind "set completion-map-case on"
 bind "set show-all-if-ambiguous on"
@@ -35,7 +35,7 @@ PROMPT_COMMAND='history -a'
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-GREP_COLORS='mt=1;33'
+export GREP_COLORS='mt=1;33'
 
 export GIT_HOSTING='git@github.com'
 
@@ -49,9 +49,11 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'
 export EDITOR=vim
 
+export PATH=~/.bin:$PATH:/usr/sbin:/sbin
+
 # shellcheck disable=1091
 if [ -f /etc/bash_completion ]; then
-    source /etc/bash_completion
+	source /etc/bash_completion
 fi
 export BASH_IT="$HOME/.bash_it"
 export SCM_GIT_SHOW_DETAILS=true
@@ -62,17 +64,19 @@ export BASH_IT_COMMAND_DURATION=true
 export BASH_IT_THEME='barbuk'
 
 # Load Bash It
-# shellcheck disable=1090
+# shellcheck disable=SC1091
 source "$BASH_IT/bash_it.sh"
 # Load z
 # shellcheck disable=2034
 _Z_OWNER="$USER"
-# shellcheck disable=1090
+# shellcheck disable=SC1091
 source "$HOME/.modules/z"
-# systend helpers
-# shellcheck disable=1090
+# systemd helpers
+# shellcheck disable=SC1091
 source "$HOME/.systemd_helpers"
-export PATH=~/.bin:$PATH:/usr/sbin:/sbin
+# Completion
+# shellcheck disable=SC1091
+source "$HOME/.config/completion"
 
 alias tail='timeout 3600 tail'
 alias bzless='timeout 3600 bzless'
@@ -100,36 +104,32 @@ alias _="sudo -s"
 alias __="sudo -i"
 alias c='clear'
 if hash systemctl 2> /dev/null; then
-    alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
+	alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
 else
-    alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,command:220'
+	alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,command:220'
 fi
 
 alias tmux='tmux -2'
 
-. "$HOME/.config/completion"
-
-meteo()
-{
-    local request="wttr.in/${1-Paris}"
-    [ "$(tput cols)" -lt 125 ] && request+='?n'
-    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+meteo() {
+	local request="wttr.in/${1-Paris}"
+	[ "$(tput cols)" -lt 125 ] && request+='?n'
+	curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
 }
-
 
 # v - open files in ~/.viminfo
 v() {
-  local files
-  files=$(grep '^>' ~/.viminfo | cut -c3- |
-    while read -r line; do
-      [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
-    done | fzf --select-1 --reverse --inline-info +s \
-      --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
-      && vim "${files//\~/$HOME}"
+	local files
+	files=$(grep '^>' ~/.viminfo | cut -c3- \
+		| while read -r line; do
+			[ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
+		done | fzf --select-1 --reverse --inline-info +s \
+		--tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
+		&& vim "${files//\~/$HOME}"
 }
 
 log() {
-  local cmd log_file
-  cmd="command find /var/log/ -type f -name '*log' 2>/dev/null"
-  log_file=$(eval "$cmd" | fzf --height 40% --min-height 25 --tac --tiebreak=length,begin,index --reverse --inline-info) && less "$log_file"
+	local cmd log_file
+	cmd="command find /var/log/ -type f -name '*log' 2>/dev/null"
+	log_file=$(eval "$cmd" | fzf --height 40% --min-height 25 --tac --tiebreak=length,begin,index --reverse --inline-info) && less "$log_file"
 }
