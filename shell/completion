@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+# shellcheck shell=bash
 # shellcheck disable=SC2034
-give_me_hostname="$HOME/.dotfiles/bin/give_me_hostname"
+give_me_hostname="give_me_hostname"
 fzf_default_options="-i --select-1 --exit-0 --tac --tiebreak=length,begin,index --reverse --inline-info"
 fzf_height="--height ${FZF_TMUX_HEIGHT:-50%} --min-height 25"
 
@@ -43,12 +43,25 @@ ssh_tools=(
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  fd --max-depth 5 --follow --exclude ".git" . "$1"
+  if command -v fd >/dev/null 2>&1; then
+    fd --hidden --max-depth 5 --follow --exclude ".git" . "$1"
+  else
+    echo "$1"
+    command find -L "$1" \
+      -name .git -prune -o -name .hg -prune -o -name .svn -prune -o \( -type d -o -type f -o -type l \) \
+      -a -not -path "$1" -print 2> /dev/null | command sed 's@^\./@@'
+  fi
 }
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  fd --type d --max-depth 3 --follow --exclude ".git" . "$1"
+  if command -v fd >/dev/null 2>&1; then
+    fd --type d --hidden --max-depth 3 --follow --exclude ".git" . "$1"
+  else
+    command find -L "$1" \
+      -name .git -prune -o -name .hg -prune -o -name .svn -prune -o -type d \
+      -a -not -path "$1" -print 2> /dev/null | command sed 's@^\./@@'
+  fi
 }
 
 # To redraw line after fzf closes (printf '\e[5n')
@@ -80,13 +93,13 @@ _fzf_playbook() {
 
 _fzf_ansible_groups() {
   local inventory
-  inventory=$(awk '/inventory/ {print $3}' "$HOME"/.ansible.cfg)
-  inventory=${inventory/\~/$HOME}
-  if [ -d "$inventory" ]; then
-    awk '/\[/' "${inventory}"* | tr -d '[]'
-  else
-    awk '/\[/' "$inventory" | tr -d '[]'
+  if [ -e "$HOME"/.ansible.cfg ] && grep -q inventory "$HOME"/.ansible.cfg; then
+    inventory=$(awk '/inventory/ {print $3}' "$HOME"/.ansible.cfg)
+    inventory=${inventory/\~/$HOME}
+  elif [ -e ansible.cfg ] && grep -q inventory ansible.cfg; then
+    inventory=$(awk '/inventory/ {print $3}' ansible.cfg)
   fi
+  ansible-inventory --list | jq -r "keys | .[]"
 }
 
 _fzf_dsh_groups() {
