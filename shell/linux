@@ -79,6 +79,9 @@ clean_npm() {
     if command -v yarn >/dev/null 2>&1; then
         yarn cache clean >/dev/null 2>&1
     fi
+    if command -v pnpm >/dev/null 2>&1; then
+        pnpm store prune >/dev/null 2>&1
+    fi
 }
 
 clean_nuget() {
