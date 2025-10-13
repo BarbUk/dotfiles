@@ -27,7 +27,7 @@ export TERM=termite
 
 check_and_source "$HOME/.tokens"
 . "$dot_dir/shell/export"
-# shellcheck source=/dev/null
+# shellcheck source=modules/bash-it/bash_it.sh
 . "$BASH_IT/bash_it.sh"
 . "$dot_dir/shell/aliases"
 . "$dot_dir/shell/functions"
