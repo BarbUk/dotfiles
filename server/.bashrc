@@ -7,6 +7,14 @@ else
 	export LC_ALL=C.UTF-8
 fi
 
+check_and_source() {
+	local file="$1"
+	if [ -e "$file" ]; then
+		# shellcheck disable=1090
+		. "$file"
+	fi
+}
+
 unset MAILCHECK
 shopt -s checkwinsize
 shopt -s histappend
@@ -49,87 +57,32 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'
 export EDITOR=vim
 
-export PATH=~/.bin:$PATH:/usr/sbin:/sbin
+export PATH=~/.config/bin:$PATH:/usr/sbin:/sbin
 
-# shellcheck disable=1091
-if [ -f /etc/bash_completion ]; then
-	source /etc/bash_completion
-fi
-export BASH_IT="$HOME/.bash_it"
+check_and_source /etc/bash_completion
+
+# Path to the bash it configuration
+export BASH_IT=$HOME/.bash_it
 export SCM_GIT_SHOW_DETAILS=true
+export THEME_SHOW_RUBY_PROMPT=false
 export SCM_CHECK=true
 export BASH_IT_COMMAND_DURATION=true
+export SCM_GIT_SHOW_CURRENT_USER=true
 
 # Bashit theme
 export BASH_IT_THEME='barbuk'
 
-# Load Bash It
-# shellcheck disable=SC1091
-source "$BASH_IT/bash_it.sh"
 # Load z
-# shellcheck disable=2034
 _Z_OWNER="$USER"
-# shellcheck disable=SC1091
-source "$HOME/.modules/z"
-# systemd helpers
-# shellcheck disable=SC1091
-source "$HOME/.systemd_helpers"
+check_and_source "$HOME/.modules/z"
 # Completion
-# shellcheck disable=SC1091
-source "$HOME/.config/completion"
+check_and_source "$HOME/.config/completion"
+# Load Bash It
+# shellcheck source=modules/bash-it/bash_it.sh
+. "$BASH_IT/bash_it.sh"
 
-alias tail='timeout 3600 tail'
-alias bzless='timeout 3600 bzless'
-alias zless='timeout 3600 zless'
-alias top='timeout 3600 top'
-alias htop='TERM=screen timeout 3600 htop'
-
-# enable color support of ls and also add handy aliases
-alias ls='ls --color=auto'
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias bzgrep='bzgrep --color=auto'
-alias zgrep='zgrep --color=auto'
-
-# some more ls aliases
-alias ll='ls -lha'
-alias l='ls -lh'
-
-alias q='exit'
-alias s='netstat -tanpu'
-alias _="sudo -s"
-alias __="sudo -i"
-alias c='clear'
-if hash systemctl 2> /dev/null; then
-	alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
-else
-	alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,command:220'
-fi
-
-alias tmux='tmux -2'
-
-meteo() {
-	local request="wttr.in/${1-Paris}"
-	[ "$(tput cols)" -lt 125 ] && request+='?n'
-	curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
-}
-
-# v - open files in ~/.viminfo
-v() {
-	local files
-	files=$(grep '^>' ~/.viminfo | cut -c3- \
-		| while read -r line; do
-			[ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
-		done | fzf --select-1 --reverse --inline-info +s \
-		--tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
-		&& vim "${files//\~/$HOME}"
-}
-
-log() {
-	local cmd log_file
-	cmd="command find /var/log/ -type f -name '*log' 2>/dev/null"
-	log_file=$(eval "$cmd" | fzf --height 40% --min-height 25 --tac --tiebreak=length,begin,index --reverse --inline-info) && less "$log_file"
-}
+check_and_source "$HOME/.config/alias/server"
+# systemd helpers
+check_and_source "$HOME/.config/alias/systemd_helpers"
+# functions
+check_and_source "$HOME/.config/alias/functions"

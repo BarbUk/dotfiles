@@ -1,0 +1,32 @@
+alias tail='timeout 3600 tail'
+alias bzless='timeout 3600 bzless'
+alias zless='timeout 3600 zless'
+alias top='timeout 3600 top'
+alias htop='TERM=screen timeout 3600 htop'
+
+# enable color support of ls and also add handy aliases
+alias ls='ls --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias bzgrep='bzgrep --color=auto'
+alias zgrep='zgrep --color=auto'
+
+# some more ls aliases
+alias ll='ls -lha'
+alias l='ls -lh'
+
+alias q='exit'
+alias s='netstat -tanpu'
+alias _="sudo -s"
+alias __="sudo -i"
+alias c='clear'
+if hash systemctl 2> /dev/null; then
+  alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
+else
+  alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,command:220'
+fi
+
+alias tmux='tmux -2'

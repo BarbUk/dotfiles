@@ -1,0 +1,16 @@
+# v - open files in ~/.viminfo
+v() {
+  local files
+  files=$(grep '^>' ~/.viminfo | cut -c3- \
+    | while read -r line; do
+      [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
+    done | fzf --select-1 --reverse --inline-info +s \
+    --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
+    && vim "${files//\~/$HOME}"
+}
+
+log() {
+  local cmd log_file
+  cmd="command find /var/log/ -type f -name '*log' 2>/dev/null"
+  log_file=$(eval "$cmd" | fzf --height 40% --min-height 25 --tac --tiebreak=length,begin,index --reverse --inline-info) && less "$log_file"
+}
