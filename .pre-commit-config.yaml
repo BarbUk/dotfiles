@@ -26,6 +26,8 @@ repos:
       language: system
       types: [shell]
       require_serial: true
+      args:
+          - --external-sources
 
     - id: shfmt
       name: shfmt
