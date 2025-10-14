@@ -62,7 +62,7 @@ export PATH=~/.config/bin:$PATH:/usr/sbin:/sbin
 check_and_source /etc/bash_completion
 
 # Path to the bash it configuration
-export BASH_IT=$HOME/.bash_it
+export BASH_IT=$HOME/.config/bash_it
 export SCM_GIT_SHOW_DETAILS=true
 export THEME_SHOW_RUBY_PROMPT=false
 export SCM_CHECK=true

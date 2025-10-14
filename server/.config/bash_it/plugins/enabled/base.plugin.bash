@@ -1,1 +1,1 @@
-../../../../../modules/bash-it/plugins/enabled/base.plugin.bash
+../../../../../modules/bash-it/plugins/available/base.plugin.bash
