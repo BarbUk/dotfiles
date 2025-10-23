@@ -1,9 +1,6 @@
 [submodule "z"]
 	path = modules/z
 	url = git@github.com:rupa/z
-[submodule "tpm"]
-	path = modules/tpm
-	url = https://github.com/tmux-plugins/tpm
 [submodule "modules/rmate"]
 	path = modules/rmate
 	url = https://github.com/aurora/rmate
