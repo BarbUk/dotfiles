@@ -43,7 +43,7 @@ PROMPT_COMMAND='history -a'
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export GREP_COLORS='mt=1;33'
+export GREP_COLORS='sl=49;39:cx=49;39:mt=48;5;121;91;1;4:fn=49;35:ln=49;32:bn=49;32:se=49;36';
 
 export GIT_HOSTING='git@github.com'
 
