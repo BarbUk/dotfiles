@@ -35,8 +35,3 @@ repos:
       entry: shfmt
       language: system
       types: [shell]
-      args:
-          - --write
-          - --binary-next-line
-          - --case-indent
-          - --space-redirects

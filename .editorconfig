@@ -8,6 +8,19 @@ indent_style = space
 indent_size = 2
 trim_trailing_whitespace = true
 
+[bash]
+indent_style = space
+indent_size = 2
+# --language-variant
+shell_variant      = posix
+binary_next_line   = true
+# --case-indent
+switch_case_indent = true
+space_redirects    = true
+keep_padding       = true
+# --func-next-line
+function_next_line = true
+
 [*.md]
 trim_trailing_whitespace = false
 
