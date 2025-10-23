@@ -33,15 +33,20 @@ fi
 
 if ! ipv4_validation "$resolvable_host" > /dev/null 2>&1; then
 
-	if [ "$(uname)" = "Darwin" ]; then
-		resolve="$(dscacheutil -q host -a name "$resolvable_host" | wc -l)"
-	else
-		resolve="$(getent hosts "$resolvable_host" | wc -l)"
-	fi
+  if ! $hostname_list | grep -qF "$resolvable_host"; then
 
-	if [[ $resolve -eq 0 ]]; then
-		host="$($hostname_list | $fzf --query="$host")"
-	fi
+    # Check if we can resolv the host
+  	if [ "$(uname)" = "Darwin" ]; then
+  		resolve="$(dscacheutil -q host -a name "$resolvable_host" | wc -l)"
+  	else
+  		resolve="$(getent hosts "$resolvable_host" | wc -l)"
+  	fi
+
+  	if [[ $resolve -eq 0 ]]; then
+  		host="$($hostname_list | $fzf --query="$host")"
+  	fi
+
+  fi
 
 fi
 
