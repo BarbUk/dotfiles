@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# shellcheck source=apps/tmux/plugins/hostname/shared
+source "$CURRENT_DIR/shared"
+
+main() {
+  get_info host
+}
+
+main
