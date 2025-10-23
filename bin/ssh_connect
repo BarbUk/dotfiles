@@ -26,34 +26,34 @@ readonly tmux_session_name="julien"
 host="${1:-$($hostname_list | $fzf)}"
 
 if [[ ${host} == *@* ]]; then
-	resolvable_host="${host/*@/}"
+  resolvable_host="${host/*@/}"
 else
-	resolvable_host=${host}
+  resolvable_host=${host}
 fi
 
-if ! ipv4_validation "$resolvable_host" > /dev/null 2>&1; then
+if ! ipv4_validation "$resolvable_host" >/dev/null 2>&1; then
 
   if ! $hostname_list | grep -qF "$resolvable_host"; then
 
     # Check if we can resolv the host
-  	if [ "$(uname)" = "Darwin" ]; then
-  		resolve="$(dscacheutil -q host -a name "$resolvable_host" | wc -l)"
-  	else
-  		resolve="$(getent hosts "$resolvable_host" | wc -l)"
-  	fi
+    if [ "$(uname)" = "Darwin" ]; then
+      resolve="$(dscacheutil -q host -a name "$resolvable_host" | wc -l)"
+    else
+      resolve="$(getent hosts "$resolvable_host" | wc -l)"
+    fi
 
-  	if [[ $resolve -eq 0 ]]; then
-  		host="$($hostname_list | $fzf --query="$host")"
-  	fi
+    if [[ $resolve -eq 0 ]]; then
+      host="$($hostname_list | $fzf --query="$host")"
+    fi
 
   fi
 
 fi
 
 rsync "${rsync_options[@]}" --rsh "ssh ${ssh_options[*]}" \
-	--exclude-from "$dotdir/apps/rsync_exclude.list" \
-	"$dotdir/server/" \
-	"$host": || true
+  --exclude-from "$dotdir/apps/rsync_exclude.list" \
+  "$dotdir/server/" \
+  "$host": || true
 
 # Set terminal title
 echo -ne "\\033]0;$host\\007"
