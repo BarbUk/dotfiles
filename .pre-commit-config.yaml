@@ -35,3 +35,5 @@ repos:
       entry: shfmt
       language: system
       types: [shell]
+      args: [--write]
+      exclude_types: [csh, tcsh, zsh]
