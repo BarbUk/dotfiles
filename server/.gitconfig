@@ -1,8 +1,10 @@
 [push]
-        default = current
+  default = current
 [alias]
-        lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 [core]
-        pager = less -FRSX
+  pager = less -FRSX
 [color]
-        ui = auto
+  ui = auto
+[safe]
+  directory = *
