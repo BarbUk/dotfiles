@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 alias tail='timeout 3600 tail'
 alias bzless='timeout 3600 bzless'
 alias zless='timeout 3600 zless'
@@ -23,7 +25,7 @@ alias s='netstat -tanpu'
 alias _="sudo -s"
 alias __="sudo -i"
 alias c='clear'
-if hash systemctl 2> /dev/null; then
+if hash systemctl 2>/dev/null; then
   alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,cgroup,command:220'
 else
   alias pss='ps --ppid 2 -p 2 --deselect awfo user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,command:220'
@@ -31,11 +33,11 @@ fi
 
 alias tmux='tmux -2'
 
-gg='git log --graph --pretty=format:"%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(reset) %C(cyan)%cd %C(blue)(%cr)%Creset" --date=format:"%Y-%m-%d %Hh%M"'
-ggf='git log --graph --date=short --pretty=format:'\''%C(auto)%h %Cgreen%an%Creset %Cblue%cd%Creset %C(auto)%d %s'\'''
-ggup='git log --branches --not --remotes --no-walk --decorate --oneline' # FROM https://stackoverflow.com/questions/39220870/in-git-list-names-of-branches-with-unpushed-commits
-gll='git log --graph --pretty=oneline --abbrev-commit'
-gnew='git log HEAD@{1}..HEAD@{0}' # Show commits since last pull, see http://blogs.atlassian.com/2014/10/advanced-git-aliases/
-gwc='git whatchanged'
-gs='git status'
-gss='git status -s'
+alias gg='git log --graph --pretty=format:"%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(reset) %C(cyan)%cd %C(blue)(%cr)%Creset" --date=format:"%Y-%m-%d %Hh%M"'
+alias ggf='git log --graph --date=short --pretty=format:'\''%C(auto)%h %Cgreen%an%Creset %Cblue%cd%Creset %C(auto)%d %s'\'''
+alias ggup='git log --branches --not --remotes --no-walk --decorate --oneline' # FROM https://stackoverflow.com/questions/39220870/in-git-list-names-of-branches-with-unpushed-commits
+alias gll='git log --graph --pretty=oneline --abbrev-commit'
+alias gnew='git log HEAD@{1}..HEAD@{0}' # Show commits since last pull, see http://blogs.atlassian.com/2014/10/advanced-git-aliases/
+alias gwc='git whatchanged'
+alias gs='git status'
+alias gss='git status -s'
