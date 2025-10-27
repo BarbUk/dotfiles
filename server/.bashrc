@@ -1,31 +1,44 @@
 # shellcheck shell=bash
 [[ $- != *i* ]] && return
 
-if locale -a | grep -q ^en_US.UTF-8; then
-	export LC_ALL=en_US.UTF-8
-else
-	export LC_ALL=C.UTF-8
-fi
+define_locale() {
+  local locale locales=(
+    en_US.utf8
+    en_IE.utf8
+    en_GB.utf8
+    C.UTF-8
+    C
+  )
+
+  for locale in "${locales[@]}"; do
+    if locale -a | grep -q "^$locale"; then
+      export LC_ALL="$locale"
+      return
+    fi
+  done
+}
 
 check_and_source() {
-	local file="$1"
-	if [ -e "$file" ]; then
-		# shellcheck disable=1090
-		. "$file"
-	fi
+  local file="$1"
+  if [ -e "$file" ]; then
+    # shellcheck disable=1090
+    . "$file"
+  fi
 }
+
+define_locale
 
 unset MAILCHECK
 shopt -s checkwinsize
 shopt -s histappend
 shopt -s cmdhist
-shopt -s autocd 2> /dev/null
-shopt -s dirspell 2> /dev/null
-shopt -s cdspell 2> /dev/null
+shopt -s autocd 2>/dev/null
+shopt -s dirspell 2>/dev/null
+shopt -s cdspell 2>/dev/null
 CDPATH="."
 PROMPT_DIRTRIM=3
 bind Space:magic-space
-shopt -s globstar 2> /dev/null
+shopt -s globstar 2>/dev/null
 shopt -s nocaseglob
 bind "set completion-ignore-case on"
 bind "set completion-map-case on"
@@ -43,7 +56,7 @@ PROMPT_COMMAND='history -a'
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export GREP_COLORS='sl=49;39:cx=49;39:mt=48;5;121;91;1;4:fn=49;35:ln=49;32:bn=49;32:se=49;36';
+export GREP_COLORS='sl=49;39:cx=49;39:mt=48;5;121;91;1;4:fn=49;35:ln=49;32:bn=49;32:se=49;36'
 
 export GIT_HOSTING='git@github.com'
 
