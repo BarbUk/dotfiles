@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Timeout easily forgotten apps
 alias tail='timeout 3600 tail'
 alias bzless='timeout 3600 bzless'
 alias zless='timeout 3600 zless'
@@ -33,6 +34,7 @@ fi
 
 alias tmux='tmux -2'
 
+# Git
 alias gg='git log --graph --pretty=format:"%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(reset) %C(cyan)%cd %C(blue)(%cr)%Creset" --date=format:"%Y-%m-%d %Hh%M"'
 alias ggf='git log --graph --date=short --pretty=format:'\''%C(auto)%h %Cgreen%an%Creset %Cblue%cd%Creset %C(auto)%d %s'\'''
 alias ggup='git log --branches --not --remotes --no-walk --decorate --oneline' # FROM https://stackoverflow.com/questions/39220870/in-git-list-names-of-branches-with-unpushed-commits
@@ -41,3 +43,16 @@ alias gnew='git log HEAD@{1}..HEAD@{0}' # Show commits since last pull, see http
 alias gwc='git whatchanged'
 alias gs='git status'
 alias gss='git status -s'
+
+# Ssh
+ssh_default_options=(
+  -o PreferredAuthentications=publickey
+  -o StrictHostKeyChecking=accept-new
+  -o SetEnv='TERM=xterm-256color'
+  -o Compression=no
+  -o ConnectTimeout=5
+  -o ServerAliveInterval=10
+  -o ServerAliveCountMax=2
+)
+
+alias ssh='ssh ${ssh_default_options[@]}'
