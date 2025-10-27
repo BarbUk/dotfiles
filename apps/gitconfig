@@ -45,11 +45,11 @@
 [difftool]
   prompt = false
 [difftool "meld"]
-    cmd = meld "$LOCAL" "$REMOTE"
+  cmd = meld "$LOCAL" "$REMOTE"
 [difftool "difftastic"]
-    cmd = difft "$LOCAL" "$REMOTE"
+  cmd = difft "$LOCAL" "$REMOTE"
 [pager]
-    difftool = true
+  difftool = true
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = red bold 52
