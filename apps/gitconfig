@@ -21,6 +21,7 @@
   windowMemory = 2047m
 [push]
   default = simple
+	autoSetupRemote = true
 [mergetool]
   keepBackup = false
 [merge]
