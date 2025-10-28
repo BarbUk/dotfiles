@@ -3,10 +3,11 @@
 
 define_locale() {
   local locale locales=(
+    C.utf8
+    C.UTF-8
     en_US.utf8
     en_IE.utf8
     en_GB.utf8
-    C.UTF-8
     C
   )
 
