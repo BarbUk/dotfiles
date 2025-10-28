@@ -48,11 +48,11 @@ alias gss='git status -s'
 ssh_default_options=(
   -o PreferredAuthentications=publickey
   -o StrictHostKeyChecking=accept-new
-  -o SetEnv='TERM=xterm-256color'
+  -o SetEnv=\'TERM=xterm-256color\'
   -o Compression=no
   -o ConnectTimeout=5
   -o ServerAliveInterval=10
   -o ServerAliveCountMax=2
 )
 
-alias ssh='ssh ${ssh_default_options[@]}'
+alias ssh='ssh "${ssh_default_options[@]}"'
