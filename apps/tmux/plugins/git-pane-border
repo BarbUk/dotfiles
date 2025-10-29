@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# color variables
+INACTIVE_BORDER_COLOR='#444444'
+ACTIVE_BORDER_COLOR='#00afff'
+RED='#d70085'
+YELLOW='#ff8600'
+GREEN='#4db45c'
+
+# TMUX_BIN=$(echo "$TMUX" | awk -F'[/-]' '{print $3}')
+
+# read args
+for i in "$@"; do
+  case $i in
+  --pane-current-path=*)
+    PANE_CURRENT_PATH="${i#*=}"
+    shift # past argument=value
+    ;;
+  --pane-active=*)
+    PANE_ACTIVE="${i#*=}"
+    shift # past argument=value
+    ;;
+  *) # unknown option
+    ;;
+  esac
+done
+
+# Do nothing if we are not in a git dir
+if ! [ -e "$PANE_CURRENT_PATH/.git" ] || ((PANE_ACTIVE == 0)); then
+  # $TMUX_BIN set pane-border-status off
+  exit
+fi
+
+# replace full path to home directory with ~
+PRETTY_PATH="${PANE_CURRENT_PATH/"$HOME"/'~'}"
+
+# calculate reset color
+RESET_BORDER_COLOR=$([ "$PANE_ACTIVE" -eq 1 ] && echo "$ACTIVE_BORDER_COLOR" || echo "$INACTIVE_BORDER_COLOR")
+
+color() {
+  INTENT=$1
+  [ "$PANE_ACTIVE" -eq 1 ] && echo "$INTENT" || echo "$INACTIVE_BORDER_COLOR"
+}
+
+# git functions adapted from the bureau zsh theme
+# https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/bureau.zsh-theme
+
+ZSH_THEME_GIT_PROMPT_PREFIX="on  #[fg=$(color $YELLOW)]"
+ZSH_THEME_GIT_PROMPT_SUFFIX="#[fg=$RESET_BORDER_COLOR] "
+ZSH_THEME_GIT_PROMPT_CLEAN="#[fg=$(color $GREEN)]✓#[fg=$RESET_BORDER_COLOR]"
+ZSH_THEME_GIT_PROMPT_AHEAD="↑"
+ZSH_THEME_GIT_PROMPT_BEHIND="↓"
+ZSH_THEME_GIT_PROMPT_STAGED="#[fg=$(color $GREEN)]•#[fg=$RESET_BORDER_COLOR]"
+ZSH_THEME_GIT_PROMPT_UNSTAGED="#[fg=$(color $YELLOW)]•#[fg=$RESET_BORDER_COLOR]"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="#[fg=$(color $RED)]•#[fg=$RESET_BORDER_COLOR]"
+
+git_branch() {
+  ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
+    ref=$(command git rev-parse --short HEAD 2>/dev/null) || return
+  echo "${ref#refs/heads/}"
+}
+
+git_remote() {
+  local remote
+  remote=$(command git config --get remote.origin.url)
+  # Remove prefix before :
+  remote="${remote#*:}"
+  # Remove .git
+  remote="${remote%.*}"
+  # Remove https://
+  remote=$(echo "$remote" | sed -r -e 's/\/\/[^\/]+\///')
+  echo " $remote"
+}
+
+function _git-status() {
+  local git_status_flags=
+  if [[ "${SCM_GIT_IGNORE_UNTRACKED:-}" == "true" ]]; then
+    git_status_flags='-uno'
+  fi
+  git status --porcelain "${git_status_flags:---}" 2>/dev/null
+}
+
+function _git-status-counts() {
+  local status="$1"
+  echo "$status" | awk '
+  BEGIN {
+    untracked=0;
+    unstaged=0;
+    staged=0;
+  }
+  {
+    if ($0 ~ /^\?\? .+/) {
+      untracked += 1
+    } else {
+      if ($0 ~ /^.[^ ] .+/) {
+        unstaged += 1
+      }
+      if ($0 ~ /^[^ ]. .+/) {
+        staged += 1
+      }
+    }
+  }
+  END {
+    print untracked "\t" unstaged "\t" staged
+  }'
+}
+
+git_status() {
+  local untracked_count unstaged_count staged_count _STATUS=""
+
+  # check status of files
+  _INDEX=$(command git status --porcelain 2>/dev/null)
+  IFS=$'\t' read -r untracked_count unstaged_count staged_count < <(_git-status-counts "$_INDEX")
+  if [[ -n "$_INDEX" ]]; then
+    if echo "$_INDEX" | command grep -q '^[AMRD]. '; then
+      _STATUS="$_STATUS $ZSH_THEME_GIT_PROMPT_STAGED$staged_count"
+    fi
+    if echo "$_INDEX" | command grep -q '^.[MTD] '; then
+      _STATUS="$_STATUS $ZSH_THEME_GIT_PROMPT_UNSTAGED$unstaged_count"
+    fi
+    if echo "$_INDEX" | command grep -q -E '^\?\? '; then
+      _STATUS="$_STATUS $ZSH_THEME_GIT_PROMPT_UNTRACKED$untracked_count"
+    fi
+    if echo "$_INDEX" | command grep -q '^UU '; then
+      _STATUS="$_STATUS$ZSH_THEME_GIT_PROMPT_UNMERGED"
+    fi
+  else
+    _STATUS="$_STATUS$ZSH_THEME_GIT_PROMPT_CLEAN"
+  fi
+
+  # check status of local repository
+  _INDEX=$(command git status --porcelain -b 2>/dev/null)
+  if echo "$_INDEX" | command grep -q '^## .*ahead'; then
+    _STATUS="$_STATUS$ZSH_THEME_GIT_PROMPT_AHEAD"
+  fi
+  if echo "$_INDEX" | command grep -q '^## .*behind'; then
+    _STATUS="$_STATUS$ZSH_THEME_GIT_PROMPT_BEHIND"
+  fi
+
+  echo "$_STATUS"
+}
+
+git_prompt() {
+  local _branch _status _remote _result=""
+  _branch=$(git_branch)
+  _status=$(git_status)
+  _remote=$(git_remote)
+  if [[ "${_branch}x" != "x" ]]; then
+    _result="$ZSH_THEME_GIT_PROMPT_PREFIX$_branch"
+    if [[ "${_status}x" != "x" ]]; then
+      _result="$_result$_status"
+    fi
+    _result="$_result$ZSH_THEME_GIT_PROMPT_SUFFIX"
+  fi
+  echo "$_result$_remote "
+}
+
+# final output
+echo -n " $(cd "$PANE_CURRENT_PATH" && git_prompt)"
