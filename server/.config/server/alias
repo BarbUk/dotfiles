@@ -56,3 +56,4 @@ ssh_default_options=(
 )
 
 alias ssh='ssh "${ssh_default_options[@]}"'
+alias custom_server_config='vim "$HOME/.config/server/custom"'

@@ -88,15 +88,18 @@ export BASH_IT_THEME='barbuk'
 
 # Load z
 _Z_OWNER="$USER"
-check_and_source "$HOME/.modules/z"
+check_and_source "$HOME/.config/modules/z/z.sh"
+check_and_source "$HOME/.config/modules/fz/fz.sh"
 # Completion
 check_and_source "$HOME/.config/completion"
 # Load Bash It
 # shellcheck source=modules/bash-it/bash_it.sh
 . "$BASH_IT/bash_it.sh"
 
-check_and_source "$HOME/.config/alias/server"
+check_and_source "$HOME/.config/server/alias"
 # systemd helpers
-check_and_source "$HOME/.config/alias/systemd_helpers"
+check_and_source "$HOME/.config/server/systemd_helpers"
 # functions
-check_and_source "$HOME/.config/alias/functions"
+check_and_source "$HOME/.config/server/functions"
+# custom server configuration
+check_and_source "$HOME/.config/server/custom"
