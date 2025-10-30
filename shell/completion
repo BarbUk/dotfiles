@@ -43,7 +43,7 @@ ssh_tools=(
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  if command -v fd >/dev/null 2>&1; then
+  if command -v fd > /dev/null 2>&1; then
     fd --hidden --max-depth 5 --follow --exclude ".git" . "$1"
   else
     echo "$1"
@@ -55,7 +55,7 @@ _fzf_compgen_path() {
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  if command -v fd >/dev/null 2>&1; then
+  if command -v fd > /dev/null 2>&1; then
     fd --type d --hidden --max-depth 3 --follow --exclude ".git" . "$1"
   else
     command find -L "$1" \
@@ -73,13 +73,13 @@ bind '"\e[0n": redraw-current-line'
 _complete() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
 
-  if [[ ${cur} == *@*  ]] ; then
+  if [[ ${cur} == *@* ]]; then
     local opts="-P ${cur/@*/}@ -- ${cur/*@/}"
   else
     local opts=" -- ${cur}"
   fi
   # shellcheck disable=SC2086
-  COMPREPLY=( $(compgen -W "$(</dev/stdin)" ${opts}) )
+  COMPREPLY=($(compgen -W "$(< /dev/stdin)" ${opts}))
   return 0
 }
 
@@ -111,7 +111,7 @@ _fzf_dsh_groups() {
 }
 
 _fzf_archlinux_installed_packages() {
-   pacman -Qq
+  pacman -Qq
 }
 
 _fzf_log() {
@@ -131,15 +131,15 @@ _fzf_complete() {
   local delete="fzf_delete $caller {}"
 
   post="${caller}_post"
-  type -t "$post" >/dev/null 2>&1 || post=cat
+  type -t "$post" > /dev/null 2>&1 || post='cat'
   fzf="fzf $fzf_default_options $options $fzf_height --preview-window right:75%:hidden --bind ?:toggle-preview"
 
-  if [[ ${current} == *@*  ]] ; then
+  if [[ ${current} == *@* ]]; then
     user_prefix="${current/@*/}@"
     current="${current/*@/}"
   fi
   selected=$(cat | $fzf --preview "$preview" --bind "alt-bspace:execute:$delete" --query "$current" | $post | tr '\n' "$separator")
-  selected=${selected%$separator} # Strip trailing space not to repeat "-o nospace"
+  selected=${selected%"$separator"} # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
   if [ -n "$selected" ]; then
@@ -153,10 +153,11 @@ __fzf_history__() {
   shopt -u nocaseglob nocasematch
   line=$(
     # shellcheck disable=SC1007
-    HISTTIMEFORMAT= history |
-    FZF_DEFAULT_OPTS="$fzf_height $fzf_default_options --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
-    command grep '^ *[0-9]') &&
-    if [[ $- =~ H ]]; then
+    HISTTIMEFORMAT= history \
+      | FZF_DEFAULT_OPTS="$fzf_height $fzf_default_options --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf \
+      | command grep '^ *[0-9]'
+  ) \
+    && if [[ $- =~ H ]]; then
       sed 's/^ *\([0-9]*\)\** .*/!\1/' <<< "$line"
     else
       sed 's/^ *\([0-9]*\)\** *//' <<< "$line"
@@ -174,7 +175,7 @@ _fzf_complete_kill() {
   printf '\e[5n'
 
   if [ -n "$selected" ]; then
-    COMPREPLY=( "$selected" )
+    COMPREPLY=("$selected")
     return 0
   fi
 }
@@ -195,7 +196,7 @@ _fzf_file_widget() {
   local selected
   selected="$(__fzf_select__ "$@")"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
-  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+  READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }
 
 __fzf_cd__() {
@@ -208,26 +209,26 @@ __fzf_cd__() {
 # v - open files in ~/.viminfo
 v() {
   local files
-  files=$(grep '^>' ~/.viminfo | cut -c3- |
-    while read -r line; do
+  files=$(grep '^>' ~/.viminfo | cut -c3- \
+    | while read -r line; do
       [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
     done | fzf-tmux --select-1 --reverse --inline-info +s \
-      --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
-      && vim "${files//\~/$HOME}"
+    --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
+    && vim "${files//\~/$HOME}"
 }
 
 fmpc() {
   local song_position
-  song_position=$(mpc -f "%position%) %artist% - %title%" playlist | \
-    fzf-tmux --query="$1" "$fzf_height" --reverse --inline-info +s --select-1 --exit-0 | \
-    sed -ne 's/^\([0-9].*\)).*/\1/p') || return 1
+  song_position=$(mpc -f "%position%) %artist% - %title%" playlist \
+    | fzf-tmux --query="$1" "$fzf_height" --reverse --inline-info +s --select-1 --exit-0 \
+    | sed -ne 's/^\([0-9].*\)).*/\1/p') || return 1
   [ -n "$song_position" ] && mpc -q play "$song_position"
 }
 
 # c - browse chrome history
 ch() {
   local cols sep google_history open
-  cols=$(( COLUMNS / 3 ))
+  cols=$((COLUMNS / 3))
   sep='{::}'
 
   if [ "$(uname)" = "Darwin" ]; then
@@ -241,32 +242,38 @@ ch() {
   # shellcheck disable=2086
   sqlite3 -separator $sep /tmp/h \
     "select substr(title, 1, $cols), url
-     from urls order by last_visit_time desc" |
-  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-  fzf $fzf_default_options $fzf_height --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
+     from urls order by last_visit_time desc" \
+    | awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' \
+    | fzf $fzf_default_options $fzf_height --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
 }
 
 # fco - checkout git branch/tag
 fco() {
   local tags branches target
   tags=$(
-    git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
+    git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}'
+  ) || return
   branches=$(
-    git branch --all | grep -v HEAD             |
-    sed "s/.* //"    | sed "s#remotes/[^/]*/##" |
-    sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
+    git branch --all | grep -v HEAD \
+      | sed "s/.* //" | sed "s#remotes/[^/]*/##" \
+      | sort -u | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}'
+  ) || return
   # shellcheck disable=2086
   target=$(
-    (echo "$tags"; echo "$branches") |
-    fzf-tmux $fzf_default_options $fzf_height -l30 -- --no-hscroll --ansi +m -d "\t" -n 2) || return
+    (
+      echo "$tags"
+      echo "$branches"
+    ) \
+      | fzf-tmux $fzf_default_options $fzf_height -l30 -- --no-hscroll --ansi +m -d "\t" -n 2
+  ) || return
   git checkout "$(echo "$target" | awk '{print $2}')"
 }
 
 # fshow - git commit browser
 fshow() {
   git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+    --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" \
+    | fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
       --bind "ctrl-m:execute:
                 (grep -o '[a-f0-9]\{7\}' | head -1 |
                 xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
@@ -278,9 +285,9 @@ FZF-EOF"
 # example usage: git rebase -i `fcs`
 fcs() {
   local commits commit
-  commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) &&
-  commit=$(echo "$commits" | fzf --tac +s +m -e --ansi --reverse) &&
-  echo -n "$(echo "$commit" | sed "s/ .*//")"
+  commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) \
+    && commit=$(echo "$commits" | fzf --tac +s +m -e --ansi --reverse) \
+    && echo -n "$(echo "$commit" | sed "s/ .*//")"
 }
 
 _complete_ssh() {
@@ -293,52 +300,52 @@ _complete_net() {
 
 _fzf_complete_ssh() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
-  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
     -i)
       _fzf_complete '--no-multi' ' ' '' "$@" < <(_fzf_privkey)
       return 0
-  ;;
+      ;;
   esac
   _fzf_complete '--no-multi' ' ' '' "$@" < <(give_me_hostname ssh)
 }
 
 _fzf_complete_ansible() {
-  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
     -i)
       _fzf_complete '--multi' ',' "$@" < <(give_me_hostname ssh)
       return 0
-    ;;
+      ;;
     -l)
       _fzf_complete '--multi' ',' "$@" < <(_fzf_ansible_groups)
       return 0
-    ;;
+      ;;
     -u)
       return 0
-    ;;
+      ;;
   esac
 
   _fzf_complete '--multi' ' ' "$@" < <(_fzf_playbook)
 }
 
 _fzf_complete_dsh() {
-  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
     -g)
       _fzf_complete '--multi' ',' "$@" < <(_fzf_dsh_groups)
       return 0
-    ;;
+      ;;
   esac
 }
 
 _fzf_complete_pacman() {
-  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
-    -Rcs|-Qo|-Qi|-Ql|-Sii)
+    -Rcs | -Qo | -Qi | -Ql | -Sii)
       _fzf_complete '--multi' ' ' "$@" < <(_fzf_archlinux_installed_packages)
       return 0
-  ;;
+      ;;
   esac
 }
 
@@ -347,12 +354,12 @@ _fzf_complete_archlinux_installed_packages() {
 }
 
 _fzf_complete_pssh() {
-  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
-    --hosts|-h)
+    --hosts | -h)
       _fzf_complete '--no-multi' ' ' "$@" < <(_fzf_ansible_groups)
       return 0
-  ;;
+      ;;
   esac
 }
 
