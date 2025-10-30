@@ -369,7 +369,70 @@ _fzf_complete_ips() {
   _fzf_complete '--no-multi' ' ' "$@" < <(give_me_hostname ips)
 }
 
-if hash fzf 2>/dev/null; then
+_fzf_complete_docker() {
+  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local FZF_DOCKER_PS_FORMAT="table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}"
+  local FZF_DOCKER_PS_START_FORMAT="table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}"
+
+  # Get all Docker commands
+  #
+  # Cut below "Management Commands:", then exclude "Management Commands:",
+  # "Commands:" and the last line of the help. Then keep the first column and
+  # delete empty lines
+  DOCKER_COMMANDS=$(
+    command docker --help 2>&1 \
+      | sed -n -e '/Management Commands:/,$p' \
+      | grep -v "Management Commands:" \
+      | grep -v "Commands:" \
+      | grep -v 'COMMAND --help' \
+      | grep .
+  )
+
+  case $prev in
+    'stop' | 'exec' | 'kill' | 'restart')
+      _fzf_complete "--multi --header-lines=1 " ' ' "$@" < <(
+        docker ps --format "${FZF_DOCKER_PS_FORMAT}"
+      )
+      ;;
+    'tag' | '-f' | 'run' | 'push')
+      _fzf_complete "--multi --header-lines=1" ' ' "$@" < <(
+        command docker images --format "table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedSince}}"
+      )
+      ;;
+    'rmi')
+      _fzf_complete "--multi --header-lines=1" ' ' "$@" < <(
+        docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.Size}}"
+      )
+      ;;
+    'logs')
+      _fzf_complete "--multi --header-lines=1 --header 'Enter CTRL-O to open log in editor | CTRL-/ to change height\n\n' --bind 'ctrl-/:change-preview-window(80%,border-bottom|)' --bind \"ctrl-o:execute:docker logs {1} | sed 's/\x1b\[[0-9;]*m//g' | cat | ${EDITOR:-vim} -\" --preview-window up:follow --preview 'docker logs --follow --tail=100 {1}' " ' ' "$@" < <(
+        docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
+      )
+      ;;
+    'rm')
+      _fzf_complete "--multi --header-lines=1 " ' ' "$@" < <(
+        docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
+      )
+      ;;
+    'start')
+      _fzf_complete "--multi --header-lines=1 " ' ' "$@" < <(
+        docker ps -a --format "${FZF_DOCKER_PS_START_FORMAT}"
+      )
+      ;;
+    'docker')
+      _fzf_complete "--reverse -n 1 --height=80%" ' ' "$@" < <(
+        echo "$DOCKER_COMMANDS"
+      )
+      ;;
+  esac
+}
+
+_fzf_complete_docker_post() {
+  # Post-process the fzf output to keep only the command name and not the explanation with it
+  awk '{print $1}'
+}
+
+if hash fzf 2> /dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_net "${net_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh "${ssh_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
@@ -378,6 +441,7 @@ if hash fzf 2>/dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_archlinux_installed_packages pactree
   complete -o default -o bashdefault -o nospace -F _fzf_complete_dsh dsh
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pssh pssh psshscp
+  complete -o default -o bashdefault -F _fzf_complete_docker docker
 else
   complete -o default -o bashdefault -o nospace -F _complete_net "${net_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _complete_ssh "${ssh_tools[@]}"
