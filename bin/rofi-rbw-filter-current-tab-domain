@@ -32,7 +32,7 @@ main() {
     sleep $focus_time
     xdotool key ctrl+l sleep "$focus_time"
     xdotool key ctrl+c
-    xdotool key Escape sleep "$focus_time"
+    xdotool key Escape Escape
     current_clipboard="$(xsel --clipboard)"
 
     if [[ $current_clipboard == https://* ]]; then
