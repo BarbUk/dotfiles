@@ -22,9 +22,9 @@ set -o errexit -o pipefail -o nounset
 readonly focus_time=0.2
 # Detect if focused app is a browser
 is_browser() {
-    name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
-    [[ "$name" =~ chrome|firefox ]] && return 0
-    return 1
+  name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
+  [[ "$name" =~ chrome|firefox ]] && return 0
+  return 1
 }
 
 main() {
