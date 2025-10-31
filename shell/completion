@@ -555,7 +555,7 @@ _fzf_complete_docker() {
   )
 
   case $prev in
-    'stop' | 'exec' | 'kill' | 'restart')
+    'stop' | 'exec' | 'kill' | 'restart' | '-it')
       _fzf_complete_new --multi --header-lines=1  -- "$@" < <(
         docker ps --format "${FZF_DOCKER_PS_FORMAT}"
       )
