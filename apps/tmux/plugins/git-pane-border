@@ -7,6 +7,9 @@ red='#d70085'
 yellow='#ff8600'
 green='#4db45c'
 
+# Default
+ONLY_PANE_ACTIVE=1
+
 readonly inactive_border active_border red yellow green
 
 # read args
@@ -14,19 +17,23 @@ for i in "$@"; do
   case $i in
   --pane-current-path=*)
     PANE_CURRENT_PATH="${i#*=}"
-    shift # past argument=value
     ;;
   --pane-active=*)
     PANE_ACTIVE="${i#*=}"
-    shift # past argument=value
+    ;;
+  --display-only-pane-active=*)
+    ONLY_PANE_ACTIVE="${i#*=}"
     ;;
   *) # unknown option
     ;;
   esac
+  shift
 done
 
-# Do nothing if we are not in a git dir
-if ! ([ -d "$PANE_CURRENT_PATH" ] && git -C "$PANE_CURRENT_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1) || ((PANE_ACTIVE == 0)); then
+# Do nothing if we are not in a git dir, or if we don't want to display on non active pane
+if ! ([ -d "$PANE_CURRENT_PATH" ] &&
+  git -C "$PANE_CURRENT_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1) ||
+  ( ((PANE_ACTIVE == 0)) && ((ONLY_PANE_ACTIVE == 1))); then
   exit
 fi
 
@@ -143,7 +150,7 @@ git_prompt() {
     if [[ -n ${_remote+x} ]]; then
       _result="$_result$THEME_GIT_PROMPT_REMOTE$_remote"
     fi
-    _result="$_result$THEME_GIT_PROMPT_SUFFIX"
+    _result="$_result$THEME_GIT_PROMPT_SUFFIX "
   fi
   echo "$_result"
 }
