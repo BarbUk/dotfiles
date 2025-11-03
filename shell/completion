@@ -38,6 +38,12 @@ ssh_tools=(
   mysql_get_root_password
 )
 
+process_tools=(
+  pgrep
+  pkill
+  killall
+)
+
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
@@ -207,7 +213,7 @@ __fzf_orig_completion_instantiate() {
 }
 
 __fzf_defaults() {
-  printf '%s\n' "--height ${FZF_TMUX_HEIGHT:-40%} --min-height 20+ --bind=ctrl-z:ignore $1"
+  printf '%s\n' "$fzf_height $fzf_default_options --min-height 20+ --bind=ctrl-z:ignore $1"
   command cat "${FZF_DEFAULT_OPTS_FILE-}" 2> /dev/null
   printf '%s\n' "${FZF_DEFAULT_OPTS-} $2"
 }
@@ -241,37 +247,38 @@ _fzf_complete_new() {
     rest=("$@")
   fi
 
-  local cur selected cmd post caller user_prefix=''
+  local current selected cmd post caller user_prefix=''
   local preview="fzf_preview {}"
   caller=$(caller 0 | awk '{print $2}')
   local delete="fzf_delete $caller {}"
   post="${caller}_post"
   type -t "$post" > /dev/null 2>&1 || post='command cat'
 
-  if [ "$default_preview" = true ] ; then
+  if [ "$default_preview" = true ]; then
     args+=(--preview "$preview" --preview-window right:75%:hidden --bind ?:toggle-preview)
   fi
   args+=(--bind "alt-bspace:execute:$delete")
 
   cmd="${COMP_WORDS[0]}"
-  cur="${COMP_WORDS[COMP_CWORD]}"
+  current="${COMP_WORDS[COMP_CWORD]}"
 
-  if [[ ${cur} == *@* ]]; then
-    user_prefix="${cur/@*/}@"
-    cur="${cur/*@/}"
+  if [[ ${current} == *@* ]]; then
+    user_prefix="${current/@*/}@"
+    current="${current/*@/}"
   fi
 
   selected=$(
     FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse" "${FZF_COMPLETION_OPTS-} $str_arg") \
     FZF_DEFAULT_OPTS_FILE='' \
-      __fzf_comprun "${rest[0]}" "${args[@]}" -q "$cur" | eval "$post" | command tr '\n' "$output_separator"
+      __fzf_comprun "${rest[0]}" "${args[@]}" --query "$current" | eval "$post" | command tr '\n' "$output_separator"
   )
+
   selected=${selected%"$output_separator"} # Strip trailing space not to repeat "-o nospace"
+
   if [[ -n $selected ]]; then
     COMPREPLY=("${user_prefix}${selected}")
-  else
-    COMPREPLY=("$cur")
   fi
+
   bind '"\e[0n": redraw-current-line' 2> /dev/null
   printf '\e[5n'
   return 0
@@ -294,9 +301,9 @@ _fzf_handle_dynamic_completion() {
       __fzf_orig_completion_get_orig_func "$cmd" || ret=1
 
       # Update orig_complete by _fzf_orig_completion entry
-      [[ $orig_complete =~ ' -F '(_fzf_[^ ]+)' ' ]] &&
-        __fzf_orig_completion_instantiate "$cmd" "${BASH_REMATCH[1]}" &&
-        orig_complete=$REPLY
+      [[ $orig_complete =~ ' -F '(_fzf_[^ ]+)' ' ]] \
+        && __fzf_orig_completion_instantiate "$cmd" "${BASH_REMATCH[1]}" \
+        && orig_complete=$REPLY
 
       if [[ ${__fzf_nospace_commands-} == *" $orig_cmd "* ]]; then
         eval "${orig_complete/ -F / -o nospace -F }"
@@ -325,20 +332,43 @@ __fzf_history__() {
     fi
 }
 
+process_list() {
+  if [ "$UID" != "0" ]; then
+    command ps -u $UID -awwo user,pid,comm:30,command
+  else
+    command ps --ppid 2 -p 2 --deselect awwo user,pid,comm:30,command
+  fi
+}
+
 _fzf_complete_kill() {
   [ -n "${COMP_WORDS[COMP_CWORD]}" ] && return 1
+  _fzf_complete_new --multi --header-lines=1 --reverse --preview 'echo {}' --preview-window down:3:wrap -- "$@" < <(process_list)
+}
 
-  local selected fzf
-  fzf="fzf"
-  selected=$(ps -ef | sed 1d | FZF_DEFAULT_OPTS="$fzf_height \
-      --reverse $FZF_DEFAULT_OPTS --preview 'echo {}' --preview-window down:3:wrap \
-      $FZF_COMPLETION_OPTS" $fzf --multi | awk '{print $2}' | tr '\n' ' ')
-  printf '\e[5n'
+_fzf_complete_kill_post() {
+  awk '{print $2}'
+}
 
-  if [ -n "$selected" ]; then
-    COMPREPLY=("$selected")
-    return 0
-  fi
+_all_users() {
+  getent passwd | awk -F: '{print $6,$3,$1}'
+}
+
+_fzf_complete_process() {
+  [ -n "${COMP_WORDS[COMP_CWORD]}" ] && return 1
+  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+
+  case $prev in
+    --user | -u)
+      _fzf_complete_new --no-multi -- "$@" < <(_all_users)
+      return 0
+      ;;
+  esac
+
+  _fzf_complete_new --multi --header-lines=1 --reverse --preview 'echo {}' --preview-window down:3:wrap -- "$@" < <(process_list)
+}
+
+_fzf_complete_process_post() {
+  awk '{print $3}'
 }
 
 __fzf_select__() {
@@ -460,7 +490,6 @@ _complete_net() {
 }
 
 _fzf_complete_ssh() {
-  local cur="${COMP_WORDS[COMP_CWORD]}"
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
     -i)
@@ -504,14 +533,14 @@ _fzf_complete_pacman() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
     -Rcs | -Qo | -Qi | -Ql | -Sii)
-      _fzf_complete_new --multi -- "$@" < <(_fzf_archlinux_installed_packages)
+      _fzf_complete_new --multi --preview 'yay --color always -Qli {1}' -- "$@" < <(_fzf_archlinux_installed_packages)
       return 0
       ;;
   esac
 }
 
 _fzf_complete_archlinux_installed_packages() {
-  _fzf_complete_new --multi -- "$@" < <(_fzf_archlinux_installed_packages)
+  _fzf_complete_new --multi --preview 'yay --color always -Qli {1}' -- "$@" < <(_fzf_archlinux_installed_packages)
 }
 
 _fzf_complete_pssh() {
@@ -556,7 +585,7 @@ _fzf_complete_docker() {
 
   case $prev in
     'stop' | 'exec' | 'kill' | 'restart' | '-it')
-      _fzf_complete_new --multi --header-lines=1  -- "$@" < <(
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
         docker ps --format "${FZF_DOCKER_PS_FORMAT}"
       )
       ;;
@@ -571,17 +600,17 @@ _fzf_complete_docker() {
       )
       ;;
     'logs')
-      _fzf_complete_new --multi --header-lines=1 --header "Enter CTRL-O to open log in editor | CTRL-/ to change height" --bind 'ctrl-/:change-preview-window(80%,border-bottom|)' --bind "ctrl-o:execute:docker logs {1} | sed 's/\x1b\[[0-9;]*m//g' | cat | ${EDITOR:-vim} -" --preview-window up:follow --preview 'docker logs --follow --tail=100 {1}'  -- "$@" < <(
+      _fzf_complete_new --multi --header-lines=1 --header "Enter CTRL-O to open log in editor | CTRL-/ to change height" --bind 'ctrl-/:change-preview-window(80%,border-bottom|)' --bind "ctrl-o:execute:docker logs {1} | sed 's/\x1b\[[0-9;]*m//g' | cat | ${EDITOR:-vim} -" --preview-window up:follow --preview 'docker logs --follow --tail=100 {1}' -- "$@" < <(
         docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
       )
       ;;
     'rm')
-      _fzf_complete_new --multi --header-lines=1  -- "$@" < <(
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
         docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
       )
       ;;
     'start')
-      _fzf_complete_new --multi --header-lines=1  -- "$@" < <(
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
         docker ps -a --format "${FZF_DOCKER_PS_START_FORMAT}"
       )
       ;;
@@ -598,7 +627,17 @@ _fzf_complete_docker_post() {
   awk '{print $1}'
 }
 
-if hash fzf 2> /dev/null; then
+_fzf_complete_man() {
+  _fzf_complete_new --no-multi --header-lines=1 --prompt='man> '  --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r batman --color always' -- "$@" < <(
+    man -k .
+  )
+}
+
+_fzf_complete_man_post() {
+  tr -d '()' | awk '{print $2, $1}'
+}
+
+if command -v fzf > /dev/null 2>&1; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_net "${net_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh "${ssh_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
@@ -607,14 +646,14 @@ if hash fzf 2> /dev/null; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_archlinux_installed_packages pactree
   complete -o default -o bashdefault -o nospace -F _fzf_complete_dsh dsh
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pssh pssh psshscp
-  complete -o default -o bashdefault -F _fzf_complete_docker docker
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_kill  kill
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_process "${process_tools[@]}"
+  complete -o default -o bashdefault            -F _fzf_complete_docker docker
+  complete -o default -o bashdefault            -F _fzf_complete_man man
 else
   complete -o default -o bashdefault -o nospace -F _complete_net "${net_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _complete_ssh "${ssh_tools[@]}"
 fi
-
-# Kill completion
-complete -F _fzf_complete_kill -o nospace -o default -o bashdefault kill
 
 # Required to refresh the prompt after fzf
 bind '"\er": redraw-current-line'
