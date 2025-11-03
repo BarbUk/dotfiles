@@ -49,7 +49,7 @@ globalkeys = gears.table.join(
    -- Take a video
    awful.key({ altkey }, "Print", function()
       awful.util.spawn_with_shell([[
-      giph --select --delay 3 --timer 10 --notify --color 0.3,0.4,0.6,0.3 --bordersize 3 --highlight ~/screenshots/$(date +%F-%T).mp4
+         giph --quiet --select --delay 1 --timer 5 --notify --color 0.3,0.4,0.6,0.3 --bordersize 3 --highlight ~/Downloads/$(date +%F-%T).mp4
     ]])
    end, { description = "take a screenshot and save it", group = "awesome" }),
 
