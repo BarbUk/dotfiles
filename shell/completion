@@ -77,14 +77,14 @@ bind '"\e[0n": redraw-current-line'
 #[[ -f /usr/share/fzf/completion.bash ]] && source /usr/share/fzf/completion.bash
 
 _complete() {
-  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local current="${COMP_WORDS[COMP_CWORD]}"
 
-  if [[ ${cur} == *@* ]]; then
-    local opts="-P ${cur/@*/}@ -- ${cur/*@/}"
+  if [[ ${current} == *@* ]]; then
+    local opts="-P ${current/@*/}@ -- ${current/*@/}"
   else
-    local opts=" -- ${cur}"
+    local opts=" -- ${current}"
   fi
-  # shellcheck disable=SC2086
+  # shellcheck disable=SC2086,2207
   COMPREPLY=($(compgen -W "$(< /dev/stdin)" ${opts}))
   return 0
 }
