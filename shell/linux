@@ -5,6 +5,9 @@ if command -v vivid >/dev/null 2>&1; then
 else
     eval "$(dircolors -b "$HOME"/.dir_colors)"
 fi
+if command -v batman >/dev/null 2>&1; then
+    eval "$(batman --export-env)"
+fi
 # rbenv gem
 if [ -d "$HOME/.rbenv/shims" ]; then
     export PATH="$HOME/.rbenv/shims:${PATH}"
