@@ -30,74 +30,74 @@ readonly color_dark="#2d2d2d"
 readonly conf_dir="$HOME/.dotfiles/apps"
 
 change_theme() {
-    local theme_file="$HOME/.config/themelight"
-    local termite_conf="$HOME/.config/termite/config"
-    local sublime_conf="$HOME/.config/sublime-text-3/Packages/User/Preferences.sublime-settings"
-    local plaintasks_conf="$HOME/.config/sublime-text-3/Packages/User/PlainTasks.sublime-settings"
-    local gtk_conf="$HOME/.config/lxsession/LXDE/desktop.conf"
-    local qt_conf="$HOME/.config/qt5ct/qt5ct.conf"
-    local dmenu_conf="$HOME/.dmenurc"
-    local vim_conf="$HOME/.vim/vimrc.background"
-    local rofi_conf="$HOME/.config/rofi/config.rasi"
-    local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
-    local lazygit_conf="$HOME/.config/jesseduffield/lazygit/config.yml"
+  local theme_file="$HOME/.config/themelight"
+  local termite_conf="$HOME/.config/termite/config"
+  local sublime_conf="$HOME/.config/sublime-text-3/Packages/User/Preferences.sublime-settings"
+  local plaintasks_conf="$HOME/.config/sublime-text-3/Packages/User/PlainTasks.sublime-settings"
+  local gtk_conf="$HOME/.config/lxsession/LXDE/desktop.conf"
+  local qt_conf="$HOME/.config/qt5ct/qt5ct.conf"
+  local dmenu_conf="$HOME/.dmenurc"
+  local vim_conf="$HOME/.vim/vimrc.background"
+  local rofi_conf="$HOME/.config/rofi/config.rasi"
+  local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
+  local lazygit_conf="$HOME/.config/jesseduffield/lazygit/config.yml"
 
-    if [ -e "$theme_file" ]; then
-        cat "$conf_dir/termite/termite.conf" "$conf_dir/termite/termite.dark" > "$termite_conf"
-        ln -sf "$conf_dir/vimrc.dark" "$vim_conf"
-        cat "$conf_dir/alacritty/alacritty.yml" "$conf_dir/alacritty/alacritty-dark.yml" > "$alacritty_conf"
-        sed -i -e "s/$sublime_colorscheme_light/$sublime_colorscheme_dark/g" "$sublime_conf"
-        sed -i -e "s/$sublime_theme_light.sublime-theme/$sublime_theme_dark.sublime-theme/g" "$sublime_conf"
-        sed -i -e "s/$plaintasks_colorscheme_light/$plaintasks_colorscheme_dark/g" "$plaintasks_conf"
-        if [ -e "$gtk_conf" ]; then
-            sed -i -e "s/ThemeName=$theme_light/ThemeName=$theme_dark/g" "$gtk_conf"
-            sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
-        fi
-        if [ -e "$qt_conf" ]; then
-            sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
-        fi
-        if [ -e "$dmenu_conf" ]; then
-            sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
-        fi
-        sed -i -e "s/${theme_light}.rasi/nord.rasi/" "$rofi_conf"
-        if [ -e "$lazygit_conf" ]; then
-            sed -i -e 's/lighttheme: true/lighttheme: false/' "$lazygit_conf"
-        fi
-        gsettings set org.gnome.meld style-scheme meld-dark
-        spicetify config color_scheme nord-dark
-
-        rm -f "$theme_file"
-    else
-        cat "$conf_dir/termite/termite.conf" "$conf_dir/termite/termite.light" > "$termite_conf"
-        ln -sf "$conf_dir/vimrc.light" "$vim_conf"
-        cat "$conf_dir/alacritty/alacritty.yml" "$conf_dir/alacritty/alacritty-light.yml" > "$alacritty_conf"
-        sed -i -e "s/$sublime_colorscheme_dark/$sublime_colorscheme_light/g" "$sublime_conf"
-        sed -i -e "s/$sublime_theme_dark.sublime-theme/$sublime_theme_light.sublime-theme/g" "$sublime_conf"
-        sed -i -e "s/$plaintasks_colorscheme_dark/$plaintasks_colorscheme_light/g" "$plaintasks_conf"
-        if [ -e "$gtk_conf" ]; then
-            sed -i -e "s/ThemeName=$theme_dark/ThemeName=$theme_light/g" "$gtk_conf"
-            sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
-        fi
-        if [ -e "$qt_conf" ]; then
-            sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
-        fi
-        if [ -e "$dmenu_conf" ]; then
-            sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
-        fi
-        sed -i -e "s/nord.rasi/${theme_light}.rasi/" "$rofi_conf"
-        if [ -e "$lazygit_conf" ]; then
-            sed -i -e 's/lighttheme: false/lighttheme: true/' "$lazygit_conf"
-        fi
-        gsettings set org.gnome.meld style-scheme meld-base
-        spicetify config color_scheme nord-light
-
-        touch "$theme_file"
+  if [ -e "$theme_file" ]; then
+    cat "$conf_dir/termite/termite.conf" "$conf_dir/termite/termite.dark" >"$termite_conf"
+    ln -sf "$conf_dir/vimrc.dark" "$vim_conf"
+    cat "$conf_dir/alacritty/alacritty.yml" "$conf_dir/alacritty/alacritty-dark.yml" >"$alacritty_conf"
+    sed -i -e "s/$sublime_colorscheme_light/$sublime_colorscheme_dark/g" "$sublime_conf"
+    sed -i -e "s/$sublime_theme_light.sublime-theme/$sublime_theme_dark.sublime-theme/g" "$sublime_conf"
+    sed -i -e "s/$plaintasks_colorscheme_light/$plaintasks_colorscheme_dark/g" "$plaintasks_conf"
+    if [ -e "$gtk_conf" ]; then
+      sed -i -e "s/ThemeName=$theme_light/ThemeName=$theme_dark/g" "$gtk_conf"
+      sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
     fi
+    if [ -e "$qt_conf" ]; then
+      sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
+    fi
+    if [ -e "$dmenu_conf" ]; then
+      sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
+    fi
+    sed -i -e "s/${theme_light}.rasi/nord.rasi/" "$rofi_conf"
+    if [ -e "$lazygit_conf" ]; then
+      sed -i -e 's/lighttheme: true/lighttheme: false/' "$lazygit_conf"
+    fi
+    gsettings set org.gnome.meld style-scheme meld-dark
+    spicetify config color_scheme nord-dark
+
+    rm -f "$theme_file"
+  else
+    cat "$conf_dir/termite/termite.conf" "$conf_dir/termite/termite.light" >"$termite_conf"
+    ln -sf "$conf_dir/vimrc.light" "$vim_conf"
+    cat "$conf_dir/alacritty/alacritty.yml" "$conf_dir/alacritty/alacritty-light.yml" >"$alacritty_conf"
+    sed -i -e "s/$sublime_colorscheme_dark/$sublime_colorscheme_light/g" "$sublime_conf"
+    sed -i -e "s/$sublime_theme_dark.sublime-theme/$sublime_theme_light.sublime-theme/g" "$sublime_conf"
+    sed -i -e "s/$plaintasks_colorscheme_dark/$plaintasks_colorscheme_light/g" "$plaintasks_conf"
+    if [ -e "$gtk_conf" ]; then
+      sed -i -e "s/ThemeName=$theme_dark/ThemeName=$theme_light/g" "$gtk_conf"
+      sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
+    fi
+    if [ -e "$qt_conf" ]; then
+      sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
+    fi
+    if [ -e "$dmenu_conf" ]; then
+      sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
+    fi
+    sed -i -e "s/nord.rasi/${theme_light}.rasi/" "$rofi_conf"
+    if [ -e "$lazygit_conf" ]; then
+      sed -i -e 's/lighttheme: false/lighttheme: true/' "$lazygit_conf"
+    fi
+    gsettings set org.gnome.meld style-scheme meld-base
+    spicetify config color_scheme nord-light
+
+    touch "$theme_file"
+  fi
 }
 
 notify_apps() {
-    killall -USR1 termite || true
-    spicetify update
+  killall -USR1 termite || true
+  spicetify update
 }
 
 change_theme
