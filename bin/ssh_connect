@@ -68,8 +68,11 @@ fi
 if test \$SSH_AUTH_SOCK; then
   ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
 fi
-
-export tmux_connect_hostname=$host
+if locale -a | grep -q ^en_US.UTF-8; then
+  export LC_ALL=en_US.UTF-8
+else
+  export LC_ALL=C.UTF-8
+fi
 exec tmux new-session -A -s $tmux_session_name
 "
 exit
