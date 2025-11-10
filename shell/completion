@@ -341,7 +341,10 @@ process_list() {
 }
 
 _fzf_complete_kill() {
-  [ -n "${COMP_WORDS[COMP_CWORD]}" ] && return 1
+  if [ -n "${COMP_WORDS[COMP_CWORD]}" ] && [[ "${COMP_WORDS[COMP_CWORD]}" == -* ]]; then
+    return 1
+  fi
+
   _fzf_complete_new --multi --header-lines=1 --reverse --preview 'echo {}' --preview-window down:3:wrap -- "$@" < <(process_list)
 }
 
@@ -354,7 +357,10 @@ _all_users() {
 }
 
 _fzf_complete_process() {
-  [ -n "${COMP_WORDS[COMP_CWORD]}" ] && return 1
+  if [ -n "${COMP_WORDS[COMP_CWORD]}" ] && [[ "${COMP_WORDS[COMP_CWORD]}" == -* ]]; then
+    return 1
+  fi
+
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
 
   case $prev in
@@ -489,11 +495,15 @@ _complete_net() {
   _complete "$@" < <(give_me_hostname)
 }
 
+_fzf_complete_ssh_keys() {
+  _fzf_complete_new --no-multi -- "$@" < <(_fzf_privkey)
+}
+
 _fzf_complete_ssh() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
     -i)
-      _fzf_complete_new --no-multi -- "$@" < <(_fzf_privkey)
+      _fzf_complete_ssh_keys "$@"
       return 0
       ;;
   esac
@@ -640,6 +650,7 @@ _fzf_complete_man_post() {
 if command -v fzf > /dev/null 2>&1; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_net "${net_tools[@]}"
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh "${ssh_tools[@]}"
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_ssh_keys ssh-add
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ips whois
   complete -o default -o bashdefault -o nospace -F _fzf_complete_ansible ansible-playbook ap
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pacman yaourt pacman yay
