@@ -46,7 +46,7 @@ alias gss='git status -s'
 
 # Ssh
 ssh_default_options=(
-  -o PreferredAuthentications=publickey
+  -o PreferredAuthentications=publickey,keyboard-interactive
   -o StrictHostKeyChecking=accept-new
   -o SetEnv=\'TERM=xterm-256color\'
   -o Compression=no
