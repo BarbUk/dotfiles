@@ -52,7 +52,7 @@ local mpris = mpris_info({
    cmd = "mprisctl",
    cover_size = 80,
    notification_preset = {
-      font = "PragmataPro Nerd Font " .. dpi(12),
+      font = "PragmataPro " .. dpi(12),
       fg = beautiful.notification_fg,
       bg = beautiful.notification_bg,
    },

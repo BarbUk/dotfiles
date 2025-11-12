@@ -38,7 +38,7 @@ awful.screen.set_auto_dpi_enabled(true)
 theme.dir = home .. "/.config/awesome/themes/barbuk"
 theme.wallpaper = theme.dir .. "/archlinux.png"
 
-theme.font = "PragmataPro Nerd Font " .. dpi(8)
+theme.font = "PragmataPro " .. dpi(8)
 
 theme.fg_normal = theme.foreground
 theme.fg_focus = theme.focus
@@ -70,7 +70,7 @@ theme.notification_fg = theme.foreground
 theme.notification_crit_bg = theme.bg_urgent
 theme.notification_crit_fg = theme.fg_urgent
 theme.notification_margin = dpi(12)
-theme.notification_font = "PragmataPro Nerd Font " .. dpi(11)
+theme.notification_font = "PragmataPro " .. dpi(11)
 theme.notification_padding = theme.screen_margin * 2
 theme.notification_spacing = theme.screen_margin * 2
 theme.notification_shape = helpers.rrect(theme.notification_border_radius)
@@ -103,8 +103,8 @@ theme.layout_txt_centerfair = "[centerfair]"
 theme.taglist_squares_sel = gears.surface.load_from_shape(dpi(3), dpi(3), gears.shape.rectangle, theme.fg_focus)
 theme.taglist_squares_unsel = gears.surface.load_from_shape(dpi(3), dpi(3), gears.shape.rectangle, theme.focus)
 
-theme.hotkeys_font = "PragmataPro Nerd Font Bold " .. dpi(11)
-theme.hotkeys_description_font = "PragmataPro Nerd Font " .. dpi(9)
+theme.hotkeys_font = "PragmataPro Bold " .. dpi(11)
+theme.hotkeys_description_font = "PragmataPro " .. dpi(9)
 -- Use pretty Unicode characters to represent special keys in hotkey hinter
 theme.hotkeys_popup_labels = {
    Mod4 = " ⌥ ",
