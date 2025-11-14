@@ -1,0 +1,1001 @@
+{
+  "customKeycodes": [
+    {
+      "name": "2.4G",
+      "shortName": "MD_24G",
+      "title": "Set to 2.4G working mode"
+    },
+    {
+      "name": "BLE1",
+      "shortName": "MD_BLE1",
+      "title": "Set to Bluetooth Channel 1 working mode"
+    },
+    {
+      "name": "BLE2",
+      "shortName": "MD_BLE2",
+      "title": "Set to Bluetooth Channel 2 working mode"
+    },
+    {
+      "name": "BLE3",
+      "shortName": "MD_BLE3",
+      "title": "Set to Bluetooth Channel 3 working mode"
+    },
+    {
+      "name": "USB",
+      "shortName": "MD_USB",
+      "title": "Set to USB working mode"
+    },
+    {
+      "name": "BAT",
+      "shortName": "QK_BAT",
+      "title": "Querying Battery Status"
+    },
+    {
+      "name": "WLO",
+      "shortName": "QK_WLO",
+      "title": "Lock WIN"
+    },
+    {
+      "name": "SIX_N",
+      "shortName": "SIX_N",
+      "title": "Full-key six-key switch"
+    },
+    {
+      "name": "FN_CTRL",
+      "shortName": "FN_CTRL",
+      "title": "Switch multimedia function keys"
+    },
+    {
+      "name": "TEST",
+      "shortName": "TEST",
+      "title": "Test Keyboard Colour"
+    },
+    {
+      "name": "KbPrSlp",
+      "shortName": "KbPrSlp",
+      "title": "Keyboard primary sleep"
+    },
+    {
+      "name": "KbdSecS",
+      "shortName": "KbdSecS",
+      "title": "Keyboard secondary sleep"
+    },
+    {
+      "name": "QK_DEB",
+      "shortName": "QK_DEB",
+      "title": "Number of times that the key shakes off"
+    },
+    {
+      "name": "RTOG",
+      "shortName": "RGB_RTOG",
+      "title": "Toggle led lighting on or off"
+    },
+    {
+      "name": "LG_TOG",
+      "shortName": "LG_TOG",
+      "title": "Toggle logo lighting on or off"
+    },
+    {
+      "name": "LG_MO",
+      "shortName": "LG_MOD",
+      "title": "Cycle through modes"
+    },
+    {
+      "name": "LG_RM",
+      "shortName": "LG_RMOD",
+      "title": "Cycle through modes in reverse"
+    },
+    {
+      "name": "LG_HUI",
+      "shortName": "LG_HUI",
+      "title": "logo Increase hue"
+    },
+    {
+      "name": "LG_HUD",
+      "shortName": "LG_HUD",
+      "title": "logo Decrease hue"
+    },
+    {
+      "name": "LG_SAI",
+      "shortName": "LG_SAI",
+      "title": "logo Increase saturation"
+    },
+    {
+      "name": "LG_SAD",
+      "shortName": "LG_SAD",
+      "title": "logo Decrease saturation"
+    },
+    {
+      "name": "LG_VAI",
+      "shortName": "LG_VAI",
+      "title": "logo Increase value (brightness)"
+    },
+    {
+      "name": "LG_VAD",
+      "shortName": "LG_VAD",
+      "title": "logo Decrease value (brightness)"
+    },
+    {
+      "name": "LG_SPI",
+      "shortName": "LG_SPI",
+      "title": "logo Increase effect speed"
+    },
+    {
+      "name": "LG_SPD",
+      "shortName": "LG_SPD",
+      "title": "logo Decrease effect speed"
+    }
+  ],
+  "keycodes": [
+    "qmk_lighting"
+  ],
+  "layouts": {
+    "keymap": [
+      [
+        {
+          "c": "#777777"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "0,0",
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,1",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,2",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,3",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,4",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,5",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,6",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,7",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,8",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,9",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,10",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,11",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,12",
+        {
+          "h": 1.0,
+          "w": 2.0,
+          "x": 0.0
+        },
+        "1,13",
+        {
+          "c": "#777777",
+          "fa": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "1,14\n\n\n\n\n\n\n\n\n e0 "
+      ],
+      [
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.5,
+          "x": 0.0
+        },
+        "2,0",
+        {
+          "c": "#cccccc"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,1",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,2",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,3",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,4",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,5",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,6",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,7",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,8",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,9",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,10",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,11",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "2,12",
+        {
+          "h": 1.0,
+          "w": 1.5,
+          "x": 0.0
+        },
+        "2,13\n\n\n0,0",
+        {
+          "c": "#777777"
+        },
+        {
+          "h": 2.0,
+          "h2": 1.0,
+          "w": 1.25,
+          "w2": 1.5,
+          "x": 0.0,
+          "x2": 0.0
+        },
+        "4,12\n\n\n0,1",
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": -1.25
+        },
+        "3,14"
+      ],
+      [
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.75,
+          "x": 0.0
+        },
+        "3,0",
+        {
+          "c": "#cccccc"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,1",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,2",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,3",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,4",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,5",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,6",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,7",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,8",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,9",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,10",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "3,11",
+        {
+          "c": "#777777"
+        },
+        {
+          "h": 1.0,
+          "w": 2.25,
+          "x": 0.0
+        },
+        "3,13\n\n\n0,0",
+        {
+          "c": "#cccccc"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": -0.75
+        },
+        "3,12\n\n\n0,1",
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": -0.25
+        },
+        "3,15"
+      ],
+      [
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 2.25,
+          "x": 0.0
+        },
+        "4,0\n\n\n1,0",
+        {
+          "c": "#cccccc"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,1\n\n\n1,1",
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.25,
+          "x": -2.25
+        },
+        "5,3\n\n\n1,1",
+        {
+          "c": "#cccccc"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,2",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,3",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,4",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,5",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,6",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,7",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,8",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,9",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,10",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,11",
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.75,
+          "x": 0.0
+        },
+        "4,13",
+        {
+          "c": "#777777"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "4,14"
+      ],
+      [
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.25,
+          "x": 0.0
+        },
+        "5,0",
+        {
+          "h": 1.0,
+          "w": 1.25,
+          "x": 0.0
+        },
+        "5,1",
+        {
+          "h": 1.0,
+          "w": 1.25,
+          "x": 0.0
+        },
+        "5,2",
+        {
+          "c": "#cccccc"
+        },
+        {
+          "h": 1.0,
+          "w": 6.25,
+          "x": 0.0
+        },
+        "5,5",
+        {
+          "c": "#aaaaaa"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "5,9\n\n\n2,0",
+        {
+          "h": 1.0,
+          "w": 1.25,
+          "x": -0.75
+        },
+        "5,9\n\n\n2,1",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": -0.5
+        },
+        "5,10\n\n\n2,0",
+        {
+          "h": 1.0,
+          "w": 1.25,
+          "x": -0.5
+        },
+        "5,11\n\n\n2,1",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": -0.75
+        },
+        "5,12\n\n\n2,0",
+        {
+          "c": "#777777"
+        },
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "5,13",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "5,14",
+        {
+          "h": 1.0,
+          "w": 1.0,
+          "x": 0.0
+        },
+        "5,15"
+      ]
+    ],
+    "labels": [
+      "ISO Enter",
+      "Split Left Shift",
+      "FN RANGE KEY"
+    ]
+  },
+  "matrix": {
+    "cols": 16,
+    "rows": 6
+  },
+  "menus": [
+    {
+      "content": [
+        {
+          "content": [
+            {
+              "content": [
+                "id_qmk_rgblight_brightness",
+                2,
+                1
+              ],
+              "label": "Brightness",
+              "options": [
+                0,
+                200
+              ],
+              "showIf": "{id_qmk_rgblight_effect} != 0",
+              "type": "range"
+            },
+            {
+              "content": [
+                "id_qmk_rgblight_effect",
+                2,
+                2
+              ],
+              "label": "Effect",
+              "options": [
+                [
+                  "none",
+                  0
+                ],
+                [
+                  "wave",
+                  1
+                ],
+                [
+                  "fixed wave",
+                  2
+                ],
+                [
+                  "spectrum",
+                  3
+                ],
+                [
+                  "breathe",
+                  4
+                ],
+                [
+                  "light",
+                  5
+                ],
+                [
+                  "shutdown",
+                  6
+                ]
+              ],
+              "type": "dropdown"
+            },
+            {
+              "content": [
+                "id_qmk_rgblight_effect_speed",
+                2,
+                3
+              ],
+              "label": "Effect Speed",
+              "options": [
+                0,
+                4
+              ],
+              "showIf": "{id_qmk_rgblight_effect} != 0",
+              "type": "range"
+            },
+            {
+              "content": [
+                "id_qmk_rgblight_color",
+                2,
+                4
+              ],
+              "label": "Color",
+              "showIf": "{id_qmk_rgblight_effect} != 0 && {id_qmk_rgblight_effect} != 1 && {id_qmk_rgblight_effect} != 3 && {id_qmk_rgblight_effect} != 6",
+              "type": "color"
+            }
+          ],
+          "label": "logo"
+        },
+        {
+          "content": [
+            {
+              "content": [
+                "id_qmk_rgb_matrix_brightness",
+                3,
+                1
+              ],
+              "label": "Brightness",
+              "options": [
+                0,
+                200
+              ],
+              "type": "range"
+            },
+            {
+              "content": [
+                "id_qmk_rgb_matrix_effect",
+                3,
+                2
+              ],
+              "label": "Effect",
+              "options": [
+                [
+                  "none",
+                  0
+                ],
+                [
+                  "solid_color",
+                  1
+                ],
+                [
+                  "alphas_mods",
+                  2
+                ],
+                [
+                  "gradient_up_down",
+                  3
+                ],
+                [
+                  "gradient_left_right",
+                  4
+                ],
+                [
+                  "breathing",
+                  5
+                ],
+                [
+                  "band_sat",
+                  6
+                ],
+                [
+                  "band_val",
+                  7
+                ],
+                [
+                  "band_pinwheel_sat",
+                  8
+                ],
+                [
+                  "band_pinwheel_val",
+                  9
+                ],
+                [
+                  "band_spiral_sat",
+                  10
+                ],
+                [
+                  "band_spiral_val",
+                  11
+                ],
+                [
+                  "cycle_all",
+                  12
+                ],
+                [
+                  "cycle_left_right",
+                  13
+                ],
+                [
+                  "cycle_up_down",
+                  14
+                ],
+                [
+                  "cycle_out_in",
+                  15
+                ],
+                [
+                  "cycle_out_in_dual",
+                  16
+                ],
+                [
+                  "rainbow_moving_chevron",
+                  17
+                ],
+                [
+                  "cycle_pinwheel",
+                  18
+                ],
+                [
+                  "cycle_spiral",
+                  19
+                ],
+                [
+                  "dual_beacon",
+                  20
+                ],
+                [
+                  "rainbow_beacon",
+                  21
+                ],
+                [
+                  "rainbow_pinwheels",
+                  22
+                ],
+                [
+                  "flower_blooming",
+                  23
+                ],
+                [
+                  "raindrops",
+                  24
+                ],
+                [
+                  "jellybean_raindrops",
+                  25
+                ],
+                [
+                  "hue_breathing",
+                  26
+                ],
+                [
+                  "hue_pendulum",
+                  27
+                ],
+                [
+                  "hue_wave",
+                  28
+                ],
+                [
+                  "pixel_flow",
+                  29
+                ],
+                [
+                  "digital_rain",
+                  30
+                ],
+                [
+                  "solid_reactive",
+                  31
+                ],
+                [
+                  "solid_reactive_wide",
+                  32
+                ],
+                [
+                  "solid_reactive_multiwide",
+                  33
+                ],
+                [
+                  "solid_reactive_cross",
+                  34
+                ],
+                [
+                  "solid_reactive_multicross",
+                  35
+                ],
+                [
+                  "solid_reactive_nexus",
+                  36
+                ],
+                [
+                  "solid_reactive_multinexus",
+                  37
+                ],
+                [
+                  "splash",
+                  38
+                ],
+                [
+                  "multisplash",
+                  39
+                ],
+                [
+                  "solid_splash",
+                  40
+                ],
+                [
+                  "solid_multisplash",
+                  41
+                ],
+                [
+                  "starlight",
+                  42
+                ],
+                [
+                  "starlight_dual_hue",
+                  43
+                ],
+                [
+                  "starlight_dual_sat",
+                  44
+                ],
+                [
+                  "riverflow",
+                  45
+                ]
+              ],
+              "type": "dropdown"
+            },
+            {
+              "content": [
+                "id_qmk_rgb_matrix_effect_speed",
+                3,
+                3
+              ],
+              "label": "Effect Speed",
+              "options": [
+                0,
+                255
+              ],
+              "showIf": "{id_qmk_rgb_matrix_effect} != 0",
+              "type": "range"
+            },
+            {
+              "content": [
+                "id_qmk_rgb_matrix_color",
+                3,
+                4
+              ],
+              "label": "Color",
+              "showIf": "{id_qmk_rgb_matrix_effect} != 0 && {id_qmk_rgb_matrix_effect} != 24 && {id_qmk_rgb_matrix_effect} != 28 && {id_qmk_rgb_matrix_effect} != 29 && {id_qmk_rgb_matrix_effect} != 32",
+              "type": "color"
+            }
+          ],
+          "label": "Backlight"
+        }
+      ],
+      "label": "Lighting"
+    }
+  ],
+  "name": "Maxfit6",
+  "productId": "0x3047",
+  "vendorId": "0x36B0"
+}
