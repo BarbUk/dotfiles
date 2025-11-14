@@ -22,78 +22,85 @@ readonly monitored_hosts="$HOME/.dsh/group/monitored"
 readonly default_size=50
 
 command_exists() {
-	local command=$1
-	command -v "$command" > /dev/null 2>&1
+  local command=$1
+  command -v "$command" >/dev/null 2>&1
 }
 
 # Define apps to use
 tree="tree -C"
 if command_exists eza; then
-	tree="eza --colour=always --icons --group-directories-first --level 1"
+  tree="eza --colour=always --icons --group-directories-first --level 3 --git --tree"
 elif command_exists lsd; then
-	tree="lsd --color always --icon always --group-directories-first --depth 1"
+  tree="lsd --color always --icon always --group-directories-first --depth 1"
 elif command_exists ls; then
-	tree="ls --color=auto --group-directories-first --almost-all"
+  tree="ls --color=auto --group-directories-first --almost-all"
 fi
 
 highlight="cat"
 if command_exists bat; then
-	highlight="bat --style=numbers,changes --color=always"
+  highlight="bat --style=numbers,changes --color=always"
 elif command_exists highlight; then
-	highlight="highlight --force -O ansi -l"
+  highlight="highlight --force -O ansi -l"
 elif command_exists pygmentize; then
-	highlight="pygmentize -g"
+  highlight="pygmentize -g"
 fi
 
 # shellcheck source=bin/color_echo
 . color_echo
 
 if [ -d "$item" ]; then
-	$tree "$item" | head -"$default_size"
+  $tree "$item" | head -"$default_size"
 
 elif [ -f "$item" ]; then
-	if [[ "$item" == *.tar.* ]]; then
-		tar -vtf "$item" | head -"$default_size"
-	else
+  if [[ "$item" == *.pkg.tar.* ]] && command_exists pacman; then
+    pacman --color=always -Qi --file "$item"
+  elif [[ "$item" == *.tar.* ]]; then
+    tar -vtf "$item" | head -"$default_size"
+  else
 
-		case $(file -b --mime-type "$item") in
-			text/*)
-				$highlight "$item" | head -"$default_size"
-				;;
-			application/json)
-				$highlight "$item" | head -"$default_size"
-				;;
-			inode/directory)
-				$tree "$item" | head -"$default_size"
-				;;
-			image/*)
-				if command -v catimg > /dev/null 2>&1; then
-					catimg -w 100 "$item" 2> /dev/null
-				elif command -v viu > /dev/null 2>&1; then
-					viu -w 100 "$item" 2> /dev/null
-				elif command -v tiv > /dev/null 2>&1; then
-					tiv -w 100 -h 100 "$item" 2> /dev/null
-				fi
-				;;
-			application/zip)
-				unzip -l "$item" | head -"$default_size"
-				;;
-			application/pdf)
-				pdftotext "$item" -
-				;;
-		esac
+    case $(file -b --mime-type "$item") in
+    text/*)
+      $highlight "$item" | head -"$default_size"
+      ;;
+    application/json)
+      $highlight "$item" | head -"$default_size"
+      ;;
+    inode/directory)
+      $tree "$item" | head -"$default_size"
+      ;;
+    image/*)
+      if command_exists catimg; then
+        catimg -w 100 "$item" 2>/dev/null
+      elif command_exists viu; then
+        viu -w 100 "$item" 2>/dev/null
+      elif command_exists tiv; then
+        tiv -w 100 -h 100 "$item" 2>/dev/null
+      fi
+      ;;
+    application/zip)
+      unzip -l "$item" | head -"$default_size"
+      ;;
+    application/pdf)
+      pdftotext "$item" -
+      ;;
+    application/vnd.debian.binary-package)
+      if command_exists dpkg; then
+        dpkg --info "$item"
+      fi
+      ;;
+    esac
 
-	fi
+  fi
 elif [ -f "$monitored_hosts" ] && grep -q "$item" "$monitored_hosts"; then
-	information "Informations"
-	echo "$RDA_URL$item"
-	echo
-	information "Monitoring"
-	echo "$MONITORING_URL$item"
+  information "Informations"
+  echo "$RDA_URL$item"
+  echo
+  information "Monitoring"
+  echo "$MONITORING_URL$item"
 
-	if [[ $(nmcli networking connectivity) == 'full' ]]; then
-		echo
-		information "Ongoing problems"
-		ssh -t "$MONITORING_HOST" -- icingacli monitoring list service --host="$item" --verbose --problems 2> /dev/null
-	fi
+  if [[ $(nmcli networking connectivity) == 'full' ]]; then
+    echo
+    information "Ongoing problems"
+    ssh -t "$MONITORING_HOST" -- icingacli monitoring list service --host="$item" --verbose --problems 2>/dev/null
+  fi
 fi
