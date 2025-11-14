@@ -13,6 +13,8 @@ repos:
     - id: check-added-large-files
     - id: check-json
     - id: pretty-format-json
+      args:
+        - --autofix
 
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v2.3.0
