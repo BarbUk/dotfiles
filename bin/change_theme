@@ -18,7 +18,7 @@ set -o errexit -o pipefail -o nounset
 
 readonly icon=Papirus
 readonly theme_light=Arc
-readonly theme_dark=Nordic
+readonly theme_dark=Arc-Dark
 readonly sublime_theme_light="Boxy Yesterday"
 readonly sublime_colorscheme_light="Celeste.sublime-color-scheme"
 readonly sublime_theme_dark="Boxy Ocean"
@@ -49,9 +49,12 @@ change_theme() {
     sed -i -e "s/$sublime_colorscheme_light/$sublime_colorscheme_dark/g" "$sublime_conf"
     sed -i -e "s/$sublime_theme_light.sublime-theme/$sublime_theme_dark.sublime-theme/g" "$sublime_conf"
     sed -i -e "s/$plaintasks_colorscheme_light/$plaintasks_colorscheme_dark/g" "$plaintasks_conf"
-    if [ -e "$gtk_conf" ]; then
+    if [ -e "$gtk_conf" ] && ! pgrep --exact xfce4-session >/dev/null 2>&1; then
       sed -i -e "s/ThemeName=$theme_light/ThemeName=$theme_dark/g" "$gtk_conf"
       sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
+    elif pgrep --exact xfce4-session >/dev/null 2>&1; then
+      xfconf-query -c xsettings -p /Net/ThemeName -s "$theme_dark"
+      xfconf-query -c xsettings -p /Net/IconThemeName -s "${icon}-Light"
     fi
     if [ -e "$qt_conf" ]; then
       sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
@@ -74,9 +77,12 @@ change_theme() {
     sed -i -e "s/$sublime_colorscheme_dark/$sublime_colorscheme_light/g" "$sublime_conf"
     sed -i -e "s/$sublime_theme_dark.sublime-theme/$sublime_theme_light.sublime-theme/g" "$sublime_conf"
     sed -i -e "s/$plaintasks_colorscheme_dark/$plaintasks_colorscheme_light/g" "$plaintasks_conf"
-    if [ -e "$gtk_conf" ]; then
+    if [ -e "$gtk_conf" ] && ! pgrep --exact xfce4-session >/dev/null 2>&1; then
       sed -i -e "s/ThemeName=$theme_dark/ThemeName=$theme_light/g" "$gtk_conf"
       sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
+    elif pgrep --exact xfce4-session >/dev/null 2>&1; then
+      xfconf-query -c xsettings -p /Net/ThemeName -s "$theme_light"
+      xfconf-query -c xsettings -p /Net/IconThemeName -s "${icon}-Dark"
     fi
     if [ -e "$qt_conf" ]; then
       sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
