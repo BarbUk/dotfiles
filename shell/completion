@@ -1,3 +1,4 @@
+#!/bin/bash
 # shellcheck shell=bash
 # shellcheck disable=SC2034
 give_me_hostname="give_me_hostname"
@@ -5,7 +6,7 @@ fzf_default_options="-i --select-1 --exit-0 --tac --tiebreak=length,begin,index 
 fzf_height="--height ${FZF_TMUX_HEIGHT:-66%} --min-height 25"
 
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
-export FZF_COMPLETION_TRIGGER='**'
+export FZF_COMPLETION_TRIGGER=''
 
 # Tools to complete
 net_tools=(
@@ -49,7 +50,9 @@ process_tools=(
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  if command -v fd >/dev/null 2>&1; then
+  if command -v bfs >/dev/null 2>&1; then
+    bfs -H "$1" -color -exclude \( -name .git \) 2>/dev/null
+  elif command -v fd >/dev/null 2>&1; then
     fd --hidden --max-depth 5 --follow --exclude ".git" . "$1"
   else
     echo "$1"
@@ -61,7 +64,9 @@ _fzf_compgen_path() {
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  if command -v fd >/dev/null 2>&1; then
+  if command -v bfs >/dev/null 2>&1; then
+    bfs -H "$1" -color -exclude \( -name .git \) -type d 2>/dev/null
+  elif command -v fd >/dev/null 2>&1; then
     fd --type d --hidden --max-depth 3 --follow --exclude ".git" . "$1"
   else
     command find -L "$1" \
@@ -389,7 +394,10 @@ _fzf_compgen_dir() {
     -a -not -path "$1" -print 2>/dev/null | command sed 's@^\./@@'
 }
 
-export FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview 'fzf_preview {}'"
+FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi"
+FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview 'fzf_preview {}'"
+FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git -or -name .keep \) -printf '%P\n' 2>/dev/null"
+FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
 
 __fzf_select__() {
   local last_word current_line_until_cursor current_dir=.
