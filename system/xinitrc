@@ -4,10 +4,11 @@
 xset -b
 # Source default config
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
-    for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
-        [ -x "$f" ] && . "$f"
-    done
-    unset f
+  for f in /etc/X11/xinit/xinitrc.d/?*.sh; do
+    # shellcheck source=/dev/null
+    [ -x "$f" ] && . "$f"
+  done
+  unset f
 fi
 # Merge xresources
 [[ -f ~/.Xresources ]] && xrdb -merge -I"$HOME" ~/.Xresources
@@ -23,23 +24,23 @@ export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:/usr/local/bin:$PATH"
 # Screen icc
 vendor=$(awk '{print $1}' /sys/devices/virtual/dmi/id/board_vendor)
 case "$vendor" in
-  'LENOVO' )
-      # Correct screen configuration for x220 or x260
-      model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_version)
-      ;;
-  'Framework' )
-      model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_name)
-      ;;
+  'LENOVO')
+    # Correct screen configuration for x220 or x260
+    model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_version)
+    ;;
+  'Framework')
+    model=$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_name)
+    ;;
 esac
 case "$model" in
-  'x220' )
+  'x220')
     export LIBGL_DRI3_DISABLE=1
     xcalib -d :0 "$HOME/.dotfiles/system/icc/lenovo_x220_4290rv5.icc"
     ;;
-  'x260' )
+  'x260')
     xcalib -d :0 "$HOME/.dotfiles/system/icc/ICC_Lenovo_Thinkpad_X260_1920x1080_non_glossy_N125HCE_GN1.icm"
     ;;
-  '13' )
+  '13')
     xcalib -d :0 "$HOME/.dotfiles/system/icc/framework_amd_2k.icm"
 
     # Qt DPI setting
@@ -53,7 +54,7 @@ esac
 #xmodmap -e 'keycode 135 = Menu'
 [[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
 # Rename wmname and configure java non reparenting
-if command -v wmname >/dev/null 2>&1; then
+if command -v wmname > /dev/null 2>&1; then
   wmname LG3D
 fi
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -71,11 +72,11 @@ xss-lock -- slock &
 #pcmanfm -d &
 # Unclutter hide mouse cursor
 unclutter --ignore-scrolling --exclude-root --fork
-if ! systemctl --user is-active picom.service >/dev/null 2>&1; then
-    systemctl --user start picom.service
+if ! systemctl --user is-active picom.service > /dev/null 2>&1; then
+  systemctl --user start picom.service
 fi
 
 # Start session
-if command -v tdm >/dev/null 2>&1; then
+if command -v tdm > /dev/null 2>&1; then
   exec tdm --xstart
 fi
