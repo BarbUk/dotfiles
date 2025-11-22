@@ -37,7 +37,7 @@ handle_art() {
   if [[ "$art" == "https://"* ]]; then
     if ! ([ -f "$tmp_art_filename" ] && [ -f "$tmp_art_file" ] && grep -q "$art" "$tmp_art_filename"); then
       curl --silent --output "$tmp_art_file" "$art"
-      echo "$art" > "$tmp_art_filename"
+      echo "$art" >"$tmp_art_filename"
     fi
     echo "$tmp_art_file"
   elif [[ "$art" == "file://"* ]]; then
@@ -47,7 +47,7 @@ handle_art() {
 
 if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
   case "$action" in
-    'info' )
+    'info')
       while IFS=';' read -r player status artist album title art; do
         if [ -z "$album" ]; then
           album='n/a'
@@ -61,7 +61,7 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
         if [ "$status" = Playing ]; then
           mpris="$status\n$artist\n$album\n$title\n"
           artfile="$art"
-          echo "$player" > "$state_file"
+          echo "$player" >"$state_file"
         elif [ -e "$state_file" ] && [ "$(cat "$state_file")" = "$player" ]; then
           mpris="$status\n$artist\n$album\n$title\n"
           artfile="$art"
@@ -72,13 +72,13 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
 
       artfile="$(handle_art "$artfile")"
       echo -e "$mpris$artfile"
-    ;;
-    * )
+      ;;
+    *)
       while IFS=';' read -r player status artist album title art; do
         if [ "$status" = Playing ]; then
           playerctl --player="$player" "$action"
           mpris="$player"
-          echo "$player" > "$state_file"
+          echo "$player" >"$state_file"
         fi
       done < <(info)
 
@@ -93,7 +93,7 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
           if [ "$status" = Playing ]; then
             playerctl --player="$player" "$action"
             mpris="$player"
-            echo "$player" > "$state_file"
+            echo "$player" >"$state_file"
           fi
         done < <(info)
 
@@ -106,5 +106,5 @@ if ! [[ $(playerctl status 2>&1) == 'No players found' ]]; then
       ;;
   esac
 else
-    echo 'no player detected'
+  echo 'no player detected'
 fi

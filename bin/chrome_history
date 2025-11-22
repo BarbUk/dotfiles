@@ -37,8 +37,8 @@ fi
 
 # If we have an input, extract the url and open it in the default browser
 if [ ! -z ${1+x} ]; then
-    $open "${1##*$sep}" > /dev/null 2>&1
-    exit 0
+  $open "${1##*"$sep"}" >/dev/null 2>&1
+  exit 0
 fi
 
 extract_chrome_history() {
@@ -46,7 +46,7 @@ extract_chrome_history() {
   cp -f "$history_file" /tmp/h
   # shellcheck disable=2086
   sqlite3 -separator $sep /tmp/h \
-      "SELECT substr(title, 1, 50) as label, url
+    "SELECT substr(title, 1, 50) as label, url
        FROM urls
        GROUP BY label
        ORDER BY last_visit_time DESC

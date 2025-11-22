@@ -24,23 +24,23 @@ trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
 # Check if the needed dependencies are installed
 dependencies=(tesseract maim notify-send xclip)
 for dependency in "${dependencies[@]}"; do
-    type -p "$dependency" &>/dev/null || {
-        # The reason why we are sending the error as a notification is because
-        # user is most likely going to run this script by binding it to their
-        # keyboard, therefor they cant see any text that is outputed using echo
-        notify-send "ocr" "Could not find '${dependency}', is it installed?"
-        echo "Could not find '${dependency}', is it installed?"
-        exit 1
-    }
+  type -p "$dependency" &>/dev/null || {
+    # The reason why we are sending the error as a notification is because
+    # user is most likely going to run this script by binding it to their
+    # keyboard, therefor they cant see any text that is outputed using echo
+    notify-send "ocr" "Could not find '${dependency}', is it installed?"
+    echo "Could not find '${dependency}', is it installed?"
+    exit 1
+  }
 done
 
 # Take screenshot by selecting the area
 maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=3 --format=png --quality=10 \
-    | mogrify -modulate 100,0 -resize 400% png:- \
-    | tesseract - - 2> /dev/null \
-    | sed 's/\x0c//' \
-    | tee "$tmpfile" \
-    | xclip -selection clip
+  | mogrify -modulate 100,0 -resize 400% png:- \
+  | tesseract - - 2>/dev/null \
+  | sed 's/\x0c//' \
+  | tee "$tmpfile" \
+  | xclip -selection clip
 
 # Send a notification with the text that was grabbed using OCR
 notify-send "Text extracted" -- "$(cat "$tmpfile")"

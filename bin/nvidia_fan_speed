@@ -21,19 +21,19 @@ set -o errexit -o pipefail -o nounset
 
 set_fan_speed() {
   local fan1="$1" fan2="$2"
-  read -r current_fan1 current_fan2 <<< "$(nvidia-settings -q "[fan:0]/GPUTargetFanSpeed" -q "[fan:1]/GPUTargetFanSpeed" -t | xargs)"
-  if (( fan1 != current_fan1 )) || (( fan2 != current_fan2 )); then
+  read -r current_fan1 current_fan2 <<<"$(nvidia-settings -q "[fan:0]/GPUTargetFanSpeed" -q "[fan:1]/GPUTargetFanSpeed" -t | xargs)"
+  if ((fan1 != current_fan1)) || ((fan2 != current_fan2)); then
     echo "GPU Temp: ${cpu_temp}C, set fan speed to ${fan1}% ${fan2}%"
     sudo nvidia-settings -a "[gpu:0]/GPUFanControlState=1" -a "[fan:0]/GPUTargetFanSpeed=$fan1" -a "[fan:1]/GPUTargetFanSpeed=$fan2" >/dev/null 2>&1
   fi
 }
 
 cpu_temp="$(nvidia-settings -q gpucoretemp -t)"
-(( "$cpu_temp" <= 50 )) && fan1=30 && fan2=30
-(( "$cpu_temp" > 50 )) && fan1=30 && fan2=50
-(( "$cpu_temp" > 60 )) && fan1=30 && fan2=70
-(( "$cpu_temp" >= 65 )) && fan1=30 && fan2=85
-(( "$cpu_temp" >= 69 )) && fan1=88 && fan2=88
-(( "$cpu_temp" >= 72 )) && fan1=100 && fan2=100
+(("$cpu_temp" <= 50)) && fan1=30 && fan2=30
+(("$cpu_temp" > 50)) && fan1=30 && fan2=50
+(("$cpu_temp" > 60)) && fan1=30 && fan2=70
+(("$cpu_temp" >= 65)) && fan1=30 && fan2=85
+(("$cpu_temp" >= 69)) && fan1=88 && fan2=88
+(("$cpu_temp" >= 72)) && fan1=100 && fan2=100
 
 set_fan_speed "$fan1" "$fan2"

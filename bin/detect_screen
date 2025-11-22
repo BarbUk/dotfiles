@@ -31,11 +31,11 @@ connected_screens=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '/\<con
 other_screens=$(DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr | awk '!/^[[:blank:]]/ && $1 !~ /^Screen$/ && $3 !~ /primary/ {print $1}')
 
 if [[ "$connected_screens" == VGA* ]] || [[ "$connected_screens" == DP* ]] || [[ "$connected_screens" == HDMI* ]]; then
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output "$primary_screen" --primary --output "$connected_screens" --left-of "$primary_screen" --auto
+  DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output "$primary_screen" --primary --output "$connected_screens" --left-of "$primary_screen" --auto
 else
-    off=
-    for output in $other_screens; do
-        off="$off --output $output --off"
-    done
-    DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output "$primary_screen" --primary $off
+  off=()
+  for output in $other_screens; do
+    off+=(--output "$output" --off)
+  done
+  DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xrandr --output "$primary_screen" --primary "${off[@]}"
 fi

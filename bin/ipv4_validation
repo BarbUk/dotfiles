@@ -23,7 +23,7 @@ ip=${1:-1.2.3.4}
 ipv4_valid() {
   # Set up local variables
   local ip=$1
-  local IFS=.;
+  local IFS=.
   # shellcheck disable=2206
   local -a a=($ip)
   # Start with a regex format test

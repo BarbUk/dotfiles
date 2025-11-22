@@ -59,35 +59,35 @@ elif [ -f "$item" ]; then
   else
 
     case $(file -b --mime-type "$item") in
-    text/*)
-      $highlight "$item" | head -"$default_size"
-      ;;
-    application/json)
-      $highlight "$item" | head -"$default_size"
-      ;;
-    inode/directory)
-      $tree "$item" | head -"$default_size"
-      ;;
-    image/*)
-      if command_exists catimg; then
-        catimg -w 100 "$item" 2>/dev/null
-      elif command_exists viu; then
-        viu -w 100 "$item" 2>/dev/null
-      elif command_exists tiv; then
-        tiv -w 100 -h 100 "$item" 2>/dev/null
-      fi
-      ;;
-    application/zip)
-      unzip -l "$item" | head -"$default_size"
-      ;;
-    application/pdf)
-      pdftotext "$item" -
-      ;;
-    application/vnd.debian.binary-package)
-      if command_exists dpkg; then
-        dpkg --info "$item"
-      fi
-      ;;
+      text/*)
+        $highlight "$item" | head -"$default_size"
+        ;;
+      application/json)
+        $highlight "$item" | head -"$default_size"
+        ;;
+      inode/directory)
+        $tree "$item" | head -"$default_size"
+        ;;
+      image/*)
+        if command_exists catimg; then
+          catimg -w 100 "$item" 2>/dev/null
+        elif command_exists viu; then
+          viu -w 100 "$item" 2>/dev/null
+        elif command_exists tiv; then
+          tiv -w 100 -h 100 "$item" 2>/dev/null
+        fi
+        ;;
+      application/zip)
+        unzip -l "$item" | head -"$default_size"
+        ;;
+      application/pdf)
+        pdftotext "$item" -
+        ;;
+      application/vnd.debian.binary-package)
+        if command_exists dpkg; then
+          dpkg --info "$item"
+        fi
+        ;;
     esac
 
   fi

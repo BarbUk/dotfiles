@@ -17,12 +17,11 @@
 
 set -o errexit -o pipefail -o nounset
 
-readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info"
 readonly dotdir="$HOME/.dotfiles"
 readonly hostname_list="$dotdir/bin/give_me_hostname all"
 readonly dmenu="rofi -dmenu -i -sort -lines 25"
 
-host="$( $hostname_list | ${dmenu} -p 'host ' "$@")"
+host="$($hostname_list | ${dmenu} -p 'host ' "$@")"
 
 # If ip, get reverse
 if "$dotdir/bin/ipv4_validation" "$host" >/dev/null 2>&1; then

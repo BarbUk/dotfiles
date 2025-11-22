@@ -20,5 +20,5 @@ LOCAL="${LOCAL:-${XDG_LOCAL_HOME:-$HOME/.config}/dmenu/edit-list}"
 [ -f "$LOCAL" ] || exit 1
 DMENU_ARGS="rofi -dmenu -i -sort -lines 25"
 # shellcheck disable=2086
-file="$(${DMENU_ARGS} -p 'edit: ' "$@" < "$LOCAL")"
+file="$(${DMENU_ARGS} -p 'edit: ' "$@" <"$LOCAL")"
 [ "$file" ] && termite --exec "vim $file" &

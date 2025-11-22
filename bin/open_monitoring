@@ -22,19 +22,19 @@ set -e -o nounset
 readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inline-info +s"
 
 if [ -z "$host" ]; then
-    host="$(give_me_hostname ssh | $fzf)"
+  host="$(give_me_hostname ssh | $fzf)"
 fi
 
 if [ "$(uname)" = "Darwin" ]; then
-    resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
-    browser='/usr/bin/open -a "/Applications/Google Chrome.app"'
+  resolve="$(dscacheutil -q host -a name "$host" | wc -l)"
+  browser='/usr/bin/open -a "/Applications/Google Chrome.app"'
 else
-    resolve="$(getent hosts "$host" | wc -l)"
-    browser=google-chrome-stable
+  resolve="$(getent hosts "$host" | wc -l)"
+  browser=google-chrome-stable
 fi
 
-if [ $resolve = 0 ]; then
-    host="$(give_me_hostname ssh | $fzf --query="$host")"
+if ((resolve == 0)); then
+  host="$(give_me_hostname ssh | $fzf --query="$host")"
 fi
 
 url="${MONITORING_URL}$host"

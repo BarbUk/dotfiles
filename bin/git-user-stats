@@ -3,13 +3,13 @@
 # Show user stats (commits, files modified, insertions, deletions, and total
 # lines modified) for a repo
 
-git_log_opts=( "$@" )
+git_log_opts=("$@")
 
 git log "${git_log_opts[@]}" --format='author: %ae' --numstat \
-    | tr '[A-Z]' '[a-z]' \
-    | grep -v '^$' \
-    | grep -v '^-' \
-    | awk '
+  | tr '[:upper:]' '[:lower:]' \
+  | grep -v '^$' \
+  | grep -v '^-' \
+  | awk '
         {
             if ($1 == "author:") {
                 author = $2;
@@ -35,7 +35,7 @@ git log "${git_log_opts[@]}" --format='author: %ae' --numstat \
             printf("%-30s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n",
                    "-----", "-------", "-----",
                    "----------", "---------", "-----------");
-            
+
             # Print the stats for each user, sorted by total lines
             n = asorti(total, sorted_emails, "@val_num_desc");
             for (i = 1; i <= n; i++) {

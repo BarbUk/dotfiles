@@ -26,7 +26,7 @@ with open(filename, 'r') as f:
             # seconds, milliseconds = line[1].split('.')
             time = float(timestamp)
             time = datetime.datetime.fromtimestamp(time)
-            
+
             # print(time.microseconds)
             # continue
             if prev_time is not None and prev_time > time:

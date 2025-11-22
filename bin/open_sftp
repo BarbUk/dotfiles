@@ -18,14 +18,14 @@
 
 set -o errexit -o pipefail -o nounset
 
-readonly file_manager=pcmanfm
-readonly active_window_name=$(xdotool getwindowfocus getwindowname)
+active_window_name=$(xdotool getwindowfocus getwindowname)
+readonly file_manager=pcmanfm active_window_name
 
 # Detect if focused app is a terminal or a gui
 is_terminal() {
-    name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
-    [[ "$name" =~ term|tilda|kitty|alacritty ]] && return 0
-    return 1
+  name="$(xprop -id "$(xdotool getwindowfocus)" WM_CLASS | cut -d'"' -f2 | tr '[:upper:]' '[:lower:]')"
+  [[ "$name" =~ term|tilda|kitty|alacritty ]] && return 0
+  return 1
 }
 
 # Title is something like user@server:path

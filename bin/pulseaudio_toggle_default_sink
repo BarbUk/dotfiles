@@ -96,16 +96,16 @@ check_dependency() {
   local needed_programs=(pamixer pactl notify-send awk sed)
 
   for program in "${needed_programs[@]}"; do
-      if ! command -v "$program" >/dev/null 2>&1; then
-          all_needed_programs_installed=false
-          echo -n "Missing: "
-          text "$program"
-      fi
+    if ! command -v "$program" >/dev/null 2>&1; then
+      all_needed_programs_installed=false
+      echo -n "Missing: "
+      text "$program"
+    fi
   done
 
   if [ "$all_needed_programs_installed" = false ]; then
-      echo -e "\nPlease install the missing dependency"
-      exit 1
+    echo -e "\nPlease install the missing dependency"
+    exit 1
   fi
 }
 
@@ -132,7 +132,7 @@ swap_role_sink() {
   local role_to_change=$1
   while read -r name role sink input serial; do
     if [ "$role" = "$role_to_change" ]; then
-      while read -r index sink_name; do
+      while read -r index _sink_name; do
         if [ "$index" != "$sink" ]; then
           if is_pipewire; then
             pactl move-sink-input "$serial" "$index"
@@ -162,30 +162,30 @@ reset_inputs() {
 parse_options() {
   while (("$#")); do
     case "$1" in
-    -h | --help | help)
-      usage
-      ;;
-    -o | --output)
-      usage
-      ;;
-    media)
-      action=media
-      if [[ $# -ne 2 ]]; then
-        text "You need to specify a role"
-        echo
+      -h | --help | help)
         usage
-      fi
-      role=$2
-      shift 2
-      ;;
-    --) # end argument parsing
-      shift
-      break
-      ;;
-    *)
-      action=$1
-      shift
-      ;;
+        ;;
+      -o | --output)
+        usage
+        ;;
+      media)
+        action=media
+        if [[ $# -ne 2 ]]; then
+          text "You need to specify a role"
+          echo
+          usage
+        fi
+        role=$2
+        shift 2
+        ;;
+      --) # end argument parsing
+        shift
+        break
+        ;;
+      *)
+        action=$1
+        shift
+        ;;
     esac
   done
 }

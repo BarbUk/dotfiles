@@ -11,6 +11,6 @@ while (<>) {
 }
 
 sub usage {
-        print STDERR "$0 fieldnumber\n"; 
+        print STDERR "$0 fieldnumber\n";
         exit 1;
 }

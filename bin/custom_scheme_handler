@@ -47,7 +47,6 @@
 # echo 'x-scheme-handler/ftps=custom_scheme_handler.desktop;' >> ~/.local/share/applications/mimeapps.list
 # echo 'x-scheme-handler/sftp=custom_scheme_handler.desktop;' >> ~/.local/share/applications/mimeapps.list
 
-
 set -o errexit -o pipefail -o nounset
 
 declare -A apps=(
@@ -60,7 +59,7 @@ readonly protocol=${1%%:*}
 readonly dest=${1#*://}
 
 case "$protocol" in
-  ssh )
+  ssh)
     # use ssh_connect if we connect with own user
     if [[ $dest == *@* ]] && [[ ${dest%%@*} == "$USER" ]]; then
       "${apps[terminal]}" --exec "ssh_connect $dest" &
@@ -68,11 +67,11 @@ case "$protocol" in
       # else connect with default parameters
       "${apps[terminal]}" --exec "bash -c 'TERM=xterm-256color ssh $dest'" &
     fi
-  ;;
-  ftp|ftps )
+    ;;
+  ftp | ftps)
     "${apps[terminal]}" --exec "${apps[ftp]} '$protocol://$dest' -e 'set ssl:verify-certificate false'" &
-  ;;
-  sftp )
+    ;;
+  sftp)
     "${apps[terminal]}" --exec "${apps[sftp]} '$protocol://$dest' -e 'set sftp:auto-confirm yes'" &
-  ;;
+    ;;
 esac

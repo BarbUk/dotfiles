@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_help() {
-    cat <<'END'
+  cat <<'END'
 Usage: httpstat URL [CURL_OPTIONS]
        httpstat -h | --help
        httpstat --version
@@ -25,42 +25,41 @@ cyan="\033[36m"
 white="\033[37m"
 reset="\033[0m"
 
-while (( $# > 0 ))
-do
-    case "$1" in
-        -h | --help)
-            print_help
-            exit 1
-            ;;
-        --version)
-            echo "httpstat 0.0.1"
-            exit 0
-            ;;
-        '-w' | '--write-out')
-            continue
-            ;;
-        '-D' | '--dump-header')
-            continue
-            ;;
-        '-o' | '--output')
-            continue
-            ;;
-        '-s' | '--silent')
-            continue
-            ;;
-        -* | --*)
-            args+=( "$1" )
-            ;;
-        *)
-            url="$1"
-            ;;
-    esac
-    shift
+while (($# > 0)); do
+  case "$1" in
+    -h | --help)
+      print_help
+      exit 1
+      ;;
+    --version)
+      echo "httpstat 0.0.1"
+      exit 0
+      ;;
+    '-w' | '--write-out')
+      continue
+      ;;
+    '-D' | '--dump-header')
+      continue
+      ;;
+    '-o' | '--output')
+      continue
+      ;;
+    '-s' | '--silent')
+      continue
+      ;;
+    --* | -*)
+      args+=("$1")
+      ;;
+    *)
+      url="$1"
+      ;;
+  esac
+  shift
 done
 
 if [[ -z $url ]]; then
-    echo "too few arguments" >&2
-    exit 1
+  echo "too few arguments" >&2
+  exit 1
 fi
 
 curl_format='{
@@ -79,7 +78,7 @@ head="/tmp/httpstat-header.$$$RANDOM$(date +%s)"
 body="/tmp/httpstat-body.$$$RANDOM$(date +%s)"
 
 data="$(
-LC_ALL=C curl \
+  LC_ALL=C curl \
     -w "$curl_format" \
     -D "$head" \
     -o "$body" \
@@ -89,33 +88,31 @@ LC_ALL=C curl \
 )"
 
 get() {
-    local d
-    d="$(
+  local d
+  d="$(
     echo "$data" \
-        | grep "$1" \
-        | awk '{print $2}' \
-        | sed 's/,//g'
-    )"
-    if type bc &>/dev/null; then
-        echo "$d"*1000 | bc -l
-    else
-        echo "$d" | awk 'END{print $0*1000}'
-    fi
+      | grep "$1" \
+      | awk '{print $2}' \
+      | sed 's/,//g'
+  )"
+  if type bc &>/dev/null; then
+    echo "$d"*1000 | bc -l
+  else
+    echo "$d" | awk 'END{print $0*1000}'
+  fi
 }
 
 calc() {
-    if type bc &>/dev/null; then
-        echo "$@" | bc -l
-    else
-        echo "$@" | awk "BEGIN{print $*}"
-    fi
+  if type bc &>/dev/null; then
+    echo "$@" | bc -l
+  else
+    echo "$@" | awk "BEGIN{print $*}"
+  fi
 }
 
 time_namelookup="$(get time_namelookup)"
 time_connect="$(get time_connect)"
-time_appconnect="$(get time_appconnect)"
 time_pretransfer="$(get time_pretransfer)"
-time_redirect="$(get time_redirect)"
 time_starttransfer="$(get time_starttransfer)"
 time_total="$(get time_total)"
 speed_download="$(get speed_download)"
@@ -128,17 +125,17 @@ range_server="$(calc "$time_starttransfer" - "$time_pretransfer")"
 range_transfer="$(calc "$time_total" - "$time_starttransfer")"
 
 fmta() {
-    echo "$1" \
-        | awk '{printf("%5dms\n", $1 + 0.5)}'
+  echo "$1" \
+    | awk '{printf("%5dms\n", $1 + 0.5)}'
 }
 
 fmtb() {
-    local d
-    d="$(
+  local d
+  d="$(
     echo "$1" \
-        | awk '{printf("%d\n", $1 + 0.5)}'
-    )"
-    printf "%-7s\n" "${d}ms"
+      | awk '{printf("%d\n", $1 + 0.5)}'
+  )"
+  printf "%-7s\n" "${d}ms"
 }
 
 a000="$cyan$(fmta "$range_dns")$reset"
@@ -176,29 +173,30 @@ http_template="$white
 # output, need to print escape sequences raw (disable those checks for shellcheck)
 # shellcheck disable=SC2059,SC2002
 {
-    # Print header
-    cat "$head" \
-        | perl -pe 's/^(HTTP)(.*)$/'"$green"'$1'"$reset""$cyan"'$2'"$reset"'/g' \
-        | perl -pe 's/^(.*?): (.*)$/'"$white"'$1: '"$cyan"'$2/g'
-    printf "$reset"
+  # Print header
+  cat "$head" \
+    | perl -pe 's/^(HTTP)(.*)$/'"$green"'$1'"$reset""$cyan"'$2'"$reset"'/g' \
+    | perl -pe 's/^(.*?): (.*)$/'"$white"'$1: '"$cyan"'$2/g'
+  printf "$reset"
 
-    # Print body
-    if [[ "$HTTPSTAT_SHOW_BODY" == true ]]; then
-        cat "$body"; printf '\n'
-    else
-        printf "${green}Body${reset} stored in: $body\n"
-    fi
+  # Print body
+  if [[ "$HTTPSTAT_SHOW_BODY" == true ]]; then
+    cat "$body"
+    printf '\n'
+  else
+    printf "${green}Body${reset} stored in: $body\n"
+  fi
 
-    if [[ "$url" =~ https:// ]]; then
-        printf "$https_template\n"
-    else
-        printf "$http_template\n"
-    fi
+  if [[ "$url" =~ https:// ]]; then
+    printf "$https_template\n"
+  else
+    printf "$http_template\n"
+  fi
 
-    # speed, originally bytes per second
-    if [[ "$HTTPSTAT_SHOW_SPEED" == true ]]; then
-        printf "speed_download %.1f KiB, speed_upload %.1f KiB\n" \
-            "$(calc "$speed_download" / 1024)" \
-            "$(calc "$speed_upload" / 1024)"
-    fi
+  # speed, originally bytes per second
+  if [[ "$HTTPSTAT_SHOW_SPEED" == true ]]; then
+    printf "speed_download %.1f KiB, speed_upload %.1f KiB\n" \
+      "$(calc "$speed_download" / 1024)" \
+      "$(calc "$speed_upload" / 1024)"
+  fi
 }

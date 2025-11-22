@@ -18,7 +18,7 @@ set -o errexit -o pipefail -o nounset
 
 # shellcheck disable=2045
 for dir in $(ls); do
-    echo "Updating $dir"
-    (cd "$dir" && git pull)
-    echo -e "\n"
+  echo "Updating $dir"
+  (cd "$dir" && git pull)
+  echo -e "\n"
 done

@@ -25,49 +25,49 @@ icon_low=
 icon_high=
 
 progress() {
-    local percent=$1
-    local completed=$(( percent / 5 ))
-    local remaining=$(( 20 - completed ))
+  local percent=$1
+  local completed=$((percent / 5))
+  local remaining=$((20 - completed))
 
-    # pamixer --get-mute return true or false
-    # with a 0 exit code
-    if [ "$(pamixer --get-mute)" = true ]; then
-        icon=$icon_mute
+  # pamixer --get-mute return true or false
+  # with a 0 exit code
+  if [ "$(pamixer --get-mute)" = true ]; then
+    icon=$icon_mute
 
-    elif [ "$percent" -gt 50 ]; then
-        icon=$icon_high
+  elif [ "$percent" -gt 50 ]; then
+    icon=$icon_high
 
-    elif [ "$percent" -gt 0 ]; then
-        icon=$icon_low
+  elif [ "$percent" -gt 0 ]; then
+    icon=$icon_low
 
-    else
-        icon=$icon_off
-    fi
-    echo -ne "\n$icon "
-    if [ "$percent" -gt 0 ]; then
-        printf "%0.s█" $(seq $completed)
-    fi
-    [[ $remaining != 0 ]] && printf "%0.s " $(seq $remaining)
+  else
+    icon=$icon_off
+  fi
+  echo -ne "\n$icon "
+  if [ "$percent" -gt 0 ]; then
+    printf "%0.s█" $(seq $completed)
+  fi
+  [[ $remaining != 0 ]] && printf "%0.s " $(seq $remaining)
 }
 
 usage() {
-    echo "Usage: $0 up/down/mute [step]" >&2
-    echo "Example: $0 up 5" >&2
-    exit 1
+  echo "Usage: $0 up/down/mute [step]" >&2
+  echo "Example: $0 up 5" >&2
+  exit 1
 }
 
 case $action in
-    "up" )
-        pamixer --increase "$step" --sink @DEFAULT_SINK@
+  "up")
+    pamixer --increase "$step" --sink @DEFAULT_SINK@
     ;;
-    "down" )
-        pamixer --decrease "$step" --sink @DEFAULT_SINK@
+  "down")
+    pamixer --decrease "$step" --sink @DEFAULT_SINK@
     ;;
-    "mute" )
-        pamixer --toggle-mute --sink @DEFAULT_SINK@
+  "mute")
+    pamixer --toggle-mute --sink @DEFAULT_SINK@
     ;;
-    * )
-        usage
+  *)
+    usage
     ;;
 esac
 set +o errexit
