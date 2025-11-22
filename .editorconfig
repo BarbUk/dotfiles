@@ -11,11 +11,9 @@ trim_trailing_whitespace = true
 [[bash]]
 indent_style = space
 indent_size = 2
-shell_variant      = posix
 binary_next_line   = true
 switch_case_indent = true
 space_redirects    = true
-keep_padding       = true
 function_next_line = true
 
 [*.md]
