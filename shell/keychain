@@ -2,13 +2,13 @@
 ssh_agent_file="/tmp/.ssh-agent-thing"
 
 if [ ! -f "$ssh_agent_file" ]; then
-    touch "$ssh_agent_file"
-    chmod 600 "$ssh_agent_file"
-    keychain --systemd --eval --quiet \
+  touch "$ssh_agent_file"
+  chmod 600 "$ssh_agent_file"
+  keychain --systemd --eval --quiet \
     "$(find "$HOME"/.ssh/keys/live -not -type d -not -name '*.pub')" \
-    > "$ssh_agent_file"
+    >"$ssh_agent_file"
 fi
 
 if [[ "$SSH_AGENT_PID" == "" ]]; then
-    eval "$(< "$ssh_agent_file")"
+  eval "$(<"$ssh_agent_file")"
 fi
