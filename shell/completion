@@ -327,21 +327,54 @@ _fzf_handle_dynamic_completion() {
   fi
 }
 
-__fzf_history__() {
-  local line
-  shopt -u nocaseglob nocasematch
-  line=$(
-    # shellcheck disable=SC1007
-    HISTTIMEFORMAT= history \
-      | FZF_DEFAULT_OPTS="$fzf_height $fzf_default_options --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf \
-      | command grep '^ *[0-9]'
-  ) \
-    && if [[ $- =~ H ]]; then
-      sed 's/^ *\([0-9]*\)\** .*/!\1/' <<<"$line"
+if command -v perl >/dev/null; then
+  __fzf_history__() {
+    local output script
+    # shellcheck disable=2016
+    script='BEGIN { getc; $/ = "\n\t"; $HISTCOUNT = $ENV{last_hist} + 1 } s/^[ *]//; s/\n/\n\t/gm; print $HISTCOUNT - $. . "\t$_" if !$seen{$_}++'
+    output=$(
+      set +o pipefail
+      builtin fc -lnr -2147483648 \
+        | last_hist=$(HISTTIMEFORMAT='' builtin history 1) command perl -n -l0 -e "$script" \
+        | FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
+        FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) --query "$READLINE_LINE"
+    ) || return
+    READLINE_LINE=$(command perl -pe 's/^\d*\t//' <<<"$output")
+    if [[ -z $READLINE_POINT ]]; then
+      echo "$READLINE_LINE"
     else
-      sed 's/^ *\([0-9]*\)\** *//' <<<"$line"
+      READLINE_POINT=0x7fffffff
     fi
-}
+  }
+else # awk - fallback for POSIX systems
+  __fzf_history__() {
+    local output script
+    [[ $(HISTTIMEFORMAT='' builtin history 1) =~ [[:digit:]]+ ]] # how many history entries
+    # shellcheck disable=2016
+    script='function P(b) { ++n; sub(/^[ *]/, "", b); if (!seen[b]++) { printf "%d\t%s%c", '$((BASH_REMATCH + 1))' - n, b, 0 } }
+    NR==1 { b = substr($0, 2); next }
+    /^\t/ { P(b); b = substr($0, 2); next }
+    { b = b RS $0 }
+    END { if (NR) P(b) }'
+    output=$(
+      set +o pipefail
+      builtin fc -lnr -2147483648 2>/dev/null \
+        |
+        # ( $'\t '<lines>$'\n' )* ; <lines> ::= [^\n]* ( $'\n'<lines> )*
+        __fzf_exec_awk "$script" \
+        |
+        # ( <counter>$'\t'<lines>$'\000' )*
+        FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
+        FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) --query "$READLINE_LINE"
+    ) || return
+    READLINE_LINE=${output#*$'\t'}
+    if [[ -z $READLINE_POINT ]]; then
+      echo "$READLINE_LINE"
+    else
+      READLINE_POINT=0x7fffffff
+    fi
+  }
+fi
 
 process_list() {
   if [ "$UID" != "0" ]; then
