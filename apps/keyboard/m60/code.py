@@ -101,4 +101,3 @@ keyboard.tap_delay = 50
 keyboard.fast_type_thresh = 30
 
 keyboard.run()
-
