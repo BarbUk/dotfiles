@@ -15,25 +15,25 @@ readonly inactive_border active_border red yellow green
 # read args
 for i in "$@"; do
   case $i in
-  --pane-current-path=*)
-    PANE_CURRENT_PATH="${i#*=}"
-    ;;
-  --pane-active=*)
-    PANE_ACTIVE="${i#*=}"
-    ;;
-  --display-only-pane-active=*)
-    ONLY_PANE_ACTIVE="${i#*=}"
-    ;;
-  *) # unknown option
-    ;;
+    --pane-current-path=*)
+      PANE_CURRENT_PATH="${i#*=}"
+      ;;
+    --pane-active=*)
+      PANE_ACTIVE="${i#*=}"
+      ;;
+    --display-only-pane-active=*)
+      ONLY_PANE_ACTIVE="${i#*=}"
+      ;;
+    *) # unknown option
+      ;;
   esac
   shift
 done
 
 # Do nothing if we are not in a git dir, or if we don't want to display on non active pane
-if ! ([ -d "$PANE_CURRENT_PATH" ] &&
-  git -C "$PANE_CURRENT_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1) ||
-  ( ((PANE_ACTIVE == 0)) && ((ONLY_PANE_ACTIVE == 1))); then
+if ! ([ -d "$PANE_CURRENT_PATH" ] \
+  && git -C "$PANE_CURRENT_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1) \
+  || ( ((PANE_ACTIVE == 0)) && ((ONLY_PANE_ACTIVE == 1))); then
   exit
 fi
 
@@ -57,8 +57,8 @@ THEME_GIT_PROMPT_UNTRACKED="$(color $red 'bold')•$(color $active_border)"
 THEME_GIT_PROMPT_REMOTE="$(color 'default' 'bold') ⤏ $(color $active_border)"
 
 git_branch() {
-  ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
-    ref=$(command git rev-parse --short HEAD 2>/dev/null) || return
+  ref=$(command git symbolic-ref HEAD 2>/dev/null) \
+    || ref=$(command git rev-parse --short HEAD 2>/dev/null) || return
   echo "${ref#refs/heads/}"
 }
 

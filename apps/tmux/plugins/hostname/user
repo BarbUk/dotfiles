@@ -6,7 +6,7 @@ CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$CURRENT_DIR/shared"
 
 main() {
-	get_info user
+  get_info user
 }
 
 main
