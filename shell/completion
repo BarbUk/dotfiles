@@ -49,6 +49,7 @@ process_tools=(
 # command for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
+# shellcheck disable=2329
 _fzf_compgen_path() {
   if command -v bfs >/dev/null 2>&1; then
     bfs -H "$1" -color -exclude \( -name .git \) 2>/dev/null
@@ -63,6 +64,7 @@ _fzf_compgen_path() {
 }
 
 # Use fd to generate the list for directory completion
+# shellcheck disable=2329
 _fzf_compgen_dir() {
   if command -v bfs >/dev/null 2>&1; then
     bfs -H "$1" -color -exclude \( -name .git \) -type d 2>/dev/null
@@ -167,8 +169,11 @@ __fzf_exec_awk() {
 __fzf_comprun() {
   if [[ "$(type -t _fzf_comprun 2>&1)" == function ]]; then
     _fzf_comprun "$@"
-  elif [[ -n ${TMUX_PANE-} ]] && { [[ ${FZF_TMUX:-0} != 0 ]] || [[ -n ${FZF_TMUX_OPTS-} ]]; }; then
+  elif [[ -n ${TMUX_PANE-} ]] && {
+    [[ ${FZF_TMUX:-0} != 0 ]] || [[ -n ${FZF_TMUX_OPTS-} ]]
+  }; then
     shift
+    # shellcheck disable=2086
     fzf-tmux ${FZF_TMUX_OPTS:--d${FZF_TMUX_HEIGHT:-40%}} -- "$@"
   else
     shift
@@ -214,6 +219,7 @@ __fzf_orig_completion_instantiate() {
   orig="${!orig_var-}"
   orig="${orig%#*}"
   [[ $orig == *' %s '* ]] || return 1
+  # shellcheck disable=2059
   printf -v REPLY "$orig" "$func"
 }
 
@@ -306,9 +312,9 @@ _fzf_handle_dynamic_completion() {
       __fzf_orig_completion_get_orig_func "$cmd" || ret=1
 
       # Update orig_complete by _fzf_orig_completion entry
-      [[ $orig_complete =~ ' -F '(_fzf_[^ ]+)' ' ]] &&
-        __fzf_orig_completion_instantiate "$cmd" "${BASH_REMATCH[1]}" &&
-        orig_complete=$REPLY
+      [[ $orig_complete =~ ' -F '(_fzf_[^ ]+)' ' ]] \
+        && __fzf_orig_completion_instantiate "$cmd" "${BASH_REMATCH[1]}" \
+        && orig_complete=$REPLY
 
       if [[ ${__fzf_nospace_commands-} == *" $orig_cmd "* ]]; then
         eval "${orig_complete/ -F / -o nospace -F }"
@@ -326,11 +332,11 @@ __fzf_history__() {
   shopt -u nocaseglob nocasematch
   line=$(
     # shellcheck disable=SC1007
-    HISTTIMEFORMAT= history |
-      FZF_DEFAULT_OPTS="$fzf_height $fzf_default_options --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf |
-      command grep '^ *[0-9]'
-  ) &&
-    if [[ $- =~ H ]]; then
+    HISTTIMEFORMAT= history \
+      | FZF_DEFAULT_OPTS="$fzf_height $fzf_default_options --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" fzf \
+      | command grep '^ *[0-9]'
+  ) \
+    && if [[ $- =~ H ]]; then
       sed 's/^ *\([0-9]*\)\** .*/!\1/' <<<"$line"
     else
       sed 's/^ *\([0-9]*\)\** *//' <<<"$line"
@@ -369,10 +375,10 @@ _fzf_complete_process() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
 
   case $prev in
-  --user | -u)
-    _fzf_complete_new --no-multi -- "$@" < <(_all_users)
-    return 0
-    ;;
+    --user | -u)
+      _fzf_complete_new --no-multi -- "$@" < <(_all_users)
+      return 0
+      ;;
   esac
 
   _fzf_complete_new --multi --header-lines=1 --reverse --preview 'echo {}' --preview-window down:3:wrap -- "$@" < <(process_list)
@@ -404,15 +410,17 @@ __fzf_select__() {
   current_line_until_cursor="${READLINE_LINE:0:READLINE_POINT}"
   last_word=$(echo "$current_line_until_cursor" | awk '{print $NF}')
 
-  if [ -n "$last_word" ] && { [ -d "$last_word" ] || [[ "$last_word" == ~* ]] || [[ "$last_word" == /* ]]; }; then
+  if [ -n "$last_word" ] && {
+    [ -d "$last_word" ] || [[ "$last_word" == ~* ]] || [[ "$last_word" == /* ]]
+  }; then
     current_dir="$last_word"
     current_dir="${current_dir/'~'/"$HOME"}"
   fi
 
   FZF_DEFAULT_COMMAND=${FZF_CTRL_T_COMMAND:-} \
     FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --preview-window 'right,<50(down,99%)' --walker=file,dir,follow,hidden --walker-root=$current_dir --scheme=path" "${FZF_CTRL_T_OPTS-} -m") \
-    FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) "$@" |
-    while read -r item; do
+    FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) "$@" \
+    | while read -r item; do
       if [ -n "$last_word" ] && [[ "$last_word" == ~* ]]; then
         item="${item/"$HOME"/'~'}"
         item="${item/"$last_word"/}"
@@ -422,8 +430,10 @@ __fzf_select__() {
 }
 
 __fzfcmd() {
-  [[ -n ${TMUX_PANE-} ]] && { [[ ${FZF_TMUX:-0} != 0 ]] || [[ -n ${FZF_TMUX_OPTS-} ]]; } &&
-    echo "fzf-tmux ${FZF_TMUX_OPTS:--d${FZF_TMUX_HEIGHT:-40%}} -- " || echo "fzf"
+  [[ -n ${TMUX_PANE-} ]] && {
+    [[ ${FZF_TMUX:-0} != 0 ]] || [[ -n ${FZF_TMUX_OPTS-} ]]
+  } \
+    && echo "fzf-tmux ${FZF_TMUX_OPTS:--d${FZF_TMUX_HEIGHT:-40%}} -- " || echo "fzf"
 }
 
 fzf-file-widget() {
@@ -436,6 +446,7 @@ fzf-file-widget() {
 __fzf_cd__() {
   local dir
   dir=$(
+    # shellcheck disable=2091
     FZF_DEFAULT_COMMAND=${FZF_ALT_C_COMMAND:-} \
       FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --walker=dir,follow,hidden --scheme=path" "${FZF_ALT_C_OPTS-} +m") \
       FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd)
@@ -445,19 +456,19 @@ __fzf_cd__() {
 # v - open files in ~/.viminfo
 v() {
   local files
-  files=$(grep '^>' ~/.viminfo | cut -c3- |
-    while read -r line; do
+  files=$(grep '^>' ~/.viminfo | cut -c3- \
+    | while read -r line; do
       [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
     done | fzf-tmux --select-1 --reverse --inline-info +s \
-    --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) &&
-    vim "${files//\~/$HOME}"
+    --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
+    && vim "${files//\~/$HOME}"
 }
 
 fmpc() {
   local song_position
-  song_position=$(mpc -f "%position%) %artist% - %title%" playlist |
-    fzf-tmux --query="$1" "$fzf_height" --reverse --inline-info +s --select-1 --exit-0 |
-    sed -ne 's/^\([0-9].*\)).*/\1/p') || return 1
+  song_position=$(mpc -f "%position%) %artist% - %title%" playlist \
+    | fzf-tmux --query="$1" "$fzf_height" --reverse --inline-info +s --select-1 --exit-0 \
+    | sed -ne 's/^\([0-9].*\)).*/\1/p') || return 1
   [ -n "$song_position" ] && mpc -q play "$song_position"
 }
 
@@ -478,9 +489,9 @@ ch() {
   # shellcheck disable=2086
   sqlite3 -separator $sep /tmp/h \
     "select substr(title, 1, $cols), url
-     from urls order by last_visit_time desc" |
-    awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-    fzf $fzf_default_options $fzf_height --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open >/dev/null 2>/dev/null
+     from urls order by last_visit_time desc" \
+    | awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' \
+    | fzf $fzf_default_options $fzf_height --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open >/dev/null 2>/dev/null
 }
 
 # fco - checkout git branch/tag
@@ -490,17 +501,17 @@ fco() {
     git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}'
   ) || return
   branches=$(
-    git branch --all | grep -v HEAD |
-      sed "s/.* //" | sed "s#remotes/[^/]*/##" |
-      sort -u | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}'
+    git branch --all | grep -v HEAD \
+      | sed "s/.* //" | sed "s#remotes/[^/]*/##" \
+      | sort -u | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}'
   ) || return
   # shellcheck disable=2086
   target=$(
     (
       echo "$tags"
       echo "$branches"
-    ) |
-      fzf-tmux $fzf_default_options $fzf_height -l30 -- --no-hscroll --ansi +m -d "\t" -n 2
+    ) \
+      | fzf-tmux $fzf_default_options $fzf_height -l30 -- --no-hscroll --ansi +m -d "\t" -n 2
   ) || return
   git checkout "$(echo "$target" | awk '{print $2}')"
 }
@@ -508,8 +519,8 @@ fco() {
 # fshow - git commit browser
 fshow() {
   git log --graph --color=always \
-    --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-    fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+    --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" \
+    | fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
       --bind "ctrl-m:execute:
                 (grep -o '[a-f0-9]\{7\}' | head -1 |
                 xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
@@ -521,9 +532,9 @@ FZF-EOF"
 # example usage: git rebase -i `fcs`
 fcs() {
   local commits commit
-  commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) &&
-    commit=$(echo "$commits" | fzf --tac +s +m -e --ansi --reverse) &&
-    echo -n "$(echo "$commit" | sed "s/ .*//")"
+  commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) \
+    && commit=$(echo "$commits" | fzf --tac +s +m -e --ansi --reverse) \
+    && echo -n "${commit%% *}"
 }
 
 _complete_ssh() {
@@ -541,10 +552,10 @@ _fzf_complete_ssh_keys() {
 _fzf_complete_ssh() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
-  -i)
-    _fzf_complete_ssh_keys "$@"
-    return 0
-    ;;
+    -i)
+      _fzf_complete_ssh_keys "$@"
+      return 0
+      ;;
   esac
   _fzf_complete_new --no-multi -- "$@" < <(give_me_hostname ssh)
 }
@@ -552,17 +563,17 @@ _fzf_complete_ssh() {
 _fzf_complete_ansible() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
-  -i)
-    _fzf_complete_new --multi --output_separator=, -- "$@" < <(give_me_hostname ssh)
-    return 0
-    ;;
-  -l)
-    _fzf_complete_new --multi --output_separator=, -- "$@" < <(_fzf_ansible_groups)
-    return 0
-    ;;
-  -u)
-    return 0
-    ;;
+    -i)
+      _fzf_complete_new --multi --output_separator=, -- "$@" < <(give_me_hostname ssh)
+      return 0
+      ;;
+    -l)
+      _fzf_complete_new --multi --output_separator=, -- "$@" < <(_fzf_ansible_groups)
+      return 0
+      ;;
+    -u)
+      return 0
+      ;;
   esac
 
   _fzf_complete_new --multi -- "$@" < <(_fzf_playbook)
@@ -571,20 +582,20 @@ _fzf_complete_ansible() {
 _fzf_complete_dsh() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
-  -g)
-    _fzf_complete_new --multi --output_separator=, -- "$@" < <(_fzf_dsh_groups)
-    return 0
-    ;;
+    -g)
+      _fzf_complete_new --multi --output_separator=, -- "$@" < <(_fzf_dsh_groups)
+      return 0
+      ;;
   esac
 }
 
 _fzf_complete_pacman() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
-  -Rcs | -Qo | -Qi | -Ql | -Sii)
-    _fzf_complete_new --multi --preview 'yay --color always -Qli {1}' -- "$@" < <(_fzf_archlinux_installed_packages)
-    return 0
-    ;;
+    -Rcs | -Qo | -Qi | -Ql | -Sii)
+      _fzf_complete_new --multi --preview 'yay --color always -Qli {1}' -- "$@" < <(_fzf_archlinux_installed_packages)
+      return 0
+      ;;
   esac
 }
 
@@ -595,10 +606,10 @@ _fzf_complete_archlinux_installed_packages() {
 _fzf_complete_pssh() {
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
   case $prev in
-  --hosts | -h)
-    _fzf_complete_new --no-multi -- "$@" < <(_fzf_ansible_groups)
-    return 0
-    ;;
+    --hosts | -h)
+      _fzf_complete_new --no-multi -- "$@" < <(_fzf_ansible_groups)
+      return 0
+      ;;
   esac
 }
 
@@ -626,48 +637,48 @@ _fzf_complete_docker() {
   # "Commands:" and the last line of the help. Then keep the first column and
   # delete empty lines
   DOCKER_COMMANDS=$(
-    command docker --help 2>&1 |
-      sed -n -e '/Management Commands:/,$p' |
-      grep -Fv -e "Management Commands:" -e "Commands:" -e 'COMMAND --help' |
-      grep .
+    command docker --help 2>&1 \
+      | sed -n -e '/Management Commands:/,$p' \
+      | grep -Fv -e "Management Commands:" -e "Commands:" -e 'COMMAND --help' \
+      | grep .
   )
 
   case $prev in
-  'stop' | 'exec' | 'kill' | 'restart' | '-it')
-    _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
-      docker ps --format "${FZF_DOCKER_PS_FORMAT}"
-    )
-    ;;
-  'tag' | '-f' | 'run' | 'push')
-    _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
-      command docker images --format "table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedSince}}"
-    )
-    ;;
-  'rmi')
-    _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
-      docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.Size}}"
-    )
-    ;;
-  'logs')
-    _fzf_complete_new --multi --header-lines=1 --header "Enter CTRL-O to open log in editor | CTRL-/ to change height" --bind 'ctrl-/:change-preview-window(80%,border-bottom|)' --bind "ctrl-o:execute:docker logs {1} | sed 's/\x1b\[[0-9;]*m//g' | cat | ${EDITOR:-vim} -" --preview-window up:follow --preview 'docker logs --follow --tail=100 {1}' -- "$@" < <(
-      docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
-    )
-    ;;
-  'rm')
-    _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
-      docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
-    )
-    ;;
-  'start')
-    _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
-      docker ps -a --format "${FZF_DOCKER_PS_START_FORMAT}"
-    )
-    ;;
-  'docker')
-    _fzf_complete_new --reverse -n 1 --height=80% -- "$@" < <(
-      echo "$DOCKER_COMMANDS"
-    )
-    ;;
+    'stop' | 'exec' | 'kill' | 'restart' | '-it')
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
+        docker ps --format "${FZF_DOCKER_PS_FORMAT}"
+      )
+      ;;
+    'tag' | '-f' | 'run' | 'push')
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
+        command docker images --format "table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedSince}}"
+      )
+      ;;
+    'rmi')
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
+        docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.Size}}"
+      )
+      ;;
+    'logs')
+      _fzf_complete_new --multi --header-lines=1 --header "Enter CTRL-O to open log in editor | CTRL-/ to change height" --bind 'ctrl-/:change-preview-window(80%,border-bottom|)' --bind "ctrl-o:execute:docker logs {1} | sed 's/\x1b\[[0-9;]*m//g' | cat | ${EDITOR:-vim} -" --preview-window up:follow --preview 'docker logs --follow --tail=100 {1}' -- "$@" < <(
+        docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
+      )
+      ;;
+    'rm')
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
+        docker ps -a --format "${FZF_DOCKER_PS_FORMAT}"
+      )
+      ;;
+    'start')
+      _fzf_complete_new --multi --header-lines=1 -- "$@" < <(
+        docker ps -a --format "${FZF_DOCKER_PS_START_FORMAT}"
+      )
+      ;;
+    'docker')
+      _fzf_complete_new --reverse -n 1 --height=80% -- "$@" < <(
+        echo "$DOCKER_COMMANDS"
+      )
+      ;;
   esac
 }
 
@@ -716,5 +727,7 @@ bind -m emacs-standard -x '"\C-f": fzf-file-widget'
 bind -m vi-command -x '"\C-f": fzf-file-widget'
 bind -m vi-insert -x '"\C-f": fzf-file-widget'
 # ALT-S - cd into the selected directory
-# shellcheck disable=SC2016
-bind '"\es": " \C-e\C-u`__fzf_cd__`\e\C-e\er\C-m"'
+# shellcheck disable=2016
+bind -m emacs-standard '"\es": " \C-b\C-k \C-u`__fzf_cd__`\e\C-e\er\C-m\C-y\C-h\e \C-y\ey\C-x\C-x\C-d\C-y\ey\C-_"'
+bind -m vi-command '"\es": "\C-z\es\C-z"'
+bind -m vi-insert '"\es": "\C-z\es\C-z"'

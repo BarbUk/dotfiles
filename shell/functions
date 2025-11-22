@@ -1,49 +1,48 @@
 #!/usr/bin/env bash
 ipreverse() {
-    if [ "$(uname)" = "Darwin" ]; then
-        tac=gtac
-    else
-        tac=tac
-    fi
-    echo -n "$1" | grep -o -E '([0-9]{1,3}\.){3}' | $tac -s.
+  if [ "$(uname)" = "Darwin" ]; then
+    tac=gtac
+  else
+    tac=tac
+  fi
+  echo -n "$1" | grep -o -E '([0-9]{1,3}\.){3}' | $tac -s.
 }
 
-t () {
-    local file="$HOME/.t"
-    if (( $# >= 1 )); then
-        local date project=
-        date=$(date +%F)
+t() {
+  local file="$HOME/.t"
+  if (($# >= 1)); then
+    local date project=
+    date=$(date +%F)
 
-        if [[ $1 == '-p' ]]; then
-            project=$2
-            shift 2
+    if [[ $1 == '-p' ]]; then
+      project=$2
+      shift 2
 
-            if grep -q "^${project}:" "$file"; then
-                sed -i "/^${project}:/a \ \ ☐ $* ($date)" "$file"
-            else
-                echo -e "\n$project:" >> "$file"
-                echo "  ☐ $* ($date)" >> "$file"
-            fi
-        else
-            echo "  ☐ $* ($date)" >> "$file"
-        fi
+      if grep -q "^${project}:" "$file"; then
+        sed -i "/^${project}:/a \ \ ☐ $* ($date)" "$file"
+      else
+        echo -e "\n$project:" >>"$file"
+        echo "  ☐ $* ($date)" >>"$file"
+      fi
+    else
+      echo "  ☐ $* ($date)" >>"$file"
     fi
+  fi
 
-    cat "$file"
+  cat "$file"
 }
 
 homestead() {
-    HOMESTEAD=true vagrant $*
+  HOMESTEAD=true vagrant $*
 }
 
 tmpdir() {
-    tmpdir=$(mktemp --directory)
-    cd "$tmpdir" || exit
+  tmpdir=$(mktemp --directory)
+  cd "$tmpdir" || exit
 }
 
 meteo() {
-    local request="wttr.in/${1-}?format=3"
-    [ "$(tput cols)" -lt 125 ] && request+='&n'
-    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+  local request="wttr.in/${1-}?format=3"
+  [ "$(tput cols)" -lt 125 ] && request+='&n'
+  curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
 }
-
