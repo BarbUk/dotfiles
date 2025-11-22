@@ -19,12 +19,12 @@
 set -o errexit -o pipefail -o nounset
 
 for dir in modules/*; do
-    (
-        if [ -f "$dir/.git" ]; then
-            cd "$dir"
-            echo -n "Updating $dir: "
-            git symbolic-ref refs/remotes/origin/HEAD --short | awk -F/ '{print $2}'
-            git pull
-        fi
-    )
+  (
+    if [ -f "$dir/.git" ]; then
+      cd "$dir"
+      echo -n "Updating $dir: "
+      git symbolic-ref refs/remotes/origin/HEAD --short | awk -F/ '{print $2}'
+      git pull
+    fi
+  )
 done
