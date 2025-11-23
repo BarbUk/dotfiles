@@ -38,7 +38,7 @@ awful.screen.set_auto_dpi_enabled(true)
 theme.dir = home .. "/.config/awesome/themes/barbuk"
 theme.wallpaper = theme.dir .. "/archlinux.png"
 
-theme.font = "PragmataPro " .. dpi(8)
+theme.font = "PragmataPro Mono Liga " .. dpi(8)
 
 theme.fg_normal = theme.foreground
 theme.fg_focus = theme.focus
@@ -70,7 +70,7 @@ theme.notification_fg = theme.foreground
 theme.notification_crit_bg = theme.bg_urgent
 theme.notification_crit_fg = theme.fg_urgent
 theme.notification_margin = dpi(12)
-theme.notification_font = "PragmataPro " .. dpi(11)
+theme.notification_font = "PragmataPro Mono Liga " .. dpi(11)
 theme.notification_padding = theme.screen_margin * 2
 theme.notification_spacing = theme.screen_margin * 2
 theme.notification_shape = helpers.rrect(theme.notification_border_radius)

@@ -40,7 +40,6 @@ if fs.is_dir("/sys/devices/platform/smapi") then
    end)
 else
    bat = lain.widget.bat({
-      battery = "BAT0",
       settings = function()
          if bat_now.status == "Discharging" then
             if bat_now.perc and tonumber(bat_now.perc) <= 10 then
