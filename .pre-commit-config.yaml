@@ -49,6 +49,12 @@ repos:
     hooks:
       - id: editorconfig-checker
 
+  # Spelling
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.39.0
+    hooks:
+      - id: typos
+
   # Png
   - repo: https://github.com/oxipng/oxipng
     rev: v9.1.5
