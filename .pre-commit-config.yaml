@@ -1,20 +1,31 @@
+---
+default_install_hook_types:
+  - pre-commit
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
-      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: detect-private-key
       - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: check-yaml
       - id: trailing-whitespace
         exclude: ".(md|rst)$"
-      - id: check-shebang-scripts-are-executable
-      - id: check-executables-have-shebangs
-      - id: check-merge-conflict
       - id: mixed-line-ending
-      - id: check-added-large-files
       - id: check-json
       - id: pretty-format-json
         args:
           - --autofix
+
+  # YAML
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.37.1
     hooks:
@@ -25,10 +36,20 @@ repos:
     hooks:
       - id: yamlfmt
         language: system
+
+  # Lua
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v2.3.1
     hooks:
       - id: stylua-system
+
+  # EditorConfig
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 3.5.0
+    hooks:
+      - id: editorconfig-checker
+
+  # Png
   - repo: https://github.com/oxipng/oxipng
     rev: v9.1.5
     hooks:
@@ -38,14 +59,37 @@ repos:
     rev: v1.7.9
     hooks:
       - id: actionlint-system
+
+  # Security
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.29.1
     hooks:
       - id: gitleaks
+
+  # Makefile
   - repo: https://github.com/checkmake/checkmake.git
     rev: 0.2.2
     hooks:
       - id: checkmake-system
+
+  # Markdown
+  - repo: https://github.com/hukkin/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          - mdformat-config
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.0.181
+    hooks:
+      - id: rumdl
+        args: ["--fix"]
+
+  # Local tool (shellcheck / shfmt)
   - repo: local
     hooks:
       - id: shellcheck
@@ -57,6 +101,7 @@ repos:
         require_serial: true
         args:
           - --external-sources
+
       - id: shfmt
         name: shfmt
         description: Format shell scripts with shfmt

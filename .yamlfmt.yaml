@@ -1,0 +1,7 @@
+---
+formatter:
+  type: basic
+  pad_line_comments: 2
+  include_document_start: true
+  trim_trailing_whitespace: true
+  retain_line_breaks_single: true
