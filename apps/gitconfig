@@ -1,76 +1,78 @@
 [user]
-  useConfigOnly = true
-  signingkey = B6D01F84A7519939
+	useConfigOnly = true
+	signingkey = B6D01F84A7519939
 [alias]
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  quick-stats = ! /usr/bin/git-quick-stats
-  ass = "! echo '(‿ˠ‿)'; git add"
-  dft = difftool
-  dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	quick-stats = ! /usr/bin/git-quick-stats
+	ass = "! echo '(‿ˠ‿)'; git add"
+	dft = difftool
+	dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
 [color]
-  ui = true
+	ui = true
 [core]
-  pager = diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
-  #pager = delta --dark | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
-  quotepath = off
-  packedGitLimit = 512m
-  packedGitWindowSize = 512m
+	pager = diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
+	#pager = delta --dark | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
+	quotepath = off
+	packedGitLimit = 512m
+	packedGitWindowSize = 512m
 [pack]
-  deltaCacheSize = 2047m
-  packSizeLimit = 2047m
-  windowMemory = 2047m
+	deltaCacheSize = 2047m
+	packSizeLimit = 2047m
+	windowMemory = 2047m
 [push]
-  default = simple
+	default = simple
 	autoSetupRemote = true
 [mergetool]
-  keepBackup = false
+	keepBackup = false
 [merge]
-  #stool = meld
-  tool = smerge
-  conflictstyle = zdiff3
+	#stool = meld
+	tool = smerge
+	conflictstyle = zdiff3
 [mergetool "meld"]
-  cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+	cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
 [mergetool "smerge"]
-  cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
-  trustExitCode = true
+	cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
+	trustExitCode = true
 [pull]
-  rebase = true
+	rebase = true
 [diff]
-  indentHeuristic = on
-  #tool = meld
-  tool = difftastic
-  #external = difft
-  algorithm = histogram
-  colorMoved = default
-  colorMovedWS = allow-indentation-change
+	indentHeuristic = on
+	#tool = meld
+	tool = difftastic
+	#external = difft
+	algorithm = histogram
+	colorMoved = default
+	colorMovedWS = allow-indentation-change
 [difftool]
-  prompt = false
+	prompt = false
 [difftool "meld"]
-  cmd = meld "$LOCAL" "$REMOTE"
+	cmd = meld "$LOCAL" "$REMOTE"
 [difftool "difftastic"]
-  cmd = difft "$LOCAL" "$REMOTE"
+	cmd = difft "$LOCAL" "$REMOTE"
 [pager]
-  difftool = true
+	difftool = true
 [color "diff-highlight"]
-  oldNormal = red bold
-  oldHighlight = red bold 52
-  newNormal = green bold
-  newHighlight = green bold 22
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
 [color "diff"]
-  meta = yellow
-  frag = magenta bold
-  commit = yellow bold
-  old = red bold
-  new = green bold
-  whitespace = red reverse
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
 [commit]
-  gpgsign = true
-  template = ~/.dotfiles/apps/gitmessage
-  verbose = true
+	gpgsign = true
+	template = ~/.dotfiles/apps/gitmessage
+	verbose = true
 [init]
-  defaultBranch = main
-  templatedir = ~/.git_template
+	defaultBranch = main
+	templatedir = ~/.git_template
 [hub]
-  protocol = ssh
+	protocol = ssh
 [help]
-  autocorrect = 10
+	autocorrect = 10
+[tag]
+	gpgSign = true
