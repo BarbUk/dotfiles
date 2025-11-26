@@ -1,6 +1,6 @@
 --[[
 
-     BarbUk Awesome WM config dark
+   BarbUk Awesome WM config dark
 
 --]]
 local helpers = require("config.helpers")
@@ -38,7 +38,7 @@ awful.screen.set_auto_dpi_enabled(true)
 theme.dir = home .. "/.config/awesome/themes/barbuk"
 theme.wallpaper = theme.dir .. "/archlinux.png"
 
-theme.font = "PragmataPro Mono Liga " .. dpi(8)
+theme.font = "PragmataPro " .. dpi(8)
 
 theme.fg_normal = theme.foreground
 theme.fg_focus = theme.focus
