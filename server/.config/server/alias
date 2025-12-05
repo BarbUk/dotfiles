@@ -17,6 +17,8 @@ alias egrep='egrep --color=auto'
 alias bzgrep='bzgrep --color=auto'
 alias zgrep='zgrep --color=auto'
 
+alias ping='ping -O'
+
 # some more ls aliases
 alias ll='ls -lha'
 alias l='ls -lh'
