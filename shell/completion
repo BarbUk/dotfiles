@@ -522,7 +522,7 @@ ch() {
   # shellcheck disable=2086
   sqlite3 -separator $sep /tmp/h \
     "select substr(title, 1, $cols), url
-     from urls order by last_visit_time desc" \
+      from urls order by last_visit_time desc" \
     | awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' \
     | fzf $fzf_default_options $fzf_height --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open >/dev/null 2>/dev/null
 }
@@ -568,6 +568,32 @@ fcs() {
   commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) \
     && commit=$(echo "$commits" | fzf --tac +s +m -e --ansi --reverse) \
     && echo -n "${commit%% *}"
+}
+
+# override __zoxide_z_complete to enable completion without space
+__zoxide_z_complete() {
+  # Only show completions when the cursor is at the end of the line.
+  [[ ${#COMP_WORDS[@]} -eq $((COMP_CWORD + 1)) ]] || return
+
+  if [[ ${#COMP_WORDS[@]} -eq 2 ]]; then
+
+    local prev="${COMP_WORDS[COMP_CWORD]}"
+
+    # shellcheck disable=SC2312
+    __zoxide_result="$(_ZO_FZF_OPTS="--query=$prev --preview 'fzf_preview {2..}' --exact --no-sort --bind=ctrl-z:ignore,btab:up,tab:down --cycle --keep-right --info=inline --layout=reverse --tabstop=1 --exit-0" \command zoxide query --exclude "$(__zoxide_pwd)" --interactive)" && {
+      # In case the terminal does not respond to \e[5n or another
+      # mechanism steals the response, it is still worth completing
+      # the directory in the command line.
+      # shellcheck disable=2154
+      COMPREPLY=("${__zoxide_z_prefix}${__zoxide_result}/")
+
+      # Note: We here call "bind" without prefixing "\builtin" to be
+      # compatible with frameworks like ble.sh, which emulates Bash's
+      # builtin "bind".
+      bind -x '"\e[0n": __zoxide_z_complete_helper'
+      \builtin printf '\e[5n' >/dev/tty
+    }
+  fi
 }
 
 _complete_ssh() {
