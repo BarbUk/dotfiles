@@ -14,7 +14,7 @@ configuration {
   display-combi: "";
 }
 @theme "/usr/share/rofi/themes/Arc.rasi"
-window {width: calc( 100% - 30em );}
+window {width: 77%;}
 
 element-text {
   vertical-align: 0.5;
