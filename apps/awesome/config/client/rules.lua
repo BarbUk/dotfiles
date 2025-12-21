@@ -101,9 +101,9 @@ awful.rules.rules = {
    },
    -- clients that should float ontop
    {
-      rule = {
-         name = "Slack Call Minipanel",
-         role = "bubble",
+      rule_any = {
+         name = { "Slack Call Minipanel" },
+         role = { "bubble" },
       },
       properties = { floating = true, ontop = true },
       callback = function(c)
