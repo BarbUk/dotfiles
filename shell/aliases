@@ -53,6 +53,7 @@ alias gs='git status'
 alias gss='git status -s'
 alias ans=ansible
 alias ap=ansible-playbook
+alias lazypodman="DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock lazydocker"
 
 GRC="$(which grc)"
 if [ -n "$GRC" ]; then
