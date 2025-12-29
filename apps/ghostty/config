@@ -1,8 +1,7 @@
 shell-integration = bash
-font-family = PragmataPro Liga
-font-size = 11.5
+font-family = PragmataPro
+font-size = 12
 window-theme = system
-#theme = Flexoki Light
 theme = Gruvbox Light Hard
 background = #fdf6e3
 mouse-hide-while-typing = true
