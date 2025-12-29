@@ -90,10 +90,12 @@ repos:
         additional_dependencies:
           - mdformat-config
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.197
+    rev: v0.0.206
     hooks:
-      - id: rumdl
-        args: ["--fix"]
+      - id: rumdl-fmt
+        args:
+          - --disable
+          - MD013
 
   # Local tool (shellcheck / shfmt)
   - repo: local
