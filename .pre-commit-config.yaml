@@ -61,10 +61,21 @@ repos:
     hooks:
       - id: oxipng
         args: ["-o", "4", "--strip", "safe", "--alpha"]
+
+  # Github action
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.9
     hooks:
       - id: actionlint-system
+
+  # Docker file
+  - repo: https://github.com/reteps/dockerfmt
+    rev: v0.3.9
+    hooks:
+      - id: dockerfmt
+        args:
+          - --indent=4
+          - --write
 
   # Security
   - repo: https://github.com/Yelp/detect-secrets
