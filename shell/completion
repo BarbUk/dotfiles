@@ -421,18 +421,6 @@ _fzf_complete_process_post() {
   awk '{print $3}'
 }
 
-_fzf_compgen_path() {
-  echo "$1"
-  command find -L "$1" \
-    -name .git -prune -o -name .hg -prune -o -name .svn -prune -o \( -type d -o -type f -o -type l \) \
-    -a -not -path "$1" -print 2>/dev/null | command sed 's@^\./@@'
-}
-_fzf_compgen_dir() {
-  command find -L "$1" \
-    -name .git -prune -o -name .hg -prune -o -name .svn -prune -o -type d \
-    -a -not -path "$1" -print 2>/dev/null | command sed 's@^\./@@'
-}
-
 FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi"
 FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview 'fzf_preview {}'"
 FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git -or -name .keep \) -printf '%P\n' 2>/dev/null"
