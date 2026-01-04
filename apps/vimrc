@@ -7,9 +7,8 @@ call plug#begin('~/.vim/bundle')
   Plug 'morhetz/gruvbox'
   Plug 'AndrewRadev/switch.vim'
   Plug 'jiangmiao/auto-pairs'
-  Plug 'w0rp/ale'
+  Plug 'dense-analysis/ale'
   Plug 'tpope/vim-surround'
-  Plug 'ryanoasis/vim-devicons'
   Plug 'ervandew/supertab'
   Plug 'sheerun/vim-polyglot'
   Plug 'justinmk/vim-sneak'
@@ -17,14 +16,35 @@ call plug#begin('~/.vim/bundle')
   Plug 'junegunn/fzf.vim'
   Plug 'mg979/vim-visual-multi', {'branch': 'master'}
   Plug 'preservim/nerdtree'
+  Plug 'preservim/nerdcommenter'
+  Plug 'godlygeek/tabular'
+  Plug 'preservim/vim-markdown'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 call plug#end()
 
 let g:sneak#s_next = 1
 
 set updatetime=250
 set laststatus=2
-let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+" Enable Powerline fonts.
+let g:airline_powerline_fonts = 1
+
+" Disable ALE integration.
+let g:airline#extensions#ale#enabled = 0
+
+" Disable detection of whitespace errors.
+let g:airline#extensions#whitespace#enabled = 0
+
+" Enable branch information (requires vim-fugitive).
+let g:airline#extensions#branch#enabled = 1
+
+" Enable hunk information (requires vim-gitgutter).
+let g:airline#extensions#hunks#enabled = 1
+
+" Enable NERDTree integration. See NERDTreeStatusline.
+let g:airline#extensions#nerdtree_statusline = 1
 
 " Options diverses
 set backup                        " Enable backups
@@ -88,7 +108,7 @@ nnoremap <F6> :,$s/\.\s*pSQL(\s*\(\$id\w*\\|\\$w*id\\|\$_\w*\[.\{-}\]\\|Tools::g
 nnoremap <F7> :,$s/\.\s*\((string)\)\?\(\$_\w*\[.\{-}\]\\|\s*\$\w*\[.\{-}\]\\|Tools::getValue(.\{-})\\|\$\w*\)/\. pSQL( \2 )/gci<CR>
 " Replace a user provided array by int from the current line
 nnoremap <F8> :,$s/\.\s*\(\$id\w*\\|\\$w\\|\$_\w*\[.\{-}\]\\|Tools::getValue(.\{-})\)/\. implode(', ', array_map('intval', explode(',',  \1 )))/gci<CR>
-" Encaspulate a bad escaped psql
+" Encapsulate a bad escaped psql
 nnoremap <F9> :,$s/=\s*'\s*\.\s*\(pSQL(\s*\(\$_\w*\['\w*'\]\\|\$\w*\\|Tools::getValue(.\{-})\)\s*)\)\s*\.\s*'/= "' . \1 . '"/gci<CR>
 " soa serial
 nnoremap <F12> /\<\d\{10}\><CR>ce<C-r>=strftime("%Y%m%d00")<CR><Esc>:echo @"<CR>
@@ -173,7 +193,6 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " detect nagios config
 autocmd BufNewFile,BufRead */nagios*/*.{cache,cfg,jinja2} setlocal filetype=nagios
 
-
 nnoremap rm :call delete(expand('%')) \| bdelete! <CR>
 nnoremap <leader>wd :write\|bdelete <CR>
 nnoremap <leader>x :bdelete<cr>
@@ -198,22 +217,107 @@ let g:ale_linters = { 'php': ['php', 'psalm'] }
 " Open fzf
 map <C-p> :Files<CR>
 
+let g:fzf_vim = {}
+
+" Set key bindings for opening selected files.
+let g:fzf_action = {
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit' }
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-gitgutter
+"
+" vim-gitgutter is a popular Vim plugin that visually integrates Git diff
+" information with the buffer's gutter (i.e., the sign column to the left of
+" the line numbers).
+"
+" Mappings:
+"
+"   ]c          Jump to next hunk
+"   [c          Jump to previous hunk
+"   <Leader>hp  Preview hunk
+"   <Leader>hs  Stage hunk
+"   <Leader>hu  Undo  hunk
+"
+" See: https://github.com/airblade/vim-gitgutter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Center hunk after jumping.
+nmap ]c <Plug>(GitGutterNextHunk)zz
+nmap [c <Plug>(GitGutterPrevHunk)zz
+
+" Show hidden files by default.
+let g:NERDTreeShowHidden = 1
+
+" Ignore specific files.
+let g:NERDTreeIgnore=[
+      \ '\.git$[[dir]]',
+      \ '\.mypy_cache$[[dir]]',
+      \ '\.pytest_cache$[[dir]]',
+      \ '\.ruff_cache$[[dir]]',
+      \ '__pycache__$[[dir]]',
+      \ 'node_modules$[[dir]]',
+      \ '\.DS_Store$[[file]]',
+      \ '\.pyc$[[file]]',
+      \ '\.swo$[[file]]',
+      \ '\.swp$[[file]]',
+      \ '\~$[[file]]'
+      \ ]
+
+" Do not show 'Bookmarks' and 'Press ? for help' text.
+let g:NERDTreeMinimalUI = 1
+
+" Set window width.
+let g:NERDTreeWinSize = 35
+
 " Open nerdthree
 map <C-o> :NERDTreeFocus<CR>
 
 " Start NERDTree when Vim starts with a directory argument.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
     \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
 
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+if version >= 900
+    " Exit Vim if NERDTree is the only window remaining in the only tab.
+    autocmd BufEnter * if tabpagenr('$') == 1
+        \ && winnr('$') == 1
+        \ && exists('b:NERDTree')
+        \ && b:NERDTree.isTabTree()
+        \ | call feedkeys(":quit\<CR>:\<BS>")
+        \ | endif
+
+    " Close the tab if NERDTree is the only window remaining in it.
+    autocmd BufEnter * if winnr('$') == 1
+        \ && exists('b:NERDTree')
+        \ && b:NERDTree.isTabTree()
+        \ | call feedkeys(":quit\<CR>:\<BS>")
+        \ | endif
+else
+    " Exit Vim if NERDTree is the only window remaining in the only tab.
+    autocmd BufEnter * if tabpagenr('$') == 1
+        \ && winnr('$') == 1
+        \ && exists('b:NERDTree')
+        \ && b:NERDTree.isTabTree()
+        \ | quit
+        \ | endif
+
+    " Close the tab if NERDTree is the only window remaining in it.
+    autocmd BufEnter * if winnr('$') == 1
+        \ && exists('b:NERDTree') && b:NERDTree.isTabTree()
+        \ | quit
+        \ | endif
+endif
 
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+" Do not fold markdown by default
+let g:vim_markdown_folding_disabled = 1
 
 function! XTermPasteBegin()
   set pastetoggle=<Esc>[201~
