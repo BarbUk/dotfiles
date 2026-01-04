@@ -17,8 +17,8 @@
 set -o errexit -o pipefail -o nounset
 
 readonly icon=Papirus
-readonly theme_light=Arc
-readonly theme_dark=Arc-Dark
+readonly theme_light=Materia-light-compact
+readonly theme_dark=Materia-dark-compact
 readonly sublime_theme_light="Boxy Yesterday"
 readonly sublime_colorscheme_light="Celeste.sublime-color-scheme"
 readonly sublime_theme_dark="Boxy Ocean"
@@ -34,13 +34,12 @@ change_theme() {
   local termite_conf="$HOME/.config/termite/config"
   local sublime_conf="$HOME/.config/sublime-text-3/Packages/User/Preferences.sublime-settings"
   local plaintasks_conf="$HOME/.config/sublime-text-3/Packages/User/PlainTasks.sublime-settings"
-  local gtk_conf="$HOME/.config/lxsession/LXDE/desktop.conf"
+  local lxde_gtk_conf="$HOME/.config/lxsession/LXDE/desktop.conf"
   local qt_conf="$HOME/.config/qt5ct/qt5ct.conf"
   local dmenu_conf="$HOME/.dmenurc"
   local vim_conf="$HOME/.vim/vimrc.background"
   local rofi_conf="$HOME/.config/rofi/config.rasi"
   local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
-  local lazygit_conf="$HOME/.config/jesseduffield/lazygit/config.yml"
 
   if [ -e "$theme_file" ]; then
     cat "$conf_dir/termite/termite.conf" "$conf_dir/termite/termite.dark" >"$termite_conf"
@@ -49,12 +48,13 @@ change_theme() {
     sed -i -e "s/$sublime_colorscheme_light/$sublime_colorscheme_dark/g" "$sublime_conf"
     sed -i -e "s/$sublime_theme_light.sublime-theme/$sublime_theme_dark.sublime-theme/g" "$sublime_conf"
     sed -i -e "s/$plaintasks_colorscheme_light/$plaintasks_colorscheme_dark/g" "$plaintasks_conf"
-    if [ -e "$gtk_conf" ] && ! pgrep --exact xfce4-session >/dev/null 2>&1; then
-      sed -i -e "s/ThemeName=$theme_light/ThemeName=$theme_dark/g" "$gtk_conf"
-      sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$gtk_conf"
+    if [ -e "$lxde_gtk_conf" ] && ! pgrep --exact xfce4-session >/dev/null 2>&1; then
+      sed -i -e "s/ThemeName=$theme_light/ThemeName=$theme_dark/g" "$lxde_gtk_conf"
+      sed -i -e "s/IconThemeName=$icon-Light/IconThemeName=$icon-Dark/g" "$lxde_gtk_conf"
     elif pgrep --exact xfce4-session >/dev/null 2>&1; then
       xfconf-query -c xsettings -p /Net/ThemeName -s "$theme_dark"
-      xfconf-query -c xsettings -p /Net/IconThemeName -s "${icon}-Light"
+      xfconf-query -c xfwm4 -p /general/theme -s "$theme_dark"
+      xfconf-query -c xsettings -p /Net/IconThemeName -s "${icon}-Dark"
     fi
     if [ -e "$qt_conf" ]; then
       sed -i -e "s/icon_theme=$icon-Light/icon_theme=$icon-Dark/g" "$qt_conf"
@@ -63,9 +63,6 @@ change_theme() {
       sed -i -e "s/$color_light/$color_dark/" "$dmenu_conf"
     fi
     sed -i -e "s/${theme_light}.rasi/nord.rasi/" "$rofi_conf"
-    if [ -e "$lazygit_conf" ]; then
-      sed -i -e 's/lighttheme: true/lighttheme: false/' "$lazygit_conf"
-    fi
     gsettings set org.gnome.meld style-scheme meld-dark
     spicetify config color_scheme nord-dark
 
@@ -77,12 +74,13 @@ change_theme() {
     sed -i -e "s/$sublime_colorscheme_dark/$sublime_colorscheme_light/g" "$sublime_conf"
     sed -i -e "s/$sublime_theme_dark.sublime-theme/$sublime_theme_light.sublime-theme/g" "$sublime_conf"
     sed -i -e "s/$plaintasks_colorscheme_dark/$plaintasks_colorscheme_light/g" "$plaintasks_conf"
-    if [ -e "$gtk_conf" ] && ! pgrep --exact xfce4-session >/dev/null 2>&1; then
-      sed -i -e "s/ThemeName=$theme_dark/ThemeName=$theme_light/g" "$gtk_conf"
-      sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$gtk_conf"
+    if [ -e "$lxde_gtk_conf" ] && ! pgrep --exact xfce4-session >/dev/null 2>&1; then
+      sed -i -e "s/ThemeName=$theme_dark/ThemeName=$theme_light/g" "$lxde_gtk_conf"
+      sed -i -e "s/IconThemeName=$icon-Dark/IconThemeName=$icon-Light/g" "$lxde_gtk_conf"
     elif pgrep --exact xfce4-session >/dev/null 2>&1; then
       xfconf-query -c xsettings -p /Net/ThemeName -s "$theme_light"
-      xfconf-query -c xsettings -p /Net/IconThemeName -s "${icon}-Dark"
+      xfconf-query -c xfwm4 -p /general/theme -s "$theme_light"
+      xfconf-query -c xsettings -p /Net/IconThemeName -s "${icon}-Light"
     fi
     if [ -e "$qt_conf" ]; then
       sed -i -e "s/icon_theme=$icon-Dark/icon_theme=$icon-Light/g" "$qt_conf"
@@ -91,9 +89,6 @@ change_theme() {
       sed -i -e "s/$color_dark/$color_light/" "$dmenu_conf"
     fi
     sed -i -e "s/nord.rasi/${theme_light}.rasi/" "$rofi_conf"
-    if [ -e "$lazygit_conf" ]; then
-      sed -i -e 's/lighttheme: false/lighttheme: true/' "$lazygit_conf"
-    fi
     gsettings set org.gnome.meld style-scheme meld-base
     spicetify config color_scheme nord-light
 
@@ -103,6 +98,7 @@ change_theme() {
 
 notify_apps() {
   killall -USR1 termite || true
+  pkill -HUP awesome
   spicetify update
 }
 
