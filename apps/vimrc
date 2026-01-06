@@ -386,6 +386,7 @@ let g:NERDTreeShowHidden = 1
 " Ignore specific files.
 let g:NERDTreeIgnore=[
       \ '\.git$[[dir]]',
+      \ '\.rumdl_cache$[[dir]]',
       \ '\.mypy_cache$[[dir]]',
       \ '\.pytest_cache$[[dir]]',
       \ '\.ruff_cache$[[dir]]',
