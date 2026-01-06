@@ -77,9 +77,6 @@ _fzf_compgen_dir() {
   fi
 }
 
-# To redraw line after fzf closes (printf '\e[5n')
-bind '"\e[0n": redraw-current-line'
-
 # fzf default completion
 #[[ -f /usr/share/fzf/completion.bash ]] && source /usr/share/fzf/completion.bash
 
@@ -334,7 +331,7 @@ if command -v perl >/dev/null; then
     script='BEGIN { getc; $/ = "\n\t"; $HISTCOUNT = $ENV{last_hist} + 1 } s/^[ *]//; s/\n/\n\t/gm; print $HISTCOUNT - $. . "\t$_" if !$seen{$_}++'
     output=$(
       set +o pipefail
-      builtin fc -lnr -2147483648 \
+      builtin fc -ln -2147483648 \
         | last_hist=$(HISTTIMEFORMAT='' builtin history 1) command perl -n -l0 -e "$script" \
         | FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
         FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) --query "$READLINE_LINE"
@@ -358,13 +355,13 @@ else # awk - fallback for POSIX systems
     END { if (NR) P(b) }'
     output=$(
       set +o pipefail
-      builtin fc -lnr -2147483648 2>/dev/null \
+      builtin fc -ln -2147483648 2>/dev/null \
         |
         # ( $'\t '<lines>$'\n' )* ; <lines> ::= [^\n]* ( $'\n'<lines> )*
         __fzf_exec_awk "$script" \
         |
         # ( <counter>$'\t'<lines>$'\000' )*
-        FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
+        FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,..  --scheme=history --bind=ctrl-r:toggle-sort,alt-r:toggle-raw --wrap-sign '"$'\t'"↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} +m --read0") \
         FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) --query "$READLINE_LINE"
     ) || return
     READLINE_LINE=${output#*$'\t'}
@@ -764,17 +761,20 @@ else
 fi
 
 # Required to refresh the prompt after fzf
-bind '"\er": redraw-current-line'
+bind -m emacs-standard '"\C-\e(": redraw-current-line'
 bind '"\e^": history-expand-line'
 # CTRL-R - Paste the selected command from history into the command line
 # shellcheck disable=SC2016
-bind '"\C-r": " \C-e\C-u`__fzf_history__`\e\C-e\e^\er"'
+bind -m emacs-standard '"\C-r": "\C-e \C-u\C-y\ey\C-u`__fzf_history__`\e\C-e\C-\e("'
+bind -m vi-command '"\C-r": "\C-z\C-r\C-z"'
+bind -m vi-insert '"\C-r": "\C-z\C-r\C-z"'
 # CTRL-f - Paste the selected file path into the command line
-bind -m emacs-standard -x '"\C-f": fzf-file-widget'
-bind -m vi-command -x '"\C-f": fzf-file-widget'
-bind -m vi-insert -x '"\C-f": fzf-file-widget'
+# shellcheck disable=SC2016
+bind -m emacs-standard '"\C-f": " \C-b\C-k \C-u`__fzf_select__`\e\C-e\C-\e(\C-a\C-y\C-h\C-e\e \C-y\ey\C-x\C-x\C-f\C-y\ey\C-_"'
+bind -m vi-command '"\C-f": "\C-z\C-t\C-z"'
+bind -m vi-insert '"\C-f": "\C-z\C-t\C-z"'
 # ALT-S - cd into the selected directory
 # shellcheck disable=2016
-bind -m emacs-standard '"\es": " \C-b\C-k \C-u`__fzf_cd__`\e\C-e\er\C-m\C-y\C-h\e \C-y\ey\C-x\C-x\C-d\C-y\ey\C-_"'
+bind -m emacs-standard '"\es": " \C-b\C-k \C-u`__fzf_cd__`\e\C-e\C-\e(\C-m\C-y\C-h\e \C-y\ey\C-x\C-x\C-d\C-y\ey\C-_"'
 bind -m vi-command '"\es": "\C-z\es\C-z"'
 bind -m vi-insert '"\es": "\C-z\es\C-z"'
