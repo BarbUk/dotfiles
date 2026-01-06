@@ -13,6 +13,8 @@ call plug#begin('~/.config/vim/plugged')
   Plug 'godlygeek/tabular'
   Plug 'preservim/vim-markdown', { 'for': 'markdown' }
   Plug 'preservim/nerdcommenter'
+  Plug 'editorconfig/editorconfig-vim'
+
   "Plug 'jiangmiao/auto-pairs'
   Plug 'tpope/vim-surround'
   Plug 'ervandew/supertab'
@@ -20,6 +22,7 @@ call plug#begin('~/.config/vim/plugged')
 
   " Theme
   Plug 'morhetz/gruvbox'
+
   " QOL
   Plug 'AndrewRadev/switch.vim'
   Plug 'justinmk/vim-sneak'
@@ -29,11 +32,13 @@ call plug#begin('~/.config/vim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'rbong/vim-flog'
   Plug 'airblade/vim-gitgutter'
+
   " Interface
   Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
   Plug 'junegunn/fzf.vim'
   Plug 'vim-airline/vim-airline'
+
   " Should be called last
   Plug 'ryanoasis/vim-devicons'
 call plug#end()
