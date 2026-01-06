@@ -33,8 +33,6 @@ check_and_source "$HOME/.tokens"
 . "$dot_dir/shell/functions"
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
-elif [ -e "$dot_dir/modules/z.lua/z.lua" ]; then
-  eval "$(lua "$dot_dir/modules/z.lua/z.lua" --init bash enhanced once fzf)"
 fi
 . "$dot_dir/shell/completion"
 if [ "$(uname)" = "Darwin" ]; then

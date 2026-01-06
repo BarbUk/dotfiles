@@ -27,5 +27,5 @@ indent_size = 3
 [Makefile]
 indent_style = tab
 
-[apps/gitconfig]
+[{apps/gitconfig,.gitmodules}]
 indent_style = tab
