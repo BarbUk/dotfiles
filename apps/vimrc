@@ -43,7 +43,7 @@ call plug#begin('~/.config/vim/plugged')
   Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
-" Options diverses
+" Basic Configuration
 set backup                   " Enable backups
 set swapfile                 " Enable swapfiles
 set backupdir=~/.vim/backup/ " Backup dir
@@ -57,6 +57,14 @@ set noerrorbells             " don't beep
 
 " change the mapleader from \ to ,
 let mapleader=","
+
+" Set character encoding.
+set encoding=utf-8
+scriptencoding utf-8
+
+" Set split behavior.
+set splitbelow  " Horizontal split (:split, :sp) below current pane.
+set splitright  " Vertical split (:vsplit, :vs) right of current pane.
 
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -77,12 +85,12 @@ set showmatch                   " set show matching parenthesis
 set ignorecase                  " ignore case when searching
 set smartcase                   " ignore case if search pattern is all lowercase,
 set smarttab                    " insert tabs on the start of a line
-set hlsearch                    " Surligne les résultats de recherche
 set incsearch                   " Recherche incrémentale
+set hlsearch                    " Surligne les résultats de recherche
 set expandtab                   " Utilise  plutot que
-set softtabstop=4               " Largeur de tab
+set softtabstop=2               " Largeur de tab
 set sta                         " Smart tabs
-set shiftwidth=4                " Largeur d'indentation
+set shiftwidth=2                " Largeur d'indentation
 set ru                          " Position dans le fichier donnée
 set hlg=en                      " Langue de l'aide : english
 set mousemodel=popup            " Affiche un popup au clic droit
@@ -90,9 +98,45 @@ set showtabline=2               " Affiche tout le temps la ligne des tabs
 set numberwidth=5               " Nombre de colonnes que prend les numéros de lignes
 set pastetoggle=<F2>            " pour eviter de faire de la cascade
 set ffs=unix,dos
+" Configure status line.
+set laststatus=2  " Always show the status line.
+set noshowmode    " Removes duplicate mode message (use vim-airline instead).
 set updatetime=250
-set laststatus=2
 
+" Set IncSearch color.
+highlight IncSearch cterm=bold ctermfg=166 ctermbg=235 guifg=#d65d0e guibg=#282828
+
+" Set Error color.
+highlight Error cterm=bold ctermfg=167 ctermbg=235 guifg=#fb4934 guibg=#282828
+
+" Set SignColumn color.
+highlight SignColumn ctermbg=235 guibg=#282828
+
+" Configure automatic formatting.
+"   r  Automatically insert the current comment leader after hitting <Enter>.
+"   o  Automatically insert the current comment leader after hitting 'o' or 'O'.
+"   c  Auto-wrap comments using 'textwidth'. Insert the current comment leader.
+"   q  Allow formatting of comments with 'gq'.
+"   n  When formatting text, recognize numbered lists.
+"   1  Don't break a line after a one-letter word.
+"   j  Remove a comment leader when joining lines.
+set formatoptions=rocqn1j
+
+" Center search results after jumping.
+"   n   Next search result
+"   N   Previous search result
+"   *   Search for word under cursor forward
+"   #   Search for word under cursor backward
+"   g*  Search for partial match forward
+"   g#  Search for partial match backward
+nnoremap n  nzz
+nnoremap N  Nzz
+nnoremap *  *zz
+nnoremap #  #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+
+" Some useful commands
 " Show invisible char with F3
 set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,trail:•
 highlight SpecialKey cterm=NONE ctermbg=160 ctermfg=231 gui=NONE guifg=#ffffff guibg=#d70000
@@ -230,7 +274,62 @@ let g:airline#extensions#hunks#enabled = 1
 " Enable NERDTree integration. See NERDTreeStatusline.
 let g:airline#extensions#nerdtree_statusline = 1
 
-let g:ale_linters = { 'php': ['php', 'psalm'] }
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'go': ['goimports'],
+\   'python': ['ruff', 'ruff_format'],
+\   'javascript': ['eslint', 'prettier'],
+\   'typescript': ['eslint', 'prettier'],
+\   'typescriptreact': ['eslint', 'prettier'],
+\   'sh': ['shfmt'],
+\   'markdown': ['remove_trailing_lines'],
+\   'css': ['prettier'],
+\   'scss': ['prettier'],
+\   'html': ['prettier'],
+\   'json': ['prettier'],
+\   'yaml': ['prettier'],
+\   'yml': ['prettier'],
+\   'xml': ['xmllint'],
+\   'terraform': ['terraform'],
+\}
+
+let g:ale_linters = {
+\   'go': ['golangci-lint'],
+\   'python': ['ruff', 'mypy'],
+\   'javascript': ['eslint'],
+\   'typescript': ['eslint', 'tsc'],
+\   'typescriptreact': ['eslint', 'tsc'],
+\   'sh': ['shellcheck'],
+\   'markdown': ['cspell', 'vale'],
+\   'yaml': ['yamllint'],
+\   'dockerfile': ['hadolint'],
+\   'terraform': ['terraform', 'tflint', 'tfsec'],
+\}
+
+let g:ale_sh_shellcheck_options = '-x'
+
+" Disable ALE for specific buffer types (NERDTree, help, etc.).
+let g:ale_pattern_options_enabled = 1
+augroup DisableALEForSpecialBuffers
+  autocmd!
+  autocmd FileType nerdtree let b:ale_enabled = 0
+augroup END
+
+" Show error details in preview window.
+nnoremap <silent> <Leader>ad <Plug>(ale_detail)
+
+" Only lint on enter and save.
+"   - Do not lint on text change.
+"   - Do not lint on insert leave.
+" This configuration enables better performance and fewer distractions.
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+
+" ALE commands.
+nnoremap <silent> <Leader>af :ALEFix<CR>
+nnoremap <silent> <Leader>ai :ALEInfo<CR>
+nnoremap <silent> <Leader>ar :ALEReset<CR>
+nnoremap <silent> <Leader>at :ALEToggle<CR>
 
 "autocmd VimEnter * redraw!
 
@@ -330,7 +429,7 @@ let g:airline#extensions#tabline#enabled = 1
 " Enable Powerline fonts.
 let g:airline_powerline_fonts = 1
 
-" Disable ALE integration.
+" Enable ALE integration.
 let g:airline#extensions#ale#enabled = 1
 
 " Disable detection of whitespace errors.
