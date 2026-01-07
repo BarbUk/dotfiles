@@ -407,10 +407,10 @@ let g:NERDTreeWinSize = 35
 
 " Toggle NERDTree (if closed, open it; if open, close it).
 nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <Leader>nt :NERDTree %:p:h<CR>
 
 " Open nerdthree
-nnoremap <C-o> :NERDTreeFocus<CR>
+"nnoremap <C-o> :NERDTreeFocus<CR>
+nnoremap <C-o> :NERDTree %:p:h<CR>
 
 " Find the file for the active buffer in the NERDTree window.
 nnoremap <C-f> :NERDTreeFind<CR>
@@ -419,7 +419,12 @@ nnoremap <C-f> :NERDTreeFind<CR>
 let g:NERDTreeCaseSensitiveSort = 1
 
 " Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * silent! NERDTree | wincmd p
+"autocmd VimEnter * silent! NERDTree | wincmd p
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
