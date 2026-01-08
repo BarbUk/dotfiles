@@ -76,3 +76,5 @@
 	autocorrect = 10
 [tag]
 	gpgSign = true
+[advice]
+	detachedHead = false
