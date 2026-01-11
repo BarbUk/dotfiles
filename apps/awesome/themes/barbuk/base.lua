@@ -24,7 +24,7 @@ theme.notification_max_width = dpi(720)
 theme.notification_icon_size = dpi(64)
 
 awful.screen.connect_for_each_screen(function(s)
-   if s.outputs["eDP"] then
+   if s.geometry.height > 2000 then
       xresources.set_dpi(192, s)
       dpi = xresources.apply_dpi
       theme.wibar_height = dpi(30)
