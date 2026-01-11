@@ -177,7 +177,7 @@ if v:version < 800
     let g:airline_theme='base16_tomorrow'
 else
     if empty($DISPLAY)
-        set background=dark
+        set background=light
     else
         source ~/.vim/vimrc.background
     endif
