@@ -17,6 +17,7 @@ return {
       -- The default text color
       foreground = "#34484E",
    },
+   selection_word_boundary = " \t\n{}[]()\"'`:;",
    scrollback_lines = 35000,
    hide_tab_bar_if_only_one_tab = true,
    default_cursor_style = "BlinkingBar",
