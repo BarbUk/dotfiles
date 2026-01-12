@@ -99,13 +99,13 @@ repos:
 
   # Makefile
   - repo: https://github.com/checkmake/checkmake.git
-    rev: v0.3.1
+    rev: v0.3.2
     hooks:
       - id: checkmake-system
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.212
+    rev: v0.0.214
     hooks:
       - id: rumdl-fmt
         args:
