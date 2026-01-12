@@ -2,8 +2,18 @@
 # shellcheck shell=bash
 # shellcheck disable=SC2034
 give_me_hostname="give_me_hostname"
+fzf_height="--height ${FZF_TMUX_HEIGHT:-75%} --min-height 25"
+fzf_preview_transformer='
+  echo -n change-preview-window:
+  if ((100 * FZF_COLUMNS / FZF_LINES >= 150)) && ((FZF_COLUMNS >= 120)); then
+    echo "right,50%,border-left";
+  elif ((FZF_LINES >= 30)); then
+    echo "up,50%,border-bottom";
+  else
+    echo "hidden";
+  fi
+'
 fzf_default_options="-i --select-1 --exit-0 --tac --tiebreak=length,begin,index --reverse --inline-info"
-fzf_height="--height ${FZF_TMUX_HEIGHT:-66%} --min-height 25"
 
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 export FZF_COMPLETION_TRIGGER=''
@@ -142,13 +152,13 @@ _fzf_complete() {
 
   post="${caller}_post"
   type -t "$post" >/dev/null 2>&1 || post='command cat'
-  fzf="fzf $fzf_default_options $options $fzf_height --preview-window right:75%:hidden --bind ?:toggle-preview"
+  fzf="fzf $fzf_default_options $options $fzf_height --bind ?:toggle-preview"
 
   if [[ ${current} == *@* ]]; then
     user_prefix="${current/@*/}@"
     current="${current/*@/}"
   fi
-  selected=$(cat | $fzf --preview "$preview" --bind "alt-bspace:execute:$delete" --query "$current" | $post | tr '\n' "$separator")
+  selected=$(cat | $fzf --preview "$preview" --preview-window 'right,50%,hidden,<50(down,50%),hidden' --bind "alt-bspace:execute:$delete" --query "$current" | $post | tr '\n' "$separator")
   selected=${selected%"$separator"} # Strip trailing space not to repeat "-o nospace"
   printf '\e[5n'
 
@@ -263,7 +273,7 @@ _fzf_complete_new() {
   type -t "$post" >/dev/null 2>&1 || post='command cat'
 
   if [ "$default_preview" = true ]; then
-    args+=(--preview "$preview" --preview-window right:75%:hidden --bind ?:toggle-preview)
+    args+=(--preview "$preview" --preview-window 'right,50%,hidden,<50(down,50%),hidden' --bind ?:toggle-preview)
   fi
   args+=(--bind "alt-bspace:execute:$delete")
 
@@ -436,8 +446,8 @@ __fzf_select__() {
   fi
 
   FZF_DEFAULT_COMMAND=${FZF_CTRL_T_COMMAND:-} \
-    FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --preview-window 'right,<50(down,99%)' --walker=file,dir,follow,hidden --walker-root=$current_dir --scheme=path" "${FZF_CTRL_T_OPTS-} -m") \
-    FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) "$@" \
+    FZF_DEFAULT_OPTS=$(__fzf_defaults "--reverse --walker=file,dir,follow,hidden --walker-root=$current_dir --scheme=path" "${FZF_CTRL_T_OPTS-} -m") \
+    FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd) --bind "start:transform($fzf_preview_transformer),resize:transform($fzf_preview_transformer)" "$@" \
     | while read -r item; do
       if [ -n "$last_word" ] && [[ "$last_word" == ~* ]]; then
         item="${item/"$HOME"/'~'}"
@@ -478,7 +488,7 @@ v() {
     | while read -r line; do
       [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
     done | fzf-tmux --select-1 --reverse --inline-info +s \
-    --tac --multi --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
+    --tac --multi --bind "start:transform($fzf_preview_transformer),resize:transform($fzf_preview_transformer)" --preview 'highlight --force -O ansi -l {} 2> /dev/null | head -200' --query "$*" -1) \
     && vim "${files//\~/$HOME}"
 }
 
@@ -565,7 +575,7 @@ __zoxide_z_complete() {
     local prev="${COMP_WORDS[COMP_CWORD]}"
 
     # shellcheck disable=SC2312
-    __zoxide_result="$(_ZO_FZF_OPTS="--query=$prev --preview 'fzf_preview {2..}' --exact --no-sort --bind=ctrl-z:ignore,btab:up,tab:down --cycle --keep-right --info=inline --layout=reverse --tabstop=1 --exit-0" \command zoxide query --exclude "$(__zoxide_pwd)" --interactive)" && {
+    __zoxide_result="$(_ZO_FZF_OPTS="--query=$prev --preview 'fzf_preview {2..}' --preview-window 'right,<50(up,50%)' --exact --no-sort --bind=ctrl-z:ignore,btab:up,tab:down --cycle --keep-right --info=inline --layout=reverse --tabstop=1 --exit-0" \command zoxide query --exclude "$(__zoxide_pwd)" --interactive)" && {
       # In case the terminal does not respond to \e[5n or another
       # mechanism steals the response, it is still worth completing
       # the directory in the command line.
