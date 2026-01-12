@@ -430,8 +430,10 @@ _fzf_complete_process_post() {
 
 FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi"
 FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview 'fzf_preview {}'"
-FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git -or -name .keep \) -printf '%P\n' 2>/dev/null"
-FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
+if command -v bfs >/dev/null 2>&1; then
+  FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git -or -name .keep \) -printf '%P\n' 2>/dev/null"
+  FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
+fi
 
 __fzf_select__() {
   local last_word current_line_until_cursor current_dir=.
