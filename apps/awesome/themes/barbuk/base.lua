@@ -24,7 +24,11 @@ theme.notification_max_width = dpi(720)
 theme.notification_icon_size = dpi(64)
 
 awful.screen.connect_for_each_screen(function(s)
-   if s.geometry.width > 2000 then
+   -- 2k screen should have a normal dpi
+   -- 2560x1440
+   -- 4k screen should have a double dpi
+   -- 3840x2160
+   if s.geometry.width > 2600 then
       xresources.set_dpi(192, s)
       dpi = xresources.apply_dpi
       theme.wibar_height = dpi(30)
