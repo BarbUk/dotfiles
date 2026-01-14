@@ -19,28 +19,25 @@ set -o errexit -o pipefail -o nounset
 
 declare -i active_id
 declare -i win_id
-# shellcheck disable=1091
-. "$HOME/.dmenurc"
-DMENU_ARGS="-i $DMENU_CONF -l"
 
 winlist=$(xprop -root _NET_CLIENT_LIST | cut -d "#" -f 2 | tr "," " ")
-
 count=$(echo "$winlist" | wc -w)
-
 active_id=$(xprop -root _NET_ACTIVE_WINDOW | awk -F' ' '{ print $NF }')
 
 # shellcheck disable=2086
-window=$(for i in $winlist; do
-  win_id="${i}"
-  if [ "$win_id" -eq "$active_id" ]; then
-    focustag="*"
-  else
-    focustag=" "
-  fi
+window=$(
+  for i in $winlist; do
+    win_id="${i}"
+    if [ "$win_id" -eq "$active_id" ]; then
+      focustag="*"
+    else
+      focustag=" "
+    fi
 
-  win_class=$(xprop -id "${win_id}" WM_CLASS | cut -d'"' -f2)
-  win_title=$(xprop -id "${win_id}" WM_NAME | cut -d'=' -f2-)
-  printf "%20.20s${focustag} | %80.80s | 0x%7.7x\n" "${win_class}" "${win_title}" "${win_id}"
-done | sort | dmenu ${DMENU_ARGS} "$count")
+    win_class=$(xprop -id "${win_id}" WM_CLASS | cut -d'"' -f2)
+    win_title=$(xprop -id "${win_id}" WM_NAME | cut -d'=' -f2-)
+    printf "%20.20s${focustag} | %80.80s | 0x%7.7x\n" "${win_class}" "${win_title}" "${win_id}"
+  done | sort | rofi -dmenu "$count" -p '❯ '
+)
 
 [ "$window" ] && xdotool windowactivate "$(echo "$window" | awk -F'|' '{ print $NF }')"
