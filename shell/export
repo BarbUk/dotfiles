@@ -86,7 +86,7 @@ export BAT_THEME="GitHub"
 export EDITOR="vim"
 export GIT_EDITOR='vim'
 
-# Langage options
+# Language options
 export RUBYOPT='-W:no-deprecated'
 
 # Don't check mail when opening terminal.
