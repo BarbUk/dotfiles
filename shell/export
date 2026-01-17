@@ -17,7 +17,7 @@ shopt -s autocd 2>/dev/null
 shopt -s dirspell 2>/dev/null
 # Correct spelling errors in arguments supplied to cd
 shopt -s cdspell 2>/dev/null
-CDPATH="."
+# CDPATH="."
 # Automatically trim long paths in the prompt (requires Bash 4.x)
 PROMPT_DIRTRIM=3
 # Enable history expansion with space
