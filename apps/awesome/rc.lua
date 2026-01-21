@@ -6,6 +6,10 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local beautiful = require("beautiful")
 
+-- Garbage collection tuning
+collectgarbage("setpause", 110)
+collectgarbage("setstepmul", 1000)
+
 -- beautiful init
 local chosen_theme = "barbuk"
 local theme_path = string.format("%s/themes/%s/base.lua", gears.filesystem.get_configuration_dir(), chosen_theme)
