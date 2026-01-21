@@ -11,10 +11,13 @@
 	ui = true
 [core]
 	pager = diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
-	#pager = delta --dark | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
+	#pager = delta --diff-so-fancy | less --tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --no-init
 	quotepath = off
 	packedGitLimit = 512m
 	packedGitWindowSize = 512m
+	commitGraph = true
+[fetch]
+	prune = true
 [pack]
 	deltaCacheSize = 2047m
 	packSizeLimit = 2047m
