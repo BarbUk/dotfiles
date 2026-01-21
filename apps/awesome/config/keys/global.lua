@@ -18,7 +18,6 @@ local fsroot = require("config.widgets").fsroot
 require("awful.hotkeys_popup.keys")
 -- }}}
 
-awful.util.terminal = apps.default.terminal
 hotkeys_popup.default_widget.labels = beautiful.hotkeys_popup_labels
 
 local widget_refresh = function()
@@ -31,31 +30,31 @@ globalkeys = gears.table.join(
 
    -- Take a screenshot
    awful.key({ "Shift" }, "Print", function()
-      awful.util.spawn_with_shell([[
+      awful.spawn.with_shell([[
       maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=5 --format=png --quality=7 | satty --early-exit --filename -
-    ]])
+   ]])
    end, { description = "take a screenshot and edit it with satty", group = "awesome" }),
 
    awful.key({ "Control" }, "Print", function()
-      awful.util.spawn("flameshot gui")
+      awful.spawn("flameshot gui")
    end, { description = "take a screenshot with flashshot", group = "awesome" }),
 
    awful.key({}, "Print", function()
-      awful.util.spawn_with_shell([[
+      awful.spawn.with_shell([[
       maim --select --hidecursor --highlight --color=0.3,0.4,0.6,0.3 --bordersize=5 --format=png --quality=10 | xclip -selection clipboard -t image/png
-    ]])
+   ]])
    end, { description = "take a screenshot accessible from clipboard", group = "awesome" }),
 
    -- Take a video
    awful.key({ altkey }, "Print", function()
-      awful.util.spawn_with_shell([[
+      awful.spawn.with_shell([[
          giph --quiet --select --delay 1 --timer 5 --notify --color 0.3,0.4,0.6,0.3 --bordersize 3 --highlight ~/Downloads/$(date +%F-%T).mp4
-    ]])
+   ]])
    end, { description = "take a screenshot and save it", group = "awesome" }),
 
    -- OCR !
    awful.key({ modkey, "Control" }, "Print", function()
-      awful.util.spawn_with_shell("ocr")
+      awful.spawn.with_shell("ocr")
    end, { description = "Select a zone to OCR", group = "awesome" }),
 
    awful.key({ modkey }, "p", function()
@@ -263,11 +262,11 @@ globalkeys = gears.table.join(
       widget_refresh()
    end, { description = "music toggle", group = "sound" }),
    awful.key({ altkey }, "XF86AudioPlay", function()
-      awful.util.spawn(apps.cmd.volume.toggle, false)
+      awful.spawn(apps.cmd.volume.toggle, false)
       widget_refresh()
    end, { description = "Toggle soundcard", group = "sound" }),
    awful.key({ "Control" }, "XF86AudioPlay", function()
-      awful.util.spawn(apps.cmd.volume.toggle .. " media music", false)
+      awful.spawn(apps.cmd.volume.toggle .. " media music", false)
       widget_refresh()
    end, { description = "music toggle", group = "sound" }),
    awful.key({ modkey, "Control" }, "Down", function()
@@ -319,7 +318,7 @@ globalkeys = gears.table.join(
    end, { description = "lock", group = "screen" }),
 
    awful.key({}, "XF86Display", function()
-      awful.util.spawn("autorandr -c")
+      awful.spawn("autorandr -c")
    end, { description = "detect display", group = "screen" }),
 
    awful.key({}, "XF86TouchpadToggle", function()
@@ -332,7 +331,7 @@ globalkeys = gears.table.join(
 
    -- Copy primary to clipboard (terminals to gtk)
    awful.key({ modkey }, "c", function()
-      awful.util.spawn_with_shell("xsel | xsel -i -b")
+      awful.spawn.with_shell("xsel | xsel -i -b")
    end, { description = "copy", group = "clipboard" }),
    -- Copy clipboard to primary (gtk to terminals)
    awful.key({ modkey }, "v", function()
@@ -378,10 +377,10 @@ globalkeys = gears.table.join(
    end, { description = "launch monitoring menu", group = "launcher" }),
    awful.key({ modkey, "Shift" }, "p", function()
       sloppyfocus_last.focus = false
-      awful.util.spawn_with_shell("snippy")
+      awful.spawn.with_shell("snippy")
    end, { description = "snippets", group = "launcher" }),
    awful.key({ modkey, "Shift" }, "m", function()
-      awful.util.spawn_with_shell("termite --class='center' --geometry='700x400' --exec=ncmpcpp &")
+      awful.spawn.with_shell("termite --class='center' --geometry='700x400' --exec=ncmpcpp &")
    end, { description = "terminal centered", group = "launcher" }),
    awful.key({ modkey }, "0", function()
       awful.spawn("qrcodize", false)

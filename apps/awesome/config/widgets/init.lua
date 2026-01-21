@@ -5,6 +5,7 @@ local helpers = require("lain.helpers")
 local beautiful = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local gears = require("gears")
 
 local apps = require("config.apps")
 local bat = require("config.widgets.battery")
@@ -28,7 +29,7 @@ local flag = {}
 local clock = {}
 for k, v in pairs(beautiful.flag) do
    flag[k] = wibox.widget.imagebox(beautiful.flag[k], true)
-   flag[k]:buttons(awful.util.table.join(awful.button({}, 1, function()
+   flag[k]:buttons(gears.table.join(awful.button({}, 1, function()
       awful.spawn(apps.cmd.timezone[k], false)
    end)))
    clock[k] = wibox.widget.textclock(markup(white, "%H:%M"), 30, apps.timezone[k])
@@ -73,15 +74,15 @@ local mpris = mpris_info({
    end,
 })
 
-mpris.widget:buttons(awful.util.table.join(
+mpris.widget:buttons(gears.table.join(
    awful.button({}, 1, function()
-      awful.util.spawn(apps.cmd.player.toggle, false, mpris.update())
+      awful.spawn(apps.cmd.player.toggle, false, mpris.update())
    end),
    awful.button({}, 4, function()
-      awful.util.spawn(apps.cmd.player.next, false, mpris.update())
+      awful.spawn(apps.cmd.player.next, false, mpris.update())
    end),
    awful.button({}, 5, function()
-      awful.util.spawn(apps.cmd.player.prev, false, mpris.update())
+      awful.spawn(apps.cmd.player.prev, false, mpris.update())
    end)
 ))
 

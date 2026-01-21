@@ -13,7 +13,7 @@ function spawn_and_move(command, class, tag)
       end
    end
    client.connect_signal("manage", callback)
-   awful.util.spawn(command)
+   awful.spawn(command)
 end
 
 -- {{{ Rules
@@ -95,7 +95,7 @@ awful.rules.rules = {
       },
       properties = {
          floating = true,
-         focus = yes,
+         focus = true,
          placement = awful.placement.centered,
       },
    },

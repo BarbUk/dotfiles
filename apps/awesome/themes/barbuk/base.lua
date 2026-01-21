@@ -39,7 +39,7 @@ end)
 
 awful.screen.set_auto_dpi_enabled(true)
 
-theme.dir = home .. "/.config/awesome/themes/barbuk"
+theme.dir = gears.filesystem.get_configuration_dir() .. "themes/barbuk"
 theme.wallpaper = theme.dir .. "/archlinux.png"
 
 theme.font = "PragmataPro " .. dpi(8)
