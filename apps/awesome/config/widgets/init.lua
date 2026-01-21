@@ -76,13 +76,19 @@ local mpris = mpris_info({
 
 mpris.widget:buttons(gears.table.join(
    awful.button({}, 1, function()
-      awful.spawn(apps.cmd.player.toggle, false, mpris.update())
+      awful.spawn.easy_async(apps.cmd.player.toggle, function()
+         mpris.update()
+      end)
    end),
    awful.button({}, 4, function()
-      awful.spawn(apps.cmd.player.next, false, mpris.update())
+      awful.spawn.easy_async(apps.cmd.player.next, function()
+         mpris.update()
+      end)
    end),
    awful.button({}, 5, function()
-      awful.spawn(apps.cmd.player.prev, false, mpris.update())
+      awful.spawn.easy_async(apps.cmd.player.prev, function()
+         mpris.update()
+      end)
    end)
 ))
 

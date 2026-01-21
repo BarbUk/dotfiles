@@ -3,6 +3,7 @@ local awful = require("awful")
 local lain = require("lain")
 local helpers = require("lain.helpers")
 local wibox = require("wibox")
+local gears = require("gears")
 local apps = require("config.apps")
 local markup = lain.util.markup
 
@@ -11,8 +12,8 @@ local volicon = wibox.widget.textbox(volumeicon)
 local internal_soundcard = "alsa_output.pci"
 local volume = lain.widget.pulse({
    cmd = [[
-    current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p');
-    pactl list sinks | sed -n -e '/'"$current_sink"'/,$!d' \
+      current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p');
+      pactl list sinks | sed -n -e '/'"$current_sink"'/,$!d' \
       -e '/Base Volume/d' \
       -e 's/Volume:/volume:/' \
       -e '/volume:/p' \
@@ -22,7 +23,7 @@ local volume = lain.widget.pulse({
       -e '/index/p' \
       -e 's/Mute:/muted:/' \
       -e '/muted:/p'
-  ]],
+   ]],
    settings = function()
       helpers.async_with_shell("pactl list short sinks | awk '/RUNNING/ {print $2}'", function(soundcard)
          if soundcard:sub(1, #internal_soundcard) == internal_soundcard then
@@ -41,16 +42,18 @@ local volume = lain.widget.pulse({
    end,
 })
 
-volume.widget:buttons(awful.util.table.join(
+volume.widget:buttons(gears.table.join(
    awful.button({}, 1, function()
       apps.osd.volume.mute()
       volume.update()
    end),
    awful.button({}, 2, function()
-      awful.util.spawn(apps.cmd.volume.toggle, false, volume.update())
+      awful.spawn.easy_async(apps.cmd.volume.toggle, function()
+         volume.update()
+      end)
    end),
    awful.button({}, 3, function()
-      awful.util.spawn("pavucontrol", false)
+      awful.spawn("pavucontrol", false)
    end),
    awful.button({}, 4, function()
       apps.osd.volume.up()
