@@ -23,8 +23,6 @@ check_and_source() {
   fi
 }
 
-export TERM=termite
-
 check_and_source "$HOME/.tokens"
 . "$dot_dir/shell/export"
 # shellcheck source=modules/bash-it/bash_it.sh
