@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 if command -v vivid >/dev/null 2>&1; then
-  LS_COLORS="$(vivid generate ayu_bold)"
+  if [ ! -f /tmp/ls_colors_cache ]; then
+    vivid generate ayu_bold >/tmp/ls_colors_cache
+  fi
+  LS_COLORS="$(</tmp/ls_colors_cache)"
   export LS_COLORS
 else
   eval "$(dircolors -b "$HOME"/.dir_colors)"
