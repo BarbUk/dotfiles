@@ -6,7 +6,7 @@ alias x_copy="xrandr --output LVDS --mode 1280x800 --output VGA-0 --mode 1280x10
 alias rbarbuk='rdesktop -g 1024x768 -P -z -x m -r sound:off -u "barbuk" 172.16.0.1:3389 -k fr'
 alias bmux='tmux -2 attach-session -t buk'
 alias xev="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'"
-alias pip-update="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo -H pip install -U"
+alias pip-update="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs sudo -H pip install -U"
 
 # enable color support of ls and also add handy aliases
 alias dir='dir --color=auto'
@@ -40,7 +40,7 @@ alias local-timezone='curl -s https://ipapi.co/timezone'
 alias set-local-timezone='timedatectl set-timezone $(curl -s https://ipapi.co/timezone)'
 alias set-france-timezone='timedatectl set-timezone Europe/Paris'
 alias set-maurice-timezone='timedatectl set-timezone Indian/Mauritius'
-alias gd='GIT_PAGER="delta --light --syntax-theme=gruvbox-light" git diff'
+alias gd='GIT_PAGER="delta --syntax-theme=gruvbox-light" git diff'
 alias lg='lazygit'
 alias gg='git log --graph --pretty=format:"%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(reset) %C(cyan)%cd %C(blue)(%cr)%Creset" --date=format:"%Y-%m-%d %Hh%M"'
 alias ggf='git log --graph --date=short --pretty=format:'\''%C(auto)%h %Cgreen%an%Creset %Cblue%cd%Creset %C(auto)%d %s'\'''
