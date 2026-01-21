@@ -27,7 +27,7 @@ function sloppy_focus(c)
    if sloppyfocus_last.focus then
       if c ~= sloppyfocus_last.c and (mcoords.x ~= sloppyfocus_last.x or mcoords.y ~= sloppyfocus_last.y) then
          c:activate({ context = "mouse_enter", raise = false })
-         sloppyfocus_last = { c = c, x = mcoords.x, mcoords.y }
+         sloppyfocus_last = { c = c, x = mcoords.x, y = mcoords.y }
       end
    end
    sloppyfocus_last.focus = true
