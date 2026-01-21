@@ -44,7 +44,7 @@ local function update_txt_layoutbox(s)
 end
 
 awful.screen.connect_for_each_screen(function(s)
-   screen_index = s.index
+   local screen_index = s.index
    awful.tag(awful.util.tagnames[screen_index].names, s, awful.layout.layouts[1])
 
    -- Create a taglist widget
