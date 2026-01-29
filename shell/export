@@ -107,3 +107,4 @@ export GPG_TTY
 LESSOPEN="|/usr/bin/lesspipe.sh %s"
 export LESSOPEN
 export GRC_ALIASES=true
+export GCL_NETRC=1
