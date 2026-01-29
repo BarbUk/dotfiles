@@ -29,7 +29,7 @@ repos:
 
   # YAML
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
         args: ["-d relaxed"]
@@ -53,13 +53,13 @@ repos:
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
-    rev: v1.42.0
+    rev: v1.42.3
     hooks:
       - id: typos
 
   # Png
   - repo: https://github.com/oxipng/oxipng
-    rev: v10.0.0
+    rev: v10.1.0
     hooks:
       - id: oxipng
         args: ["-o", "4", "--strip", "safe", "--alpha"]
@@ -70,7 +70,7 @@ repos:
     hooks:
       - id: actionlint-system
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.20.0
+    rev: v1.22.0
     hooks:
       - id: zizmor
 
@@ -105,7 +105,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.214
+    rev: v0.1.5
     hooks:
       - id: rumdl-fmt
         args:
