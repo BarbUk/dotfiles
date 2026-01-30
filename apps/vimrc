@@ -138,7 +138,7 @@ nnoremap g# g#zz
 
 " Some useful commands
 " Show invisible char with F3
-set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,trail:•
+set listchars=tab:▸\ ,eol:↲,precedes:«,extends:»,nbsp:␣,space:.,trail:•
 highlight SpecialKey cterm=NONE ctermbg=160 ctermfg=231 gui=NONE guifg=#ffffff guibg=#d70000
 nnoremap <F3> :set list!<CR>
 " Detect sqli pattern on current line and cast to int
