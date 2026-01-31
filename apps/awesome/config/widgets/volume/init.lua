@@ -25,13 +25,16 @@ local volume = lain.widget.pulse({
       -e '/muted:/p'
    ]],
    settings = function()
-      helpers.async_with_shell("pactl list short sinks | awk '/RUNNING/ {print $2}'", function(soundcard)
-         if soundcard:sub(1, #internal_soundcard) == internal_soundcard then
-            volumeicon = markup(beautiful.nord9, " ")
-         else
-            volumeicon = markup(beautiful.nord9, " ")
+      helpers.async_with_shell(
+         "pactl list short sinks | awk '$NF ~ /RUNNING/ && $2 !~ /easyeffects_sink/ {print $2}'",
+         function(soundcard)
+            if soundcard:sub(1, #internal_soundcard) == internal_soundcard then
+               volumeicon = markup(beautiful.nord9, " ")
+            else
+               volumeicon = markup(beautiful.nord9, "🎧 ")
+            end
          end
-      end)
+      )
       if volume_now.muted == "yes" then
          widget:set_text("Mute")
          volicon:set_markup_silently(markup(beautiful.nord9, " "))
