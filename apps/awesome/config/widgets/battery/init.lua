@@ -3,6 +3,9 @@ local lain = require("lain")
 local wibox = require("wibox")
 local markup = lain.util.markup
 local fs = require("gears.filesystem")
+local awful = require("awful")
+local naughty = require("naughty")
+local dpi = beautiful.xresources.apply_dpi
 
 local icon = wibox.widget.textbox("")
 local bat
@@ -61,6 +64,26 @@ else
       end,
    })
 end
+
+local notification
+local function show_battery_status()
+   awful.spawn.easy_async([[bash -c 'acpi']], function(stdout, _, _, _)
+      naughty.destroy(notification)
+
+      notification = naughty.notification({
+         preset = naughty.config.presets.low,
+         title = "Battery information",
+         message = tostring(stdout),
+      })
+   end)
+end
+
+bat.widget:connect_signal("mouse::enter", function()
+   show_battery_status()
+end)
+bat.widget:connect_signal("mouse::leave", function()
+   naughty.destroy(notification)
+end)
 
 return {
    widget = bat.widget,
