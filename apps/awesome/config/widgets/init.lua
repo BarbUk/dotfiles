@@ -113,7 +113,7 @@ local weather = lain.widget.weather({
    lat = -20.4172,
    lon = 57.5413,
    APPID = "869faf1aac21d680efcfd1a6ce1ece93",
-   cnt = 5,
+   cnt = 40,
    units = "metric",
    lang = "fr",
    settings = function()
@@ -122,13 +122,13 @@ local weather = lain.widget.weather({
       widget:set_markup(" " .. units .. "°C")
    end,
    notification_text_fun = function(wn)
-      local day = os.date("%a %d", wn["dt"])
+      local day = os.date("%a\t%H", wn["dt"])
       local temp = math.floor(wn["main"]["temp"])
       local humi = math.floor(wn["main"]["humidity"])
       local wind = math.floor(wn["wind"]["speed"])
       local desc = wn["weather"][1]["description"]
       local icon = "w" .. wn["weather"][1]["icon"]
-      return string.format("<b>%s  %s</b>:%d°C%d%%%d %s", apps.weather[icon], day, temp, humi, wind, desc)
+      return string.format("<b>%s %sh</b>: %d°C %d%% %d %s", apps.weather[icon], day, temp, humi, wind, desc)
    end,
 })
 
