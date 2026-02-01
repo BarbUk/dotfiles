@@ -141,20 +141,36 @@ local net = lain.widget.net({
       end
 
       widget:set_markup(
-         markup(beautiful.nord14, markup.bold("↓ "))
+         markup(beautiful.nord14, markup.bold(" "))
             .. net_now.received
             .. " "
-            .. markup(beautiful.nord11, markup.bold("↑ "))
+            .. markup(beautiful.nord11, markup.bold(" "))
             .. net_now.sent
       )
    end,
 })
 
 -- CPU
-local cpuicon = wibox.widget.textbox(markup(beautiful.nord14, " "))
+local cpuicon = wibox.widget.textbox(markup(beautiful.nord10, " "))
 local cpu = lain.widget.sysload({
    settings = function()
       widget:set_markup(load_1 .. " " .. load_5)
+   end,
+})
+
+-- Memory
+local ramicon = wibox.widget.textbox(markup(beautiful.nord9, "󰍛"))
+local ram = lain.widget.mem({
+   settings = function()
+      widget:set_markup(mem_now.perc .. "%")
+   end,
+})
+
+-- Temp
+local tempicon = wibox.widget.textbox(markup(beautiful.nord15, ""))
+local temp = lain.widget.temp({
+   settings = function()
+      widget:set_markup(coretemp_now .. "°C")
    end,
 })
 
@@ -182,7 +198,13 @@ awful.screen.connect_for_each_screen(function(s)
       separator.left,
       cpuicon,
       cpu.widget,
+      separator.left,
+      ramicon,
+      ram.widget,
       fsroot.widget,
+      separator.left,
+      tempicon,
+      temp.widget,
       separator.left,
       bat.widget,
       separator.left,
