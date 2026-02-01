@@ -226,10 +226,6 @@ awful.screen.connect_for_each_screen(function(s)
       separator.center,
       clock.mauritius,
       separator.center,
-      flag.cambodia,
-      separator.center,
-      clock.cambodia,
-      separator.center,
    }
 
    local general_info = {
@@ -250,10 +246,6 @@ awful.screen.connect_for_each_screen(function(s)
       flag.mauritius,
       separator.center,
       clock.mauritius,
-      separator.left,
-      flag.cambodia,
-      separator.center,
-      clock.cambodia,
       separator.center,
    }
 
