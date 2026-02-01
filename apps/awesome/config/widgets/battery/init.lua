@@ -7,63 +7,8 @@ local awful = require("awful")
 local naughty = require("naughty")
 local dpi = beautiful.xresources.apply_dpi
 
-local icon = wibox.widget.textbox("")
 local bat
-
-if fs.is_dir("/sys/devices/platform/smapi") then
-   local tp_smapi = lain.widget.contrib.tp_smapi("/sys/devices/platform/smapi")
-   bat = tp_smapi.create_widget({
-      battery = "BAT0",
-      settings = function()
-         if tpbat_now.n_status[1] == "discharging" then
-            if tpbat_now.n_perc[1] and tonumber(tpbat_now.n_perc[1]) <= 10 then
-               icon:set_markup_silently(markup(beautiful.nord11, ""))
-               noti:notify("Battery is low", naughty.config.presets.critical)
-            elseif tpbat_now.n_perc[1] and tonumber(tpbat_now.n_perc[1]) <= 25 then
-               icon:set_markup_silently(markup(beautiful.nord12, ""))
-            elseif tpbat_now.n_perc[1] and tonumber(tpbat_now.n_perc[1]) <= 55 then
-               icon:set_markup_silently(markup(beautiful.nord13, ""))
-            elseif tpbat_now.n_perc[1] and tonumber(tpbat_now.n_perc[1]) <= 75 then
-               icon:set_markup_silently(markup(beautiful.nord14, ""))
-            else
-               icon:set_markup_silently(markup(beautiful.nord15, ""))
-            end
-         else
-            icon:set_markup_silently(markup(beautiful.nord15, ""))
-         end
-         widget:set_markup(" " .. tpbat_now.n_perc[1] .. "%")
-      end,
-   })
-
-   bat.widget:connect_signal("mouse::enter", function()
-      tp_smapi.show("BAT0")
-   end)
-   bat.widget:connect_signal("mouse::leave", function()
-      tp_smapi.hide()
-   end)
-else
-   bat = lain.widget.bat({
-      settings = function()
-         if bat_now.status == "Discharging" then
-            if bat_now.perc and tonumber(bat_now.perc) <= 10 then
-               icon:set_markup_silently(markup(beautiful.nord11, ""))
-               noti:notify("Battery is low", naughty.config.presets.critical)
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 25 then
-               icon:set_markup_silently(markup(beautiful.nord12, ""))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 55 then
-               icon:set_markup_silently(markup(beautiful.nord13, ""))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 75 then
-               icon:set_markup_silently(markup(beautiful.nord14, ""))
-            else
-               icon:set_markup_silently(markup(beautiful.nord15, ""))
-            end
-         else
-            icon:set_markup_silently(markup(beautiful.nord15, ""))
-         end
-         widget:set_markup(" " .. bat_now.perc .. "%")
-      end,
-   })
-end
+local icon
 
 local notification
 local function show_battery_status()
@@ -78,14 +23,63 @@ local function show_battery_status()
    end)
 end
 
-bat.widget:connect_signal("mouse::enter", function()
-   show_battery_status()
-end)
-bat.widget:connect_signal("mouse::leave", function()
-   naughty.destroy(notification)
-end)
+local function set_bat_value(status, percentage)
+   local content
+
+   if status:lower() == "discharging" then
+      if percentage and tonumber(percentage) <= 10 then
+         icon = markup(beautiful.nord11, "")
+         noti:notify("Battery is low", naughty.config.presets.critical)
+      elseif percentage and tonumber(percentage) <= 15 then
+         icon = markup(beautiful.nord12, "")
+      elseif percentage and tonumber(percentage) <= 25 then
+         icon = markup(beautiful.nord13, "")
+      elseif percentage and tonumber(percentage) <= 55 then
+         icon = markup(beautiful.nord14, "")
+      elseif percentage and tonumber(percentage) <= 75 then
+         icon = markup(beautiful.nord14, "")
+      else
+         icon = markup(beautiful.nord15, "")
+      end
+   else
+      icon = markup(beautiful.nord15, "")
+   end
+
+   content = icon .. " " .. percentage .. "%"
+   return content
+end
+
+if fs.is_dir("/sys/devices/platform/smapi") then
+   local tp_smapi = lain.widget.contrib.tp_smapi("/sys/devices/platform/smapi")
+   bat = tp_smapi.create_widget({
+      battery = "BAT0",
+      settings = function()
+         local content = set_bat_value(tpbat_now.n_status[1], tpbat_now.n_perc[1])
+         widget:set_markup(content)
+      end,
+   })
+
+   bat.widget:connect_signal("mouse::enter", function()
+      tp_smapi.show("BAT0")
+   end)
+   bat.widget:connect_signal("mouse::leave", function()
+      tp_smapi.hide()
+   end)
+else
+   bat = lain.widget.bat({
+      settings = function()
+         local content = set_bat_value(bat_now.status, bat_now.perc)
+         widget:set_markup(content)
+      end,
+   })
+   bat.widget:connect_signal("mouse::enter", function()
+      show_battery_status()
+   end)
+   bat.widget:connect_signal("mouse::leave", function()
+      naughty.destroy(notification)
+   end)
+end
 
 return {
    widget = bat.widget,
-   icon = icon,
 }

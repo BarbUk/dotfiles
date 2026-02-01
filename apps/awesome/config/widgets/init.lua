@@ -183,7 +183,6 @@ awful.screen.connect_for_each_screen(function(s)
       cpu.widget,
       fsroot.widget,
       separator.left,
-      bat.icon,
       bat.widget,
       separator.left,
       volume.icon,
