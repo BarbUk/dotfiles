@@ -39,6 +39,7 @@ end
 local calendar = lain.widget.cal({
    attach_to = { clock.france, clock.canada, clock.mauritius, clock.cambodia },
    three = true,
+   week_number = "left",
    icons = helpers.icons_dir .. "cal/" .. beautiful.iconcolor .. "/",
    followtag = true,
    notification_preset = {
