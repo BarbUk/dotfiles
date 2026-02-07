@@ -4,7 +4,7 @@ default_install_hook_types:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -29,58 +29,58 @@ repos:
 
   # YAML
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.38.0
+    rev: cba56bcde1fdd01c1deb3f945e69764c291a6530  # frozen: v1.38.0
     hooks:
       - id: yamllint
         args: ["-d relaxed"]
   - repo: https://github.com/google/yamlfmt
-    rev: v0.21.0
+    rev: 21ca5323a9c87ee37a434e0ca908efc0a89daa07  # frozen: v0.21.0
     hooks:
       - id: yamlfmt
         language: system
 
   # Lua
   - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: v2.3.1
+    rev: 9c323db146963b04b919c83276d43ca7817da5e2  # frozen: v2.3.1
     hooks:
       - id: stylua-system
 
   # EditorConfig
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 3.6.0
+    rev: 11ea70506fd878d26129b2b87746fd1a1f6b561b  # frozen: 3.6.0
     hooks:
       - id: editorconfig-checker
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
-    rev: v1.42.3
+    rev: 9066e9940a8a05b98fb4733c62a726f83c9e57f8  # frozen: v1.43.3
     hooks:
       - id: typos
 
   # Png
   - repo: https://github.com/oxipng/oxipng
-    rev: v10.1.0
+    rev: d54e7c04ea58170167d95d9b2b2ec07571602fe2  # frozen: v10.1.0
     hooks:
       - id: oxipng
         args: ["-o", "4", "--strip", "safe", "--alpha"]
 
   # Github action
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.10
+    rev: 0933c147c9d6587653d45fdcb4c497c57a65f9af  # frozen: v1.7.10
     hooks:
       - id: actionlint-system
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.22.0
+    rev: b546b77c44c466a54a42af5499dcc0dcc1a3193f  # frozen: v1.22.0
     hooks:
       - id: zizmor
 
   # Docker file
   - repo: https://github.com/AleksaC/hadolint-py
-    rev: v2.14.0
+    rev: 458cb25edf664682e3e856a53a2f9af33e068297  # frozen: v2.14.0
     hooks:
       - id: hadolint
   - repo: https://github.com/reteps/dockerfmt
-    rev: v0.3.9
+    rev: 21be1f69cec5e77953bdb40a2f1d95de0eeb56ac  # frozen: v0.3.9
     hooks:
       - id: dockerfmt
         args:
@@ -89,23 +89,23 @@ repos:
 
   # Security
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.5.0
+    rev: 01886c8a910c64595c47f186ca1ffc0b77fa5458  # frozen: v1.5.0
     hooks:
       - id: detect-secrets
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.0
+    rev: 6eaad039603a4de39fddd1cf5f727391efe9974e  # frozen: v8.30.0
     hooks:
       - id: gitleaks
 
   # Makefile
   - repo: https://github.com/checkmake/checkmake.git
-    rev: v0.3.2
+    rev: 59931d556f8f5cf4fbacf2c8390a8122ef7a881d  # frozen: v0.3.2
     hooks:
       - id: checkmake-system
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.5
+    rev: cdceb72b1573885f7d5d954d74740f56c1baa766  # frozen: v0.1.15
     hooks:
       - id: rumdl-fmt
         args:
