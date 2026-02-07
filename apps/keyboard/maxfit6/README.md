@@ -11,7 +11,7 @@ I've sent a mail to fantechworld.com support team to ask them for the source cod
 ## Configuration
 
 1. Switch the keyboard to wired mode and plug in the cable.
-2. Open https://www.usevia.app/ using the Chrome browser.
+2. Open <https://www.usevia.app/> using the Chrome browser.
 3. Select the Settings menu.
 4. Activate the Show Design Tab.
 5. Press the "LOAD" button in the Load Draft Definition field.
@@ -23,4 +23,4 @@ I've sent a mail to fantechworld.com support team to ask them for the source cod
 ## Layout
 
 You can view or edit this layout with the default firmware.
-Visit https://www.usevia.app/ and import [maxfit6.layout.json](maxfit6.layout.json) in the configuration menu.
+Visit <https://www.usevia.app/> and import [maxfit6.layout.json](maxfit6.layout.json) in the configuration menu.

@@ -1,3 +1,3 @@
 # Key-mapper
 
-https://github.com/sezanzeb/key-mapper
+<https://github.com/sezanzeb/key-mapper>
