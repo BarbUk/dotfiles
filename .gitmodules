@@ -9,7 +9,7 @@
 	url = git@github.com:lcpz/lain.git
 [submodule "modules/bash-it"]
 	path = modules/bash-it
-	url = git@github.com:Bash-it/bash-it.git
+	url = https://github.com/BarbUk/bash-it.git
 [submodule "modules/ttfb.sh"]
 	path = modules/ttfb.sh
 	url = https://github.com/BarbUk/ttfb.sh.git
