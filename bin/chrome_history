@@ -47,10 +47,10 @@ extract_chrome_history() {
   # shellcheck disable=2086
   sqlite3 -separator $sep /tmp/h \
     "SELECT substr(title, 1, 50) as label, url
-       FROM urls
-       GROUP BY label
-       ORDER BY last_visit_time DESC
-       LIMIT 50"
+      FROM urls
+      GROUP BY label
+      ORDER BY last_visit_time DESC
+      LIMIT 50"
 }
 
 for chrome_history_file in "${chrome_history_files[@]}"; do
