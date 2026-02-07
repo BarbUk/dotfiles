@@ -92,7 +92,7 @@ elif [ -f "$item" ]; then
 
   fi
 elif [ -f "$monitored_hosts" ] && grep -q "$item" "$monitored_hosts"; then
-  information "Informations"
+  information "Information"
   echo "$RDA_URL$item"
   echo
   information "Monitoring"
