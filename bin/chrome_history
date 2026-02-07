@@ -17,7 +17,7 @@
 
 # List your chrome history.
 # You can use it in rofi to open a link
-# Exemple: rofi -combi-modi "clipboard:greenclip print,chrome:chrome_history,window,drun" -show combi -modi combi -lines 25  -display-combi '> '
+# Example: rofi -combi-modi "clipboard:greenclip print,chrome:chrome_history,window,drun" -show combi -modi combi -lines 25  -display-combi '> '
 
 set -o errexit -o pipefail -o nounset
 
