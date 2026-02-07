@@ -71,7 +71,7 @@ text() {
 usage() {
   text "Usage:"
   echo -e "\t$0 [OPTION] [ACTION]"
-  echo -e "\tToggle your defaut sound output or change your music player from an output to another"
+  echo -e "\tToggle your default sound output or change your music player from an output to another"
   echo -e "\tCompatible with pulseaudio and pipewire"
   echo
   text "Options"
@@ -109,7 +109,7 @@ check_dependency() {
   fi
 }
 
-sink_decription() {
+sink_description() {
   local current_sink=$1
   pamixer --list-sinks | awk -v current_sink="$current_sink" -F'"' '$1 ~ current_sink {print $(NF-1)}'
 }
@@ -118,11 +118,11 @@ swap_sink() {
   while read -r index name; do
     if ((index > default_sink_index)); then
       pactl set-default-sink "$index"
-      notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_decription "$index")"
+      notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_description "$index")"
       return
     elif ((index == last_sink_index)); then
       pactl set-default-sink "$first_sink_index"
-      notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_decription "$first_sink_index")"
+      notify-send -i multimedia-volume-control "Changed default sink" "Changed output to $(sink_description "$first_sink_index")"
       return
     fi
   done <<<"$availables_sink"
@@ -139,7 +139,7 @@ swap_role_sink() {
           else
             pactl move-sink-input "$input" "$index"
           fi
-          notify-send -i multimedia-volume-control "Swaped $role_to_change input" "Changed $name input to $(sink_decription "$index")"
+          notify-send -i multimedia-volume-control "Swapped $role_to_change input" "Changed $name input to $(sink_description "$index")"
         fi
       done <<<"$availables_sink"
     fi
@@ -154,7 +154,7 @@ reset_inputs() {
       else
         pactl move-sink-input "$input" "$default_sink_index"
       fi
-      notify-send -i multimedia-volume-control "Input reset" "Changed $name input to $(sink_decription "$default_sink_index")"
+      notify-send -i multimedia-volume-control "Input reset" "Changed $name input to $(sink_description "$default_sink_index")"
     fi
   done < <(get_sink_inputs)
 }
