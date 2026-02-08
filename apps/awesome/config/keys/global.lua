@@ -73,7 +73,9 @@ globalkeys = gears.table.join(
 
    awful.key({ modkey }, "=", function()
       sloppyfocus_last.focus = false
-      awful.spawn("=")
+      awful.spawn([[
+         rofi -show calc -modi calc -no-show-match -no-sort -kb-accept-custom Return -kb-accept-entry Control+Return -calc-command "echo -n '{result}' | xclip -selection clipboard"
+         ]])
    end, { description = "calculator", group = "awesome" }),
 
    awful.key({ modkey }, "-", function()
