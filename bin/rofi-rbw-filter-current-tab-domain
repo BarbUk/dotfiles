@@ -50,7 +50,12 @@ init() {
 }
 
 main() {
-  local parameters=()
+  local parameters=(
+    --typer xdotool
+    --clipboarder xclip
+    --typing-key-delay 1
+  )
+
   if is_browser; then
     sleep $focus_time
     xdotool key ctrl+l sleep "$focus_time"
