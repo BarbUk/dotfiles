@@ -74,6 +74,7 @@ export SCM_GIT_SHOW_DETAILS=true
 export THEME_SHOW_RUBY_PROMPT=false
 export SCM_CHECK=true
 export BASH_IT_COMMAND_DURATION=true
+export COMMAND_DURATION_PRECISION=2
 export SCM_GIT_SHOW_CURRENT_USER=true
 
 # Bashit theme
