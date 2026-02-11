@@ -31,3 +31,4 @@ set bell-style none
 set echo-control-characters off
 set colored-completion-prefix on
 set enable-bracketed-paste on
+set page-completions off
