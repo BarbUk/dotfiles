@@ -53,14 +53,14 @@ main() {
   local parameters=(
     --typer xdotool
     --clipboarder xclip
-    --typing-key-delay 1
+    --typing-key-delay 0
   )
 
   if is_browser; then
     sleep $focus_time
     xdotool key ctrl+l sleep "$focus_time"
     xdotool key ctrl+c
-    xdotool key Escape Escape
+    xdotool key Escape sleep "$focus_time"
     current_clipboard="$(xsel --clipboard)"
 
     if [[ $current_clipboard == https://* ]]; then
