@@ -8,7 +8,6 @@ local apps = require("config.apps")
 local markup = lain.util.markup
 
 local volumeicon = markup(beautiful.nord9, " ")
-local volicon = wibox.widget.textbox(volumeicon)
 local internal_soundcard = "alsa_output.pci"
 local volume = lain.widget.pulse({
    cmd = [[
@@ -36,11 +35,9 @@ local volume = lain.widget.pulse({
          end
       )
       if volume_now.muted == "yes" then
-         widget:set_text("Mute")
-         volicon:set_markup_silently(markup(beautiful.nord9, " "))
+         widget:set_markup(markup(beautiful.nord9, " ") .. "Mute")
       else
-         volicon:set_markup_silently(volumeicon)
-         widget:set_markup(volume_now.right)
+         widget:set_markup(volumeicon .. volume_now.right .. "%")
       end
    end,
 })
@@ -70,6 +67,5 @@ volume.widget:buttons(gears.table.join(
 
 return {
    widget = volume.widget,
-   icon = volicon,
    helper = volume,
 }

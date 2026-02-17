@@ -112,9 +112,9 @@ local fsroot = lain.widget.fs({
 
 -- Weather
 local weather = lain.widget.weather({
-   lat = -20.4172,
-   lon = 57.5413,
-   APPID = secrets.weather_app_id,
+   lat = secrets.weather.lat,
+   lon = secrets.weather.lon,
+   APPID = secrets.weather.appid,
    cnt = 40,
    units = "metric",
    lang = "fr",
@@ -152,26 +152,23 @@ local net = lain.widget.net({
 })
 
 -- CPU
-local cpuicon = wibox.widget.textbox(markup(beautiful.nord9, " "))
 local cpu = lain.widget.sysload({
    settings = function()
-      widget:set_markup(load_1 .. " " .. load_5)
+      widget:set_markup(markup(beautiful.nord9, " ") .. load_1 .. " " .. load_5)
    end,
 })
 
 -- Memory
-local ramicon = wibox.widget.textbox(markup(beautiful.nord8, "󰍛"))
 local ram = lain.widget.mem({
    settings = function()
-      widget:set_markup(mem_now.perc .. "%")
+      widget:set_markup(markup(beautiful.nord8, "󰍛") .. mem_now.perc .. "%")
    end,
 })
 
 -- Temp
-local tempicon = wibox.widget.textbox(markup(beautiful.nord15, ""))
 local temp = lain.widget.temp({
    settings = function()
-      widget:set_markup(coretemp_now .. "°C")
+      widget:set_markup(markup(beautiful.nord15, "") .. coretemp_now .. "°C")
    end,
 })
 
@@ -197,19 +194,15 @@ awful.screen.connect_for_each_screen(function(s)
       separator.left,
       net.widget,
       separator.left,
-      cpuicon,
       cpu.widget,
       separator.left,
-      ramicon,
       ram.widget,
       fsroot.widget,
       separator.left,
-      tempicon,
       temp.widget,
       separator.left,
       bat.widget,
       separator.left,
-      volume.icon,
       volume.widget,
       separator.left,
       weather.icon,
