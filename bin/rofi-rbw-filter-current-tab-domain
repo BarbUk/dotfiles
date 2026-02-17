@@ -28,7 +28,7 @@ readonly focus_time=0.2
 
 # Detect if focused app is a browser
 is_browser() {
-  name="$(xdotool getwindowfocus getwindowname | tr '[:upper:]' '[:lower:]')"
+  name="$(xdotool getwindowfocus getwindowname | awk '{print tolower($NF)}')"
   [[ "$name" =~ chrome|firefox ]] && return 0
   return 1
 }
@@ -58,9 +58,12 @@ main() {
 
   if is_browser; then
     sleep $focus_time
-    xdotool key ctrl+l sleep "$focus_time"
+    xdotool key F6
     xdotool key ctrl+c
-    xdotool key Escape sleep "$focus_time"
+    xdotool key ctrl+F6
+    if [[ "$name" == "firefox" ]]; then
+      xdotool key Tab
+    fi
     current_clipboard="$(xsel --clipboard)"
 
     if [[ $current_clipboard == https://* ]]; then
