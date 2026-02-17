@@ -8,6 +8,7 @@ local dpi = xresources.apply_dpi
 local gears = require("gears")
 
 local apps = require("config.apps")
+local secrets = require("config.secrets")
 local bat = require("config.widgets.battery")
 local volume = require("config.widgets.volume")
 local mpris_info = require("config.widgets.mpris")
@@ -113,7 +114,7 @@ local fsroot = lain.widget.fs({
 local weather = lain.widget.weather({
    lat = -20.4172,
    lon = 57.5413,
-   APPID = "869faf1aac21d680efcfd1a6ce1ece93",
+   APPID = secrets.weather_app_id,
    cnt = 40,
    units = "metric",
    lang = "fr",
@@ -141,7 +142,7 @@ local net = lain.widget.net({
       end
 
       widget:set_markup(
-         markup(beautiful.nord14, markup.bold(" "))
+         markup(beautiful.nord10, markup.bold(" "))
             .. net_now.received
             .. " "
             .. markup(beautiful.nord11, markup.bold(" "))
@@ -151,7 +152,7 @@ local net = lain.widget.net({
 })
 
 -- CPU
-local cpuicon = wibox.widget.textbox(markup(beautiful.nord10, " "))
+local cpuicon = wibox.widget.textbox(markup(beautiful.nord9, " "))
 local cpu = lain.widget.sysload({
    settings = function()
       widget:set_markup(load_1 .. " " .. load_5)
@@ -159,7 +160,7 @@ local cpu = lain.widget.sysload({
 })
 
 -- Memory
-local ramicon = wibox.widget.textbox(markup(beautiful.nord9, "󰍛"))
+local ramicon = wibox.widget.textbox(markup(beautiful.nord8, "󰍛"))
 local ram = lain.widget.mem({
    settings = function()
       widget:set_markup(mem_now.perc .. "%")
