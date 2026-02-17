@@ -397,26 +397,26 @@ globalkeys = gears.table.join(
       awful.spawn(apps.default.browser .. " --profile-directory='Default' --app=https://calendar.google.com", false)
    end, { description = "launch perso calendar", group = "launcher" }),
    awful.key({ modkey }, "y", function()
-      awful.spawn(apps.default.browser .. " --profile-directory='Profile 3' https://mail.missiveapp.com", false)
+      awful.spawn(apps.default.browser .. " --profile-directory='Profile 2' https://mail.zoho.com", false)
    end, { description = "launch work browser", group = "launcher" }),
    awful.key({ modkey, "Shift" }, "y", function()
       awful.spawn(
-         apps.default.browser .. " --profile-directory='Default' --app=https://mail.zoho.com/zm/#mail/folder/inbox",
+         apps.default.browser .. " --profile-directory='Profile 2' --app=https://mail.zoho.com/zm/#mail/folder/inbox",
          false
       )
-   end, { description = "launch work calendar", group = "launcher" }),
+   end, { description = "launch pro mail", group = "launcher" }),
    awful.key({ altkey, "Shift" }, "y", function()
-      awful.spawn(apps.default.browser .. " --profile-directory='Default' --app=https://calendar.zoho.com/", false)
-   end, { description = "launch work calendar", group = "launcher" }),
+      awful.spawn(apps.default.browser .. " --profile-directory='Profile 2' --app=https://calendar.zoho.com/", false)
+   end, { description = "launch pro calendar", group = "launcher" }),
    awful.key({ modkey }, "u", function()
       spawn_and_move("slack", "Slack", 1)
       spawn_and_move(
-         apps.default.browser .. " --profile-directory='Default' --app=https://mail.zoho.com",
+         apps.default.browser .. " --profile-directory='Profile 2' --app=https://mail.zoho.com",
          "mail.zoho.com__zm",
          2
       )
       spawn_and_move(
-         apps.default.browser .. " --profile-directory='Default' --app=https://calendar.zoho.com",
+         apps.default.browser .. " --profile-directory='Profile 2' --app=https://calendar.zoho.com",
          "calendar.zoho.com",
          2
       )
