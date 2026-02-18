@@ -1,0 +1,9 @@
+address "chat.barbuk.org"
+nickname "BarbUk"
+username "barbuk"
+password-cmd rbw get chat.barbuk.org
+on-highlight-beep true
+
+colors {
+  nicks extended
+}
