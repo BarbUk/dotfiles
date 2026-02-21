@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# Copyright (C) 2026 Julien Virey <julien.virey@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
+
+set -o errexit -o pipefail -o nounset
+
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+script_name=$(basename "$0")
+chrome=google-chrome-stable
+
+# shellcheck disable=2034
+readonly script_dir script_name chrome
+declare -a positional_parameters
+
+usage() {
+  echo "Usage:"
+  echo -e "\t$script_name profil_name other_args"
+  echo -e "\tOpen chrome with a named profil"
+  echo -e "\tInstead of using --profile-directory='Profile 3', you can use --profile-directory='My Name'"
+  exit
+}
+
+parse_options() {
+  local arg
+  for arg in "$@"; do
+    case "$arg" in
+      --profile-directory=*)
+        profile="${arg#*=}"
+        ;;
+      -h | --help)
+        usage
+        ;;
+      *) # preserve positional arguments
+        positional_parameters+=("$1")
+        ;;
+    esac
+    shift
+  done
+}
+
+get_chrome_profiles() {
+  <~/.config/google-chrome/Local\ State jq -r '.profile.info_cache | to_entries | map(.key + ": " + .value.name) | .[]'
+}
+
+main() {
+  parse_options "$@"
+
+  if [[ -n ${profile+x} ]]; then
+    local pattern="^Profile [0-9]+$"
+
+    if [[ "$profile" == "Default" ]] || [[ "$profile" =~ $pattern ]]; then
+      positional_parameters=(--profile-directory="$profile" "${positional_parameters[@]}")
+    else
+      profile=$(get_chrome_profiles | awk -F: '$2 ~ /'"$profile"'$/ {print $1}')
+      positional_parameters=(--profile-directory="$profile" "${positional_parameters[@]}")
+    fi
+  fi
+
+  $chrome "${positional_parameters[@]}"
+}
+
+main "$@"
