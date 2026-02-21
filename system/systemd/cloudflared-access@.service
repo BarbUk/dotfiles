@@ -1,0 +1,14 @@
+[Unit]
+Description=cloudflared access template service
+After=network.target
+
+[Service]
+TimeoutStartSec=0
+Type=simple
+EnvironmentFile=%h/.config/cloudflared/%i.conf
+ExecStart=/usr/bin/cloudflared --no-autoupdate access tcp --hostname %i --url "${domain}:${port}"
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
