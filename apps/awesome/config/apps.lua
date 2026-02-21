@@ -18,7 +18,7 @@ return {
       editor = "subl",
       lock = "slock",
       filemanager = "pcmanfm",
-      browser = "google-chrome-stable",
+      browser = "open_chrome_profile",
       graphics = "gimp",
    },
 

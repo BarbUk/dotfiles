@@ -7,3 +7,8 @@ on-highlight-beep true
 colors {
   nicks extended
 }
+
+pane-widths {
+    nicknames 16
+    channels -24
+}

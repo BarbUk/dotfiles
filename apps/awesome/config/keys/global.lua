@@ -8,6 +8,7 @@ local lain = require("lain")
 local modkey = require("config.keys.mod").modkey
 local altkey = require("config.keys.mod").altkey
 local apps = require("config.apps")
+local secrets = require("config.secrets")
 local mpris = require("config.widgets").mpris
 local volume = require("config.widgets").volume
 local calendar = require("config.widgets").calendar
@@ -397,26 +398,41 @@ globalkeys = gears.table.join(
       awful.spawn(apps.default.browser .. " --profile-directory='Default' --app=https://calendar.google.com", false)
    end, { description = "launch perso calendar", group = "launcher" }),
    awful.key({ modkey }, "y", function()
-      awful.spawn(apps.default.browser .. " --profile-directory='Profile 2' https://mail.zoho.com", false)
+      awful.spawn(
+         apps.default.browser
+            .. " --profile-directory='"
+            .. secrets.profile.pro
+            .. "' "
+            .. secrets.urls.pro.dashboard
+            .. " "
+            .. secrets.urls.pro.ticket,
+         false
+      )
    end, { description = "launch work browser", group = "launcher" }),
    awful.key({ modkey, "Shift" }, "y", function()
       awful.spawn(
-         apps.default.browser .. " --profile-directory='Profile 2' --app=https://mail.zoho.com/zm/#mail/folder/inbox",
+         apps.default.browser
+            .. " --profile-directory='"
+            .. secrets.profile.pro
+            .. "' --app=https://mail.zoho.com/zm/#mail/folder/inbox",
          false
       )
    end, { description = "launch pro mail", group = "launcher" }),
    awful.key({ altkey, "Shift" }, "y", function()
-      awful.spawn(apps.default.browser .. " --profile-directory='Profile 2' --app=https://calendar.zoho.com/", false)
+      awful.spawn(
+         apps.default.browser .. " --profile-directory='" .. secrets.profile.pro .. "' --app=https://calendar.zoho.com/",
+         false
+      )
    end, { description = "launch pro calendar", group = "launcher" }),
    awful.key({ modkey }, "u", function()
       spawn_and_move("slack", "Slack", 1)
       spawn_and_move(
-         apps.default.browser .. " --profile-directory='Profile 2' --app=https://mail.zoho.com",
+         apps.default.browser .. " --profile-directory='" .. secrets.profile.pro .. "' --app=https://mail.zoho.com",
          "mail.zoho.com__zm",
          2
       )
       spawn_and_move(
-         apps.default.browser .. " --profile-directory='Profile 2' --app=https://calendar.zoho.com",
+         apps.default.browser .. " --profile-directory='" .. secrets.profile.pro .. "' --app=https://calendar.zoho.com",
          "calendar.zoho.com",
          2
       )
