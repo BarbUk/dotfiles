@@ -125,26 +125,44 @@ end)
 
 naughty.connect_signal("destroyed", function(n, reason)
    -- If no client, we can guess the client to jump to
-   if not n.clients then
+   if not n.clients or #n.clients == 0 then
       return
+   end
+
+   -- Capture client names early because 'n' will be invalid inside the signal handler
+   local client_names = {}
+   for _, c in ipairs(n.clients) do
+      if c.name then
+         table.insert(client_names, c.name)
+      end
    end
 
    -- If we clicked on a notification, the reason is: dismissed_by_user
    if reason == cst.notification_closed_reason.dismissed_by_user then
-      -- If we clicked on a notification, we get a new urgent client to jump to
-      client.connect_signal("property::urgent", function(c)
-         -- We don't use notification_client because it's not reliable (Ex: If we have two different instances of chrome)
-         -- cf: https://awesomewm.org/apidoc/core_components/naughty.notification.html#clients
-         -- So we just check if the client name of our notification is the same as the last urgent client
-         -- and jump to this one.
-         for _, notification_client in ipairs(n.clients) do
-            if not notification_client and not notification_client.name then
+      local on_urgent
+      local timer
+
+      on_urgent = function(c)
+         for _, name in ipairs(client_names) do
+            if c.name == name then
+               c:jump_to()
+               -- Clean up
+               client.disconnect_signal("property::urgent", on_urgent)
+               if timer and timer.started then
+                  timer:stop()
+               end
                return
             end
-            if c.name == notification_client.name then
-               c:jump_to()
-            end
          end
+      end
+
+      -- If we clicked on a notification, we get a new urgent client to jump to
+      client.connect_signal("property::urgent", on_urgent)
+
+      -- Watchdog timer to prevent signal leaks if the expected client never becomes urgent
+      timer = gears.timer.start_new(10, function()
+         client.disconnect_signal("property::urgent", on_urgent)
+         return false -- Stop the timer
       end)
    end
 end)
