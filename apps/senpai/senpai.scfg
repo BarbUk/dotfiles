@@ -6,6 +6,8 @@ on-highlight-beep true
 
 colors {
   nicks extended
+  prompt green
+  nicks self blue
 }
 
 pane-widths {
