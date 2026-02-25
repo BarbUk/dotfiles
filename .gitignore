@@ -4,3 +4,4 @@
 !/system/pulse/default.pa
 **/bin/fzf
 secrets.lua
+*.md

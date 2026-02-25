@@ -50,11 +50,11 @@ client.connect_signal("manage", function(c)
 end)
 
 -- No border and and no gap for maximized clients
-function border_adjust(c)
-   clients = c.screen.clients
+local function border_adjust(c)
+   local clients = c.screen.clients
 
-   floating = false
-   for i, client in ipairs(clients) do
+   local floating = false
+   for _, client in ipairs(clients) do
       if client.floating then
          floating = true
       end

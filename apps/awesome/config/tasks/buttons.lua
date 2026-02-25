@@ -1,5 +1,6 @@
 local gears = require("gears")
 local awful = require("awful")
+local dpi = require("beautiful.xresources").apply_dpi
 
 return gears.table.join(
    awful.button({}, 1, function(c)
@@ -17,7 +18,7 @@ return gears.table.join(
             instance:hide()
             instance = nil
          else
-            instance = awful.menu.clients({ theme = { width = 250 } })
+            instance = awful.menu.clients({ theme = { width = dpi(250) } })
          end
       end
    end),

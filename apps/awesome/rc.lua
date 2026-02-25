@@ -14,9 +14,10 @@ collectgarbage("setstepmul", 1000)
 -- beautiful init
 local chosen_theme = "barbuk"
 local theme_path = string.format("%s/themes/%s/base.lua", gears.filesystem.get_configuration_dir(), chosen_theme)
-beautiful.init(theme_path)
-
-sloppyfocus_last = { c = nil, x = nil, y = nil, focus = true }
+local success, _ = pcall(beautiful.init, theme_path)
+if not success then
+   beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+end
 
 require("config.notifications")
 require("config.client")
@@ -24,35 +25,4 @@ require("config.tags")
 require("config.tasks")
 require("config.utils")
 require("config.keys")
-
--- Enable sloppy focus, so that focus follows mouse.
-function sloppy_focus(c)
-   -- Skip focusing the client if the mouse wasn't moved.
-   local mcoords = mouse.coords()
-   if sloppyfocus_last.focus then
-      if c ~= sloppyfocus_last.c and (mcoords.x ~= sloppyfocus_last.x or mcoords.y ~= sloppyfocus_last.y) then
-         c:activate({ context = "mouse_enter", raise = false })
-         sloppyfocus_last = { c = c, x = mcoords.x, y = mcoords.y }
-      end
-   end
-   sloppyfocus_last.focus = true
-end
-
-client.connect_signal("mouse::enter", sloppy_focus)
-
--- switch to parent after closing child window
-local function backham()
-   local s = awful.screen.focused()
-   local c = awful.client.focus.history.get(s, 0)
-   if c then
-      client.focus = c
-      c:raise()
-   end
-end
-
--- attach to minimized state
-client.connect_signal("property::minimized", backham)
--- attach to closed state
-client.connect_signal("unmanage", backham)
--- ensure there is always a selected client during tag switching or logins
-tag.connect_signal("property::selected", backham)
+require("config.focus")

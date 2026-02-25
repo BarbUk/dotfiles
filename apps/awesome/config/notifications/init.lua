@@ -2,7 +2,7 @@ local naughty = require("naughty")
 require(... .. ".default")
 require(... .. ".errors")
 
-noti = {}
+local noti = {}
 noti.notification = nil
 
 function noti:notify(message, preset)
@@ -18,3 +18,5 @@ function noti:notify(message, preset)
       })
    end
 end
+
+return noti

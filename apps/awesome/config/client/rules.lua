@@ -3,19 +3,6 @@ local beautiful = require("beautiful")
 local client_keys = require("config.client.keys")
 local client_buttons = require("config.client.buttons")
 
-function spawn_and_move(command, class, tag)
-   local callback
-   local screen_number = screen.count()
-   callback = function(c)
-      if c.class == class then
-         awful.client.movetotag(screen[screen_number].tags[tag], c)
-         client.disconnect_signal("manage", callback)
-      end
-   end
-   client.connect_signal("manage", callback)
-   awful.spawn(command)
-end
-
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {

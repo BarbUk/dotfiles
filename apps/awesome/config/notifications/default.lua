@@ -6,8 +6,6 @@ local lain = require("lain")
 local markup = lain.util.markup
 local dpi = beautiful.xresources.apply_dpi
 local gstring = require("gears.string")
-local wibox = require("wibox")
-local helpers = require("config.helpers")
 local cst = require("naughty.constants")
 
 -- Defaults

@@ -1,4 +1,5 @@
 local awful = require("awful")
+local noti = require("config.notifications")
 local pulse_sink = "@DEFAULT_SINK@"
 local step = 5
 local scripts_dir = os.getenv("HOME") .. "/.dotfiles/bin/"
