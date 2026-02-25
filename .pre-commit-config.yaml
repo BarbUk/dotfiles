@@ -105,7 +105,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: abd988f48732d85a9584b7daa7edee3410a0b62e  # frozen: v0.1.22
+    rev: d4782ba80b63055249f8653389eef5bae8eb4a50  # frozen: v0.1.29
     hooks:
       - id: rumdl-fmt
         args:
