@@ -15,6 +15,7 @@ local ram = require("config.widgets.ram")
 local temp = require("config.widgets.temp")
 local fsroot = require("config.widgets.fsroot")
 local clk = require("config.widgets.clock")
+local cpu_widget = require("config.widgets.cpu-widget")
 
 local white = beautiful.fg_normal
 
@@ -48,7 +49,12 @@ awful.screen.connect_for_each_screen(function(s)
       separator.left,
       net.widget,
       separator.left,
-      cpu.widget,
+      cpu_widget({
+         width = 40,
+         step_width = 2,
+         step_spacing = 0,
+         color = beautiful.fg_normal,
+      }),
       separator.left,
       ram.widget,
       fsroot.widget,
