@@ -9,12 +9,23 @@ local net = lain.widget.net({
          weather.update()
       end
 
+      local received = tonumber(net_now.received)
+      local sent = tonumber(net_now.sent)
+
+      if received > 1024 then
+         received = string.format("%.2f", received / 1024) .. "M/s"
+      end
+
+      if sent > 1024 then
+         sent = string.format("%.2f", sent / 1024) .. "M/s"
+      end
+
       widget:set_markup(
          markup(beautiful.nord10, markup.bold(" "))
-            .. net_now.received
+            .. received
             .. " "
             .. markup(beautiful.nord11, markup.bold(" "))
-            .. net_now.sent
+            .. sent
       )
    end,
 })
