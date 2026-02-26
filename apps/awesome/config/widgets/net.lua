@@ -11,21 +11,27 @@ local net = lain.widget.net({
 
       local received = tonumber(net_now.received)
       local sent = tonumber(net_now.sent)
+      local unit_received = "k/s"
+      local unit_sent = "k/s"
 
       if received > 1024 then
-         received = string.format("%.2f", received / 1024) .. "M/s"
+         received = string.format("%.1f", received / 1024)
+         unit_received = "M/s"
       end
 
       if sent > 1024 then
-         sent = string.format("%.2f", sent / 1024) .. "M/s"
+         sent = string.format("%.1f", sent / 1024)
+         unit_sent = "M/s"
       end
 
       widget:set_markup(
          markup(beautiful.nord10, markup.bold(" "))
             .. received
+            .. unit_received
             .. " "
             .. markup(beautiful.nord11, markup.bold(" "))
             .. sent
+            .. unit_sent
       )
    end,
 })
