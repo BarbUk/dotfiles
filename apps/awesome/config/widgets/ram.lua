@@ -6,7 +6,9 @@ local markup = lain.util.markup
 
 local ram = lain.widget.mem({
    settings = function()
-      widget:set_markup(markup(beautiful.nord8, "󰍛") .. mem_now.perc .. "% (" .. mem_now.used .. "MB)")
+      widget:set_markup(
+         markup(beautiful.nord8, "󰍛") .. mem_now.perc .. "% (" .. string.format("%.2f", mem_now.used / 1024) .. "G)"
+      )
    end,
 })
 
