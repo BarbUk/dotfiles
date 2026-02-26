@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 return {
-   font = wezterm.font("PragmataPro Mono Liga"),
+   font = wezterm.font("PragmataProMonoLiga Nerd Font"),
    --  front_end = "WebGpu",
    front_end = "OpenGL",
    default_prog = { "bash" },
