@@ -17,7 +17,7 @@ local mpris = mpris_info({
       fg = beautiful.notification_fg,
       bg = beautiful.notification_bg,
    },
-   settings = function()
+   settings = function(mpris_now, widget)
       if mpris_now.status ~= "no player detected" then
          local state = "  "
          if mpris_now.status == "Playing" then

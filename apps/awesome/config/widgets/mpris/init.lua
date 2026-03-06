@@ -36,23 +36,21 @@ local function worker(args)
          for s in output:gmatch("[^\n]+") do
             table.insert(now, s)
          end
-         mpris_now = {
+         mpris.mpris_now = {
             status = now[1],
             artist = gstring.xml_escape(now[2]),
             album = gstring.xml_escape(now[3]),
             title = gstring.xml_escape(now[4]),
             art = now[5],
          }
-         widget = mpris.widget
-         mpris.mpris_now = mpris_now
-         settings()
+         settings(mpris.mpris_now, mpris.widget)
 
-         if mpris_now.status == "Playing" then
-            if notify == "on" and mpris_now.title ~= helpers.get_map("current mpris track") then
-               helpers.set_map("current mpris track", mpris_now.title)
+         if mpris.mpris_now.status == "Playing" then
+            if notify == "on" and mpris.mpris_now.title ~= helpers.get_map("current mpris track") then
+               helpers.set_map("current mpris track", mpris.mpris_now.title)
                mpris.show(5)
             end
-         elseif mpris_now.status ~= "Paused" then
+         elseif mpris.mpris_now.status ~= "Paused" then
             helpers.set_map("current mpris track", nil)
          end
       end)

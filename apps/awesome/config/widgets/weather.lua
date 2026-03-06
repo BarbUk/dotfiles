@@ -10,7 +10,6 @@ local weather = lain.widget.weather({
    units = "metric",
    lang = "fr",
    settings = function()
-      local descr = weather_now["weather"][1]["description"]
       local units = math.floor(weather_now["main"]["temp"])
       widget:set_markup(" " .. units .. "°C")
    end,

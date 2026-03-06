@@ -2,7 +2,6 @@ local beautiful = require("beautiful")
 local awful = require("awful")
 local lain = require("lain")
 local helpers = require("lain.helpers")
-local wibox = require("wibox")
 local gears = require("gears")
 local apps = require("config.apps")
 local markup = lain.util.markup
