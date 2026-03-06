@@ -1,12 +1,10 @@
 local beautiful = require("beautiful")
 local lain = require("lain")
-local wibox = require("wibox")
 local markup = lain.util.markup
 local fs = require("gears.filesystem")
 local awful = require("awful")
 local naughty = require("naughty")
 local noti = require("config.notifications")
-local dpi = beautiful.xresources.apply_dpi
 
 local bat
 local icon
