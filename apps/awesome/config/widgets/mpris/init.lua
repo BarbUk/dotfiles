@@ -1,12 +1,13 @@
 --[[
 
-     Licensed under GNU General Public License v2
+   Licensed under GNU General Public License v2
       * (c) 2017, Julien Virey
 
 --]]
 
 local helpers = require("lain.helpers")
 local wibox = require("wibox")
+local awful = require("awful")
 local shell = require("awful.util").shell
 local gstring = require("gears.string")
 local naughty = require("naughty")
@@ -18,24 +19,18 @@ local function worker(args)
    args = args or {}
    local timeout = args.timeout or 5
    local cover_size = args.cover_size or 100
-   local default_art = args.default_art
    local notify = args.notify or "on"
-   local followtag = args.followtag or false
    local settings = args.settings or function() end
 
-   mpris.notification_preset = args.notification_preset
-      or {
-         font = "Monospace 10",
-         fg = "#FFFFFF",
-         bg = "#000000",
-         title = "Now playing",
-      }
+   mpris.notification_preset = args.notification_preset or {
+      title = "Now playing",
+   }
    mpris.cmd = args.cmd
       or "playerctl --format '{{status}}\n{{xesam:artist}}\n{{markup_escape(xesam:title)}};{{mpris:artUrl}}' metadata"
    mpris.widget = wibox.widget.textbox()
+   mpris.mpris_now = {}
 
    function mpris.update()
-      mpris_now = {}
       local now = {}
       helpers.async({ shell, "-c", mpris.cmd }, function(output)
          for s in output:gmatch("[^\n]+") do
