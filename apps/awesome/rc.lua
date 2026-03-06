@@ -4,7 +4,6 @@ pcall(require, "luarocks.loader")
 
 -- {{{ Required libraries
 local gears = require("gears")
-local awful = require("awful")
 local beautiful = require("beautiful")
 
 -- Garbage collection tuning
