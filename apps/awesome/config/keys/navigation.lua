@@ -78,7 +78,7 @@ local keys = gears.table.join(
    end, { description = "go front", group = "client" }),
 
    -- On the fly useless gaps change
-   awful.key({ altkey, "Control" }, "+", function()
+   awful.key({ altkey, "Control" }, "=", function()
       lain.util.useless_gaps_resize(1)
    end, { description = "resize +", group = "client" }),
    awful.key({ altkey, "Control" }, "-", function()

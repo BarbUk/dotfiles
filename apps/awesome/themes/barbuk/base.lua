@@ -107,8 +107,8 @@ theme.layout_txt_centerfair = "[centerfair]"
 theme.taglist_squares_sel = gears.surface.load_from_shape(dpi(3), dpi(3), gears.shape.rectangle, theme.fg_focus)
 theme.taglist_squares_unsel = gears.surface.load_from_shape(dpi(3), dpi(3), gears.shape.rectangle, theme.focus)
 
-theme.hotkeys_font = "PragmataPro Bold " .. dpi(11)
-theme.hotkeys_description_font = "PragmataPro " .. dpi(9)
+theme.hotkeys_font = "PragmataPro Bold " .. dpi(13)
+theme.hotkeys_description_font = "PragmataPro " .. dpi(10)
 -- Use pretty Unicode characters to represent special keys in hotkey hinter
 theme.hotkeys_popup_labels = {
    Mod4 = " ⌥ ",

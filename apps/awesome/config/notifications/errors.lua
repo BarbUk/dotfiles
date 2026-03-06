@@ -23,7 +23,7 @@ do
       naughty.notification({
          preset = naughty.config.presets.critical,
          title = "Oops, an error happened!",
-         message = "```\n" .. tostring(err) .. "\n```",
+         message = "\n" .. tostring(err) .. "\n",
       })
 
       in_error = false

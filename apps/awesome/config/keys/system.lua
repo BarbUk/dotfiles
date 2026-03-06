@@ -3,6 +3,7 @@ local awful = require("awful")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+local hotkeys_widget = hotkeys_popup.new({ width = 2400, height = 1200 })
 require("awful.hotkeys_popup.keys")
 
 local modkey = require("config.keys.mod").modkey
@@ -22,7 +23,9 @@ local widget_refresh = function()
 end
 
 local keys = gears.table.join(
-   awful.key({ modkey, "Shift" }, "h", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
+   awful.key({ modkey, "Shift" }, "h", function()
+      hotkeys_widget:show_help(awful.client.focus, awful.screen.focused())
+   end, { description = "show help", group = "awesome" }),
 
    -- Awesome controls
    awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
