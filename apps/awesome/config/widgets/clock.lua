@@ -11,7 +11,7 @@ local white = beautiful.fg_normal
 local flag = {}
 local clock = {}
 
-for k, v in pairs(beautiful.flag) do
+for k, _ in pairs(beautiful.flag) do
    flag[k] = wibox.widget.imagebox(beautiful.flag[k], true)
    flag[k]:buttons(gears.table.join(awful.button({}, 1, function()
       awful.spawn(apps.cmd.timezone[k], false)
