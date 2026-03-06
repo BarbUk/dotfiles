@@ -15,11 +15,12 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local gears = require("gears")
 
-local CMD = [[sh -c "grep '^cpu.' /proc/stat; ps -eo 'pid:10,pcpu:5,pmem:5,comm:30,cmd' --sort=-pcpu ]]
-   .. [[| grep -v [p]s | grep -v [g]rep | head -11 | tail -n +2"]]
+local CMD = [[sh -c "command grep '^cpu.' /proc/stat;]]
+   .. [[ps -eo 'pid:10,pcpu:5,pmem:5,comm:30,cmd' --no-headers --sort=-pcpu]]
+   .. [[ | awk '! / ps / {print $0} NR==10{exit}'"]]
 
 -- A smaller command, less resource intensive, used when popup is not shown.
-local CMD_slim = [[grep --max-count=1 '^cpu.' /proc/stat]]
+local CMD_slim = [[command grep --max-count=1 '^cpu.' /proc/stat]]
 
 local HOME_DIR = os.getenv("HOME")
 local WIDGET_DIR = HOME_DIR .. "/.config/awesome/awesome-wm-widgets/cpu-widget"
@@ -49,19 +50,18 @@ local function create_textbox(args)
       text = args.text,
       align = args.align or "left",
       markup = args.markup,
-      forced_width = args.forced_width or 40,
+      forced_width = args.forced_width or 60,
       widget = wibox.widget.textbox,
    })
 end
 
-local function create_process_header(params)
+local function create_process_header()
    local res = wibox.widget({
       create_textbox({ markup = "<b>PID</b>" }),
       create_textbox({ markup = "<b>Name</b>" }),
       {
          create_textbox({ markup = "<b>%CPU</b>" }),
          create_textbox({ markup = "<b>%MEM</b>" }),
-         params.with_action_column and create_textbox({ forced_width = 20 }) or nil,
          layout = wibox.layout.align.horizontal,
       },
       layout = wibox.layout.ratio.horizontal,
