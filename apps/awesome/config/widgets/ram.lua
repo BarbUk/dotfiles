@@ -13,24 +13,19 @@ local ram = lain.widget.mem({
 })
 
 local ram_notification
-ram.widget:connect_signal("mouse::enter", function()
+
+ram.widget:buttons(awful.util.table.join(awful.button({}, 1, function()
    local cmd = [[bash -c "ps -Ao pmem,rss,comm --sort=-pmem --no-headers | ]]
-      .. [[head -n 5 | awk '{printf \"%s%% (%.1fMB) %s\\n\", $1, $2/1024, $3}'"]]
+      .. [[awk '{printf \"%s%% (%.1fMB) %s\\n\", $1, $2/1024, $3} NR==10 { zexit }'"]]
    awful.spawn.easy_async(cmd, function(stdout)
+      naughty.destroy(ram_notification)
       ram_notification = naughty.notification({
          title = "Top RAM process",
          message = stdout,
-         timeout = 0,
+         timeout = 10,
          hover_timeout = 0.5,
       })
    end)
-end)
-
-ram.widget:connect_signal("mouse::leave", function()
-   if ram_notification then
-      naughty.destroy(ram_notification)
-      ram_notification = nil
-   end
-end)
+end)))
 
 return ram
