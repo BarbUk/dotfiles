@@ -17,11 +17,13 @@ repos:
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: fix-byte-order-marker
-      - id: check-yaml
       - id: trailing-whitespace
         exclude: ".(md|rst)$"
       - id: mixed-line-ending
         args: ["--fix=lf"]
+      - id: check-yaml
+      - id: check-xml
+      - id: check-toml
       - id: check-json
       - id: pretty-format-json
         args:
@@ -133,3 +135,10 @@ repos:
         types: [shell]
         args: [--write]
         exclude_types: [csh, tcsh, zsh]
+
+      - id: luacheck
+        name: Luacheck
+        description: Lint and static analysis of Lua code
+        entry: luacheck
+        language: system
+        types: [lua]
