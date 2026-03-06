@@ -117,7 +117,7 @@ naughty.connect_signal("request::icon", function(n, context, hints)
 end)
 
 --- Use XDG icon
-naughty.connect_signal("request::action_icon", function(a, context, hints)
+naughty.connect_signal("request::action_icon", function(a, _, hints)
    a.icon = menubar.utils.lookup_icon(hints.id)
 end)
 
