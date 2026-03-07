@@ -34,12 +34,24 @@ fi
 pkgbase=$(basename "$current_dir")
 url=$(sed -n 's/^url=//p' PKGBUILD | tr -d \"\')
 
+# Remove https
+url="${url#*://}"
+
 case "$url" in
-  *"github"*)
+  *"github.com"*)
     source=github
+    # Keep only repo
+    url="${url#*/}"
     ;;
-  *"gitlab"*)
+  *"gitlab.com"*)
     source=gitlab
+    # Keep only repo
+    url="${url#*/}"
+    ;;
+  *"rubygems.com"*)
+    source=gems
+    # Keep only gem name
+    url="${url##*/}"
     ;;
 esac
 
@@ -48,15 +60,10 @@ if [ -z "$source" ]; then
   exit 1
 fi
 
-# Remove https
-url="${url#*://}"
-# Keep only repo
-url="${url#*/}"
-
 prefix=''
 
 # shellcheck disable=SC2016
-if grep -qF -e 'v$pkgver' -e '$v${pkgver}' PKGBUILD; then
+if grep -qF -e 'v$pkgver' -e 'v${pkgver}' PKGBUILD; then
   prefix='prefix = "v"'
 fi
 

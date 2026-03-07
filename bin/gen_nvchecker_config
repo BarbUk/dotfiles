@@ -39,6 +39,9 @@ for package in "$packages_dir"/*/.nvchecker.toml; do
   pkgdir=$(dirname "$package")
   pkgbase=$(basename "$pkgdir")
   pkgver=$(sed -n 's/^pkgver=//p' "$pkgdir/PKGBUILD" | tr -d \"\')
+  if grep -q ^_pkgrelease "$pkgdir/PKGBUILD"; then
+    pkgver+=$(sed -n 's/^_pkgrelease=//p' "$pkgdir/PKGBUILD" | tr -d \"\')
+  fi
   echo "Detected $pkgbase: $pkgver"
   printf '{"%s": "%s"}\n' "$pkgbase" "$pkgver" >>"$tmpfile"
 done
