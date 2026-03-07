@@ -48,7 +48,7 @@ case "$url" in
     # Keep only repo
     url="${url#*/}"
     ;;
-  *"rubygems.com"*)
+  *"rubygems.org"*)
     source=gems
     # Keep only gem name
     url="${url##*/}"
