@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+# Copyright (C) 2026 Julien Virey <julien.virey@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
+
+set -o errexit -o pipefail -o nounset
+
+current_dir="$PWD"
+
+if ! [ -f PKGBUILD ]; then
+  echo "Not an archlinux package"
+  exit 1
+fi
+
+if [ -f .nvchecker.toml ]; then
+  echo ".nvchecker.toml already exists"
+  exit 1
+fi
+
+pkgbase=$(basename "$current_dir")
+url=$(sed -n 's/^url=//p' PKGBUILD | tr -d \"\')
+
+case "$url" in
+  *"github"*)
+    source=github
+    ;;
+  *"gitlab"*)
+    source=gitlab
+    ;;
+esac
+
+if [ -z "$source" ]; then
+  echo "No source detected"
+  exit 1
+fi
+
+# Remove https
+url="${url#*://}"
+# Keep only repo
+url="${url#*/}"
+
+prefix=''
+
+# shellcheck disable=SC2016
+if grep -qF -e 'v$pkgver' -e '$v${pkgver}' PKGBUILD; then
+  prefix='prefix = "v"'
+fi
+
+cat <<EOF >.nvchecker.toml
+[$pkgbase]
+source = "$source"
+$source = "$url"
+use_max_tag = true
+$prefix
+EOF
