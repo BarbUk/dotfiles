@@ -39,7 +39,7 @@ parse_options() {
   local arg
   for arg in "$@"; do
     case "$arg" in
-      --profile-directory=*)
+      --profile-directory=* | --profile=*)
         profile="${arg#*=}"
         ;;
       -h | --help)
