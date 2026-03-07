@@ -16,7 +16,7 @@ local ram_notification
 
 ram.widget:buttons(awful.util.table.join(awful.button({}, 1, function()
    local cmd = [[bash -c "ps -Ao pmem,rss,comm --sort=-pmem --no-headers | ]]
-      .. [[awk '{printf \"%s%% (%.1fMB) %s\\n\", $1, $2/1024, $3} NR==10 { zexit }'"]]
+      .. [[awk '{printf \"%s%% (%.1fMB) %s\\n\", $1, $2/1024, $3} NR==10 { exit }'"]]
    awful.spawn.easy_async(cmd, function(stdout)
       naughty.destroy(ram_notification)
       ram_notification = naughty.notification({
