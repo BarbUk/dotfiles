@@ -19,9 +19,18 @@
 
 set -o errexit -o pipefail -o nounset
 
-config="$XDG_CONFIG_HOME/nvchecker/nvchecker.toml"
-old="$XDG_CONFIG_HOME/nvchecker/old.json"
+config_dir="$XDG_CONFIG_HOME/nvchecker"
+config="$config_dir/nvchecker.toml"
+old="$config_dir/old.json"
 packages_dir="$HOME/ztemp/packages"
+
+if ! [ -d "$config_dir" ]; then
+  mkdir -p "$config_dir"
+fi
+
+if ! [ -f "$config_dir/keys.toml" ]; then
+  echo '[keys]' >"$config_dir/keys.toml"
+fi
 
 cat >"$config" <<__EOF__
 [__config__]
