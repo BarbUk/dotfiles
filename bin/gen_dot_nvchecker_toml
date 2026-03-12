@@ -37,21 +37,29 @@ url=$(sed -n 's/^url=//p' PKGBUILD | tr -d \"\')
 # Remove https
 url="${url#*://}"
 
+options=
+
 case "$url" in
   *"github.com"*)
     source=github
     # Keep only repo
     url="${url#*/}"
+    options='use_latest_release = true'
     ;;
   *"gitlab.com"*)
     source=gitlab
     # Keep only repo
     url="${url#*/}"
+    options='use_max_tag = true'
     ;;
   *"rubygems.org"*)
     source=gems
     # Keep only gem name
     url="${url##*/}"
+    ;;
+  *)
+    url="https://$url"
+    source=git
     ;;
 esac
 
@@ -71,6 +79,6 @@ cat <<EOF >.nvchecker.toml
 [$pkgbase]
 source = "$source"
 $source = "$url"
-use_max_tag = true
 $prefix
+$options
 EOF
