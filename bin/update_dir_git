@@ -16,9 +16,23 @@
 #
 set -o errexit -o pipefail -o nounset
 
-# shellcheck disable=2045
-for dir in $(ls); do
-  echo "Updating $dir"
-  (cd "$dir" && git pull)
-  echo -e "\n"
+declare -a repo_to_update
+threads=$(($(nproc) - 1))
+
+git_pull_repo() {
+  local dir="$1"
+  (
+    cd "$dir"
+    echo "Updating $dir"
+    git pull
+  )
+}
+
+for dir in $(command ls -1); do
+  if [ -d "$dir" ] && [ -d "$dir/.git" ]; then
+    repo_to_update+=("$dir")
+  fi
 done
+
+export -f git_pull_repo
+parallel -j${threads} git_pull_repo ::: "${repo_to_update[@]}"
