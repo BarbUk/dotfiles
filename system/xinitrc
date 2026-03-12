@@ -14,7 +14,7 @@ fi
 [[ -f ~/.Xresources ]] && xrdb -merge -I"$HOME" ~/.Xresources
 # Export and path definition
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
-export QT_QPA_PLATFORMTHEME='qt5ct'
+export QT_QPA_PLATFORMTHEME=gtk3
 export GOPATH="$HOME/.go"
 export COMPOSERPATH="$HOME/.composer/vendor/bin"
 export CCACHEPATH="/usr/lib/ccache/bin"
