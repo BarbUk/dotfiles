@@ -17,7 +17,7 @@
 set -o errexit -o pipefail -o nounset
 
 declare -a repo_to_update
-threads=$(($(nproc) - 1))
+threads=$((($(nproc) / 4) + 1))
 
 git_pull_repo() {
   local dir="$1"
