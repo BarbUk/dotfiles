@@ -51,15 +51,15 @@ theme.bg_focus = theme.background
 theme.fg_urgent = theme.background
 theme.bg_urgent = theme.nord11
 theme.border_width = dpi(1)
-theme.border_normal = theme.nord5
-theme.border_focus = theme.nord9
+theme.border_normal = theme.nord3
+theme.border_focus = theme.nord8
 theme.taglist_fg_focus = theme.foreground
 theme.taglist_bg_focus = theme.nord9
 theme.taglist_fg_occupied = theme.nord9
 theme.menu_height = dpi(12)
 theme.menu_width = dpi(140)
 theme.menu_border_width = dpi(0)
-theme.useless_gap = dpi(0.3)
+theme.useless_gap = dpi(0.33)
 
 -- Rounded corners
 theme.border_radius = dpi(6)
