@@ -9,6 +9,8 @@ local noti = require("config.notifications")
 local bat
 local icon
 
+local has_battery = fs.is_dir("/sys/class/power_supply/BAT0") or fs.is_dir("/sys/class/power_supply/BAT1")
+
 local notification
 local function show_battery_status()
    awful.spawn.easy_async([[bash -c 'acpi']], function(stdout, _, _, _)
@@ -81,4 +83,5 @@ end
 
 return {
    widget = bat.widget,
+   has_battery = has_battery,
 }

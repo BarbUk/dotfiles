@@ -60,8 +60,14 @@ awful.screen.connect_for_each_screen(function(s)
       separator.left,
       temp.widget,
       separator.left,
-      bat.widget,
-      separator.left,
+   }
+
+   if bat.has_battery then
+      table.insert(right, bat.widget)
+      table.insert(right, separator.left)
+   end
+
+   local right_rest = {
       volume.widget,
       separator.left,
       weather.icon,
@@ -80,6 +86,10 @@ awful.screen.connect_for_each_screen(function(s)
       clk.clock.mauritius,
       separator.center,
    }
+
+   for _, w in ipairs(right_rest) do
+      table.insert(right, w)
+   end
 
    local general_info = {
       layout = wibox.layout.fixed.horizontal,
