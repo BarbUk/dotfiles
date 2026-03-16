@@ -29,6 +29,15 @@ check_and_source() {
 
 define_locale
 
+# Predictable SSH authentication socket location.
+_local_ssh_socket="$HOME/.ssh/${USER}_ssh_auth_sock"
+if [ -n "$SSH_AUTH_SOCK" ]; then
+  if ! [[ -e "$_local_ssh_socket" ]]; then
+    ln -sf "$SSH_AUTH_SOCK" "$_local_ssh_socket"
+  fi
+  export SSH_AUTH_SOCK="$_local_ssh_socket"
+fi
+
 unset MAILCHECK
 shopt -s checkwinsize
 shopt -s histappend

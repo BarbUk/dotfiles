@@ -45,12 +45,10 @@ if ! ipv4_validation "$resolvable_host" >/dev/null 2>&1; then
     if [[ $resolve -eq 0 ]]; then
       host="$($hostname_list | $fzf --query="$host")"
     fi
-
   fi
-
 fi
 
-rsync "${rsync_options[@]}" --rsh "ssh ${ssh_options[*]}" \
+command rsync "${rsync_options[@]}" --rsh "ssh ${ssh_options[*]}" \
   --exclude-from "$dotdir/apps/rsync_exclude.list" \
   "$dotdir/server/" \
   "$host": || true
@@ -59,20 +57,12 @@ rsync "${rsync_options[@]}" --rsh "ssh ${ssh_options[*]}" \
 echo -ne "\\033]0;$host\\007"
 
 # shellcheck disable=SC2029
-ssh "${ssh_options[@]}" -tt "$host" "
-if ! hash tmux 2>/dev/null; then
+command ssh "${ssh_options[@]}" -tt "$host" "
+if ! command -v tmux 2>/dev/null; then
   bash
   exit
 fi
 
-if test \$SSH_AUTH_SOCK; then
-  ln -sf \$SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
-fi
-if locale -a | grep -q ^en_US.UTF-8; then
-  export LC_ALL=en_US.UTF-8
-else
-  export LC_ALL=C.UTF-8
-fi
 exec tmux new-session -A -s $tmux_session_name
 "
 exit
