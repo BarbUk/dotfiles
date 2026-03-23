@@ -61,7 +61,7 @@ local function border_adjust(c)
    end
 
    if #clients == 1 or c.maximized or #clients == 2 and (c.floating or floating) then
-      c.border_width = 0
+      -- c.border_width = 0
       awful.screen.focused().selected_tag.gap = 0
    elseif #clients > 1 then
       awful.screen.focused().selected_tag.gap = beautiful.useless_gap

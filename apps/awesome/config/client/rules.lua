@@ -67,6 +67,7 @@ awful.rules.rules = {
             "sun-awt-X11-XDialogPeer",
             "sun-awt-X11-XWindowPeer",
             "Evolution-alarm-notify",
+            "Msgcompose",
          },
          type = {
             "dialog",
@@ -78,12 +79,15 @@ awful.rules.rules = {
          role = {
             "GtkFileChooserDialog",
             "pop-up",
+            "Msgcompose",
          },
       },
       properties = {
          floating = true,
          focus = true,
          placement = awful.placement.centered,
+         border_width = beautiful.border_width,
+         border_color = beautiful.border_normal,
       },
    },
    -- clients that should float ontop
