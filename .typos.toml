@@ -7,3 +7,6 @@ extend-ignore-re = [
     # Ignore blocks between `# spellchecker:off` and `# spellchecker:on`
     "(?s)(#|//)\\s*spellchecker:off.*?\\n\\s*(#|//)\\s*spellchecker:on",
 ]
+
+[default.extend-identifiers]
+LESS_TERMCAP_ue = "LESS_TERMCAP_ue"
