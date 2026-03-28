@@ -95,7 +95,7 @@ repos:
     hooks:
       - id: detect-secrets
   - repo: https://github.com/gitleaks/gitleaks
-    rev: 8d1f98c7967eb1e79cb44ac6241a124e145d2165  # frozen: v8.30.1
+    rev: 83d9cd684c87d95d656c1458ef04895a7f1cbd8e  # frozen: v8.30.1
     hooks:
       - id: gitleaks
 
@@ -107,7 +107,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 531accdd9021de7cd18b60bd205cbd33cb4ec0cc  # frozen: v0.1.47
+    rev: a1a7657643f1f734d93e854bdb216da71c4356b9  # frozen: v0.1.62
     hooks:
       - id: rumdl-fmt
         args:
