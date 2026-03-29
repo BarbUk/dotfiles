@@ -4,7 +4,6 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local lain = require("lain")
 local markup = lain.util.markup
-local dpi = beautiful.xresources.apply_dpi
 local gstring = require("gears.string")
 local cst = require("naughty.constants")
 
@@ -13,29 +12,28 @@ naughty.config.defaults.shape = function(cr, w, h)
    gears.shape.rounded_rect(cr, w, h, beautiful.border_radius)
 end
 
--- Apply theme variables
-naughty.config.padding = dpi(6)
-naughty.config.spacing = dpi(6)
-naughty.persistence_enabled = true
-naughty.config.defaults.ontop = true
-naughty.config.defaults.margin = dpi(20)
-
-naughty.config.icon_formats = { "png", "svg", "jpg" }
-
 -- Notification callback to style monitoring notification
 naughty.config.notify_callback = function(args)
+   local path
+
    if
       args.freedesktop_hints
       and args.freedesktop_hints["desktop-entry"]
       and args.icon == nil
-      and args.freedesktop_hints["image_path"] == nil
+      and args.freedesktop_hints["image-path"] == nil
       and args.freedesktop_hints["image-data"] == nil
    then
-      local path = menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"])
+      path = menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"])
          or menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]:lower())
-      if path then
-         args.icon = path
-      end
+   elseif args.freedesktop_hints["image-path"] and args.icon == nil then
+      path = menubar.utils.lookup_icon(args.freedesktop_hints["image-path"])
+         or menubar.utils.lookup_icon(args.freedesktop_hints["image-path"]:lower())
+   elseif args.app_name and args.icon == nil then
+      path = menubar.utils.lookup_icon(args.app_name) or menubar.utils.lookup_icon(args.app_name:lower())
+   end
+
+   if path then
+      args.icon = path
    end
 
    if args.title then
@@ -59,7 +57,7 @@ naughty.config.notify_callback = function(args)
 end
 
 -- Icon size
-naughty.config.defaults["icon_size"] = beautiful.notification_icon_size
+naughty.config.defaults.icon_size = beautiful.notification_icon_size
 
 -- Timeouts
 naughty.config.defaults.timeout = 35
@@ -72,6 +70,9 @@ naughty.config.padding = beautiful.notification_padding
 naughty.config.spacing = beautiful.notification_spacing
 naughty.config.defaults.margin = beautiful.notification_margin
 naughty.config.defaults.border_width = beautiful.notification_border_width
+naughty.config.defaults.ontop = true
+naughty.config.icon_formats = { "png", "svg", "jpg" }
+naughty.persistence_enabled = true
 
 naughty.config.presets.normal = {
    font = beautiful.notification_font,

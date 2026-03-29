@@ -19,7 +19,7 @@ local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
 -- Do not scale with dpi
-theme.wibar_height = dpi(15)
+theme.wibar_height = dpi(16)
 theme.notification_max_width = dpi(720)
 theme.notification_icon_size = dpi(64)
 
@@ -31,7 +31,7 @@ awful.screen.connect_for_each_screen(function(s)
    if s.geometry.width > 2600 then
       xresources.set_dpi(192, s)
       dpi = xresources.apply_dpi
-      theme.wibar_height = dpi(30)
+      theme.wibar_height = dpi(32)
       theme.notification_max_width = dpi(1440)
       theme.notification_icon_size = dpi(128)
    end
@@ -66,17 +66,17 @@ theme.border_radius = dpi(6)
 theme.screen_margin = dpi(5)
 
 theme.notification_position = "top_right"
-theme.notification_border_width = dpi(2)
+theme.notification_border_width = dpi(3)
 theme.notification_border_radius = theme.border_radius
-theme.notification_border_color = theme.nord14
+theme.notification_border_color = theme.nord8
 theme.notification_bg = theme.background
 theme.notification_fg = theme.foreground
 theme.notification_crit_bg = theme.bg_urgent
 theme.notification_crit_fg = theme.fg_urgent
-theme.notification_margin = dpi(12)
+theme.notification_margin = dpi(15)
 theme.notification_font = "PragmataPro Nerd Font " .. dpi(12)
-theme.notification_padding = theme.screen_margin * 2
-theme.notification_spacing = theme.screen_margin * 2
+theme.notification_padding = dpi(theme.screen_margin * 2)
+theme.notification_spacing = dpi(theme.screen_margin * 2)
 theme.notification_shape = helpers.rrect(theme.notification_border_radius)
 
 theme.ocol = "<span color='" .. theme.nord8 .. "'>"
