@@ -19,7 +19,7 @@ local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
 -- Do not scale with dpi
-theme.wibar_height = dpi(16)
+theme.wibar_height = dpi(15)
 theme.notification_max_width = dpi(720)
 theme.notification_icon_size = dpi(64)
 
@@ -31,7 +31,7 @@ awful.screen.connect_for_each_screen(function(s)
    if s.geometry.width > 2600 then
       xresources.set_dpi(192, s)
       dpi = xresources.apply_dpi
-      theme.wibar_height = dpi(32)
+      theme.wibar_height = dpi(30)
       theme.notification_max_width = dpi(1440)
       theme.notification_icon_size = dpi(128)
    end
