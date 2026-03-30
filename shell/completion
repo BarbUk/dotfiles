@@ -744,7 +744,7 @@ _fzf_complete_docker_post() {
 }
 
 _fzf_complete_man() {
-  _fzf_complete_new --no-multi --header-lines=1 --prompt='man> ' --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r batman --color always' -- "$@" < <(
+  _fzf_complete_new --no-multi --exact --header-lines=1 --prompt='man> ' --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man' -- "$@" < <(
     man -k .
   )
 }
