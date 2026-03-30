@@ -19,8 +19,21 @@
 set -o errexit -o pipefail -o nounset
 
 maintainer="$1"
+rpc_url=https://aur.archlinux.org/rpc/v5/search
+curl_options=(
+  --silent
+  --user-agent="aur cloning agent"
+)
 
-curl -s "https://aur.archlinux.org/rpc/v5/search/${maintainer}?by=maintainer" | jq -r .results[].PackageBase | while read -r package; do
+# Packages maintained
+mapfile -t packages < <(curl "${curl_options[@]}" "$rpc_url/${maintainer}?by=maintainer" | jq -r .results[].PackageBase)
+
+# Packages co-maintained
+packages+=($(curl "${curl_options[@]}" "$rpc_url/${maintainer}?by=comaintainers" | jq -r .results[].PackageBase))
+
+echo "${#packages[@]} maintained by $maintainer"
+
+for package in "${packages[@]}"; do
   if [ -d "$package" ]; then
     echo "$package already cloned"
     continue
