@@ -54,6 +54,8 @@ if [ -d "$item" ]; then
 elif [ -f "$item" ]; then
   if [[ "$item" == *.pkg.tar.* ]] && command_exists pacman; then
     pacman --color=always -Qi --file "$item"
+  elif [[ "$item" == *.md ]] && command_exists glow; then
+    CLICOLOR_FORCE=1 COLORTERM=truecolor glow --style=light "$item"
   elif [[ "$item" == *.tar.* ]]; then
     tar -vtf "$item" | head -"$default_size"
   else
