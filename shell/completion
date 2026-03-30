@@ -412,7 +412,7 @@ _fzf_complete_process() {
     return 1
   fi
 
-  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
 
   case $prev in
     --user | -u)
@@ -606,7 +606,7 @@ _fzf_complete_ssh_keys() {
 }
 
 _fzf_complete_ssh() {
-  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -i)
       _fzf_complete_ssh_keys "$@"
@@ -617,7 +617,7 @@ _fzf_complete_ssh() {
 }
 
 _fzf_complete_ansible() {
-  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -i)
       _fzf_complete_new --multi --output_separator=, -- "$@" < <(give_me_hostname ssh)
@@ -636,7 +636,7 @@ _fzf_complete_ansible() {
 }
 
 _fzf_complete_dsh() {
-  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -g)
       _fzf_complete_new --multi --output_separator=, -- "$@" < <(_fzf_dsh_groups)
@@ -646,7 +646,7 @@ _fzf_complete_dsh() {
 }
 
 _fzf_complete_pacman() {
-  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     -Rcs | -Qo | -Qi | -Ql | -Sii)
       _fzf_complete_new --multi --preview 'yay --color always -Qli {1}' -- "$@" < <(_fzf_archlinux_installed_packages)
@@ -660,7 +660,7 @@ _fzf_complete_archlinux_installed_packages() {
 }
 
 _fzf_complete_pssh() {
-  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
     --hosts | -h)
       _fzf_complete_new --no-multi -- "$@" < <(_fzf_ansible_groups)
@@ -683,7 +683,7 @@ _fzf_complete_ips() {
 }
 
 _fzf_complete_docker() {
-  local prev="${COMP_WORDS[COMP_CWORD - 1]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
   local FZF_DOCKER_PS_FORMAT="table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}"
   local FZF_DOCKER_PS_START_FORMAT="table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}"
 
