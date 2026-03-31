@@ -7,6 +7,7 @@ background = #fdf6e3
 mouse-hide-while-typing = true
 keybind = ctrl+v=paste_from_clipboard
 keybind = performable:ctrl+c=copy_to_clipboard
+selection-clear-on-copy = true
 window-decoration = false
 gtk-titlebar = false
 minimum-contrast = 2.2
