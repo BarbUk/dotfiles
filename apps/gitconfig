@@ -68,7 +68,7 @@
 	whitespace = red reverse
 [commit]
 	gpgsign = true
-	template = ~/.dotfiles/apps/gitmessage
+	template = ~/.config/git/gitmessage
 	verbose = true
 [init]
 	defaultBranch = main
