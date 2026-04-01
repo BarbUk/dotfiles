@@ -10,3 +10,5 @@ extend-ignore-re = [
 
 [default.extend-identifiers]
 LESS_TERMCAP_ue = "LESS_TERMCAP_ue"
+dbe = "dbe"
+DBE = "DBE"
