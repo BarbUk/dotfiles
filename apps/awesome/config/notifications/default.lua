@@ -25,7 +25,7 @@ naughty.config.notify_callback = function(args)
    then
       path = menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"])
          or menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]:lower())
-   elseif args.freedesktop_hints["image-path"] and args.icon == nil then
+   elseif args.freedesktop_hints and args.freedesktop_hints["image-path"] and args.icon == nil then
       path = menubar.utils.lookup_icon(args.freedesktop_hints["image-path"])
          or menubar.utils.lookup_icon(args.freedesktop_hints["image-path"]:lower())
    elseif args.app_name and args.icon == nil then

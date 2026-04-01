@@ -11,7 +11,7 @@ local altkey = require("config.keys.mod").altkey
 local apps = require("config.apps")
 local mpris = require("config.widgets").mpris
 local volume = require("config.widgets").volume
-local calendar = require("config.widgets").calendar
+local calendar = require("config.widgets.clock").calendar
 local fsroot = require("config.widgets").fsroot
 
 hotkeys_popup.default_widget.labels = beautiful.hotkeys_popup_labels
