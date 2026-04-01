@@ -178,8 +178,10 @@ if v:version < 800
 else
     if empty($DISPLAY)
         set background=light
-    else
+    elseif filereadable("~/.vim/vimrc.background")
         source ~/.vim/vimrc.background
+    else
+        set background=light
     endif
     if (has("termguicolors"))
         set termguicolors
