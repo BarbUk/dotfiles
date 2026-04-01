@@ -49,7 +49,7 @@ if ! ipv4_validation "$resolvable_host" >/dev/null 2>&1; then
 fi
 
 command rsync "${rsync_options[@]}" --rsh "ssh ${ssh_options[*]}" \
-  --exclude-from "$dotdir/apps/rsync_exclude.list" \
+  --exclude-from "$dotdir/system/rsync_exclude.list" \
   "$dotdir/server/" \
   "$host": || true
 
