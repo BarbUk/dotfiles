@@ -1,13 +1,31 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+" Basic Configuration
+set runtimepath^=$XDG_CONFIG_HOME/vim
+set runtimepath+=$XDG_DATA_HOME/vim
+set runtimepath+=$XDG_CONFIG_HOME/vim/after
+
+set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
+set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
+
+let g:netrw_home = $XDG_DATA_HOME."/vim"
+call mkdir($XDG_DATA_HOME."/vim/spell", 'p')
+
+set backupdir=$XDG_STATE_HOME/vim/backup | call mkdir(&backupdir, 'p')
+set directory=$XDG_STATE_HOME/vim/swap   | call mkdir(&directory, 'p')
+set undodir=$XDG_STATE_HOME/vim/undo     | call mkdir(&undodir,   'p')
+set viewdir=$XDG_STATE_HOME/vim/view     | call mkdir(&viewdir,   'p')
+
+if !has('nvim') | set viminfofile=$XDG_STATE_HOME/vim/viminfo | endif
+
 " Disable Markdown syntax highlighting via vim-polyglot (use vim-markdown
 " instead).
 "
 " NOTE: This variable must be set *before* vim-polyglot is loaded.
 let g:polyglot_disabled = ['markdown']
 
-call plug#begin('~/.config/vim/plugged')
+call plug#begin('$XDG_DATA_HOME/vim/plugged')
   " Language / code
   Plug 'dense-analysis/ale'
   Plug 'godlygeek/tabular'
@@ -42,24 +60,6 @@ call plug#begin('~/.config/vim/plugged')
   " Should be called last
   Plug 'ryanoasis/vim-devicons'
 call plug#end()
-
-" Basic Configuration
-set runtimepath^=$XDG_CONFIG_HOME/vim
-set runtimepath+=$XDG_DATA_HOME/vim
-set runtimepath+=$XDG_CONFIG_HOME/vim/after
-
-set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
-set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
-
-let g:netrw_home = $XDG_DATA_HOME."/vim"
-call mkdir($XDG_DATA_HOME."/vim/spell", 'p')
-
-set backupdir=$XDG_STATE_HOME/vim/backup | call mkdir(&backupdir, 'p')
-set directory=$XDG_STATE_HOME/vim/swap   | call mkdir(&directory, 'p')
-set undodir=$XDG_STATE_HOME/vim/undo     | call mkdir(&undodir,   'p')
-set viewdir=$XDG_STATE_HOME/vim/view     | call mkdir(&viewdir,   'p')
-
-if !has('nvim') | set viminfofile=$XDG_STATE_HOME/vim/viminfo | endif
 
 set backup                   " Enable backups
 set swapfile                 " Enable swapfiles
