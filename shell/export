@@ -129,7 +129,6 @@ export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
-export INPUTRC="$HOME/.dotfiles/shell/inputrc"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
