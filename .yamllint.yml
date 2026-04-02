@@ -1,4 +1,6 @@
+---
 extends: default
+
 rules:
   line-length:
     max: 260
@@ -19,3 +21,8 @@ rules:
   octal-values:
     forbid-implicit-octal: true
     forbid-explicit-octal: true
+    # quoted-strings:
+    #   quote-type: double
+    #   required: only-when-needed
+ignore: |-
+  .tox
