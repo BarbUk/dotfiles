@@ -17,7 +17,9 @@ if [[ -n ${XDG_CONFIG_HOME+x} ]]; then
     if [ -d "$app" ]; then
       if ! [ -L "$XDG_CONFIG_HOME/$target" ]; then
         echo "Installing config for $app in $XDG_CONFIG_HOME/$target"
-        rm -ri "${XDG_CONFIG_HOME:?}/${target:?}"
+        if [ -d "$XDG_CONFIG_HOME/$target" ]; then
+          rm -ri "${XDG_CONFIG_HOME:?}/${target:?}"
+        fi
         ln "${ln_params[@]}" "$app" "$XDG_CONFIG_HOME/$target"
       fi
     else
