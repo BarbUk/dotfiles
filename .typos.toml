@@ -12,3 +12,6 @@ extend-ignore-re = [
 LESS_TERMCAP_ue = "LESS_TERMCAP_ue"
 dbe = "dbe"
 DBE = "DBE"
+
+[files]
+extend-exclude = ["apps/vim/autoload/plug.vim"]

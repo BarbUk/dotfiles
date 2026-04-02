@@ -7,3 +7,4 @@ secrets.lua
 *.md
 apps/termite/config
 apps/vim/vimrc.background
+apps/vim/autoload/plug.vim.old
