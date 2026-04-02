@@ -5,3 +5,5 @@
 **/bin/fzf
 secrets.lua
 *.md
+apps/termite/config
+apps/vim/vimrc.background

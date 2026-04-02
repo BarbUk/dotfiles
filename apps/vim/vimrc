@@ -193,8 +193,8 @@ if v:version < 800
 else
     if empty($DISPLAY)
         set background=light
-    elseif filereadable("~/.vim/vimrc.background")
-        source ~/.vim/vimrc.background
+    elseif filereadable("~/.config/vim/vimrc.background")
+        source ~/.config/vim/vimrc.background
     else
         set background=light
     endif
