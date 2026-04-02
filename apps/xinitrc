@@ -75,8 +75,7 @@ fi
 export _JAVA_AWT_WM_NONREPARENTING=1
 # Ssh and keychain configuration
 export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
-eval "$(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)"
-eval "$(keychain --dir "$XDG_RUNTIME_DIR" --absolute --eval --agents ssh,gpg)"
+eval "$(keychain --dir "$XDG_RUNTIME_DIR" --absolute --eval --quiet)"
 # Screensaver timeout and cycle
 xset s 120 120
 # dpms Standby, Suspend and off
