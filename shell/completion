@@ -233,7 +233,7 @@ __fzf_orig_completion_instantiate() {
 __fzf_defaults() {
   printf '%s\n' "$fzf_height $fzf_default_options --min-height 20+ --bind=ctrl-z:ignore $1"
   command cat "${FZF_DEFAULT_OPTS_FILE-}" 2>/dev/null
-  printf '%s\n' "${FZF_DEFAULT_OPTS-} $2"
+  printf '%s\n' "${FZF_DEFAULT_OPTS:-} $2"
 }
 
 _fzf_complete_new() {
@@ -428,7 +428,7 @@ _fzf_complete_process_post() {
   awk '{print $3}'
 }
 
-FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi"
+FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} --ansi"
 FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview 'fzf_preview {}'"
 if command -v bfs >/dev/null 2>&1; then
   FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git -or -name .keep \) -printf '%P\n' 2>/dev/null"
