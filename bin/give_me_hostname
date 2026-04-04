@@ -73,7 +73,9 @@ ssh_config() {
     readarray -d $'\0' -t -O"${#files[@]}" files < <(find /etc/ssh/ssh_config.d -type f -print0)
   fi
   # shellcheck disable=2016
-  "$awk_command" '/^Host/ && ! /\*/ {print $2}' "${files[@]}"
+  if (("${#files[@]}" > 0)); then
+    "$awk_command" '/^Host/ && ! /\*/ {print $2}' "${files[@]}"
+  fi
 }
 
 main() {
