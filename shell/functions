@@ -33,7 +33,7 @@ t() {
 }
 
 homestead() {
-  HOMESTEAD=true vagrant $*
+  HOMESTEAD=true vagrant "$@"
 }
 
 tmpdir() {
@@ -45,4 +45,22 @@ meteo() {
   local request="wttr.in/${1-}?format=3"
   [ "$(tput cols)" -lt 125 ] && request+='&n'
   curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+}
+
+define_locale() {
+  local locale locales=(
+    en_US.utf8
+    en_IE.utf8
+    en_GB.utf8
+    C.utf8
+    C.UTF-8
+    C
+  )
+
+  for locale in "${locales[@]}"; do
+    if locale -a | grep -q "^$locale"; then
+      export LC_ALL="$locale"
+      return
+    fi
+  done
 }

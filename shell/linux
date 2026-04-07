@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+# Unmap CTRL+s / CTRL+q
+stty stop undef
+stty start undef
+
 if command -v vivid >/dev/null 2>&1; then
   if [ ! -f /tmp/ls_colors_cache ]; then
     vivid generate ayu_bold >/tmp/ls_colors_cache

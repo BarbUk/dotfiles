@@ -1,10 +1,5 @@
 # shellcheck shell=bash
-if locale -a | grep -q ^en_US.UTF-8; then
-  export LC_ALL=en_US.UTF-8
-else
-  export LC_ALL=C.UTF-8
-fi
-export GIT_HOSTING='git@github.com'
+
 # Update window size after every command
 shopt -s checkwinsize
 # Append to the history file, don't overwrite it
@@ -17,7 +12,6 @@ shopt -s autocd 2>/dev/null
 shopt -s dirspell 2>/dev/null
 # Correct spelling errors in arguments supplied to cd
 shopt -s cdspell 2>/dev/null
-# CDPATH="."
 # Automatically trim long paths in the prompt (requires Bash 4.x)
 PROMPT_DIRTRIM=3
 # Enable history expansion with space
@@ -67,9 +61,9 @@ export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLORS='sl=49;39:cx=49;39:mt=48;5;121;91;1;4:fn=49;35:ln=49;32:bn=49;32:se=49;36';
 export MANPAGER="less --no-init --RAW-CONTROL-CHARS"
+export MANROFFOPT=-c
 # vim as MANPAGER
 # MANPAGER='vim -c "%! col -b" -c "set ft=man nomod nolist ignorecase" -'
-export MANROFFOPT=-c
 
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
@@ -95,45 +89,10 @@ export RUBYOPT='-W:no-deprecated'
 
 # Don't check mail when opening terminal.
 unset MAILCHECK
-export IRC_CLIENT='irssi'
-
-# https://github.com/sickill/stderred
-stderred=/usr/lib/libstderrred.so
-if [ -e "$stderred" ]; then
-    export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
-fi
 
 # gpg tty
 GPG_TTY=$(tty)
 export GPG_TTY
 
-# Lesspipe
-LESSOPEN="|/usr/bin/lesspipe.sh %s"
-export LESSOPEN
 export GRC_ALIASES=true
 export GCL_NETRC=1
-
-# Apps exports
-export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
-export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
-export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
-
-export CABAL_CONFIG="$XDG_CONFIG_HOME"/cabal/config
-export CABAL_DIR="$XDG_DATA_HOME"/cabal
-
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
-
-export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
-export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
-export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
-export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
-export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
-export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
-export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
-export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
-export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
-export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
-export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
-export ICEAUTHORITY="$XDG_CACHE_HOME"/ICEauthority
