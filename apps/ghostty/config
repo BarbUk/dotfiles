@@ -1,5 +1,5 @@
 shell-integration = bash
-font-family = PragmataPro
+font-family = PragmataPro Nerd Font
 font-size = 12
 window-theme = system
 theme = Gruvbox Light Hard
