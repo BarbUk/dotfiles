@@ -32,6 +32,6 @@ if [[ -n ${XDG_CONFIG_HOME+x} ]]; then
 fi
 
 # shellcheck disable=2086
-ln "${ln_params[@]}" --no-dereference "$dotfiles_dir/modules/bash-it" "$HOME/.bash_it"
+ln "${ln_params[@]}" --no-dereference "$dotfiles_dir/modules/bash-it" "$HOME/.config/bash_it"
 cat "$dotfiles_dir/apps/termite/termite.conf" "$dotfiles_dir/apps/termite/termite.light" >"$dotfiles_dir/apps/termite/config"
 ln "${ln_params[@]}" "$dotfiles_dir/apps/vim/vimrc.light" "$dotfiles_dir/apps/vim/vimrc.background"
