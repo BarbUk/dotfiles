@@ -1,6 +1,9 @@
+# shellcheck shell=bash
+
 if [ -n "$BASH_VERSION" ] && [ -n "$PS1" ]; then
   # include .bashrc if it exists
   if [ -f "$HOME/.bashrc" ]; then
+    # shellcheck source=server/.bashrc
     . "$HOME/.bashrc"
   fi
 fi
