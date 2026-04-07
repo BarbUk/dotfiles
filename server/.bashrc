@@ -1,23 +1,13 @@
 # shellcheck shell=bash
 [[ $- != *i* ]] && return
 
-define_locale() {
-  local locale locales=(
-    C.utf8
-    C.UTF-8
-    en_US.utf8
-    en_IE.utf8
-    en_GB.utf8
-    C
-  )
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 
-  for locale in "${locales[@]}"; do
-    if locale -a | grep -q "^$locale"; then
-      export LC_ALL="$locale"
-      return
-    fi
-  done
-}
+# shellcheck disable=2016
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
 check_and_source() {
   local file="$1"
@@ -26,8 +16,6 @@ check_and_source() {
     . "$file"
   fi
 }
-
-define_locale
 
 # Predictable SSH authentication socket location.
 _local_ssh_socket="$HOME/.ssh/${USER}_ssh_auth_sock"
@@ -38,63 +26,13 @@ if [ -n "$SSH_AUTH_SOCK" ]; then
   export SSH_AUTH_SOCK="$_local_ssh_socket"
 fi
 
-unset MAILCHECK
-shopt -s checkwinsize
-shopt -s histappend
-shopt -s cmdhist
-shopt -s autocd 2>/dev/null
-shopt -s dirspell 2>/dev/null
-shopt -s cdspell 2>/dev/null
-CDPATH="."
-PROMPT_DIRTRIM=3
-bind Space:magic-space
-shopt -s globstar 2>/dev/null
-shopt -s nocaseglob
-bind "set completion-ignore-case on"
-bind "set completion-map-case on"
-bind "set show-all-if-ambiguous on"
-bind "set mark-symlinked-directories on"
-HISTSIZE=50000
-HISTFILESIZE=100000
-# Don't record some commands
-HISTIGNORE="&:[ ]*:exit:history:clear:env:?:??"
-HISTTIMEFORMAT='%F %T '
-# Avoid duplicate entries
-HISTCONTROL="erasedups:ignoreboth"
-# Record each line as it gets issued
 PROMPT_COMMAND='history -a'
-
-export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
-export GREP_COLORS='sl=49;39:cx=49;39:mt=48;5;121;91;1;4:fn=49;35:ln=49;32:bn=49;32:se=49;36'
-
-export GIT_HOSTING='git@github.com'
-
-export LESS='-WiSFRX'
-export LESS_TERMCAP_mb=$'\E[1;31m'
-export LESS_TERMCAP_md=$'\E[1;36m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;48;5;121;91;1;4m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[1;32m'
-export EDITOR=vim
-
 export PATH=~/.config/bin:$PATH:/usr/sbin:/sbin
 
+# Bash completion
 check_and_source /etc/bash_completion
-
-# Path to the bash it configuration
-export BASH_IT=$HOME/.config/bash_it
-export SCM_GIT_SHOW_DETAILS=true
-export THEME_SHOW_RUBY_PROMPT=false
-export SCM_CHECK=true
-export BASH_IT_COMMAND_DURATION=true
-export SCM_GIT_SHOW_CURRENT_USER=true
-
-# Bashit theme
-export BASH_IT_THEME='barbuk'
-
+# Load export
+check_and_source "$HOME/.config/server/export"
 # Load z
 _Z_OWNER="$USER"
 check_and_source "$HOME/.config/modules/z/z.sh"
@@ -112,3 +50,5 @@ check_and_source "$HOME/.config/server/systemd_helpers"
 check_and_source "$HOME/.config/server/functions"
 # custom server configuration
 check_and_source "$HOME/.config/server/custom"
+
+define_locale
