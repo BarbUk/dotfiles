@@ -58,7 +58,7 @@ echo -ne "\\033]0;$host\\007"
 
 # shellcheck disable=SC2029
 command ssh "${ssh_options[@]}" -tt "$host" "
-if ! command -v tmux 2>/dev/null; then
+if ! command -v tmux >/dev/null 2>&1; then
   bash
   exit
 fi
