@@ -3,10 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-stty stop undef
-
-dot_dir="$HOME/.dotfiles"
-
 # Benchmark / profiling from
 # https://www.rosipov.com/blog/profiling-slow-bashrc/
 # Uncomment 4 following lines and last line
@@ -17,6 +13,8 @@ dot_dir="$HOME/.dotfiles"
 # BASH_XTRACEFD="5"
 # set -x
 
+dot_dir="$HOME/.dotfiles"
+
 check_and_source() {
   if [ -e "$1" ]; then
     . "$1"
@@ -25,6 +23,7 @@ check_and_source() {
 
 check_and_source "$HOME/.tokens"
 . "$dot_dir/shell/export"
+. "$dot_dir/shell/app_export"
 # shellcheck source=modules/bash-it/bash_it.sh
 . "$BASH_IT/bash_it.sh"
 . "$dot_dir/shell/aliases"
@@ -41,8 +40,6 @@ else
   . "$dot_dir/shell/keychain"
 fi
 
-# if command -v atuin >/dev/null 2>&1; then
-#   eval "$(atuin init bash --disable-up-arrow)"
-# fi
+define_locale
 
 # set +x
