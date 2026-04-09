@@ -201,7 +201,7 @@ if v:version < 800
     colorscheme desert
     let g:airline_theme='base16_tomorrow'
 else
-    if empty($DISPLAY)
+    if &term=~'linux'
         set background=dark
     elseif filereadable("~/.config/vim/vimrc.background")
         source ~/.config/vim/vimrc.background
