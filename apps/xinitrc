@@ -73,7 +73,7 @@ if command -v wmname >/dev/null 2>&1; then
 fi
 export _JAVA_AWT_WM_NONREPARENTING=1
 # Ssh and keychain configuration
-export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
+export SSH_ASKPASS=/usr/bin/pinentry-gtk
 eval "$(keychain --dir "$XDG_RUNTIME_DIR" --absolute --eval --quiet)"
 # Screensaver timeout and cycle
 xset s 120 120
