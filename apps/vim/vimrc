@@ -84,7 +84,7 @@ set noerrorbells             " don't beep
 let mapleader=","
 
 " Set character encoding.
-set encoding=utf-8
+set encoding=UTF-8
 scriptencoding utf-8
 
 " Set split behavior.
