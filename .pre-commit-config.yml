@@ -55,7 +55,7 @@ repos:
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
-    rev: 631208b7aac2daa8b707f55e7331f9112b0e062d  # frozen: v1.44.0
+    rev: 02ea592e44b3a53c302f697cddca7641cd051c3d  # frozen: v1.45.0
     hooks:
       - id: typos
 
@@ -68,7 +68,7 @@ repos:
 
   # Github action
   - repo: https://github.com/rhysd/actionlint
-    rev: 393031adb9afb225ee52ae2ccd7a5af5525e03e8  # frozen: v1.7.11
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
     hooks:
       - id: actionlint-system
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: e8689b0f1c8828c81c5bde980a5e285e22787455  # frozen: v0.1.57
+    rev: 1f1b51c57b9a051a42d04deaa725c4c9a2d37aa0  # frozen: v0.1.66
     hooks:
       - id: rumdl-fmt
         args:
