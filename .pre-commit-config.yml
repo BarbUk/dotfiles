@@ -82,7 +82,7 @@ repos:
     hooks:
       - id: hadolint
   - repo: https://github.com/reteps/dockerfmt
-    rev: 21be1f69cec5e77953bdb40a2f1d95de0eeb56ac  # frozen: v0.3.9
+    rev: bf2867e6b3029c0cd40ba921a7f0b6547b9b8fe2  # frozen: v0.5.2
     hooks:
       - id: dockerfmt
         args:
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 1f1b51c57b9a051a42d04deaa725c4c9a2d37aa0  # frozen: v0.1.66
+    rev: 916d85f452acfb1f57123538315a130f34fb5a21  # frozen: v0.1.67
     hooks:
       - id: rumdl-fmt
         args:
