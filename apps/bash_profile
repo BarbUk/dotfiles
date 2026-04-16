@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-
-export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/gvimrc" | source $MYGVIMRC'
-export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+# XDG
+if [ -z ${XDG_STATE_HOME+x} ] || [ -z ${VIMINIT+x} ]; then
+  export XDG_CACHE_HOME="$HOME/.cache"
+  export XDG_CONFIG_HOME="$HOME/.config"
+  export XDG_DATA_HOME="$HOME/.local/share"
+  export XDG_STATE_HOME="$HOME/.local/state"
+  # shellcheck disable=SC2016
+  export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+fi
 
 if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && [ -x /usr/bin/tdm ]; then
+  # shellcheck disable=SC1091
   source /usr/bin/tdm
 fi
 
 if [[ -f ~/.bashrc ]]; then
+  # shellcheck source=apps/bashrc
   . ~/.bashrc
 fi

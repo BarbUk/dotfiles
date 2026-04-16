@@ -24,6 +24,15 @@ export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:/usr/local/bin:$PATH"
 export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
 export USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
 
+# XDG
+if [ -z ${XDG_STATE_HOME+x} ] || [ -z ${VIMINIT+x} ]; then
+  export XDG_CACHE_HOME="$HOME/.cache"
+  export XDG_CONFIG_HOME="$HOME/.config"
+  export XDG_DATA_HOME="$HOME/.local/share"
+  export XDG_STATE_HOME="$HOME/.local/state"
+  # shellcheck disable=SC2016
+  export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+fi
 # Screen icc
 vendor=$(awk '{print $1}' /sys/devices/virtual/dmi/id/board_vendor)
 case "$vendor" in
