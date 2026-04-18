@@ -21,17 +21,16 @@
 
 set -o errexit -o pipefail -o nounset
 
+tmpfile=$(mktemp)
+readonly tmpfile
+trap 'rm -f $tmpfile' EXIT HUP INT TRAP TERM
+
 sep='<>'
 if [ "$(uname)" = "Darwin" ]; then
-  chrome_history_files=(
-    "$HOME/Library/Application Support/Google/Chrome/Default/History"
-  )
+  mapfile -t chrome_history_files < <(find "$HOME/Library/Application Support/Google/Chrome/" -maxdepth 2 -type f -name History)
   open=open
 else
-  chrome_history_files=(
-    "$HOME/.config/google-chrome/Default/History"
-    "$HOME/.config/google-chrome/Profile 1/History"
-  )
+  mapfile -t chrome_history_files < <(find "$HOME/.config/google-chrome/" -maxdepth 2 -type f -name History)
   open=xdg-open
 fi
 
@@ -43,9 +42,9 @@ fi
 
 extract_chrome_history() {
   local history_file=$1
-  cp -f "$history_file" /tmp/h
+  cp -f "$history_file" "$tmpfile"
   # shellcheck disable=2086
-  sqlite3 -separator $sep /tmp/h \
+  sqlite3 -separator $sep "$tmpfile" \
     "SELECT substr(title, 1, 50) as label, url
       FROM urls
       GROUP BY label
