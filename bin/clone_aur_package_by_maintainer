@@ -35,10 +35,9 @@ echo "${#packages[@]} maintained by $maintainer"
 
 for package in "${packages[@]}"; do
   if [ -d "$package" ]; then
-    echo "$package already cloned"
     continue
   fi
-
+  echo "Cloning $package"
   git clone --quiet "ssh://aur@aur.archlinux.org/$package"
 
 done
