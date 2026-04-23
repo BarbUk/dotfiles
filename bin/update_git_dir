@@ -25,6 +25,7 @@ git_pull_repo() {
     cd "$dir"
     echo "Updating $dir"
     git pull
+    echo
   )
 }
 
