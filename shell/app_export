@@ -28,3 +28,7 @@ export ICEAUTHORITY="$XDG_CACHE_HOME"/ICEauthority
 # Lesspipe
 LESSOPEN="|/usr/bin/lesspipe.sh %s"
 export LESSOPEN
+
+# Telemetry
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
