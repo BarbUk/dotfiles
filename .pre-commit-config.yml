@@ -55,13 +55,13 @@ repos:
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
-    rev: 02ea592e44b3a53c302f697cddca7641cd051c3d  # frozen: v1.45.0
+    rev: cf5f1c29a8ac336af8568821ec41919923b05a83  # frozen: v1.45.1
     hooks:
       - id: typos
 
   # Png
   - repo: https://github.com/oxipng/oxipng
-    rev: d54e7c04ea58170167d95d9b2b2ec07571602fe2  # frozen: v10.1.0
+    rev: 628e241e23f368097883807fa6e985ccf7c00357  # frozen: v10.1.1
     hooks:
       - id: oxipng
         args: ["-o", "4", "--strip", "safe", "--alpha"]
@@ -72,7 +72,7 @@ repos:
     hooks:
       - id: actionlint-system
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: ea2eb407b4cbce87cf0d502f36578950494f5ac9  # frozen: v1.23.1
+    rev: a4727cbbcd26d7098e96b9cb738169b59711ae51  # frozen: v1.24.1
     hooks:
       - id: zizmor
 
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 0ec7fc6027b78f683d13356bbb4f13f1756fa12d  # frozen: v0.1.69
+    rev: 7a9cae8b0b2a12b63419789b233f52932917b7a4  # frozen: v0.1.80
     hooks:
       - id: rumdl-fmt
         args:
