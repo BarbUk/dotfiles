@@ -1,0 +1,19 @@
+#!/usr/bin/bash
+
+compilers=(
+  "c++" "c89" "c99" "cc" "clang" "clang++" "cpp" "g++" "gcc" "rustc" "x86_64-pc-linux-gnu-c++" "x86_64-pc-linux-gnu-cc" "x86_64-pc-linux-gnu-g++" "x86_64-pc-linux-gnu-gcc"
+)
+
+mkdir -p /usr/lib/sccache/bin
+
+for compiler in "${compilers[@]}"; do
+  cat >"/usr/lib/sccache/bin/${compiler}" <<-EOF
+#!/bin/bash
+SCCACHE_WRAPPER_BINDIR="\$(dirname \${BASH_SOURCE[0]})"  # Intentionally don't resolve symlinks
+PATH=\${PATH//":\$SCCACHE_WRAPPER_BINDIR:"/":"} # delete any instances in the middle
+PATH=\${PATH/#"\$SCCACHE_WRAPPER_BINDIR:"/} # delete any instance at the beginning
+PATH=\${PATH/%":\$SCCACHE_WRAPPER_BINDIR"/} # delete any instance in the at the end
+/usr/bin/sccache ${compiler} "\$@"
+EOF
+  chmod 755 "/usr/lib/sccache/bin/${compiler}"
+done
