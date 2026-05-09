@@ -55,7 +55,13 @@ repos:
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
+<<<<<<< HEAD
     rev: cf5f1c29a8ac336af8568821ec41919923b05a83  # frozen: v1.45.1
+||||||| parent of 9d73f0c (Revert typo hook)
+    rev: 7c572958218557a3272c2d6719629443b5cc26fd  # frozen: typos-v0.10.43
+=======
+    rev: cf5f1c29a8ac336af8568821ec41919923b05a83  # frozen: v1.45
+>>>>>>> 9d73f0c (Revert typo hook)
     hooks:
       - id: typos
 
