@@ -3,6 +3,7 @@
 !/system/pulse/daemon.conf.d
 !/system/pulse/default.pa
 **/bin/fzf
+**/bin/privatebin
 secrets.lua
 *.md
 apps/termite/config
