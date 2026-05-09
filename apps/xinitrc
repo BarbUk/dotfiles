@@ -16,7 +16,7 @@ fi
 export QT_QPA_PLATFORMTHEME=gtk3
 export GOPATH="$HOME/.go"
 export COMPOSERPATH="$HOME/.composer/vendor/bin"
-export CCACHEPATH="/usr/lib/ccache/bin"
+export CCACHEPATH="/usr/lib/sccache/bin:/usr/lib/ccache/bin"
 export DOTBIN="$HOME/.dotfiles/bin"
 export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:/usr/local/bin:$PATH"
 
