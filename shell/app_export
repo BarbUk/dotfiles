@@ -32,3 +32,4 @@ export LESSOPEN
 # Telemetry
 export GH_TELEMETRY=false
 export DO_NOT_TRACK=true
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
