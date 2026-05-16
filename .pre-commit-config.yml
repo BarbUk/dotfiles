@@ -55,7 +55,7 @@ repos:
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
-    rev: cf5f1c29a8ac336af8568821ec41919923b05a83  # frozen: v1.45
+    rev: bbaefadf97b0ec5fdc942684b647f1a6ab250274  # frozen: v1.46.0
     hooks:
       - id: typos
 
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 7a9cae8b0b2a12b63419789b233f52932917b7a4  # frozen: v0.1.80
+    rev: 1cdcf61c68963a8f05d3937cb059c373faac56d0  # frozen: v0.1.89
     hooks:
       - id: rumdl-fmt
         args:
