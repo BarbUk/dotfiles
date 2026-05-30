@@ -43,7 +43,7 @@ repos:
 
   # Lua
   - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: 080c3aa843e9ae6541d9c167ac4f913c5e34730a  # frozen: v2.4.1
+    rev: 5ae6e7a55748414b4be30a832afd895014c65352  # frozen: v2.5.2
     hooks:
       - id: stylua-system
 
@@ -72,7 +72,7 @@ repos:
     hooks:
       - id: actionlint-system
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: a4727cbbcd26d7098e96b9cb738169b59711ae51  # frozen: v1.24.1
+    rev: 9257c6050c0261b8c57e712f632dc4a8010109a9  # frozen: v1.25.2
     hooks:
       - id: zizmor
 
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 1cdcf61c68963a8f05d3937cb059c373faac56d0  # frozen: v0.1.89
+    rev: 661f545b91a9742ef1b110fa3a93723332dcd87b  # frozen: v0.1.95
     hooks:
       - id: rumdl-fmt
         args:
