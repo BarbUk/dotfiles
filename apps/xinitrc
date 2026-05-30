@@ -85,9 +85,9 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export SSH_ASKPASS=/usr/bin/pinentry-gtk
 eval "$(keychain --dir "$XDG_RUNTIME_DIR" --absolute --eval --quiet)"
 # Screensaver timeout and cycle
-xset s 120 120
+xset s off off
 # dpms Standby, Suspend and off
-xset dpms 150 200 300
+xset dpms 120 120 120
 # Lock session after screen save or lid close
 xss-lock -- slock &
 # pcmanfm daemon, for quick file manager access
