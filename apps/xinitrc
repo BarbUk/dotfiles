@@ -87,7 +87,7 @@ eval "$(keychain --dir "$XDG_RUNTIME_DIR" --absolute --eval --quiet)"
 # Screensaver timeout and cycle
 xset s off off
 # dpms Standby, Suspend and off
-xset dpms 120 120 120
+xset dpms 0 0 120
 # Lock session after screen save or lid close
 xss-lock -- slock &
 # pcmanfm daemon, for quick file manager access
