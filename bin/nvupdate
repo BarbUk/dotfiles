@@ -22,7 +22,7 @@ set -o errexit -o pipefail -o nounset
 while read -r package _ _ new_version; do
   message="$package: $new_version: upstream release"
   pushd "$HOME/ztemp/packages/$package"
-  sed -r -i -e "s/^pkgver=(.*)$/pkgver=$new_version/g" -e 's/^pkgrel=(.*)$/pkgrel=1/g' PKGBUILD
+  sed -r -i -e "s/^pkgver=(.*)$/pkgver=${new_version/-/.}/g" -e 's/^pkgrel=(.*)$/pkgrel=1/g' PKGBUILD
   updpkgsums
   makepkg --printsrcinfo >.SRCINFO
   pkgctl build --inspect failure
