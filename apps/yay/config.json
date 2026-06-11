@@ -40,11 +40,10 @@
   "searchby": "name-desc",
   "separatesources": true,
   "singlelineresults": false,
-  "sortby": "votes",
+  "sortby": "",
   "sudobin": "sudo",
   "sudoflags": "",
   "sudoloop": false,
-  "timeupdate": false,
   "useask": false,
-  "version": "12.5.7"
+  "version": "12.6.0"
 }
