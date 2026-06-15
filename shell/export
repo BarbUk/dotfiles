@@ -100,3 +100,4 @@ export GCL_NETRC=1
 # Podman
 export DOCKER_BUILDKIT=0
 export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+export PODMAN_COMPOSE_WARNING_LOGS=false
