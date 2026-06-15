@@ -96,3 +96,7 @@ export GPG_TTY
 
 export GRC_ALIASES=true
 export GCL_NETRC=1
+
+# Podman
+export DOCKER_BUILDKIT=0
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
