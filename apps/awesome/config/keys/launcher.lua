@@ -150,10 +150,17 @@ local keys = gears.table.join(
    end, { description = "launch pro calendar", group = "launcher" }),
    awful.key({ modkey }, "u", function()
       helpers.spawn_and_move("slack", "Slack", 1)
+      helpers.spawn_and_move("thunderbird", "org.mozilla.Thunderbird", 2)
       helpers.spawn_and_move(
-         apps.default.browser .. " --profile-directory='" .. secrets.profile.pro .. "' --app=https://mail.zoho.com",
-         "mail.zoho.com__zm",
-         2
+         apps.default.browser
+            .. " --profile-directory='"
+            .. secrets.profile.pro
+            .. "' "
+            .. secrets.urls.pro.dashboard
+            .. " "
+            .. secrets.urls.pro.ticket,
+         "Google-chrome",
+         3
       )
       helpers.spawn_and_move(
          apps.default.browser .. " --profile-directory='" .. secrets.profile.pro .. "' --app=https://calendar.zoho.com",
@@ -161,6 +168,7 @@ local keys = gears.table.join(
          2
       )
       helpers.spawn_and_move("subl", "Subl", 4)
+      awful.spawn("dmenu_nmcli_vpn " .. secrets.profile.pro:lower())
    end, { description = "launch work apps on their tag", group = "launcher" }),
    awful.key({ modkey }, "r", function()
       awful.screen.focused().mypromptbox:run()
