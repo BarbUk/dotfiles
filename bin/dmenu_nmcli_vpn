@@ -19,13 +19,18 @@
 
 set -o errexit -o pipefail -o nounset
 
-dmenu="rofi -dmenu -i -sort -lines 25 -p vpn"
+dmenu=(rofi -dmenu -i -sort -lines 25 -p vpn -auto-select)
 
 if [[ -t 0 ]]; then
-  dmenu="fzf --select-1 --reverse --inline-info"
+  dmenu=(fzf --select-1 --reverse --inline-info)
+  if (($# == 1)); then
+    dmenu+=(--query="$1")
+  fi
+elif (($# == 1)); then
+  dmenu+=(-filter="$1")
 fi
 
-vpn="$(nmcli connection show | awk '$3 ~ /^(vpn|wireguard)$/ {print $1}' | ${dmenu})"
+vpn="$(nmcli connection show | awk '$3 ~ /^(vpn|wireguard)$/ {print $1}' | "${dmenu[@]}")"
 enabled_vpn="$(nmcli connection show --active | awk '$3 ~ /^(vpn|wireguard)$/ {print $1}')"
 
 if [ -n "$enabled_vpn" ]; then
