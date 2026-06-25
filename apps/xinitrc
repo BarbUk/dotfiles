@@ -14,11 +14,8 @@ if [ -z ${GTK_MODULES+x} ] && [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 # Export and path definition
 export QT_QPA_PLATFORMTHEME=gtk3
-export GOPATH="$HOME/.go"
-export COMPOSERPATH="$HOME/.composer/vendor/bin"
-export CCACHEPATH="/usr/lib/sccache/bin:/usr/lib/ccache/bin"
 export DOTBIN="$HOME/.dotfiles/bin"
-export PATH="$DOTBIN:$GOPATH/bin:$COMPOSERPATH:$CCACHEPATH:/usr/local/bin:$PATH"
+export PATH="$DOTBIN:/usr/local/bin:$PATH"
 
 # X11
 export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
