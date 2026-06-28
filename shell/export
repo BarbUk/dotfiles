@@ -57,6 +57,7 @@ HISTTIMEFORMAT='%F %T '
 # Avoid duplicate entries
 HISTCONTROL="erasedups:ignoreboth:autosave"
 
+# Cli
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export GREP_COLORS='sl=49;39:cx=49;39:mt=48;5;121;91;1;4:fn=49;35:ln=49;32:bn=49;32:se=49;36';
@@ -64,6 +65,8 @@ export MANPAGER="less --no-init --RAW-CONTROL-CHARS"
 export MANROFFOPT=-c
 # vim as MANPAGER
 # MANPAGER='vim -c "%! col -b" -c "set ft=man nomod nolist ignorecase" -'
+export TERMINAL="termite"
+export PAGER="less"
 
 # Path to the bash it configuration
 export BASH_IT=$HOME/.config/bash_it
