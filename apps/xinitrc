@@ -12,10 +12,12 @@ if [ -z ${GTK_MODULES+x} ] && [ -d /etc/X11/xinit/xinitrc.d ]; then
   # Merge xresources
   [[ -f "$XDG_CONFIG_HOME/X11/xresources" ]] && xrdb -merge -I"$HOME" "$XDG_CONFIG_HOME/X11/xresources"
 fi
+
 # Export and path definition
 export QT_QPA_PLATFORMTHEME=gtk3
 export DOTBIN="$HOME/.dotfiles/bin"
-export PATH="$DOTBIN:/usr/local/bin:$PATH"
+PATH="$DOTBIN:$PATH"
+export PATH
 
 # X11
 export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
@@ -30,6 +32,7 @@ if [ -z ${XDG_STATE_HOME+x} ] || [ -z ${VIMINIT+x} ]; then
   # shellcheck disable=SC2016
   export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 fi
+
 # Screen icc
 vendor=$(awk '{print $1}' /sys/devices/virtual/dmi/id/board_vendor)
 case "$vendor" in
@@ -78,6 +81,8 @@ if command -v wmname >/dev/null 2>&1; then
   wmname LG3D
 fi
 export _JAVA_AWT_WM_NONREPARENTING=1
+# Disable smooth scrolling
+export GTK_OVERLAY_SCROLLING=0
 # Ssh and keychain configuration
 export SSH_ASKPASS=/usr/bin/pinentry-gtk
 eval "$(keychain --dir "$XDG_RUNTIME_DIR" --absolute --eval --quiet)"
