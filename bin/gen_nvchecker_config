@@ -49,6 +49,7 @@ for package in "$packages_dir"/*/.nvchecker.toml; do
   pkgdir=$(dirname "$package")
   pkgbase=$(basename "$pkgdir")
   pkgver=$(sed -n 's/^pkgver=//p' "$pkgdir/PKGBUILD" | tr -d \"\')
+  # shellcheck disable=SC2016
   if grep -qF '${pkgver%.*}-${pkgver##*.}' "$pkgdir/PKGBUILD"; then
     pkgver="${pkgver%.*}-${pkgver##*.}"
   fi
