@@ -55,7 +55,7 @@ for package in "$packages_dir"/*/.nvchecker.toml; do
   fi
   echo "Detected $pkgbase: $pkgver"
   printf '{"%s": "%s"}\n' "$pkgbase" "$pkgver" >>"$tmpfile"
-  ((count++))
+  ((++count))
 done
 
 jq -s add "$tmpfile" >"$old"
