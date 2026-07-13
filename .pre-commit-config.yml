@@ -55,7 +55,7 @@ repos:
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
-    rev: bbaefadf97b0ec5fdc942684b647f1a6ab250274  # frozen: v1.46.0
+    rev: bee27e3a4fd1ea2111cf90ab89cd076c870fce14  # frozen: v1.48.0
     hooks:
       - id: typos
 
@@ -82,7 +82,7 @@ repos:
     hooks:
       - id: hadolint
   - repo: https://github.com/reteps/dockerfmt
-    rev: bf2867e6b3029c0cd40ba921a7f0b6547b9b8fe2  # frozen: v0.5.2
+    rev: 5c9b576cff2b0f3c323785ed9aa86838d1ae2228  # frozen: v0.5.4
     hooks:
       - id: dockerfmt
         args:
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 479ff1e4e2ea17d1bf8ffef84e59a1a6942b55fc  # frozen: v0.2.20
+    rev: 77cb2353b60aecd74aa56db968b49ae0ff25144e  # frozen: v0.2.28
     hooks:
       - id: rumdl-fmt
         args:
