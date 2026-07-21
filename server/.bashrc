@@ -18,7 +18,7 @@ check_and_source() {
 }
 
 # Predictable SSH authentication socket location.
-_local_ssh_socket="$HOME/.ssh/${USER}_ssh_auth_sock"
+_local_ssh_socket="$HOME/.${USER}_ssh_auth_sock"
 if [ -n "$SSH_AUTH_SOCK" ]; then
   if ! [[ -e "$_local_ssh_socket" ]]; then
     ln -sf "$SSH_AUTH_SOCK" "$_local_ssh_socket"
