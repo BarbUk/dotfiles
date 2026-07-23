@@ -104,3 +104,13 @@ export GCL_NETRC=1
 export DOCKER_BUILDKIT=0
 export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
 export PODMAN_COMPOSE_WARNING_LOGS=false
+
+# Cooldown
+## Ruby
+export BUNDLE_COOLDOWN=10
+
+## Rust
+export COOLDOWN_MINUTES=14400 # 10 days, in minutes
+
+## Elixir
+export HEX_COOLDOWN="10d"
