@@ -14,6 +14,26 @@ end
 
 -- Notification callback to style monitoring notification
 naughty.config.notify_callback = function(args)
+   local noti = require("config.notifications")
+   if noti.suspended then
+      local is_critical = args.urgency == "critical"
+         or (args.preset and args.preset.urgency == "critical")
+         or (args.preset == naughty.config.presets.critical)
+      if not (is_critical or args.ignore_suspend) then
+         -- Shallow copy the arguments to queue them
+         local queue_item = {}
+         for k, v in pairs(args) do
+            queue_item[k] = v
+         end
+         table.insert(noti.queue, queue_item)
+         noti:update_queue_notification()
+         args.title = nil
+         args.message = nil
+         args.timeout = 0.01
+         return args
+      end
+   end
+
    local path
 
    if
@@ -99,6 +119,7 @@ naughty.config.presets.critical = {
    border_width = beautiful.notification_border_width,
    margin = beautiful.notification_margin,
    position = beautiful.notification_position,
+   urgency = "critical",
 }
 
 naughty.config.presets.ok = naughty.config.presets.low

@@ -36,6 +36,12 @@ local keys = gears.table.join(
       naughty.destroy_all_notifications()
    end, { description = "destroy all notifications", group = "hotkeys" }),
 
+   -- Toggle notification suspend/resume
+   awful.key({ modkey, altkey }, "s", function()
+      local noti = require("config.notifications")
+      noti:toggle()
+   end, { description = "toggle notification suspend/resume", group = "hotkeys" }),
+
    -- Show/Hide Wibox
    awful.key({ modkey }, "b", function()
       for s in screen do

@@ -29,6 +29,7 @@ local calendar = lain.widget.cal({
       font = beautiful.notification_font,
       fg = beautiful.notification_fg,
       bg = beautiful.notification_bg,
+      ignore_suspend = true,
    },
 })
 

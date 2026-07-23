@@ -4,7 +4,7 @@ local markup = lain.util.markup
 local white = beautiful.fg_normal
 
 local fsroot = lain.widget.fs({
-   notification_preset = { fg = white, bg = beautiful.bg_normal },
+   notification_preset = { fg = white, bg = beautiful.bg_normal, ignore_suspend = true },
    settings = function()
       local hdd = ""
       local p = ""

@@ -19,6 +19,7 @@ cpu.widget:connect_signal("mouse::enter", function()
          message = stdout,
          timeout = 0,
          hover_timeout = 0.5,
+         ignore_suspend = true,
       })
    end)
 end)

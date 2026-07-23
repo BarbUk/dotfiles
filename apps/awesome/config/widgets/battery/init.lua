@@ -20,6 +20,7 @@ local function show_battery_status()
          preset = naughty.config.presets.low,
          title = "Battery information",
          message = tostring(stdout),
+         ignore_suspend = true,
       })
    end)
 end

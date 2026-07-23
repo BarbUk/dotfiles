@@ -16,6 +16,7 @@ local mpris = mpris_info({
       font = "PragmataPro Mono Liga " .. dpi(12),
       fg = beautiful.notification_fg,
       bg = beautiful.notification_bg,
+      ignore_suspend = true,
    },
    settings = function(mpris_now, widget)
       if mpris_now.status ~= "no player detected" then

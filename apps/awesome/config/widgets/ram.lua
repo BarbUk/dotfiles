@@ -24,6 +24,7 @@ ram.widget:buttons(awful.util.table.join(awful.button({}, 1, function()
          message = stdout,
          timeout = 10,
          hover_timeout = 0.5,
+         ignore_suspend = true,
       })
    end)
 end)))
