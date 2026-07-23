@@ -12,7 +12,6 @@ naughty.config.defaults.shape = function(cr, w, h)
    gears.shape.rounded_rect(cr, w, h, beautiful.border_radius)
 end
 
--- Notification callback to style monitoring notification
 naughty.config.notify_callback = function(args)
    local noti = require("config.notifications")
    if noti.suspended then
@@ -27,9 +26,8 @@ naughty.config.notify_callback = function(args)
          end
          table.insert(noti.queue, queue_item)
          noti:update_queue_notification()
-         args.title = nil
-         args.message = nil
-         args.timeout = 0.01
+         args = {}
+         args.timeout = 0.0001
          return args
       end
    end
