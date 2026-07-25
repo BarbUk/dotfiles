@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
-ssh_agent_file="/tmp/.ssh-agent-thing"
+ssh_agent_file="$XDG_RUNTIME_DIR/.ssh-agent-thing"
 
 if [ ! -f "$ssh_agent_file" ]; then
   touch "$ssh_agent_file"
+  mapfile -t live_keys < <(find "$HOME"/.ssh/keys/live -not -type d -not -name '*.pub')
   chmod 600 "$ssh_agent_file"
   keychain \
     --systemd \
     --eval \
     --quiet \
-    --dir "$XDG_RUNTIME_DIR" \
+    --dir="$XDG_RUNTIME_DIR" \
     --absolute \
     --quick \
-    "$(find "$HOME"/.ssh/keys/live -not -type d -not -name '*.pub')" \
+    --no-inherit \
+    --timeout 480 \
+    "${live_keys[@]}" \
     >"$ssh_agent_file"
-elif grep -q '^SSH_AUTH_SOCK="/home' "$ssh_agent_file"; then
+  eval "$(<"$ssh_agent_file")"
+elif grep -q '^SSH_AUTH_SOCK=/run/user/' "$ssh_agent_file"; then
   eval "$(<"$ssh_agent_file")"
 fi
