@@ -72,7 +72,7 @@ repos:
     hooks:
       - id: actionlint-system
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: e3eebf65325ccc992422292cb7a4baee967cf815  # frozen: v1.26.1
+    rev: 64a97fb7fa63188393d3215c6e312f5f9c6d0f78  # frozen: v1.27.0
     hooks:
       - id: zizmor
 
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 8f5dd7416d031646aa5607fc56092723650fd873  # frozen: v0.2.30
+    rev: 3558e35e6e081fdfaa8db2857a1f86c3a0b5b07e  # frozen: v0.2.34
     hooks:
       - id: rumdl-fmt
         args:
