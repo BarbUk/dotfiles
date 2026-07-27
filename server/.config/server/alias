@@ -53,9 +53,12 @@ ssh_default_options=(
   -o StrictHostKeyChecking=accept-new
   -o SetEnv=\'TERM=xterm-256color\'
   -o Compression=no
-  -o ConnectTimeout=5
+  -o ConnectTimeout=30
   -o ServerAliveInterval=10
   -o ServerAliveCountMax=2
+  -o ControlMaster=auto
+  -o ControlPersist=15m
+  -o ControlPath=~/.ssh/%C
 )
 
 alias ssh='ssh "${ssh_default_options[@]}"'
