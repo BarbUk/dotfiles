@@ -78,6 +78,20 @@ ssh_config() {
   fi
 }
 
+teleport_ssh_config() {
+  local files teleport_config proxy
+  declare -a files=()
+
+  if [ -d "$HOME/.ssh/config.d" ]; then
+    readarray -d $'\0' -t -O"${#files[@]}" files < <(find "$HOME/.ssh/config.d" -type f -name '*_teleport' -print0)
+  fi
+
+  for teleport_config in "${files[@]}"; do
+    proxy=$(awk -F'[ \t\n=]+' '/ProxyCommand/ {print $7}' "$teleport_config")
+    awk "/Hostname/ {gsub(/.$proxy/, \"\"); print \$2}" "$teleport_config"
+  done
+}
+
 main() {
   case "$mode" in
     "dsh") dsh_hosts | sort -u ;;
@@ -94,6 +108,9 @@ main() {
         bash_history
         known_hosts
       ) | grep -oE "\\b([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | sort -u
+      ;;
+    "teleport")
+      teleport_ssh_config
       ;;
     "all")
       (

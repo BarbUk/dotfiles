@@ -635,6 +635,16 @@ _fzf_complete_ansible() {
   _fzf_complete_new --multi -- "$@" < <(_fzf_playbook)
 }
 
+_fzf_complete_tsh() {
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  case $prev in
+    ssh)
+      _fzf_complete_new -- "$@" < <(give_me_hostname teleport)
+      return 0
+      ;;
+  esac
+}
+
 _fzf_complete_dsh() {
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
   case $prev in
@@ -762,6 +772,7 @@ if command -v fzf >/dev/null 2>&1; then
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pacman yaourt pacman yay
   complete -o default -o bashdefault -o nospace -F _fzf_complete_archlinux_installed_packages pactree
   complete -o default -o bashdefault -o nospace -F _fzf_complete_dsh dsh
+  complete -o default -o bashdefault -o nospace -F _fzf_complete_tsh tsh
   complete -o default -o bashdefault -o nospace -F _fzf_complete_pssh pssh psshscp
   complete -o default -o bashdefault -o nospace -F _fzf_complete_kill kill
   complete -o default -o bashdefault -o nospace -F _fzf_complete_process "${process_tools[@]}"
