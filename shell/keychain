@@ -14,7 +14,7 @@ if [ ! -f "$ssh_agent_file" ]; then
     --absolute \
     --quick \
     --no-inherit \
-    --timeout 480 \
+    --timeout 720 \
     "${live_keys[@]}" \
     >"$ssh_agent_file"
   eval "$(<"$ssh_agent_file")"
