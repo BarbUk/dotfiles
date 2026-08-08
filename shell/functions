@@ -42,9 +42,11 @@ tmpdir() {
 }
 
 meteo() {
-  local request="wttr.in/${1-}?format=3"
-  [ "$(tput cols)" -lt 125 ] && request+='&n'
-  curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+  local geo format
+  local request="wttr.in/"
+  format='?format=%l:+%c+%t+%f+%h+%p+%w+%m\n'
+  geo="$*"
+  curl --silent --show-error --compressed --header "Accept-Language: ${LANG%_*}" "$request${geo// /+}$format"
 }
 
 define_locale() {
