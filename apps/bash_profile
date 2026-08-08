@@ -15,7 +15,8 @@ if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && [ -x /usr/bin/tdm ]; then
   source /usr/bin/tdm
 fi
 
-if [[ -f ~/.bashrc ]]; then
+# Source .bashrc if available
+if [ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ]; then
   # shellcheck source=apps/bashrc
-  . ~/.bashrc
+  . "$HOME/.bashrc"
 fi
