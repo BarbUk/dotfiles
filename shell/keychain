@@ -11,7 +11,7 @@ if [ ! -f "$ssh_agent_file" ]; then
     --quiet \
     --dir="$XDG_RUNTIME_DIR" \
     --absolute \
-    --quick \
+    --immediate \
     --no-inherit \
     --timeout 720 \
     "${live_keys[@]}" \
