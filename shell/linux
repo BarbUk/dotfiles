@@ -4,6 +4,39 @@
 stty stop undef
 stty start undef
 
+# Add directories to PATH without duplicates
+path_prepend() {
+  [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]] && PATH="$1:$PATH"
+}
+
+# rbenv gem
+if [ -d "$HOME/.rbenv/shims" ]; then
+  path_prepend "$HOME/.rbenv/shims"
+  export RBENV_SHELL=bash
+elif command -v gem >/dev/null 2>&1; then
+  # system ruby gem
+  if [ -e /tmp/ruby_gem_bin_dir ]; then
+    ruby_gem_bin_dir="$(</tmp/ruby_gem_bin_dir)"
+  else
+    ruby_gem_bin_dir=$(gem env user_gemhome | tee /tmp/ruby_gem_bin_dir)
+  fi
+  if [ -d "$ruby_gem_bin_dir/bin" ]; then
+    path_prepend "$ruby_gem_bin_dir/bin"
+  fi
+fi
+
+# User binaries
+path_prepend "$HOME/.local/bin"    # Local user binaries
+path_prepend "$HOME/.dotfiles/bin" # Personal scripts
+
+export PATH
+
+alias ls='ls --color=auto'
+alias up='_BUILD_DOCS=0 yay -Syu --noconfirm'
+alias yaourt='yay'
+alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
+
+# vivid ls colors
 if command -v vivid >/dev/null 2>&1; then
   if [ ! -f /tmp/ls_colors_cache ]; then
     vivid generate ayu_bold >/tmp/ls_colors_cache
@@ -13,26 +46,18 @@ if command -v vivid >/dev/null 2>&1; then
 else
   eval "$(dircolors -b "$HOME"/.dir_colors)"
 fi
-# rbenv gem
-if [ -d "$HOME/.rbenv/shims" ]; then
-  export PATH="$HOME/.rbenv/shims:${PATH}"
-  export RBENV_SHELL=bash
-else
-  # system ruby gem
-  if [ -e /tmp/ruby_gem_bin_dir ]; then
-    ruby_gem_bin_dir="$(</tmp/ruby_gem_bin_dir)"
-  else
-    ruby_gem_bin_dir=$(gem env user_gemhome | tee /tmp/ruby_gem_bin_dir)
-  fi
-  if [ -d "$ruby_gem_bin_dir/bin" ]; then
-    export PATH="$ruby_gem_bin_dir/bin:${PATH}"
-  fi
-fi
 
-alias ls='ls --color=auto'
-alias up='_BUILD_DOCS=0 yay -Syu --noconfirm'
-alias yaourt='yay'
-alias usb3='sudo modprobe -r xhci_pci && sudo modprobe xhci-pci'
+# Yazi
+if command -v yazi >/dev/null 2>&1; then
+  function y() {
+    local tmp
+    tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd <"$tmp"
+    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd" || exit
+    command rm -f -- "$tmp"
+  }
+fi
 
 bupc() {
   update_gem
