@@ -87,6 +87,9 @@ export BAT_THEME="GitHub"
 export EDITOR="vim"
 export GIT_EDITOR='vim'
 
+# File browser
+export FILE="yazi"
+
 # Language options
 export RUBYOPT='-W:no-deprecated'
 
