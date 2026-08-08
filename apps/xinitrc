@@ -83,9 +83,8 @@ fi
 export _JAVA_AWT_WM_NONREPARENTING=1
 # Disable smooth scrolling
 export GTK_OVERLAY_SCROLLING=0
-# Ssh and keychain configuration
+# askpass
 export SSH_ASKPASS=/usr/bin/pinentry-gtk
-eval "$(keychain --dir "$XDG_RUNTIME_DIR" --absolute --eval --quiet)"
 # Screensaver timeout and cycle
 xset s off off
 # dpms Standby, Suspend and off
