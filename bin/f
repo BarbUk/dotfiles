@@ -1,13 +1,23 @@
 #!/usr/bin/perl
 
 my $field = shift or usage();
+my $and_rest;
+if ($field =~ s/\.\.$//) {
+    $and_rest = 1;
+}
+
 $field -= 1 if $field > 0;
 $|=1;
 
 while (<>) {
         chomp;
         my @f = split;
-        print $f[$field], "\n";
+        if ($and_rest) {
+          my $end = $field > 0 ? $#f : -1;
+          print "@f[$field .. $end]\n";
+        } else {
+            print $f[$field], "\n";
+        }
 }
 
 sub usage {
