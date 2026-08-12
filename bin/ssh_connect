@@ -25,6 +25,9 @@ readonly tmux_session_name="julien"
 
 host="${1:-$($hostname_list | $fzf)}"
 
+bold=$(tput -Txterm bold)
+reset=$(tput -Txterm sgr0)
+
 if [[ ${host} == *@* ]]; then
   resolvable_host="${host/*@/}"
 else
@@ -48,21 +51,36 @@ if ! ipv4_validation "$resolvable_host" >/dev/null 2>&1; then
   fi
 fi
 
-command rsync "${rsync_options[@]}" --rsh "ssh ${ssh_options[*]}" \
-  --exclude-from "$dotdir/system/rsync_exclude.list" \
-  "$dotdir/server/" \
-  "$host": || true
+user=$(command ssh -G "$host" | awk '$1 ~ /^user$/ {print $2}')
+
+if [[ "$user" != "root" ]]; then
+  if ! command ssh "${ssh_options[@]}" "$host" -- test -f '$HOME/.config/server/dotfiles_auto_sync'; then
+    read -rp "You will connect with ${bold}$user${reset}, do you want to sync dotfiles ? (N/y) : " response
+  else
+    response=Y
+  fi
+  if [[ "$response" =~ ^[YyOo]$ ]]; then
+    command rsync "${rsync_options[@]}" --rsh "ssh ${ssh_options[*]}" \
+      --exclude-from "$dotdir/system/rsync_exclude.list" \
+      "$dotdir/server/" \
+      "$host": || true
+  fi
+fi
 
 # Set terminal title
 echo -ne "\\033]0;$host\\007"
 
-# shellcheck disable=SC2029
-command ssh "${ssh_options[@]}" -tt "$host" "
-if ! command -v tmux >/dev/null 2>&1; then
-  bash
-  exit
-fi
+while :; do
+  command ssh "${ssh_options[@]}" -tt "$host" "
+    if ! command -v tmux >/dev/null 2>&1; then
+      bash
+      exit
+    fi
 
-exec tmux new-session -A -s $tmux_session_name
-"
+    tmux new-session -A -s $tmux_session_name
+  " && break
+  >&2 echo "Connection lost, reconnecting"
+  # Sleep a little before reconnecting
+  sleep 2s
+done
 exit
