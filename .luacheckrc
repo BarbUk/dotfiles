@@ -55,6 +55,7 @@ globals = {
     "nlog",
     "log",
     "context",
+    "yay",
 }
 
 exclude_files = {
