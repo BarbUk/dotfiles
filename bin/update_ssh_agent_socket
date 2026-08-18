@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Copyright (C) 2026 Julien Virey <julien.virey@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+set -o errexit -o pipefail -o nounset
+
+main() {
+  local target agent_sockets local_socket="$HOME/.${USER}_ssh_auth_sock"
+  mapfile -t agent_sockets < <(find /tmp -path "/tmp/systemd-private*" -prune -o -type s -user "$USER" -name '*agent*' -printf '%T@ %Tc %p\n' | sort -rn | awk '{print $NF}')
+  if ((${#agent_sockets[@]} == 0)); then
+    echo "No agent socket detected"
+    exit 1
+  fi
+
+  if [[ -L "$local_socket" ]]; then
+    target=$(readlink -f "$local_socket")
+    if [[ "${agent_sockets[0]}" != "$target" ]]; then
+      echo "Updating to use last created agent socket"
+      ln -sf "${agent_sockets[0]}" "$HOME/.${USER}_ssh_auth_sock"
+    else
+      local counter=0 max="${#agent_sockets[@]}" item choice
+      for item in "${agent_sockets[@]}"; do
+        echo "${counter}: $item"
+        ((++counter))
+      done
+
+      echo
+      read -rp "Which socket do you want to use: " choice
+      if [[ "$choice" =~ ^[0-9]$ ]] && ((choice <= max)); then
+        echo "Updating agent socket with ${agent_sockets[$choice]}"
+        ln -sf "${agent_sockets[$choice]}" "$HOME/.${USER}_ssh_auth_sock"
+      fi
+    fi
+  else
+    echo "Updating to use last created agent socket"
+    ln -sf "${agent_sockets[0]}" "$HOME/.${USER}_ssh_auth_sock"
+  fi
+}
+
+main
