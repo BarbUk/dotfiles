@@ -22,6 +22,7 @@ readonly fzf="fzf --select-1 --height 30% --tiebreak=begin,index --reverse --inl
 readonly dotdir="$HOME/.dotfiles"
 readonly hostname_list="$dotdir/bin/give_me_hostname ssh"
 readonly tmux_session_name="julien"
+readonly max_reconnect_attempt=100
 
 host="${1:-$($hostname_list | $fzf)}"
 
@@ -70,7 +71,9 @@ fi
 # Set terminal title
 echo -ne "\\033]0;$host\\007"
 
-while :; do
+reconnect_attempt=1
+
+until ((reconnect_attempt > max_reconnect_attempt)); do
   command ssh "${ssh_options[@]}" -tt "$host" "
     if ! command -v tmux >/dev/null 2>&1; then
       bash
@@ -80,7 +83,9 @@ while :; do
     tmux new-session -A -s $tmux_session_name
   " && break
   >&2 echo "Connection lost, reconnecting"
+  >&2 echo "Attempt number $reconnect_attempt/$max_reconnect_attempt"
   # Sleep a little before reconnecting
   sleep 2s
+  ((++reconnect_attempt))
 done
 exit
