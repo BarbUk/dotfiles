@@ -49,19 +49,19 @@ repos:
 
   # EditorConfig
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: bebfac867564fbd992e5b45379b4b0568d5cb85b  # frozen: 3.6.1
+    rev: 3aa28ce11a84d747c5695ad10b81945f2400b54f  # frozen: 3.8.0
     hooks:
       - id: editorconfig-checker
 
   # Spelling
   - repo: https://github.com/crate-ci/typos
-    rev: bee27e3a4fd1ea2111cf90ab89cd076c870fce14  # frozen: v1.48.0
+    rev: 8a48f81b6c64dcfea44b3633223084c4be58ac5f  # frozen: v1.49.0
     hooks:
       - id: typos
 
   # Png
   - repo: https://github.com/oxipng/oxipng
-    rev: 628e241e23f368097883807fa6e985ccf7c00357  # frozen: v10.1.1
+    rev: 340cd9878d8d8289f09fa101b48a8f5f0b7783f4  # frozen: v10.2.0
     hooks:
       - id: oxipng
         args: ["-o", "4", "--strip", "safe", "--alpha"]
@@ -72,13 +72,13 @@ repos:
     hooks:
       - id: actionlint-system
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: 067260dc5fe6ea86b7551bfd6f8b3ba4e6c93129  # frozen: v1.28.0
+    rev: 451b56af716f9f0d0c2b816503a3fd0cf8b036fa  # frozen: v1.29.0
     hooks:
       - id: zizmor
 
   # Docker file
   - repo: https://github.com/AleksaC/hadolint-py
-    rev: 458cb25edf664682e3e856a53a2f9af33e068297  # frozen: v2.14.0
+    rev: 6e7504451511eaeb62a3e7f14d63b0296cbf86eb  # frozen: v2.15.1
     hooks:
       - id: hadolint
   - repo: https://github.com/reteps/dockerfmt
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 9930066c775a2a82838c0b479cd40a83b3788b75  # frozen: v0.2.45
+    rev: 344543e77e653d3500a98ffd56cf41bcb92dc05c  # frozen: v0.2.53
     hooks:
       - id: rumdl-fmt
         args:
