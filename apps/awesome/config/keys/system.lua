@@ -106,6 +106,10 @@ local keys = gears.table.join(
       awful.spawn(apps.cmd.volume.toggle .. " media music", false)
       widget_refresh()
    end, { description = "music toggle", group = "sound" }),
+   awful.key({ altkey }, "XF86AudioNext", function()
+      awful.spawn(apps.cmd.volume.preset, false)
+      widget_refresh()
+   end, { description = "Toggle output preset", group = "sound" }),
    awful.key({ modkey, "Control" }, "Down", function()
       apps.osd.player.toggle()
       widget_refresh()

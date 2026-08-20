@@ -8,6 +8,7 @@ local markup = lain.util.markup
 
 local volumeicon = markup(beautiful.nord9, " ")
 local internal_soundcard = "alsa_output.pci"
+local easyeffect_output_preset
 local volume = lain.widget.pulse({
    cmd = [[
       current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p');
@@ -33,10 +34,16 @@ local volume = lain.widget.pulse({
             end
          end
       )
+      helpers.async_with_shell(
+         "env -u SESSION_MANAGER easyeffects --last-loaded-presets | awk -F: '/^output/ {print $2}'",
+         function(out)
+            easyeffect_output_preset = out
+         end
+      )
       if volume_now.muted == "yes" then
-         widget:set_markup(markup(beautiful.nord9, " ") .. "Mute")
+         widget:set_markup(markup(beautiful.nord9, " ") .. "Mute -" .. easyeffect_output_preset)
       else
-         widget:set_markup(volumeicon .. volume_now.right .. "%")
+         widget:set_markup(volumeicon .. volume_now.right .. "% -" .. easyeffect_output_preset)
       end
    end,
 })

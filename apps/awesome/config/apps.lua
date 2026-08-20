@@ -63,6 +63,7 @@ return {
          down = "pamixer --decrease " .. step .. " --sink " .. pulse_sink,
          mute = "pamixer --toggle-mute --sink " .. pulse_sink,
          toggle = "pulseaudio_toggle_default_sink",
+         preset = "easyeffects_toggle_preset",
       },
 
       brightness = {
