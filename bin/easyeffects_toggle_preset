@@ -1,0 +1,112 @@
+#!/bin/bash
+#
+# Copyright (C) 2026 Julien Virey <julien.virey@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
+
+set -o errexit -o pipefail -o nounset
+
+action=output
+
+declare -A colors
+colors=(
+  ['bold']=$(tput -Txterm-256color bold)
+  ['underline']=$(tput -Txterm-256color smul)
+  ['reset']=$(tput -Txterm-256color sgr0)
+)
+
+usage() {
+  text "Usage:"
+  echo -e "	$0 [OPTION] [ACTION]"
+  echo -e "	Toggle your easyeffects presets"
+  echo
+  text "Options"
+  echo -e "	-h, --help: Show help"
+  echo -e "	-l, --load-preset <preset-name>: Load a preset."
+  echo
+  text "Actions"
+  echo -e "	${colors[bold]}output${colors[reset]}: change output preset (default action)"
+  echo -e "	${colors[bold]}input${colors[reset]}: change input preset"
+  echo -e "	${colors[bold]}list${colors[reset]}: list detected inputs and outputs presets"
+  exit 1
+}
+
+get_loaded_preset() {
+  local preset io="${1-output}"
+  preset=$(env -u SESSION_MANAGER easyeffects --last-loaded-preset "$io")
+  get_available_presets "$io" | awk -F'[\t\n]+' -v OFS="\t" -vpreset="$preset" '$2 == preset {print $1}'
+}
+
+get_available_presets() {
+  local io="${1-output}"
+  env -u SESSION_MANAGER easyeffects --presets | awk -F'[\t\n]+' -v OFS="\t" -vio="${io^} presets:" '$0 ~ io { flag=1; next } /^$/ { flag=0 } flag {print $1, $2}'
+}
+
+swap_preset() {
+  local io="${1-output}"
+  local available_presets loaded_preset_index first_preset_name last_index
+  mapfile -t available_presets < <(get_available_presets "$io")
+  last_index="$(echo "${available_presets[-1]}" | awk '{print $1}')"
+  first_preset_name="$(echo "${available_presets[0]}" | awk -F'[\t\n]+' -v OFS="\t" '{print $2}')"
+
+  loaded_preset_index=$(get_loaded_preset "$io")
+
+  while IFS=$'\t' read -r index name; do
+    if ((index > loaded_preset_index)); then
+      env -u SESSION_MANAGER easyeffects --load-preset "$name"
+      notify-send -i multimedia-volume-control "Changed easyeffect preset" "Changed $io to $name"
+      return
+    elif ((index == last_index)); then
+      env -u SESSION_MANAGER easyeffects --load-preset "$first_preset_name"
+      notify-send -i multimedia-volume-control "Changed easyeffect preset" "Changed $io to $first_preset_name"
+      return
+    fi
+  done <<<"$(printf '%s\n' "${available_presets[@]}")"
+}
+
+parse_options() {
+  while (("$#")); do
+    case "$1" in
+      -h | --help | help)
+        usage
+        ;;
+      -l | --load-preset)
+        preset="$2"
+        shift
+        ;;
+      --) # end argument parsing
+        break
+        ;;
+      *)
+        action=$1
+        ;;
+    esac
+    shift
+  done
+}
+
+main() {
+
+  parse_options "$@"
+
+  case "$action" in
+    output) swap_preset ;;
+    input) swap_preset input ;;
+    list) env -u SESSION_MANAGER easyeffects --presets ;;
+  esac
+}
+
+main "$@"
