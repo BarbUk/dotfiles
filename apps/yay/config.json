@@ -34,7 +34,7 @@
   "provides": false,
   "rebuild": "no",
   "redownload": "no",
-  "removemake": "ask",
+  "removemake": "yes",
   "requestsplitn": 150,
   "rpc": true,
   "searchby": "name-desc",
