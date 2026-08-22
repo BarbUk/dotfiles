@@ -23,6 +23,7 @@ local volume = lain.widget.pulse({
       -e 's/Mute:/muted:/' \
       -e '/muted:/p'
    ]],
+   timeout = 30,
    settings = function()
       helpers.async_with_shell(
          "pactl list short sinks | awk '$NF ~ /RUNNING/ && $2 !~ /easyeffects_sink/ {print $2}'",

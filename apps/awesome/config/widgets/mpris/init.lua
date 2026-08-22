@@ -17,7 +17,7 @@ local mpris = {}
 
 local function worker(args)
    args = args or {}
-   local timeout = args.timeout or 5
+   local timeout = args.timeout or 15
    local cover_size = args.cover_size or 100
    local notify = args.notify or "on"
    local settings = args.settings or function() end
