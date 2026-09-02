@@ -49,7 +49,7 @@ repos:
 
   # EditorConfig
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 3aa28ce11a84d747c5695ad10b81945f2400b54f  # frozen: 3.8.0
+    rev: e8b4e28241a9ae8296ba6e4a491b5da4eda73283  # frozen: 3.11.1
     hooks:
       - id: editorconfig-checker
 
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 344543e77e653d3500a98ffd56cf41bcb92dc05c  # frozen: v0.2.53
+    rev: 00c9d9edd7a5d4cb8241c158888c015d71873889  # frozen: v0.2.60
     hooks:
       - id: rumdl-fmt
         args:
