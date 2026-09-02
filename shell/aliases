@@ -98,3 +98,5 @@ if [ -n "$GRC" ]; then
   alias ifconfig='colourify ifconfig'
   alias sockstat='colourify sockstat'
 fi
+
+alias gti=git
