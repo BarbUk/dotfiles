@@ -61,7 +61,7 @@ repos:
 
   # Png
   - repo: https://github.com/oxipng/oxipng
-    rev: 340cd9878d8d8289f09fa101b48a8f5f0b7783f4  # frozen: v10.2.0
+    rev: 36f3ef8aac65ecf1761739ea2f2e530281f1312b  # frozen: v10.2.1
     hooks:
       - id: oxipng
         args: ["-o", "4", "--strip", "safe", "--alpha"]
@@ -111,7 +111,7 @@ repos:
 
   # Markdown
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 358bd98f7d9d33fefe5a148875d1d61e7e558f2d  # frozen: v0.2.62
+    rev: 2fecbf66b37cc6d7a0d1edddbe164e3d516eee2b  # frozen: v0.2.68
     hooks:
       - id: rumdl-fmt
         args:
