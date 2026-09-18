@@ -623,7 +623,7 @@ _fzf_complete_ansible() {
       _fzf_complete_new --multi --output_separator=, -- "$@" < <(give_me_hostname ssh)
       return 0
       ;;
-    -l)
+    -l | shell | ping)
       _fzf_complete_new --multi --output_separator=, -- "$@" < <(_fzf_ansible_groups)
       return 0
       ;;
