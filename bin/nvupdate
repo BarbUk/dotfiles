@@ -28,6 +28,7 @@ while read -r package _ _ new_version; do
   if pkgctl build; then
     git add PKGBUILD .SRCINFO
     git commit -m "$message"
+    pkgctl license check
   fi
 done <<<"$(nvcmp)"
 
