@@ -64,7 +64,9 @@ change_theme() {
     fi
     sed -i -e "s/${theme_light}.rasi/nord.rasi/" "$rofi_conf"
     gsettings set org.gnome.meld style-scheme meld-dark
-    spicetify config color_scheme nord-dark
+    if command -v spicetify >/dev/null 2>&1; then
+      spicetify config color_scheme nord-dark
+    fi
 
     rm -f "$theme_file"
   else
@@ -90,7 +92,9 @@ change_theme() {
     fi
     sed -i -e "s/nord.rasi/${theme_light}.rasi/" "$rofi_conf"
     gsettings set org.gnome.meld style-scheme meld-base
-    spicetify config color_scheme nord-light
+    if command -v spicetify >/dev/null 2>&1; then
+      spicetify config color_scheme nord-light
+    fi
 
     touch "$theme_file"
   fi
@@ -99,7 +103,9 @@ change_theme() {
 notify_apps() {
   killall -USR1 termite || true
   pkill -HUP awesome
-  spicetify update
+  if command -v spicetify >/dev/null 2>&1; then
+    spicetify update
+  fi
 }
 
 change_theme
