@@ -17,8 +17,8 @@
 set -o errexit -o pipefail -o nounset
 
 readonly icon=Papirus
-readonly theme_light=Materia-light-compact
-readonly theme_dark=Materia-dark-compact
+readonly theme_light=deepin
+readonly theme_dark=Nordic
 readonly sublime_theme_light="Boxy Yesterday"
 readonly sublime_colorscheme_light="Celeste.sublime-color-scheme"
 readonly sublime_theme_dark="Boxy Ocean"
