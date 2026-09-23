@@ -37,7 +37,7 @@ change_theme() {
   local lxde_gtk_conf="$HOME/.config/lxsession/LXDE/desktop.conf"
   local qt_conf="$HOME/.config/qt5ct/qt5ct.conf"
   local dmenu_conf="$HOME/.dmenurc"
-  local vim_conf="$HOME/.vim/vimrc.background"
+  local vim_conf="$HOME/.config/vim/vimrc.background"
   local rofi_conf="$HOME/.config/rofi/config.rasi"
   local alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
 
