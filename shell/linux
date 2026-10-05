@@ -123,11 +123,21 @@ clean_nuget() {
   fi
 }
 
+clean_precommit() {
+  if command -v prek >/dev/null 2>&1; then
+    prek cache gc
+  fi
+  if command -v pre-commit >/dev/null 2>&1; then
+    pre-commit gc
+  fi
+}
+
 clean_local_packages() {
   clean_go
   clean_cargo
   clean_npm
   clean_nuget
+  clean_precommit
 }
 
 pbcopy() {
