@@ -750,7 +750,7 @@ _fzf_complete_docker() {
 
 _fzf_complete_docker_post() {
   # Post-process the fzf output to keep only the command name and not the explanation with it
-  awk '{print $1}'
+  awk '{print $2}'
 }
 
 _fzf_complete_man() {
