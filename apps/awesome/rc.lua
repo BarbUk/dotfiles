@@ -7,8 +7,8 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 
 -- Garbage collection tuning
-collectgarbage("setpause", 110)
-collectgarbage("setstepmul", 1000)
+--collectgarbage("setpause", 110)
+--collectgarbage("setstepmul", 1000)
 
 -- beautiful init
 local chosen_theme = "barbuk"
