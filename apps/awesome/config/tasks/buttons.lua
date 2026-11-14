@@ -2,6 +2,8 @@ local gears = require("gears")
 local awful = require("awful")
 local dpi = require("beautiful.xresources").apply_dpi
 
+local instance = nil
+
 return gears.table.join(
    awful.button({}, 1, function(c)
       if c == client.focus then
@@ -11,15 +13,11 @@ return gears.table.join(
       end
    end),
    awful.button({}, 3, function()
-      local instance = nil
-
-      return function()
-         if instance and instance.wibox.visible then
-            instance:hide()
-            instance = nil
-         else
-            instance = awful.menu.clients({ theme = { width = dpi(250) } })
-         end
+      if instance and instance.wibox.visible then
+         instance:hide()
+         instance = nil
+      else
+         instance = awful.menu.clients({ theme = { width = dpi(1000), height = dpi(60) } })
       end
    end),
    awful.button({}, 4, function()
