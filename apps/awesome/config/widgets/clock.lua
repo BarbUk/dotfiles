@@ -16,7 +16,6 @@ local clock = {}
 for k, _ in pairs(beautiful.flag) do
    flag[k] = wibox.widget.imagebox(beautiful.flag[k], true)
    flag[k]:buttons(gears.table.join(awful.button({}, 1, function()
-      awful.spawn(apps.cmd.timezone[k], false)
       awful.spawn.easy_async(apps.cmd.timezone[k], function(_, stderr, _, exit_code)
          if exit_code == 0 then
             noti:notify("Timezone changed to: " .. k)
