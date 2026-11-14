@@ -47,6 +47,7 @@ ssh_tools=(
   update-services
   connect_to_proo
   mysql_get_root_password
+  teleport_identity_proxy_deploy
 )
 
 process_tools=(
