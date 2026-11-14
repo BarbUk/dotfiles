@@ -1,6 +1,6 @@
 ---
 # style name or JSON path (default "auto")
-style: "auto"
+style: "light"
 # mouse support (TUI-mode only)
 mouse: false
 # use pager to display markdown
