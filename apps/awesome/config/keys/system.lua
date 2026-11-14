@@ -149,7 +149,7 @@ local keys = gears.table.join(
       apps.osd.brightness.down()
    end, { description = "brightness down", group = "screen" }),
 
-   awful.key({ modkey }, "l", function()
+   awful.key({ modkey, altkey }, "l", function()
       awful.spawn(apps.default.lock, false)
    end, { description = "lock", group = "screen" }),
    awful.key({}, "XF86ScreenSaver", function()
