@@ -8,7 +8,19 @@ local markup = lain.util.markup
 
 local volumeicon = markup(beautiful.nord9, " ")
 local internal_soundcard = "alsa_output.pci"
-local easyeffect_output_preset
+local easyeffect_output_preset = ""
+
+local function render_volume(widget)
+   if not volume_now then
+      return
+   end
+   if volume_now.muted == "yes" then
+      widget:set_markup(markup(beautiful.nord9, " ") .. "Mute -" .. easyeffect_output_preset)
+   else
+      widget:set_markup(volumeicon .. volume_now.right .. "% -" .. easyeffect_output_preset)
+   end
+end
+
 local volume = lain.widget.pulse({
    cmd = [[
       current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p');
@@ -25,6 +37,8 @@ local volume = lain.widget.pulse({
    ]],
    timeout = 30,
    settings = function()
+      local w = widget
+      render_volume(w)
       helpers.async_with_shell(
          "pactl list short sinks | awk '$NF ~ /RUNNING/ && $2 !~ /easyeffects_sink/ {print $2}'",
          function(soundcard)
@@ -33,19 +47,16 @@ local volume = lain.widget.pulse({
             else
                volumeicon = markup(beautiful.nord9, "🎧 ")
             end
+            render_volume(w)
          end
       )
       helpers.async_with_shell(
          "env -u SESSION_MANAGER easyeffects --last-loaded-presets | awk -F: '/^output/ {print $2}'",
          function(out)
             easyeffect_output_preset = out
+            render_volume(w)
          end
       )
-      if volume_now.muted == "yes" then
-         widget:set_markup(markup(beautiful.nord9, " ") .. "Mute -" .. easyeffect_output_preset)
-      else
-         widget:set_markup(volumeicon .. volume_now.right .. "% -" .. easyeffect_output_preset)
-      end
    end,
 })
 
