@@ -93,9 +93,6 @@ local keys = gears.table.join(
    awful.key({ modkey, "Shift" }, "d", function()
       awful.spawn("open_sftp")
    end, { description = "open " .. apps.default.filemanager, group = "launcher" }),
-   awful.key({ modkey, "Control" }, "Return", function()
-      awful.spawn("dmenu_raise")
-   end, { description = "launch window selection", group = "launcher" }),
    awful.key({ modkey, altkey }, "Return", function()
       awful.spawn("dmenu_edit")
    end, { description = "launch edit menu", group = "launcher" }),
