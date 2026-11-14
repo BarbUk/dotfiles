@@ -1,63 +1,49 @@
 local beautiful = require("beautiful")
 local awful = require("awful")
-local lain = require("lain")
-local helpers = require("lain.helpers")
+local wibox = require("wibox")
 local gears = require("gears")
 local apps = require("config.apps")
-local markup = lain.util.markup
+local markup = require("lain.util.markup")
 
-local volumeicon = markup(beautiful.nord9, " ")
+local CMD_PULSE = [[
+   pactl get-sink-mute @DEFAULT_SINK@;
+   pactl get-sink-volume @DEFAULT_SINK@;
+   echo "device: $(pactl get-default-sink)";
+   echo "preset:$(env -u SESSION_MANAGER easyeffects --last-loaded-presets 2>/dev/null | awk -F: '/^output/ {print $2; exit}')"
+]]
+local TIMEOUT_SECONDS = 30
+local ICON_VOLUME = "🎧 "
+local ICON_MUTED = " "
 local internal_soundcard = "alsa_output.pci"
-local easyeffect_output_preset = ""
 
-local function render_volume(widget)
-   if not volume_now then
-      return
-   end
-   if volume_now.muted == "yes" then
-      widget:set_markup(markup(beautiful.nord9, " ") .. "Mute -" .. easyeffect_output_preset)
-   else
-      widget:set_markup(volumeicon .. volume_now.right .. "% -" .. easyeffect_output_preset)
-   end
+local volume = {
+   widget = wibox.widget.textbox(),
+}
+
+-- Query default PulseAudio sink state and update widget text.
+function volume.update()
+   awful.spawn.easy_async_with_shell(CMD_PULSE, function(stdout)
+      local muted = stdout:match("Mute:%s+(%S+)")
+      if muted == "yes" then
+         volume.widget:set_markup(markup(beautiful.nord9, ICON_MUTED) .. "Mute")
+         return
+      end
+
+      local level = stdout:match("(%d+)%%") or "N/A"
+      local device = stdout:match("device: (%S+)") or "N/A"
+      local preset = stdout:match("preset: (%S+)") or "N/A"
+      if device:sub(1, #internal_soundcard) == internal_soundcard then
+         ICON_VOLUME = " "
+      end
+      volume.widget:set_markup(markup(beautiful.nord9, ICON_VOLUME) .. level .. "% - " .. preset)
+   end)
 end
 
-local volume = lain.widget.pulse({
-   cmd = [[
-      current_sink=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p');
-      pactl list sinks | sed -n -e '/'"$current_sink"'/,$!d' \
-      -e '/Base Volume/d' \
-      -e 's/Volume:/volume:/' \
-      -e '/volume:/p' \
-      -e 's/device.description/device.string/' \
-      -e '/device.string/p' \
-      -e 's/object.id/index/' \
-      -e '/index/p' \
-      -e 's/Mute:/muted:/' \
-      -e '/muted:/p'
-   ]],
-   timeout = 30,
-   settings = function()
-      local w = widget
-      render_volume(w)
-      helpers.async_with_shell(
-         "pactl list short sinks | awk '$NF ~ /RUNNING/ && $2 !~ /easyeffects_sink/ {print $2}'",
-         function(soundcard)
-            if soundcard:sub(1, #internal_soundcard) == internal_soundcard then
-               volumeicon = markup(beautiful.nord9, " ")
-            else
-               volumeicon = markup(beautiful.nord9, "🎧 ")
-            end
-            render_volume(w)
-         end
-      )
-      helpers.async_with_shell(
-         "env -u SESSION_MANAGER easyeffects --last-loaded-presets | awk -F: '/^output/ {print $2}'",
-         function(out)
-            easyeffect_output_preset = out
-            render_volume(w)
-         end
-      )
-   end,
+gears.timer({
+   timeout = TIMEOUT_SECONDS,
+   call_now = true,
+   autostart = true,
+   callback = volume.update,
 })
 
 volume.widget:buttons(gears.table.join(
