@@ -10,6 +10,13 @@ local bat
 local icon
 
 local has_battery = fs.is_dir("/sys/class/power_supply/BAT0") or fs.is_dir("/sys/class/power_supply/BAT1")
+local batteries = {}
+if fs.is_dir("/sys/class/power_supply/BAT0") then
+   table.insert(batteries, "BAT0")
+end
+if fs.is_dir("/sys/class/power_supply/BAT1") then
+   table.insert(batteries, "BAT1")
+end
 
 local notification
 local function show_battery_status()
@@ -69,6 +76,7 @@ if fs.is_dir("/sys/devices/platform/smapi") then
    end)
 else
    bat = lain.widget.bat({
+      batteries = batteries,
       settings = function()
          local content = set_bat_value(bat_now.status, bat_now.perc)
          widget:set_markup(content)
