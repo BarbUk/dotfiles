@@ -21,23 +21,24 @@ local keys = gears.table.join(
 
    -- By direction client focus
    awful.key({ modkey }, "j", function()
-      awful.client.focus.global_bydirection("down")
-      if client.focus then
-         client.focus:raise()
-      end
-   end),
-   awful.key({ modkey }, "k", function()
-      awful.client.focus.global_bydirection("up")
-      if client.focus then
-         client.focus:raise()
-      end
-   end),
-   awful.key({ modkey }, "h", function()
       awful.client.focus.global_bydirection("left")
       if client.focus then
          client.focus:raise()
       end
    end),
+   awful.key({ modkey }, "k", function()
+      awful.client.focus.global_bydirection("down")
+      if client.focus then
+         client.focus:raise()
+      end
+   end),
+   awful.key({ modkey }, "i", function()
+      awful.client.focus.global_bydirection("up")
+      if client.focus then
+         client.focus:raise()
+      end
+   end),
+
    awful.key({ modkey }, "l", function()
       awful.client.focus.global_bydirection("right")
       if client.focus then
@@ -98,7 +99,7 @@ local keys = gears.table.join(
    awful.key({ modkey, "Shift" }, "Right", function()
       lain.util.move_tag(1)
    end, { description = "move_tag", group = "client" }),
-   awful.key({ modkey, "Shift" }, "d", function()
+   awful.key({ modkey, "Shift" }, "BackSpace", function()
       lain.util.delete_tag()
    end, { description = "delete_tag", group = "client" }),
 
