@@ -64,12 +64,17 @@ naughty.config.notify_callback = function(args)
       args.message = format_message(args.message)
    end
 
+   local ignore_suspend = args.ignore_suspend or (args.preset and args.preset.ignore_suspend)
+   if ignore_suspend then
+      args.ignore_suspend = true
+   end
+
    if noti.suspended then
       local is_critical = args.urgency == URGENCY_CRITICAL
          or (args.preset and args.preset.urgency == URGENCY_CRITICAL)
          or (args.preset == naughty.config.presets.critical)
 
-      if not (is_critical or args.ignore_suspend) then
+      if not (is_critical or ignore_suspend) then
          noti:add_unread({
             title = clean_title or args.app_name or "Notification",
             message = args.message or args.text or "",
@@ -190,7 +195,8 @@ naughty.connect_signal("destroyed", function(n, reason)
 
    -- Untouched timeout expiration -> store as unread in Notification Center
    if reason == cst.notification_closed_reason.expired then
-      if n.read_by_hover or n.ignore_suspend then
+      local ignore_suspend = n.ignore_suspend or (n.preset and n.preset.ignore_suspend)
+      if n.read_by_hover or ignore_suspend then
          return
       end
 
