@@ -26,7 +26,7 @@ local function worker(args)
       title = "Now playing",
    }
    mpris.cmd = args.cmd
-      or "playerctl --format '{{status}}\n{{xesam:artist}}\n{{markup_escape(xesam:title)}};{{mpris:artUrl}}' metadata"
+      or "playerctl --format '{{status}}\n{{xesam:artist}}\n{{xesam:album}}\n{{markup_escape(xesam:title)}}\n{{mpris:artUrl}}' metadata"
    mpris.widget = wibox.widget.textbox()
    mpris.mpris_now = {}
 
