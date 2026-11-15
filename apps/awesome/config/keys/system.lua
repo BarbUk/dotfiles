@@ -13,6 +13,7 @@ local mpris = require("config.widgets").mpris
 local volume = require("config.widgets").volume
 local calendar = require("config.widgets.clock").calendar
 local fsroot = require("config.widgets").fsroot
+local notif_center = require("config.widgets").notif_center
 
 hotkeys_popup.default_widget.labels = beautiful.hotkeys_popup_labels
 
@@ -41,6 +42,13 @@ local keys = gears.table.join(
       local noti = require("config.notifications")
       noti:toggle()
    end, { description = "toggle notification suspend/resume", group = "hotkeys" }),
+
+   -- Toggle notification center
+   awful.key({ modkey }, "BackSpace", function()
+      if notif_center and notif_center.toggle then
+         notif_center.toggle()
+      end
+   end, { description = "toggle notification center", group = "hotkeys" }),
 
    -- Show/Hide Wibox
    awful.key({ modkey }, "b", function()

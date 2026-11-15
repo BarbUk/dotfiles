@@ -18,6 +18,7 @@ local temp = require("config.widgets.temp")
 local fsroot = require("config.widgets.fsroot")
 local clk = require("config.widgets.clock")
 local cpu_widget = require("config.widgets.cpu-widget")
+local notif_center = require("config.widgets.notif_center")
 
 local white = beautiful.fg_normal
 
@@ -73,6 +74,8 @@ awful.screen.connect_for_each_screen(function(s)
    local right_rest = {
       volume.widget,
       separator.left,
+      notif_center.widget,
+      separator.left,
       weather.icon,
       weather.widget,
       separator.left,
@@ -98,6 +101,8 @@ awful.screen.connect_for_each_screen(function(s)
       layout = wibox.layout.fixed.horizontal,
       mpris.widget,
       separator.center,
+      notif_center.widget,
+      separator.left,
       weather.icon,
       weather.widget,
       separator.left,

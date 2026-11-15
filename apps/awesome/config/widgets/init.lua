@@ -5,4 +5,5 @@ return {
    volume = require("config.widgets.volume").helper,
    calendar = require("config.widgets.clock").calendar,
    fsroot = require("config.widgets.fsroot"),
+   notif_center = require("config.widgets.notif_center"),
 }
