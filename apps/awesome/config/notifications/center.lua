@@ -112,10 +112,17 @@ local function build_card(entry, slot_idx)
    })
 
    local body_box = wibox.widget({
-      markup = entry.message ~= "" and entry.message or "",
       font = beautiful.font,
       widget = wibox.widget.textbox,
    })
+   local msg = entry.message or ""
+   if type(body_box.set_markup_silently) == "function" then
+      if not body_box:set_markup_silently(msg) then
+         body_box.text = msg
+      end
+   else
+      body_box.markup = msg
+   end
 
    body_box:connect_signal("mouse::enter", function()
       if is_dismiss_hovered then

@@ -79,7 +79,7 @@ naughty.config.notify_callback = function(args)
             title = clean_title or args.app_name or "Notification",
             message = args.message or args.text or "",
             app_name = args.app_name or "",
-            icon = args.icon,
+            icon = args.icon or args.image,
             urgency = args.urgency or "normal",
             actions = args.actions or {},
             run = args.run,
@@ -193,8 +193,11 @@ naughty.connect_signal("destroyed", function(n, reason)
       end
    end
 
-   -- Untouched timeout expiration -> store as unread in Notification Center
-   if reason == cst.notification_closed_reason.expired then
+   -- Closed without user click (timeout expired, DBus CloseNotification from Chrome, or overflow) -> store as unread
+   if
+      reason ~= cst.notification_closed_reason.dismissed_by_user
+      and reason ~= cst.notification_closed_reason.silent
+   then
       local ignore_suspend = n.ignore_suspend or (n.preset and n.preset.ignore_suspend)
       if n.read_by_hover or ignore_suspend then
          return
@@ -210,7 +213,7 @@ naughty.connect_signal("destroyed", function(n, reason)
          title = clean_title,
          message = n.message or "",
          app_name = n.app_name or "",
-         icon = n.icon,
+         icon = n.icon or n.image,
          urgency = n.urgency or "normal",
          clients = clients,
          client_names = client_names,

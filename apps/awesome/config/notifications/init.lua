@@ -101,9 +101,10 @@ local function jump_to_entry_client(entry)
    end
 
    if entry.app_name ~= "" then
-      local app_lower = entry.app_name:lower()
+      local app_norm = entry.app_name:lower():gsub("[%s%-_]+", "")
       for _, c in ipairs(all_clients) do
-         if c.class and c.class:lower():find(app_lower, 1, true) and type(c.jump_to) == "function" then
+         local class_norm = c.class and c.class:lower():gsub("[%s%-_]+", "") or ""
+         if class_norm:find(app_norm, 1, true) and type(c.jump_to) == "function" then
             c:jump_to()
             return true
          end
