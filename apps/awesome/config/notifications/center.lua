@@ -7,14 +7,14 @@ local gstring = require("gears.string")
 local noti = require("config.notifications")
 local helpers = require("config.helpers")
 
-local POPUP_WIDTH = 440
+local POPUP_WIDTH = 720
 local ICON_SIZE = 32
 local CARD_PADDING = 10
 local CARD_SPACING = 8
 local CARD_BORDER_WIDTH = 1
 local POPUP_BORDER_WIDTH = 2
 local POPUP_MARGIN = 12
-local MAX_VISIBLE_ITEMS = 5
+local MAX_VISIBLE_ITEMS = 10
 local BUTTON_LEFT = 1
 local BUTTON_RIGHT = 3
 local WHEEL_UP = 4
