@@ -34,7 +34,7 @@ for k, _ in pairs(beautiful.flag) do
 end
 
 local calendar = lain.widget.cal({
-   attach_to = { clock.france, clock.canada, clock.mauritius, clock.cambodia },
+   attach_to = { clock.france, clock.canada, clock.mauritius },
    three = true,
    week_number = "left",
    icons = helpers.icons_dir .. "cal/" .. beautiful.iconcolor .. "/",
