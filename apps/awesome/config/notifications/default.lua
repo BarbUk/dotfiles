@@ -102,7 +102,7 @@ end
 naughty.config.defaults.icon_size = beautiful.notification_icon_size
 
 -- Timeouts
-naughty.config.defaults.timeout = 35
+naughty.config.defaults.timeout = 15
 naughty.config.defaults.hover_timeout = 2
 naughty.config.presets.low.timeout = 3
 naughty.config.presets.critical.timeout = 0
