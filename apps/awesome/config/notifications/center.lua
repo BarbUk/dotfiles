@@ -43,17 +43,31 @@ local function build_card(entry)
    local border_color = entry.urgency == "critical" and (beautiful.nord11 or "#BF616A")
       or (beautiful.nord3 or "#4C566A")
 
+   local dismiss_fg = beautiful.nord11 or "#BF616A"
+   local dismiss_hover_fg = beautiful.bg_normal or "#2E3440"
    local dismiss_btn = wibox.widget({
       {
-         markup = helpers.colorize_text(" ✕ ", beautiful.nord11 or "#BF616A"),
+         text = " ✕ ",
          font = beautiful.font,
          align = "center",
          valign = "center",
          widget = wibox.widget.textbox,
       },
+      fg = dismiss_fg,
+      bg = beautiful.bg_normal,
       shape = helpers.rrect(dpi(4)),
       widget = wibox.container.background,
    })
+
+   dismiss_btn:connect_signal("mouse::enter", function()
+      dismiss_btn.bg = dismiss_fg
+      dismiss_btn.fg = dismiss_hover_fg
+   end)
+
+   dismiss_btn:connect_signal("mouse::leave", function()
+      dismiss_btn.bg = beautiful.bg_normal
+      dismiss_btn.fg = dismiss_fg
+   end)
 
    dismiss_btn:buttons(gears.table.join(awful.button({}, BUTTON_LEFT, function()
       noti:remove_unread(entry.id)
