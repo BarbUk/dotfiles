@@ -12,7 +12,8 @@ local CMD_PULSE = [[
    echo "preset:$(env -u SESSION_MANAGER easyeffects --last-loaded-presets 2>/dev/null | awk -F: '/^output/ {print $2; exit}')"
 ]]
 local TIMEOUT_SECONDS = 30
-local ICON_VOLUME = "🎧 "
+local ICON_HEADPHONES = "🎧 "
+local ICON_SPEAKER = " "
 local ICON_MUTED = " "
 local internal_soundcard = "alsa_output.pci"
 
@@ -32,10 +33,14 @@ function volume.update()
       local level = stdout:match("(%d+)%%") or "N/A"
       local device = stdout:match("device: (%S+)") or "N/A"
       local preset = stdout:match("preset: (%S+)") or "N/A"
+
+      -- Select speaker icon for built-in PCI audio, headphones icon otherwise
+      local icon = ICON_HEADPHONES
       if device:sub(1, #internal_soundcard) == internal_soundcard then
-         ICON_VOLUME = " "
+         icon = ICON_SPEAKER
       end
-      volume.widget:set_markup(markup(beautiful.nord9, ICON_VOLUME) .. level .. "% - " .. preset)
+
+      volume.widget:set_markup(markup(beautiful.nord9, icon) .. level .. "% - " .. preset)
    end)
 end
 
