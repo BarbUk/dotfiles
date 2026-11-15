@@ -23,6 +23,7 @@ local WHEEL_DOWN = 5
 local center = {
    popup = nil,
    scroll_offset = 1,
+   hovered_dismiss_slot = nil,
 }
 
 -- Clamp scroll offset so visible window stays within unread list bounds
@@ -37,7 +38,7 @@ local function clamp_offset(total)
 end
 
 -- Build a single unread notification card widget
-local function build_card(entry)
+local function build_card(entry, slot_idx)
    local time_str = os.date("%H:%M", entry.timestamp)
    local title_escaped = gstring.xml_escape(entry.title ~= "" and entry.title or "Notification")
    local border_color = entry.urgency == "critical" and (beautiful.nord11 or "#BF616A")
@@ -45,6 +46,7 @@ local function build_card(entry)
 
    local dismiss_fg = beautiful.nord11 or "#BF616A"
    local dismiss_hover_fg = beautiful.bg_normal or "#2E3440"
+   local is_dismiss_hovered = (center.hovered_dismiss_slot == slot_idx)
    local dismiss_btn = wibox.widget({
       {
          text = " ✕ ",
@@ -53,23 +55,38 @@ local function build_card(entry)
          valign = "center",
          widget = wibox.widget.textbox,
       },
-      fg = dismiss_fg,
-      bg = beautiful.bg_normal,
+      fg = is_dismiss_hovered and dismiss_hover_fg or dismiss_fg,
+      bg = is_dismiss_hovered and dismiss_fg or beautiful.bg_normal,
       shape = helpers.rrect(dpi(4)),
       widget = wibox.container.background,
    })
 
+   local function set_dismiss_hover(hovered)
+      is_dismiss_hovered = hovered
+      if hovered then
+         center.hovered_dismiss_slot = slot_idx
+         dismiss_btn.bg = dismiss_fg
+         dismiss_btn.fg = dismiss_hover_fg
+      else
+         if center.hovered_dismiss_slot == slot_idx then
+            center.hovered_dismiss_slot = nil
+         end
+         dismiss_btn.bg = beautiful.bg_normal
+         dismiss_btn.fg = dismiss_fg
+      end
+   end
+
    dismiss_btn:connect_signal("mouse::enter", function()
-      dismiss_btn.bg = dismiss_fg
-      dismiss_btn.fg = dismiss_hover_fg
+      set_dismiss_hover(true)
    end)
 
    dismiss_btn:connect_signal("mouse::leave", function()
-      dismiss_btn.bg = beautiful.bg_normal
-      dismiss_btn.fg = dismiss_fg
+      set_dismiss_hover(false)
    end)
 
    dismiss_btn:buttons(gears.table.join(awful.button({}, BUTTON_LEFT, function()
+      center.hovered_dismiss_slot = slot_idx
+      is_dismiss_hovered = true
       noti:remove_unread(entry.id)
    end)))
 
@@ -100,6 +117,12 @@ local function build_card(entry)
       widget = wibox.widget.textbox,
    })
 
+   body_box:connect_signal("mouse::enter", function()
+      if is_dismiss_hovered then
+         set_dismiss_hover(false)
+      end
+   end)
+
    local content_col = wibox.widget({
       header_row,
       body_box,
@@ -118,8 +141,8 @@ local function build_card(entry)
          wibox.widget({
             image = entry.icon,
             resize = true,
-            forced_width = dpi(ICON_SIZE),
-            forced_height = dpi(ICON_SIZE),
+            forced_width = ICON_SIZE,
+            forced_height = ICON_SIZE,
             widget = wibox.widget.imagebox,
          })
       )
@@ -129,7 +152,7 @@ local function build_card(entry)
       row_children,
       wibox.widget({
          content_col,
-         width = dpi(POPUP_WIDTH - (entry.icon and (ICON_SIZE + 56) or 44)),
+         width = POPUP_WIDTH - (entry.icon and (ICON_SIZE + dpi(56)) or dpi(44)),
          strategy = "exact",
          widget = wibox.container.constraint,
       })
@@ -138,14 +161,14 @@ local function build_card(entry)
    local card = wibox.widget({
       {
          row_children,
-         margins = dpi(CARD_PADDING),
+         margins = CARD_PADDING,
          widget = wibox.container.margin,
       },
       bg = beautiful.bg_normal,
       fg = beautiful.fg_normal,
       shape = helpers.rrect(beautiful.border_radius or dpi(6)),
-      border_width = dpi(CARD_BORDER_WIDTH),
-      border_color = border_color,
+      border_width = CARD_BORDER_WIDTH,
+      border_color = is_dismiss_hovered and (beautiful.border_focus or beautiful.nord8) or border_color,
       widget = wibox.container.background,
    })
 
@@ -155,10 +178,16 @@ local function build_card(entry)
 
    card:connect_signal("mouse::leave", function()
       card.border_color = border_color
+      if is_dismiss_hovered then
+         set_dismiss_hover(false)
+      end
    end)
 
    card:buttons(gears.table.join(
       awful.button({}, BUTTON_LEFT, function()
+         if is_dismiss_hovered then
+            return
+         end
          noti:activate_unread(entry.id)
          center.hide()
       end),
@@ -232,8 +261,10 @@ local function build_popup_widget()
       }))
    else
       local last_idx = math.min(total, center.scroll_offset + MAX_VISIBLE_ITEMS - 1)
+      local slot_idx = 1
       for i = center.scroll_offset, last_idx do
-         list_layout:add(build_card(unread[i]))
+         list_layout:add(build_card(unread[i], slot_idx))
+         slot_idx = slot_idx + 1
       end
    end
 
@@ -261,11 +292,36 @@ local function build_popup_widget()
    return root_box
 end
 
+-- Re-sync AwesomeWM drawable hover state after widget tree rebuild under stationary cursor
+local function sync_drawable_mouse()
+   if not gears.timer or type(gears.timer.delayed_call) ~= "function" then
+      return
+   end
+
+   gears.timer.delayed_call(function()
+      if not center.popup or not center.popup.visible or not mouse then
+         return
+      end
+
+      local d = center.popup._drawable and center.popup._drawable.drawable
+      if not d or type(center.popup.geometry) ~= "function" then
+         return
+      end
+
+      local geo = center.popup:geometry()
+      local m = mouse.coords()
+      if geo and m then
+         d:emit_signal("mouse::move", m.x - geo.x, m.y - geo.y)
+      end
+   end)
+end
+
 function center.refresh()
    if not center.popup or not center.popup.visible then
       return
    end
    center.popup.widget = build_popup_widget()
+   sync_drawable_mouse()
 end
 
 function center.scroll(delta)
@@ -281,13 +337,14 @@ end
 
 function center.show(s)
    local target_screen = s or awful.screen.focused()
+   center.hovered_dismiss_slot = nil
    if not center.popup then
       center.popup = awful.popup({
          ontop = true,
          visible = false,
          bg = beautiful.bg_normal,
          fg = beautiful.fg_normal,
-         border_width = dpi(POPUP_BORDER_WIDTH),
+         border_width = POPUP_BORDER_WIDTH,
          border_color = beautiful.border_focus or beautiful.nord8,
          shape = helpers.rrect(beautiful.border_radius or dpi(6)),
          widget = build_popup_widget(),
@@ -305,6 +362,7 @@ function center.show(s)
 end
 
 function center.hide()
+   center.hovered_dismiss_slot = nil
    if center.popup then
       center.popup.visible = false
    end
