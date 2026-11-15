@@ -2,7 +2,10 @@ local awful = require("awful")
 local wibox = require("wibox")
 local lain = require("lain")
 local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 local markup = lain.util.markup
+
+local WIBAR_BASE_HEIGHT = 15
 
 -- Widgets
 local mpris = require("config.widgets.mpris_widget")
@@ -27,8 +30,8 @@ local separator = {
 
 -- Setup Wibar for each screen
 awful.screen.connect_for_each_screen(function(s)
-   -- Create the wibox
-   s.mywibox = awful.wibar({ position = "top", screen = s, height = beautiful.wibar_height })
+   -- Create the wibox scaled to the screen's DPI
+   s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(WIBAR_BASE_HEIGHT, s) })
    s.mypromptbox = awful.widget.prompt()
 
    local left = { -- Left widgets

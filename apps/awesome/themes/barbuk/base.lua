@@ -18,29 +18,24 @@ local awful = require("awful")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
--- Do not scale with dpi
+local DPI_4K = 192
+local DPI_2K = 120
+local WIDTH_4K_MIN = 2600
+local DIM_2K_MIN = 2500
+
 theme.wibar_height = dpi(15)
 theme.notification_max_width = dpi(720)
 theme.notification_icon_size = dpi(64)
 
+-- Set per-screen DPI based on monitor resolution
 awful.screen.connect_for_each_screen(function(s)
-   -- 4k screen should have a double dpi
-   -- 3840x2160
-   if s.geometry.width > 2600 then
-      xresources.set_dpi(192, s)
-      dpi = xresources.apply_dpi
-      theme.wibar_height = dpi(30)
-      theme.notification_max_width = dpi(1440)
-      theme.notification_icon_size = dpi(128)
+   if s.geometry.width > WIDTH_4K_MIN then
+      xresources.set_dpi(DPI_4K, s)
+      return
+   end
 
-   -- 2k screen should have a 1.25 * dpi
-   -- 2560x1440
-   elseif s.geometry.width > 2500 or s.geometry.height > 2500 then
-      xresources.set_dpi(120, s)
-      dpi = xresources.apply_dpi
-      theme.wibar_height = dpi(18.75)
-      theme.notification_max_width = dpi(900)
-      theme.notification_icon_size = dpi(80)
+   if s.geometry.width > DIM_2K_MIN or s.geometry.height > DIM_2K_MIN then
+      xresources.set_dpi(DPI_2K, s)
    end
 end)
 
