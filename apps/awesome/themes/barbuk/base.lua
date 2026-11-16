@@ -24,18 +24,22 @@ local WIDTH_4K_MIN = 2600
 local DIM_2K_MIN = 2500
 
 theme.wibar_height = dpi(15)
-theme.notification_max_width = dpi(720)
+theme.notification_max_width = dpi(600)
 theme.notification_icon_size = dpi(64)
 
 -- Set per-screen DPI based on monitor resolution
 awful.screen.connect_for_each_screen(function(s)
    if s.geometry.width > WIDTH_4K_MIN then
       xresources.set_dpi(DPI_4K, s)
+      theme.notification_max_width = dpi(1200)
+      theme.notification_icon_size = dpi(128)
       return
    end
 
    if s.geometry.width > DIM_2K_MIN or s.geometry.height > DIM_2K_MIN then
       xresources.set_dpi(DPI_2K, s)
+      theme.notification_max_width = dpi(750)
+      theme.notification_icon_size = dpi(80)
    end
 end)
 

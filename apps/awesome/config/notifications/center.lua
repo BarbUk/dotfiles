@@ -7,7 +7,7 @@ local gstring = require("gears.string")
 local noti = require("config.notifications")
 local helpers = require("config.helpers")
 
-local POPUP_WIDTH = 720
+local POPUP_WIDTH = beautiful.notification_max_width
 local ICON_SIZE = 32
 local CARD_PADDING = 10
 local CARD_SPACING = 8
@@ -148,8 +148,8 @@ local function build_card(entry, slot_idx)
          wibox.widget({
             image = entry.icon,
             resize = true,
-            forced_width = ICON_SIZE,
-            forced_height = ICON_SIZE,
+            forced_width = dpi(ICON_SIZE),
+            forced_height = dpi(ICON_SIZE),
             widget = wibox.widget.imagebox,
          })
       )
@@ -283,7 +283,7 @@ local function build_popup_widget()
          layout = wibox.layout.fixed.vertical,
       },
       margins = dpi(POPUP_MARGIN),
-      forced_width = dpi(POPUP_WIDTH),
+      forced_width = POPUP_WIDTH,
       widget = wibox.container.margin,
    })
 
