@@ -17,6 +17,11 @@
 /home/*/.vagrant.d
 /home/*/.dogecoin
 /home/*/.go
+/home/*/.local/share/NuGet
+/home/*/.local/share/go
+/home/*/.local/share/cargo
+/home/*/.local/share/rustup
+/home/*/.local/share/containers
 /home/*/VirtualBox\ VMs
 /var/lib/docker
 re:/\\.cache/
