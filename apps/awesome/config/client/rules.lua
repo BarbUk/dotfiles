@@ -68,6 +68,7 @@ awful.rules.rules = {
             "sun-awt-X11-XWindowPeer",
             "Evolution-alarm-notify",
             "Msgcompose",
+            "Gcr-prompter",
          },
          type = {
             "dialog",
